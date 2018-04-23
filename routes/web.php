@@ -12,22 +12,9 @@
 */
 
 Route::get('/', function () {
-    return redirect('home');
+    return view('welcome');
 });
 
+Auth::routes();
 
-// Route::get('/home', function () {
-//     return view('welcome');
-// });
-
-// Route::get('/'              , 'Home\HomeController@home');
-Route::get('auth/login'     , 'Auth\LoginController@showLoginForm')->name('login');
-
-
-Route::group(['middleware' => ['auth']], function()
-{   
- 		
-    Route::get('home', 'Home\HomeController@home');
-    //Route::get('auth/logout', function () {return redirect('auth/login');});
-        
-});
+Route::get('/home', 'HomeController@index')->name('home');
