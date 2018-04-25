@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="{{ app()->getLocale() }}">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <style type="text/css">
+        .menu_left{background-color: blue;height: 100%;}
+        .menu_top{background-color: yellow}
+        .menu_contain{background-color: red}
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+
+        .Rectangle {
+          height: 768px;
+          background-color: #ffffff;
+          box-shadow: 3px 2px 4px 0 rgba(212, 212, 212, 0.5);
+        }
+
+        .indosat-logo {
+          width: 114.7px;
+          object-fit: contain;
+        }
+
+        .Dashboard {
+          width: 68px;
+          height: 19px;
+          font-family: Roboto;
+          font-size: 14px;
+          font-weight: bold;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #4a4a4a;
+          color: var(--greyish-brown);
+        }
+
+        .home---anticon {
+          width: 20px;
+          height: 21px;
+          object-fit: contain;
+          font-family: anticon;
+          font-size: 20px;
+          font-weight: normal;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: #4a4a4a;
+          color: var(--greyish-brown);
+        }
+
+        .Beranda {
+  width: 60px;
+  height: 21px;
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #4a4a4a;
+  color: var(--greyish-brown);
+}   
+
+.Rectangle-2 {
+  height: 110px;
+  background-color: #ffffff;
+  box-shadow: 0 3px 4px 0 rgba(212, 212, 212, 0.5);
+}
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            
+            <div class="col-md-3 Rectangle" >
+                <div style="margin-top: 30px"> </div>
+                <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
+                <div class="text-center"> Inventory Management </div>
+                <div style="margin-top: 20px"> </div>
+                <div class="Dashboard" style="margin-bottom: 10px"> 
+                    Dashboard 
+                </div>
+
+                <div style="margin-bottom: 10px"> 
+                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
+                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
+                </div>
+
+                <div style="margin-bottom: 10px"> 
+                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
+                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
+                </div>
+
+                <div style="margin-bottom: 10px"> 
+                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
+                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
+                </div>
+
+                <div style="margin-bottom: 10px"> 
+                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
+                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
+                </div>
+            </div>
+
+            <div class="col-md-9" style="">
+                <div class="row">
+                    <div class="Rectangle-2"> 
+                        <div style="padding: 0px 30px;padding-top:25px">
+                            <h3 > 
+                                <span class="pull-left"> Beranda </span>
+                                <span class="pull-right"> Users </span>
+                            </h3>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+                    <div class="menu_contain">
+                        contains
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+</body>
+</html>

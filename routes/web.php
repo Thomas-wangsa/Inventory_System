@@ -12,9 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return redirect('login');
+    //return view('welcome');
 });
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/test', function () {
+	//return redirect('login');
+    return view('auth.old_login');
+});
+
+Route::group(['middleware' => ['auth']], function() { 
+	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('/akses', 'AksesController@index')->name('akses');
+});

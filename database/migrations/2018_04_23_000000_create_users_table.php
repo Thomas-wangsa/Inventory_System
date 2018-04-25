@@ -18,15 +18,15 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->unsignedInteger('divisi');
-            $table->unsignedInteger('jabatan');
-            $table->boolean('status');
+            // $table->unsignedInteger('divisi');
+            // $table->unsignedInteger('jabatan');
+            // $table->boolean('status');
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('divisi', 'users_divisi_fkey')
-                ->references('id')->on('divisi')
-                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+            // $table->foreign('divisi', 'users_divisi_fkey')
+            //     ->references('id')->on('divisi')
+            //     ->onUpdate('CASCADE')->onDelete('RESTRICT');
         });
     }
 

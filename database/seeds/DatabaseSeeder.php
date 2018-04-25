@@ -34,18 +34,12 @@ class DatabaseSeeder extends Seeder
             array(
                 "name"=>"thomas",
                 "email"=>"thomas.wangsa@gmail.com",
-                "password"=>1,
-                "divisi"=>1,
-                "status"=>1,
-                "jabatan"=>1
+                "password"=>bcrypt(123456)
             ),
             array(
                 "name"=>"thomas3",
                 "email"=>"thomas3.wangsa@gmail.com",
-                "password"=>1,
-                "divisi"=>1,
-                "status"=>1,
-                "jabatan"=>1
+                "password"=>bcrypt(123456)
             )
         );
 
