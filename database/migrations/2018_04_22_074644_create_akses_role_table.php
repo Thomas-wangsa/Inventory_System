@@ -15,8 +15,8 @@ class CreateAksesRoleTable extends Migration
     {
         Schema::create('akses_role', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama');
-            $table->boolean('status');   
+            $table->string('name');
+            $table->boolean('status')->default(1);   
             $table->timestamps();
         });
     }

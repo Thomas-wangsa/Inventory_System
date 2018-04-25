@@ -15,7 +15,7 @@ class CreateInventoryRoleTable extends Migration
     {
         Schema::create('inventory_role', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nama');
+            $table->string('name');
             $table->boolean('status');
             $table->timestamps();
         });

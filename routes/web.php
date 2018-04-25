@@ -19,10 +19,10 @@ Route::get('/', function () {
 Auth::routes();
 
 
-Route::get('/test', function () {
-	//return redirect('login');
-    return view('auth.old_login');
-});
+// Route::get('/test', function () {
+// 	//return redirect('login');
+//     return view('auth.old_login');
+// });
 
 Route::group(['middleware' => ['auth']], function() { 
 	Route::get('/home', 'HomeController@index')->name('home');
