@@ -8,6 +8,7 @@ use App\Http\Models\Design;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
+use App\Http\Models\Status_Akses;
 
 
 class DatabaseSeeder extends Seeder
@@ -73,6 +74,22 @@ class DatabaseSeeder extends Seeder
                 "divisi"    => 2,
             );
             Users_Role::firstOrCreate($data_array);
+        }
+
+        $status_akses_array = array(
+            array("name"=>"Menunggu Daftar","color"=>"#FFFF00"),
+            array("name"=>"Diterima Daftar","color"=>"#00FF00"),
+            array("name"=>"Menunggu Cetak","color"=>"#FFFF00"),
+            array("name"=>"Diterima Cetak","color"=>"#00FF00"),
+            array("name"=>"Aktifkan Kartu","color"=>"#FFFF00"),
+            array("name"=>"Kartu Aktif","color"=>"#00FF00"),
+            array("name"=>"Ditolak Daftar","color"=>"#FF0000"),
+            array("name"=>"Ditolak Cetak","color"=>"#FF0000"),
+            array("name"=>"Ditolak Aktif","color"=>"#FF0000")
+        );
+
+        foreach ($status_akses_array as $key => $value) {
+            Status_Akses::firstOrCreate($value);
         }
     }
 
