@@ -25,10 +25,27 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	
+			    	@if (count($data) == 0 ) 
+			    	<td colspan="6" class="text-center"> Kosong </td>
+			    	@else 
+			    		@foreach($data as $key=>$val)
+			    		<tr> 
+			    			<td> {{ $key+1 }} </td>
+			    			<td> {{ $val->name }} </td>
+			    			<td> {{ $val->email }} </td>
+			    			<td> {{ $val->mobile }} </td>
+			    			<td> {{ $val->jabatan }} </td>
+			    			<td> 
 
+			    			</td>
+			    		</tr>
+			    		@endforeach
+			    	@endif
 			    </tbody>
 			</table>
 		</div>
 	</div>
+
+	@include('admin.modal');
+
 @endsection

@@ -23,6 +23,7 @@ class CreateUsersTable extends Migration
             // $table->unsignedInteger('jabatan');
             // $table->boolean('status');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
 
             // $table->foreign('divisi', 'users_divisi_fkey')

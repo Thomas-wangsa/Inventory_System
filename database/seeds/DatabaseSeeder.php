@@ -36,13 +36,13 @@ class DatabaseSeeder extends Seeder
 
         $users_array = array(
             array(
-                "name"=>"thomas",
-                "email"=>"thomas.wangsa@gmail.com",
+                "name"=>"admin",
+                "email"=>"admin@gmail.com",
                 "password"=>bcrypt(123456)
             ),
             array(
-                "name"=>"thomas3",
-                "email"=>"thomas3.wangsa@gmail.com",
+                "name"=>"thomas",
+                "email"=>"thomas.wangsa@gmail.com",
                 "password"=>bcrypt(123456)
             )
         );
@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
         foreach ($users as $key => $value) {
             $data_array = array(
                 "user_id"  => $value->id,
-                "divisi"    => 2,
+                "divisi"    => $key+1,
             );
             Users_Role::firstOrCreate($data_array);
         }

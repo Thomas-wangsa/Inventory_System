@@ -60,7 +60,9 @@
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
-                        <img  class="center" src="{{ asset('images/logo/settings.png')}}"  style="width:30%;margin-top: 45px" / >
+                        <a href="{{route('route_setting')}}">
+                            <img  class="center" src="{{ asset('images/logo/settings.png')}}"  style="width:30%;margin-top: 45px" / >
+                        </a>
                         <div style="margin-top: 20px"> </div>
                         <div class="text-center"> Pengaturan </div>
                     </div>

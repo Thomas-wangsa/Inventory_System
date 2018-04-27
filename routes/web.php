@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/akses', 'AksesController@index')->name('akses');
 	Route::get('/admin','AdminController@index')->name('route_admin');
+	Route::get('/setting','SettingController@index')->name('route_setting');
 
 	Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
 	Route::post('/pendaftaran_diterima', 'AksesController@pendaftaran_diterima')->name('post_pendaftaran_diterima');
