@@ -13,13 +13,14 @@ class AksesController extends Controller
     protected $url;
 
     public function __construct(UrlGenerator $url){
-        $this->url = $url;
+        $this->url  = $url;
     }
 
     public function index() {
     	$data = Akses_Data::GetDetailAkses()->get();
         $url  = $this->url;
-    	return view('akses/index',compact("data","url"));
+        $user = Auth::user();
+    	return view('akses/index',compact("data","url","user"));
     }
 
     public function pendaftaran_akses(Request $request) {
@@ -51,7 +52,47 @@ class AksesController extends Controller
     }
 
     public function pendaftaran_diterima(Request $request) {
-        echo "AA";
+        Akses_Data::where('id',$request->data_id)
+        ->update([
+            "updated_by"    =>$request->updated_by,
+            "status_akses"  => 2
+        ]);
+        return redirect($this->redirectTo);
+    }
 
+    public function pencetakan_akses(Request $request) {
+        Akses_Data::where('id',$request->data_id)
+        ->update([
+            "updated_by"    =>$request->updated_by,
+            "status_akses"  => 3
+        ]);
+        return redirect($this->redirectTo);
+    }
+
+    public function pencetakan_diterima(Request $request) {
+        Akses_Data::where('id',$request->data_id)
+        ->update([
+            "updated_by"    =>$request->updated_by,
+            "status_akses"  => 4
+        ]);
+        return redirect($this->redirectTo);
+    }
+
+    public function aktifkan_akses(Request $request) {
+        Akses_Data::where('id',$request->data_id)
+        ->update([
+            "updated_by"    =>$request->updated_by,
+            "status_akses"  => 5
+        ]);
+        return redirect($this->redirectTo);
+    }
+
+    public function aktifkan_diterima(Request $request) {
+        Akses_Data::where('id',$request->data_id)
+        ->update([
+            "updated_by"    =>$request->updated_by,
+            "status_akses"  => 6
+        ]);
+        return redirect($this->redirectTo);
     }
 }

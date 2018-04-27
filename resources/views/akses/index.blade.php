@@ -41,21 +41,44 @@
 			    			<td> 
 			    				@switch($val->status_akses)
 			    					@case(1)
-			    						<form method="POST" action="">
+			    						<form method="POST" action="{{route('post_pendaftaran_diterima')}}">
+			    							{{ csrf_field() }}
+			    							<input type="hidden" name="updated_by" value="{{$user->id}}">
+			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
 			    							<button type="submit" class="btn btn-warning"> Setuju Daftar  </button>
 			    						</form>
 			    						@break
 			    					@case(2)
-			    						<button class="btn btn-warning"> Cetak Kartu  </button>
+			    						<form method="POST" action="{{route('post_pencetakan_akses')}}">
+			    							{{ csrf_field() }}
+			    							<input type="hidden" name="updated_by" value="{{$user->id}}">
+			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
+			    							<button type="submit" class="btn btn-warning"> Cetak Kartu </button>
+			    						</form>
 			    						@break
 			    					@case(3)
-			    						<button class="btn btn-warning"> Setuju Cetak  </button>
+			    						<form method="POST" action="{{route('post_pencetakan_diterima')}}">
+			    							{{ csrf_field() }}
+			    							<input type="hidden" name="updated_by" value="{{$user->id}}">
+			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
+			    							<button type="submit" class="btn btn-warning"> Setuju Cetak </button>
+			    						</form>
 			    						@break
 			    					@case(4)
-			    						<button class="btn btn-warning">  Aktifkan Kartu </button>
+			    						<form method="POST" action="{{route('post_aktifkan_akses')}}">
+			    							{{ csrf_field() }}
+			    							<input type="hidden" name="updated_by" value="{{$user->id}}">
+			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
+			    							<button type="submit" class="btn btn-warning"> Aktifkan Kartu </button>
+			    						</form>
 			    						@break
 			    					@case(5)
-			    						<button class="btn btn-warning">  Setuju Aktifkan </button>
+			    						<form method="POST" action="{{route('post_aktifkan_diterima')}}">
+			    							{{ csrf_field() }}
+			    							<input type="hidden" name="updated_by" value="{{$user->id}}">
+			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
+			    							<button type="submit" class="btn btn-warning"> Setuju Aktifkan </button>
+			    						</form>
 			    						@break
 			    					@case(6)
 			    						<button class="btn btn-warning">  Kartu Aktif </button>
