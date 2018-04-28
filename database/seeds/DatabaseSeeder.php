@@ -9,7 +9,7 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Status_Akses;
-
+use App\Http\Models\Inventory_Level;
 
 class DatabaseSeeder extends Seeder
 {
@@ -90,6 +90,15 @@ class DatabaseSeeder extends Seeder
 
         foreach ($status_akses_array as $key => $value) {
             Status_Akses::firstOrCreate($value);
+        }
+
+        $inventory_level_array = array(
+            array("inventory_level_name"=>"head"),
+            array("inventory_level_name"=>"staff")
+        );
+
+        foreach ($inventory_level_array as $key => $value) {
+            Inventory_Level::firstOrCreate($value);
         }
     }
 

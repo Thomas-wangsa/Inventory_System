@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateInventoryRoleTable extends Migration
+class CreateInventoryLevelTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateInventoryRoleTable extends Migration
      */
     public function up()
     {
-        Schema::create('inventory_role', function (Blueprint $table) {
+        Schema::create('inventory_level', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->boolean('status');
+            $table->string('inventory_level_name');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateInventoryRoleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('inventory_role');
+        Schema::dropIfExists('inventory_level');
     }
 }
