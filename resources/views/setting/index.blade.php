@@ -7,7 +7,7 @@
 	  <input type="hidden" name="updated_by" value="{{$user->id}}">
 	  <div class="form-group">
 	    <label for="staff_nama"> Nama Inventory :</label>
-	    <input type="text" class="form-control" id="nama" name="inventory" value="">
+	    <input type="text" class="form-control" id="nama" name="inventory" value="" required="">
 	  </div>
 	  
 	  <button type="submit" class="btn btn-block btn-warning">Tambah Inventory </button>

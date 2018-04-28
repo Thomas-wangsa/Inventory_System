@@ -41,4 +41,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
 
+
+	Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
+
 });

@@ -15,9 +15,14 @@ class CreateInventoryListTable extends Migration
     {
         Schema::create('inventory_list', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('inventory_name');
+            $table->string('inventory_name')->unique();
+            $table->unsignedInteger('updated_by');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('updated_by', 'inventory_list_user_fkey')
+                ->references('id')->on('users')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
 
         });
     }

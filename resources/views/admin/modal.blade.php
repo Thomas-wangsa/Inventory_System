@@ -74,7 +74,20 @@
 					$('#select_posisi').prop('disabled',true);
 					$('#select_posisi').val("0");
 					break;
-				case "2" : alert("dua nih");break;
+				case "2" : 
+				$.ajaxSetup({
+			    	headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    	}
+				});
+				$.ajax({
+					url: 	"{{route('get_akses_role')}}",
+					method: "POST", 
+					success: function(result){
+        			$("#div1").html(result);
+    				}
+    			});
+					break;
 				case "3" : alert("tiga nih");break;
 				default : alert("Please contact your administrator");break
 			}
