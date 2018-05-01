@@ -38,7 +38,9 @@
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
-                        <img  class="center" src="{{ asset('images/logo/checklist.png')}}"  style="width:30%;margin-top: 35px" / >
+                        <a href="{{route('inventory')}}">
+                            <img  class="center" src="{{ asset('images/logo/checklist.png')}}"  style="width:30%;margin-top: 35px" / >
+                        </a>
                         <div style="margin-top: 10px"> </div>
                         <div class="text-center"> Inventory </div>
                     </div>

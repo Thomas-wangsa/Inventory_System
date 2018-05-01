@@ -8,6 +8,8 @@ use App\Http\Models\Users_Role;
 
 use App\Http\Models\Divisi;
 use App\Http\Models\Inventory_List;
+use App\Http\Models\Inventory_Role;
+
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -38,25 +40,37 @@ class AdminController extends Controller
 			"password"	=> bcrypt("123456")
 		);
 
+		$new_users = Users::firstOrCreate($array_users);
 		switch($request->select_divisi) {
 			
 			case 1 : 
-				$new_users = Users::firstOrCreate($array_users);
-				
 				$user_role = new Users_Role;
-
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
-
         		$user_role->save();
 			break;
 			
 			case 2 : 
-				echo "2";
+				$user_role = new Users_Role;
+        		$user_role->user_id 	= $new_users->id;
+        		$user_role->divisi 		= $request->select_divisi;
+        		$user_role->jabatan 	= $request->select_posisi;
+        		$user_role->save();
 			break;
 
 			case 3 : 
-				echo "3";
+				$inventory_role_array = array(
+					"inventory_list_id"		=> $request->inventory_list,
+					"inventory_level_id"	=> $request->select_posisi
+				);
+
+				$new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
+
+				$user_role = new Users_Role;
+        		$user_role->user_id 	= $new_users->id;
+        		$user_role->divisi 		= $request->select_divisi;
+        		$user_role->jabatan 	= $new_inventory_role->id;
+        		$user_role->save();
 			break;
 
 			default : echo "Please contact your administrator";die;
@@ -64,7 +78,6 @@ class AdminController extends Controller
 
 
     	
-
-    	dd($request);
+		return redirect('admin');
     }
 }

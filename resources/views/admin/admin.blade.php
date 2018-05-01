@@ -31,10 +31,10 @@
 			    		@foreach($data as $key=>$val)
 			    		<tr> 
 			    			<td> {{ $key+1 }} </td>
-			    			<td> {{ $val->name }} </td>
+			    			<td> {{ ucfirst($val->name) }} </td>
 			    			<td> {{ $val->email }} </td>
 			    			<td> {{ $val->mobile }} </td>
-			    			<td> {{ $val->jabatan }} </td>
+			    			<td> {{ ucfirst($val->jabatan) }} </td>
 			    			<td> 
 
 			    			</td>
