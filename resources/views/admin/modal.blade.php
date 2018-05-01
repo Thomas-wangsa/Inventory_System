@@ -12,9 +12,8 @@
         </div>
         <div class="modal-body">
         	<div id="staff">
-	  			<form method="POST" action="{{ route('post_pendaftaran_akses') }}">
+	  			<form method="POST" action="{{ route('create_new_users') }}">
 				  {{ csrf_field() }}
-				  <input type="hidden" name="type_daftar" value="staff">
 				  <div class="form-group">
 				    <label for="staff_nama"> Nama Lengkap :</label>
 				    <input type="text" class="form-control" id="nama" name="staff_nama" value="Thomas">
@@ -27,16 +26,26 @@
 
 				  <div class="form-group">
 				    <label for="email"> No Handphone :</label>
-				    <input type="text" class="form-control" id="email" name="staff_mobile" value="92-595305">
+				    <input type="text" class="form-control" id="email" name="staff_mobile" value="92595305">
 				  </div>
 				  
 				  <div class="form-group">
 				    <label for="staff_divisi"> Akses Level :</label>
-				    <select class="form-control" id="select_divisi" name="select_divisi">
+				    <select class="form-control" id="select_divisi" name="select_divisi" required="">
 				    	<option value=""> </option>
 				    	@foreach($divisi as $key=>$val)
-				    	<option value="{{$val->id}}"> {{$val->name}}</option>
+				    	<option value="{{$val->id}}"> {{ucfirst($val->name)}}</option>
 				    	@endforeach 
+				    </select>
+				  </div>
+
+				  <div class="form-group" id="inventory_head">
+				    <label for="staff_divisi"> Inventory Role :</label>
+				    <select class="form-control" id="inventory_role" name="inventory_role">
+				    	<option value=""> </option>
+				    	@foreach($inventory_list as $key=>$val)
+				    	<option value="{{$val->id}}"> {{$val->inventory_name}} </option>
+				    	@endforeach
 				    </select>
 				  </div>
 
@@ -44,7 +53,6 @@
 				    <label for="staff_divisi"> Posisi :</label>
 				    <select class="form-control" id="select_posisi" name="select_posisi">
 				    	<option value=""> </option>
-				    	
 				    </select>
 				  </div>
 				  
@@ -65,9 +73,22 @@
 
 <script type="text/javascript">
 	$(document).ready(function(){
+		$('#inventory_head').hide();
 		$('#select_divisi').change(function(){
+			$('#inventory_head').hide();
 			$('#select_posisi').prop('disabled',false);
 			var value = $('#select_divisi').val();
+			var data = {"divisi":value};
+			$('#select_posisi')
+			    .find('option')
+			    .remove()
+			    .end()
+
+			 $.ajaxSetup({
+			    	headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			    	}
+			});
 			//alert(value);
 			switch(value) {
 				case "1" : 
@@ -75,20 +96,38 @@
 					$('#select_posisi').val("0");
 					break;
 				case "2" : 
-				$.ajaxSetup({
-			    	headers: {
-			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			    	}
-				});
 				$.ajax({
 					url: 	"{{route('get_akses_role')}}",
 					method: "POST", 
+					contentType	: "application/json; charset=utf-8",
+					data : JSON.stringify(data),
 					success: function(result){
-        			$("#div1").html(result);
+        				$.each(JSON.parse(result), function(key, value) {   
+						     $('#select_posisi')
+						         .append($("<option></option>")
+						                    .attr("value",value.id)
+						                    .text(value.name));
+						});
     				}
     			});
 					break;
-				case "3" : alert("tiga nih");break;
+				case "3" :
+				$('#inventory_head').show(); 
+				$.ajax({
+					url: 	"{{route('get_inventory_level')}}",
+					method: "POST", 
+					contentType	: "application/json; charset=utf-8",
+					data : JSON.stringify(data),
+					success: function(result){
+        				$.each(JSON.parse(result), function(key, value) {   
+						     $('#select_posisi')
+						         .append($("<option></option>")
+						                    .attr("value",value.id)
+						                    .text(value.inventory_level_name));
+						});
+    				}
+    			});
+				break;
 				default : alert("Please contact your administrator");break
 			}
 		})

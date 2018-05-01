@@ -10,6 +10,7 @@ use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Status_Akses;
 use App\Http\Models\Inventory_Level;
+use App\Http\Models\Inventory_List;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,9 +21,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run() {	
     	$divisi_array = array(
-    		array("name"=>"Administrator"),
-    		array("name"=>"Akses"),
-    		array("name"=>"Inventory")
+    		array("name"=>"administrator"),
+    		array("name"=>"akses"),
+    		array("name"=>"inventory")
     	);
 
     	foreach ($divisi_array as $key => $value) {
@@ -47,8 +48,16 @@ class DatabaseSeeder extends Seeder
             )
         );
 
+        $inventory_list_array = array(
+            "inventory_name"=>"cctv",
+            "updated_by"=>1
+        );
         foreach ($users_array as $key => $value) {
             Users::firstOrCreate($value);
+            if($key == 1) {
+                Inventory_List::firstOrCreate($inventory_list_array);
+            }
+            
         }
         
 
@@ -100,6 +109,8 @@ class DatabaseSeeder extends Seeder
         foreach ($inventory_level_array as $key => $value) {
             Inventory_Level::firstOrCreate($value);
         }
+
+
     }
 
 

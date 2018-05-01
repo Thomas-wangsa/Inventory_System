@@ -43,5 +43,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 	Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
+	Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+
+	Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
 
 });
