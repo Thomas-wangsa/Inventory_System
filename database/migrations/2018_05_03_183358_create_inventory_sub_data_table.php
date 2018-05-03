@@ -16,8 +16,7 @@ class CreateInventorySubDataTable extends Migration
         Schema::create('inventory_sub_data', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('inventory_data_id');
-            $table->string('serial_number');
-            $table->string('location');
+            
             $table->timestamps();
         });
     }
