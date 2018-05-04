@@ -60,7 +60,7 @@
 		    </div>
 		    <div class="form-group">
 		      <label class="control-label col-sm-2" for="pwd">
-		      	<span class="glyphicon glyphicon-envelope" style="font-size: 30px;"></span>
+		      	<span class="glyphicon glyphicon-lock" style="font-size: 30px;"></span>
 		      </label>
 		      <div class="col-sm-10">          
 		        <input type="password" class="form-control" id="pwd" placeholder="password" name="password" required="required">
