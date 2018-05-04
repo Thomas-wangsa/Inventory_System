@@ -12,23 +12,28 @@
         </div>
         <div class="modal-body">
         	<div id="staff">
-	  			<form method="POST" action="{{ route('create_new_users') }}">
+	  			<form method="POST" action="{{ route('create_new_inventory') }}">
 				  {{ csrf_field() }}
 				  <div class="form-group">
 				    <label for="staff_nama"> Nama Barang :</label>
-				    <input type="text" class="form-control" id="nama" name="nama_barang" value="Thomas">
+				    <input type="text" class="form-control" id="nama" name="nama_barang" value="CCTV ku">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="staff_divisi"> Kategori :</label>
 				    <select class="form-control" id="select_divisi" name="kategori" required="">
 				    	<option value=""> </option>
+				    	@if(count($data['inventory']) > 0 )
+				    		@foreach($data['inventory'] as $key=>$val)
+				    			<option value="{{$val->id}}"> {{$val->inventory_name}}</option>
+				    		@endforeach
+				    	@endif
 				    </select>
 				  </div>
 				  
 				  <div class="form-group">
 				    <label for="email"> Serial Number : </label>
-				    <input type="text" class="form-control" id="email" name="SN" value="9">
+				    <input type="text" class="form-control" id="email" name="SN" value="egehshshhwr">
 				  </div>
 
 				  <div class="form-group">
@@ -38,12 +43,12 @@
 
 				  <div class="form-group">
 				    <label for="email"> Tempat : </label>
-				    <input type="text" class="form-control" id="email" name="tempat" value="9">
+				    <input type="text" class="form-control" id="email" name="tempat" value="Lantai 1">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="email"> Keterangan : </label>
-				    <input type="text" class="form-control" id="email" name="keterangan" value="9">
+				    <input type="text" class="form-control" id="email" name="keterangan" value="Dari Thomas">
 				  </div>
 				  
 				  

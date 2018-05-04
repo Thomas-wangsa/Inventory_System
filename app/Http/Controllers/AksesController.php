@@ -7,6 +7,9 @@ use App\Http\Models\Akses_Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\UrlGenerator;
 
+use App\Mail\AksesMail;
+use Illuminate\Support\Facades\Mail;
+
 class AksesController extends Controller
 {	
 	protected $redirectTo      = '/akses';
@@ -48,6 +51,7 @@ class AksesController extends Controller
         $akses_data->updated_by = Auth::user()->id;
     	$akses_data->status_akses = 1;
     	$akses_data->save();
+        $this->send();
     	return redirect($this->redirectTo);
     }
 
@@ -94,5 +98,16 @@ class AksesController extends Controller
             "status_akses"  => 6
         ]);
         return redirect($this->redirectTo);
+    }
+
+    public function send()
+    {
+        $objDemo = new \stdClass();
+        $objDemo->demo_one = 'Demo One Value';
+        $objDemo->demo_two = 'Demo Two Value';
+        $objDemo->sender = 'SenderUserName';
+        $objDemo->receiver = 'ReceiverUserName';
+ 
+        Mail::to("thomas.wangsa@gmail.com")->send(new AksesMail($objDemo));
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Status_Akses;
+use App\Http\Models\Status_Inventory;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_List;
 
@@ -110,6 +111,18 @@ class DatabaseSeeder extends Seeder
             Inventory_Level::firstOrCreate($value);
         }
 
+
+        $status_akses_array = array(
+            array("name"=>"Pending Head","color"=>"#FFFF00"),
+            array("name"=>"Diterima Head","color"=>"#00FF00"),
+            array("name"=>"Diterima Admin","color"=>"#FFFF00"),
+            array("name"=>"Ditolak Head","color"=>"#FF0000"),
+            array("name"=>"Ditolak Admin","color"=>"#FF0000")
+        );
+
+        foreach ($status_akses_array as $key => $value) {
+            Status_Inventory::firstOrCreate($value);
+        }
 
     }
 

@@ -31,6 +31,10 @@ class CreateInventoryDataTable extends Migration
             $table->foreign('updated_by', 'inventory_data_updated_fkey')
                 ->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
+            $table->foreign('status_inventory', 'inventory_data_status_fkey')
+                ->references('id')->on('status_inventory')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
         });
     }
 

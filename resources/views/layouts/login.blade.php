@@ -53,18 +53,19 @@
 
 </head>
 
-	<div class="container" style="background-color: red">
-		fafa
-			<div class="center" style="background-color: blue">
+	<div class="container" style="">
+			<div class="center" style="">
 				<div style="margin-top: 40px"> </div>
-				<img class="center" src="{{ asset('images/logo/google.png')}}"  / >
+                <a href="{{ route('login')}}">
+				    <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
+                </a>
 				<div class="text-center"> 
 					<h4> Inventory Management </h4> 
 				</div>
 
 				@yield('content')
 				
-				<div class="footer"> All Right Reserved </div>
+				<div class="footer" style="margin-bottom: 20px"> XXX Party &#169; 2018 All Right Reserved </div>
 			</div>
 	</div>
 

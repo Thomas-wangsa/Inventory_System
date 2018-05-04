@@ -48,4 +48,10 @@ Route::group(['middleware' => ['auth']], function() {
 
 	Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
 
+	Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
+	Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
+	Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
+
+
+
 });
