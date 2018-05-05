@@ -14,6 +14,7 @@ use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_List;
 
 use App\Http\Models\Setting_List;
+use App\Http\Models\Setting_Data;
 
 use Faker\Factory as Faker;
 
@@ -209,11 +210,19 @@ class DatabaseSeeder extends Seeder
             array('setting_name'  => 'inventory level'),
             array('setting_name'  => 'upload level'),
             array('setting_name'  => 'setting level'),
+            array('setting_name'  => 'user level'),
         );
 
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
         }
+
+        $setting_data_array = array(
+            "user_id"=>2,
+            "setting_list_id"=>1,
+            "updated_by"=>1
+        );
+        Setting_Data::firstOrCreate($setting_data_array);
     }
 
 

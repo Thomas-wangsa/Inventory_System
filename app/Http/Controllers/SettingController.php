@@ -35,7 +35,11 @@ class SettingController extends Controller {
 
 
     public function show_inventory() {
-
+        if($this->credentials->divisi == 1) {
+            $access = true;
+        } else {
+            
+        }
     }
 
     public function add_inventory(Request $request) {
