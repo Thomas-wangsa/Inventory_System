@@ -13,14 +13,19 @@ use App\Http\Models\Status_Inventory;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_List;
 
+use Faker\Factory as Faker;
+
 class DatabaseSeeder extends Seeder
-{
+{   
+    
     /**
      * Run the database seeds.
      *
      * @return void
      */
     public function run() {	
+
+        $faker = Faker::create();
     	$divisi_array = array(
     		array("name"=>"administrator"),
     		array("name"=>"akses"),
@@ -45,6 +50,41 @@ class DatabaseSeeder extends Seeder
             array(
                 "name"=>"thomas",
                 "email"=>"thomas.wangsa@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"staff_pendaftaran",
+                "email"=>"staff.pendaftaran@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"head_pendaftaran",
+                "email"=>"head.pendaftaran@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"staff_pencetakan",
+                "email"=>"staff.pencetakan@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"head_pencetakan",
+                "email"=>"head.pencetakan@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"staff_pengaktifan",
+                "email"=>"staff.pengaktifan@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"head_pengaktifan",
+                "email"=>"head.pengaktifan@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"dummy_data",
+                "email"=>"dummy_data@gmail.com",
                 "password"=>bcrypt(123456)
             )
         );
@@ -79,9 +119,48 @@ class DatabaseSeeder extends Seeder
         $users = Users::all();
 
         foreach ($users as $key => $value) {
+            $jabatan = 0;
+            switch ($value->id) {
+                case 1:
+                    $divisi = 1;
+                    break;
+                case 2:
+                case 3: 
+                    $divisi     = 2;
+                    $jabatan    = 1;
+                    break;
+                case 4:
+                    $divisi     = 2;
+                    $jabatan    = 2;
+                    break;
+                case 5:
+                    $divisi     = 2;
+                    $jabatan    = 3;
+                    break;
+                case 6:
+                    $divisi     = 2;
+                    $jabatan    = 4;
+                    break;
+                case 7:
+                    $divisi     = 2;
+                    $jabatan    = 5;
+                    break;
+                case 8:
+                    $divisi     = 2;
+                    $jabatan    = 6;
+                    break;
+                default:
+                    $divisi     = 2;
+                    $jabatan    = 1;
+                    break;
+            }
+
+
             $data_array = array(
-                "user_id"  => $value->id,
-                "divisi"    => $key+1,
+                "user_id"   => $value->id,
+                "divisi"    => $divisi,
+                "jabatan"   => $jabatan,
+                "uuid"      => $faker->uuid
             );
             Users_Role::firstOrCreate($data_array);
         }

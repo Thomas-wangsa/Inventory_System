@@ -7,6 +7,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Auth;
+
 class Users extends Model
 {   
     protected $table = "users";
@@ -34,7 +36,9 @@ class Users extends Model
         return 
         $query->join('users_role','users_role.user_id','=','users.id')
         ->where('users.id','=',$id)
-        ->select('users.*','users_role.divisi','users_role.jabatan AS id_jabatan',
+        ->select('users.*','users_role.divisi',
+            'users_role.jabatan AS id_jabatan',
+            'users_role.uuid',
             DB::raw('case 
                 WHEN(users_role.divisi = 1) 
                     THEN (select name from divisi where id = users_role.divisi)
@@ -58,6 +62,7 @@ class Users extends Model
     public function scopeGetJabatan($query) {
         return $query->join('users_role','users_role.user_id','=','users.id')
         ->select('users.*','users_role.divisi','users_role.jabatan AS id_jabatan',
+            'users_role.uuid',
             DB::raw('case 
                 WHEN(users_role.divisi = 1) 
                     THEN (select name from divisi where id = users_role.divisi)
@@ -74,6 +79,8 @@ class Users extends Model
                     )
                 ELSE "NULL"
                 END AS jabatan ')
-            );
+            )
+        ->where('users.id', '!=', Auth::id())
+        ->orderBy('users.id', 'desc');
     }
 }

@@ -19,6 +19,7 @@ class CreateUsersRoleTable extends Migration
             $table->unsignedInteger('divisi');
             $table->unsignedInteger('jabatan')->default(0);
             $table->boolean('status')->default(1);
+            $table->uuid('uuid'); 
             $table->timestamps();
 
             $table->foreign('user_id', 'users_role_fkey')
