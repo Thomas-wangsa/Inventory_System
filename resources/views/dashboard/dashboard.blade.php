@@ -47,6 +47,7 @@
                 </div>
             </div>
 
+            @if($data['credentials']->divisi == 1)
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -58,6 +59,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <div class="col-sm-3">
                 <div class="row">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Models\Users;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        //dd($user = Auth::user());
-        return view('dashboard/dashboard');
+        $credentials = Users::GetRoleById(Auth::id())->get();
+        $data['credentials'] = $credentials;
+        return view('dashboard/dashboard',compact('data'));
     }
 }

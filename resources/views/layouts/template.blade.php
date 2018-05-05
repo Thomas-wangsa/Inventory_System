@@ -12,6 +12,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 
     <style type="text/css">
       html, body {
@@ -20,7 +22,6 @@
         margin: 0px auto;
         max-width: 1400px;
         min-width: 700px!important;
-        background-color: red;
       }
 
       .wrapper {
@@ -31,9 +32,12 @@
       .menu-left {
         height: 100%;
         min-height: 100%;
-        background-color: yellow;
         box-shadow: 3px 2px 4px 0 rgba(212, 212, 212, 0.5);
         padding: 30px 2%;
+      }
+
+      .menu-right {
+        height: 100%;
       }
 
       .center {
@@ -81,6 +85,7 @@
         text-align: left;
         color: #4a4a4a;
         color: var(--greyish-brown);
+        text-decoration : none!important;
 
       }
       
@@ -89,71 +94,10 @@
 <body>
     <div class="wrapper">
       
-      <div class="col-sm-3 menu-left" style="">
-                
-        <a href="{{route('home')}}">
-          <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
-        </a>
-        
-        <div class="text-center" style="margin-bottom: 30px">  
-          Inventory Management 
-        </div>  
-        
-        <div class="col-sm-12" style="background-color: blue">
-          <div class="row">
-            
-            <h4 class="dashboard">
-              Dashboard
-            </h4>
+      @include('template.menu_left')
+      @include('template.menu_right')
 
-            <div class="col-sm-12">
-              <div class="row">
-                
-                <div class="icon-left">
-                  <div class="col-sm-2 icon-image">
-                    <a href="{{route('home')}}">
-                      <img class="inner-image" 
-                      src="{{ asset('images/logo/home-anticon.png')}}" />
-                    </a>
-                  </div>
-                  <div class="col-sm-10">
-                    <div class="row">
-                      <a class="icon-text" href="{{route('home')}}">
-                        Beranda
-                      </a>
-                    </div>
-                  </div>     
-                </div>
-
-                <div class="clearfix"> </div>
-                
-                <div class="icon-left">
-                  <div class="col-sm-2 icon-image">
-                    <a href="{{route('home')}}">
-                      <img class="inner-image" 
-                      src="{{ asset('images/logo/home-anticon.png')}}" />
-                    </a>
-                  </div>
-                  <div class="col-sm-10">
-                    <div class="row">
-                      <a class="icon-text" href="{{route('home')}}">
-                        Pemberitahuan
-                      </a>
-                    </div>
-                  </div>     
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div> <!-- col left -->
-
-      <div class="col-sm-9" style="background-color: green">
-        bbb
-      </div>
+      
     </div> <!-- Wrapper -->
         
      
