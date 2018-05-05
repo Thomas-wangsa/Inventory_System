@@ -24,11 +24,20 @@
 		tautan untuk reset password anda
 		</div>
 
+		@if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+
 		<form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
 			{{ csrf_field() }}
 		    <div class="form-group">
-		      <label class="control-label col-sm-2" for="email">
-		      	<span class="glyphicon glyphicon-envelope" style="font-size: 30px;"></span>
+		      <label class="control-label col-sm-2" for="email" style="padding-top: 5px!important">
+		      	<div class="row">
+		      		<span class="glyphicon glyphicon-envelope" style="font-size: 25px;">
+		      		</span>
+		      	</div>
 		      </label>
 		      <div class="col-sm-10">
 		        <input type="email" class="form-control" id="email" placeholder="Email" name="email" required="required">
@@ -43,13 +52,14 @@
 
 		    <div class="form-group">        
 		      <div class="col-sm-12">
-		        <button type="submit" class="btn btn-block btn-danger RESET-PASSWORD" style="background-color: red">Reset Password</button>
+		        <button type="submit" class="btn btn-block btn-danger RESET-PASSWORD" 
+		        style="background-color: red">Reset Password</button>
 		      </div>
 		    </div>
 		</form>
 
 		<div class="text-center"> 
-			<a href="{{ route('login') }}">
+			<a href="{{ route('login') }}" style="color:red">
 				kembali ke login
 			</a>
 		</div>

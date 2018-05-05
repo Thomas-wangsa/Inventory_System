@@ -14,162 +14,149 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <style type="text/css">
-        body {
-          background-color: #ffffff;
-          height:100%;
-          margin:0; padding:0
-        }
-        .center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-        }
+      html, body {
+        height: 100%!important;
+        min-height: 100%;
+        margin: 0px auto;
+        max-width: 1400px;
+        min-width: 700px!important;
+        background-color: red;
+      }
 
-        .Rectangle {
-          height: 700px;
-          box-shadow: 3px 2px 4px 0 rgba(212, 212, 212, 0.5);
-        }
+      .wrapper {
+        width: 100%;
+        height: 100%;
+      }
 
-        .indosat-logo {
-          width: 114.7px;
-          object-fit: contain;
-        }
+      .menu-left {
+        height: 100%;
+        min-height: 100%;
+        background-color: yellow;
+        box-shadow: 3px 2px 4px 0 rgba(212, 212, 212, 0.5);
+        padding: 30px 2%;
+      }
 
-        .Dashboard {
-          width: 68px;
-          height: 19px;
-          font-family: Roboto;
-          font-size: 14px;
-          font-weight: bold;
-          font-style: normal;
-          font-stretch: normal;
-          line-height: normal;
-          letter-spacing: normal;
-          text-align: left;
-          color: #4a4a4a;
-          color: var(--greyish-brown);
-        }
+      .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 70%;
+      }
 
-        .home---anticon {
-          width: 20px;
-          height: 21px;
-          object-fit: contain;
-          font-family: anticon;
-          font-size: 20px;
-          font-weight: normal;
-          font-style: normal;
-          font-stretch: normal;
-          line-height: normal;
-          letter-spacing: normal;
-          text-align: left;
-          color: #4a4a4a;
-          color: var(--greyish-brown);
-        }
+      .dashboard {
+        font-family: Roboto;
+        font-size: 16px;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #4a4a4a;
+        color: var(--greyish-brown);
+        margin-bottom: 20px
+      }
 
-        .Beranda {
-  width: 60px;
-  height: 21px;
-  font-family: Roboto;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #4a4a4a;
-  color: var(--greyish-brown);
-}   
+      .icon-left {
+        margin-bottom: 40px;
+      }
 
-.Rectangle-2 {
-  height: 110px;
-  box-shadow: 0 3px 4px 0 rgba(212, 212, 212, 0.5);
-}
+      .icon-image {
 
+      }
+
+      .inner-image {
+        vertical-align: baseline;
+        height:20px;
+      }
+
+      .icon-text {
+        font-family: Roboto;
+        font-size: 18px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: normal;
+        text-align: left;
+        color: #4a4a4a;
+        color: var(--greyish-brown);
+
+      }
+      
     </style>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="row">
+    <div class="wrapper">
+      
+      <div class="col-sm-3 menu-left" style="">
+                
+        <a href="{{route('home')}}">
+          <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
+        </a>
+        
+        <div class="text-center" style="margin-bottom: 30px">  
+          Inventory Management 
+        </div>  
+        
+        <div class="col-sm-12" style="background-color: blue">
+          <div class="row">
             
-            <div class="col-md-3 Rectangle" >
-                <div style="margin-top: 30px"> </div>
-                <a href="/">
-                  <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
-                </a>
-                <div class="text-center"> Inventory Management </div>
-                <div style="margin-top: 20px"> </div>
-                <div class="Dashboard" style="margin-bottom: 10px"> 
-                    Dashboard 
-                </div>
+            <h4 class="dashboard">
+              Dashboard
+            </h4>
 
-                <div style="margin-bottom: 10px"> 
-                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
-                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
-                </div>
-
-                <div style="margin-bottom: 10px"> 
-                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
-                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
-                </div>
-
-                <div style="margin-bottom: 10px"> 
-                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
-                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
-                </div>
-
-                <div style="margin-bottom: 10px"> 
-                    <img class="home---anticon" src="{{ asset('images/logo/home-anticon.png')}}"  / > 
-                    <span class="Beranda" style="margin-left: 10px"> Beranda </span>
-                </div>
-            </div>
-
-            <div class="col-md-9" style="">
-                <div class="row">
-                    <div class="Rectangle-2"> 
-                        <div style="padding: 20px 30px;">
-                           <!--  <h3 style="padding-top: 20px"> 
-                              <span class="pull-left"> 
-                                Beranda 
-                              </span>
-                            </h3>  -->
-                            <ul class="nav navbar-nav">
-                              <h3> Beranda </h3>
-                            </ul>
-                            
-                            <ul class="nav navbar-nav navbar-right" style="padding-top: -20px">
-                              <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                              </li>
-                            </ul>
-                            
-                            <div class="clearfix"> </div>
-                        </div>
+            <div class="col-sm-12">
+              <div class="row">
+                
+                <div class="icon-left">
+                  <div class="col-sm-2 icon-image">
+                    <a href="{{route('home')}}">
+                      <img class="inner-image" 
+                      src="{{ asset('images/logo/home-anticon.png')}}" />
+                    </a>
+                  </div>
+                  <div class="col-sm-10">
+                    <div class="row">
+                      <a class="icon-text" href="{{route('home')}}">
+                        Beranda
+                      </a>
                     </div>
-                    @yield('content')
+                  </div>     
                 </div>
+
+                <div class="clearfix"> </div>
+                
+                <div class="icon-left">
+                  <div class="col-sm-2 icon-image">
+                    <a href="{{route('home')}}">
+                      <img class="inner-image" 
+                      src="{{ asset('images/logo/home-anticon.png')}}" />
+                    </a>
+                  </div>
+                  <div class="col-sm-10">
+                    <div class="row">
+                      <a class="icon-text" href="{{route('home')}}">
+                        Pemberitahuan
+                      </a>
+                    </div>
+                  </div>     
+                </div>
+
+              </div>
             </div>
 
-
+          </div>
         </div>
-    </div>
+
+      </div> <!-- col left -->
+
+      <div class="col-sm-9" style="background-color: green">
+        bbb
+      </div>
+    </div> <!-- Wrapper -->
+        
+     
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
