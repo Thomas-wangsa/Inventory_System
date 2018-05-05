@@ -18,7 +18,7 @@
 
 </style>
     <div style="padding: 25px 30px">
-        <h2> Hi Thomas </h2>
+        <h2> Hi {{ ucfirst($data['credentials']->name) }} </h2>
         <h4> Apa yang anda lakukan hari ini </h4>
 
         <div> 
@@ -26,7 +26,8 @@
                 <div class="row">
                     <div class="Rectangle-5">
                         <a href="{{route('akses')}}">
-                            <img  class="center" src="{{ asset('images/logo/id-card.png')}}"  style="width:30%;margin-top: 35px" / >
+                            <img  class="center" src="{{ asset('images/logo/id-card.png')}}"  
+                            style="width:30%;margin-top: 35px" / >
                         </a>
                         <div style="margin-top: 10px"> </div>
                         <div class="text-center"> Akses </div>

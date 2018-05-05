@@ -25,7 +25,7 @@ class HomeController extends Controller
      */
     public function index()
     {   
-        $credentials = Users::GetRoleById(Auth::id())->get();
+        $credentials = Users::GetRoleById(Auth::id())->first();
         $data['credentials'] = $credentials;
         return view('dashboard/dashboard',compact('data'));
     }

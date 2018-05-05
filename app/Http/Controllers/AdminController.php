@@ -15,6 +15,11 @@ use Illuminate\Support\Facades\Auth;
 class AdminController extends Controller
 {
     public function index() {
+    	$credentials = Users::GetRoleById(Auth::id())->first();
+    	if($credentials->divisi != 1) {
+    		return redirect('home'); 
+    	}
+    	dd($credentials);
     	$data 	= Users::GetJabatan()->get();
     	$user 	= Auth::user();
     	$divisi = Divisi::all();
