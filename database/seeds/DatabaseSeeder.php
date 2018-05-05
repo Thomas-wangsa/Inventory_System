@@ -13,6 +13,8 @@ use App\Http\Models\Status_Inventory;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_List;
 
+use App\Http\Models\Setting_List;
+
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
@@ -203,6 +205,15 @@ class DatabaseSeeder extends Seeder
             Status_Inventory::firstOrCreate($value);
         }
 
+        $setting_list_array = array(
+            array('setting_name'  => 'inventory level'),
+            array('setting_name'  => 'upload level'),
+            array('setting_name'  => 'setting level'),
+        );
+
+        foreach ($setting_list_array as $key => $value) {
+            Setting_List::firstOrCreate($value);
+        }
     }
 
 

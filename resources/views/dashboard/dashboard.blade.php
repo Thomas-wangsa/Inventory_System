@@ -18,6 +18,18 @@
 
 </style>
     <div style="padding: 25px 30px">
+        <div class="flash-message center">
+            @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+              @if(Session::has('alert-' . $msg))
+
+              <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} 
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">
+                    &times;
+                </a>
+             </p>
+              @endif
+            @endforeach
+        </div> <!-- end .flash-message -->
         <h2> Hi {{ ucfirst($data['credentials']->name) }} </h2>
         <h4> Apa yang anda lakukan hari ini </h4>
 

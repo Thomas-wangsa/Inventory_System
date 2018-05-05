@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::post('/aktifkan_akses', 'AksesController@aktifkan_akses')->name('post_aktifkan_akses');
 	Route::post('/aktifkan_diterima', 'AksesController@aktifkan_diterima')->name('post_aktifkan_diterima');
 
+
+	Route::get('/setting/add-inventory', 'SettingController@show_inventory')->name('show_inventory');
 	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
 
 

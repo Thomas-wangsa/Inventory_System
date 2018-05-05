@@ -29,6 +29,8 @@
     			BERANDA
     		@elseif(Route::current()->getName() == 'route_admin')
     			KELOLA AKUN
+        @elseif(Route::current()->getName() == 'route_setting')
+          PENGATURAN
     		@else 
     			ERROR
 			@endif 

@@ -101,7 +101,7 @@ class AdminController extends Controller
 			break;
 
 			default : 
-				$request->session()->flash('alert-danger', 'Please contactt your administrator !');
+				$request->session()->flash('alert-danger', 'Please contact your administrator !');
     			return redirect('admin');
     		break;
 		}
