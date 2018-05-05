@@ -111,4 +111,21 @@ class AdminController extends Controller
 		$request->session()->flash('alert-success', 'Akun Berhasil di Tambahkan!');
 		return redirect('admin');
     }
+
+
+    public function delete_user(Request $request) {
+    	$users = Users::join('users_role','users_role.user_id','=','users.id')
+    				->where('uuid',$request->uuid)->first()->delete();
+    	$response = array(
+    		"status"=>$users
+    	);
+
+    	return json_encode($response);
+    	
+    }
+
+    public function delete_user_notif(Request $request) {
+    	$request->session()->flash('alert-warning', 'Akun Berhasil di Delete!');
+    	return redirect('admin');
+    }
 }

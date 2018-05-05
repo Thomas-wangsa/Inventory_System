@@ -47,6 +47,8 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
 
 	Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
+	Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
+	Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
 
 	Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
 	Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');

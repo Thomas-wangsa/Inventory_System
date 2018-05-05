@@ -84,16 +84,13 @@
 			    			<td> {{ $val->mobile }} </td>
 			    			<td> {{ ucfirst($val->jabatan) }} </td>
 			    			<td>
-			    				<div class="hidden" id="users_uuid">
-			    					{{ $val->uuid }}
-			    				</div>
 			    				<div class="text-center"> 
 			    				<span class="glyphicon glyphicon-pencil"></span>
 
-			    					<a href="" onclick="confirm('apa yaki ?')" >
+			    					<span onclick='delete_akun("{{ $val->uuid }}")' >
 			    						<span class="glyphicon glyphicon-trash">
 			    						</span>
-			    					</a>
+			    					</span>
 			    				</div>
 			    			</td>
 			    		</tr>
@@ -110,4 +107,42 @@
 
 	@include('admin.modal');
 
+<script type="text/javascript">
+
+    function delete_akun(uuid) {
+    	$(document).ready(function(){
+	        if (confirm('Apakah anda yakin ingin menghapus Akun ini ?')) {
+
+	        	var data = {
+	        		"uuid":uuid
+	        	};
+
+			    $.ajaxSetup({
+				    headers: {
+				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    }
+				});
+	    		$.ajax({
+	    			type : "POST",
+	    			url: " {{ route('admin_delete_user') }}",
+	    			contentType: "application/json",
+	    			data : JSON.stringify(data),
+	    			success: function(result) {
+	    				response = JSON.parse(result);
+	    				if(response.status == true) {
+	    					window.location = "{{route('delete_user_notif')}}";
+	    				}
+	    			},
+	    			error: function( jqXhr, textStatus, errorThrown ){
+       					console.log( errorThrown );
+    				}
+	    		});
+			} else {
+				
+			}
+		});
+    };
+
+	
+</script>
 @endsection
