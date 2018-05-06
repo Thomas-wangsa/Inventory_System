@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Models\Akses_Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\UrlGenerator;
+use App\Http\Models\Users;
+
 
 use App\Mail\AksesMail;
 use Illuminate\Support\Facades\Mail;
@@ -14,16 +16,24 @@ class AksesController extends Controller
 {	
 	protected $redirectTo      = '/akses';
     protected $url;
+    protected $credentials;
+
 
     public function __construct(UrlGenerator $url){
         $this->url  = $url;
+
+        $this->middleware(function ($request, $next) {
+            $this->credentials = Users::GetRoleById(Auth::id())->first();
+            return $next($request);
+        });
     }
 
     public function index() {
-    	$data = Akses_Data::GetDetailAkses()->get();
+        $data['credentials'] = $this->credentials;
+    	$akses = Akses_Data::GetDetailAkses()->get();
         $url  = $this->url;
         $user = Auth::user();
-    	return view('akses/index',compact("data","url","user"));
+    	return view('akses/index',compact("data","akses","url","user"));
     }
 
     public function pendaftaran_akses(Request $request) {

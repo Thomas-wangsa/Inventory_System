@@ -26,10 +26,10 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	@if (count($data) == 0 ) 
+			    	@if (count($akses) == 0 ) 
 			    	<td colspan="7" class="text-center"> Kosong </td>
 			    	@else 
-			    		@foreach($data as $key=>$val)
+			    		@foreach($akses as $key=>$val)
 			    		<tr> 
 			    			<td> {{$key+1}} </td>
 			    			<td> {{$val->name}} </td>
