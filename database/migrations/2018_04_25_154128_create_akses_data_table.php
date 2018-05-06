@@ -24,6 +24,7 @@ class CreateAksesDataTable extends Migration
             $table->string('jabatan')->nullable();
             $table->string('nik')->nullable();
             $table->string('foto')->nullable();
+            $table->uuid('uuid'); 
             $table->text('comment')->nullable();
             $table->timestamps();
 

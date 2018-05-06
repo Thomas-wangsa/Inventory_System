@@ -7,20 +7,25 @@ use App\Http\Models\Akses_Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\UrlGenerator;
 use App\Http\Models\Users;
-
+use App\Http\Models\Divisi;
 
 use App\Mail\AksesMail;
 use Illuminate\Support\Facades\Mail;
+
+use App\Notifications\Akses_Notifications;
+
+use Faker\Factory as Faker;
 
 class AksesController extends Controller
 {	
 	protected $redirectTo      = '/akses';
     protected $url;
     protected $credentials;
-
+    protected $faker;
 
     public function __construct(UrlGenerator $url){
-        $this->url  = $url;
+        $this->url      = $url;
+        $this->faker    = Faker::create();
 
         $this->middleware(function ($request, $next) {
             $this->credentials = Users::GetRoleById(Auth::id())->first();
@@ -28,25 +33,47 @@ class AksesController extends Controller
         });
     }
 
-    public function index() {
-        $data['credentials'] = $this->credentials;
-    	$akses = Akses_Data::GetDetailAkses()->get();
-        $url  = $this->url;
-        $user = Auth::user();
-    	return view('akses/index',compact("data","akses","url","user"));
+    public function index(Request $request) {
+        if($this->credentials->divisi == 1 || $this->credentials->divisi == 2 ) {
+            $access = true;
+        } else {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur ini');
+            return redirect('home'); 
+        }
+
+        $data = array(
+            'credentials'   => $this->credentials,
+            'divisi'        => Divisi::all(),
+            'akses'         => Akses_Data::GetDetailAkses()->paginate(5),
+            'user'          => Auth::user()
+        );
+
+    	return view('akses/index',compact("data"));
     }
 
     public function pendaftaran_akses(Request $request) {
     	$akses_data = new Akses_Data;
 
     	if($request->type_daftar == "staff") {
+            $request->validate([
+            'staff_foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+
+            if ($request->hasFile('staff_foto')) {
+                $image = $request->file('staff_foto');
+                $name = time().'.'.$image->getClientOriginalExtension();
+                $destinationPath = public_path('/images/akses/');
+                $image->move($destinationPath, $name);
+                $akses_data->foto  = $name;
+            }
+
             $akses_data->type   = $request->type_daftar;
             $akses_data->name   = strtolower($request->staff_nama);
             $akses_data->divisi = strtolower($request->staff_divisi);
             $akses_data->jabatan = strtolower($request->staff_jabatan);
             $akses_data->email  = strtolower($request->vendor_email);
             $akses_data->nik  = strtolower($request->staff_nik);
-            $akses_data->foto  = strtolower($request->staff_foto);
+            
     	} elseif($request->type_daftar == "vendor") {
     		// dd($request);
     		
@@ -55,13 +82,23 @@ class AksesController extends Controller
     		$akses_data->email 	= strtolower($request->vendor_email);
     		
     	} else {
-    		echo "ERROR, Please contact your administrator";die;
+            $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur ini');
+            return redirect($this->redirectTo);
     	}
     		// dd($request);
-        $akses_data->updated_by = Auth::user()->id;
-    	$akses_data->status_akses = 1;
-    	$akses_data->save();
-        $this->send();
+        $akses_data->updated_by         = Auth::user()->id;
+    	$akses_data->status_akses       = 1;
+        $akses_data->uuid               = $this->faker->uuid;
+        $bool = $akses_data->save();
+
+        if($bool) {
+            $request->session()->flash('alert-success', 'Akses telah di daftarkan');
+            $this->send($akses_data);
+        } else {
+            $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
+        }
+        //$this->send();
+        
     	return redirect($this->redirectTo);
     }
 
@@ -110,14 +147,16 @@ class AksesController extends Controller
         return redirect($this->redirectTo);
     }
 
-    public function send()
-    {
-        $objDemo = new \stdClass();
-        $objDemo->demo_one = 'Demo One Value';
-        $objDemo->demo_two = 'Demo Two Value';
-        $objDemo->sender = 'SenderUserName';
-        $objDemo->receiver = 'ReceiverUserName';
- 
-        Mail::to("thomas.wangsa@gmail.com")->send(new AksesMail($objDemo));
+    public function send($akses_data){
+
+        dd($akses_data);
+
+        // switch($akses_data->status_akses) {
+        //     case 1 :
+
+
+        // }
+
+        Notification::send($users, new Akses_Notifications($invoice));
     }
 }

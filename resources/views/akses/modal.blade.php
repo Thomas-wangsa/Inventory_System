@@ -23,7 +23,8 @@
         </div>
         <div class="modal-body">
         	<div id="staff">
-	  			<form method="POST" action="{{ route('post_pendaftaran_akses') }}">
+	  			<form method="POST" enctype="multipart/form-data"
+	  			action="{{ route('post_pendaftaran_akses') }}">
 				  {{ csrf_field() }}
 				  <input type="hidden" name="type_daftar" value="staff">
 				  <div class="form-group">

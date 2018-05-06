@@ -32,10 +32,10 @@ class AksesMail extends Mailable
         //return $this->view('view.name');
         return $this->from('sender@example.com')
                     ->view('mails.demo')
-                    //->text('mails.demo_plain')
+                    ->text('mails.demo_plain')
                     ->with(
                       [
-                            'level' => '1',
+                            'testVarOne' => '1',
                             'testVarTwo' => '2',
                       ]);
 

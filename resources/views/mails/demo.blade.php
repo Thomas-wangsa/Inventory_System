@@ -1,58 +1,20 @@
-@component('mail::message')
-{{-- Greeting --}}
-@if (! empty($greeting))
-# {{ $greeting }}
-@else
-@if ($level == 'error')
-# Whoops!
-@else
-# Hello!
-@endif
-@endif
-
-{{-- Intro Lines --}}
-@foreach ($introLines as $line)
-{{ $line }}
-
-@endforeach
-
-{{-- Action Button --}}
-@isset($actionText)
-<?php
-    switch ($level) {
-        case 'success':
-            $color = 'green';
-            break;
-        case 'error':
-            $color = 'red';
-            break;
-        default:
-            $color = 'blue';
-    }
-?>
-@component('mail::button', ['url' => $actionUrl, 'color' => $color])
-{{ $actionText }}
-@endcomponent
-@endisset
-
-{{-- Outro Lines --}}
-@foreach ($outroLines as $line)
-{{ $line }}
-
-@endforeach
-
-{{-- Salutation --}}
-@if (! empty($salutation))
-{{ $salutation }}
-@else
-Regards,<br>{{ config('app.name') }}
-@endif
-
-{{-- Subcopy --}}
-@isset($actionText)
-@component('mail::subcopy')
-If you’re having trouble clicking the "{{ $actionText }}" button, copy and paste the URL below
-into your web browser: [{{ $actionUrl }}]({{ $actionUrl }})
-@endcomponent
-@endisset
-@endcomponent
+Hello <i>{{ $demo->receiver }}</i>,
+<p>This is a demo email for testing purposes! Also, it's the HTML version.</p>
+ 
+<p><u>Demo object values:</u></p>
+ 
+<div>
+<p><b>Demo One:</b>&nbsp;{{ $demo->demo_one }}</p>
+<p><b>Demo Two:</b>&nbsp;{{ $demo->demo_two }}</p>
+</div>
+ 
+<p><u>Values passed by With method:</u></p>
+ 
+<div>
+<p><b>testVarOne:</b>&nbsp;{{ $testVarOne }}</p>
+<p><b>testVarTwo:</b>&nbsp;{{ $testVarTwo }}</p>
+</div>
+ 
+Thank You,
+<br/>
+<i>{{ $demo->sender }}</i>
