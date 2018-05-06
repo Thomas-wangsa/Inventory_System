@@ -7,12 +7,14 @@ use App\Http\Models\Akses_Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\UrlGenerator;
 use App\Http\Models\Users;
+use App\Http\Models\Users_Role;
 use App\Http\Models\Divisi;
 
 use App\Mail\AksesMail;
 use Illuminate\Support\Facades\Mail;
 
 use App\Notifications\Akses_Notifications;
+use Illuminate\Support\Facades\Notification;
 
 use Faker\Factory as Faker;
 
@@ -148,15 +150,31 @@ class AksesController extends Controller
     }
 
     public function send($akses_data){
+        $error = false;
 
-        dd($akses_data);
+        switch($akses_data->status_akses) {
+            case 1 :
+                $user = Users_Role::GetAksesDecisionMaker(2)->first();
+                break;
+            case 3 :
+                $user = Users_Role::GetAksesDecisionMaker(4)->first();
+                break;
+            case 5 : 
+                $user = Users_Role::GetAksesDecisionMaker(6)->first();
+                break;
+            default : 
+                $error = true;
+                break;
+        }
 
-        // switch($akses_data->status_akses) {
-        //     case 1 :
+        if(!$error) {
+            $data = array(
+                "test"  => 1,
+                "test2" => "afagaf" 
+            );
 
-
-        // }
-
-        Notification::send($users, new Akses_Notifications($invoice));
+            $user->notify(new Akses_Notifications($data));
+        } 
+        
     }
 }

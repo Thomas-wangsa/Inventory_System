@@ -11,14 +11,15 @@ class Akses_Notifications extends Notification
 {
     use Queueable;
 
+    protected $param;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        //
+    public function __construct($param)
+    {   
+        $this->param = $param;
     }
 
     /**
@@ -39,8 +40,9 @@ class Akses_Notifications extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {
+    {   
         return (new MailMessage)
+                    ->line($this->param['test'])
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
