@@ -1,6 +1,18 @@
 @extends('layouts.template')
 
 @section('content')
+<div class="flash-message center">
+    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+      @if(Session::has('alert-' . $msg))
+
+      <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} 
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">
+          &times;
+        </a>
+     </p>
+      @endif
+    @endforeach
+</div> <!-- end .flash-message -->
 <div class="col-sm-12" style="margin-top: 30px">
     <a href="{{route('show_inventory')}}">
         <button type="button" class="btn btn-default">

@@ -4,7 +4,7 @@
 <div class="col-sm-12" style="margin-top: 30px">
 	<form method="POST" action="{{ route('post_setting_add_inventory') }}">
 	  {{ csrf_field() }}
-	  <input type="hidden" name="updated_by" value="{{$user->id}}">
+	  <input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
 	  <div class="form-group">
 	    <label for="staff_nama"> Nama Inventory :</label>
 	    <input type="text" class="form-control" id="nama" name="inventory" value="" required="">

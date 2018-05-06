@@ -31,6 +31,8 @@
     			KELOLA AKUN
         @elseif(Route::current()->getName() == 'route_setting')
           PENGATURAN
+        @elseif(Route::current()->getName() == 'show_inventory')
+          TAMBAH INVENTORY LIST
     		@else 
     			ERROR
 			@endif 
@@ -77,7 +79,6 @@
 			</div>
 			<div class="clearfix"> </div>
 		</div> <!-- menu-top-right -->
-
 		@yield('content')
 
 		
