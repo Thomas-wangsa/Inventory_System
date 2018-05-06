@@ -43,7 +43,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 	Route::get('/setting/add-inventory', 'SettingController@show_inventory')->name('show_inventory');
 	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
-	
+	Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
+	Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
 
 	Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 	Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');

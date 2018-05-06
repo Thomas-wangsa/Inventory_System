@@ -33,8 +33,12 @@
           PENGATURAN
         @elseif(Route::current()->getName() == 'akses')
           AKSES CARD
+        @elseif(Route::current()->getName() == 'inventory')
+          INVENTORY  
         @elseif(Route::current()->getName() == 'show_inventory')
           TAMBAH INVENTORY LIST
+        @elseif(Route::current()->getName() == 'show_background')
+          GANTI BACKGROUND LOGIN
     		@else 
     			ERROR
 			@endif 

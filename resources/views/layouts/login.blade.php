@@ -17,6 +17,8 @@
     <style type="text/css">
     	body {
     	background-image: url("{{URL::asset(DB::table("design")->pluck('logo')->first())}}");
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
 		}
 		
 		html, body {

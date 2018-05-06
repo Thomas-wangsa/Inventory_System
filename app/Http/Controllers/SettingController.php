@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Setting_Data;
+use App\Http\Models\Design;
 
 use App\Http\Models\Users;
 
@@ -87,5 +88,37 @@ class SettingController extends Controller {
     	]);
         $request->session()->flash('alert-success', 'Inventory list telah di tambahkan');
     	return redirect('setting');
+    }
+
+
+    public function show_background() {
+        $data['credentials']    = $this->credentials;
+        $data['background']     = Design::first();
+        return view('setting/show_background',compact("data"));
+    }
+
+    public function update_background(Request $request) {
+
+        $request->validate([
+        'background' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('background')) {
+            $image = $request->file('background');
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images/template/');
+            $image->move($destinationPath, $name);
+
+            $design = Design::find(1);
+            $design->logo = "/images/template/".$name;
+            $design->save();
+
+            $request->session()->flash('alert-success', 'Background telah di update');
+            
+        } else {
+            $request->session()->flash('alert-danger', 'Please contact your administrator');
+        }
+
+        return redirect('setting/show-background');
     }
 }

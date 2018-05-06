@@ -6,16 +6,30 @@ use Illuminate\Http\Request;
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Sub_List;
 use App\Http\Models\Inventory_Data;
+use App\Http\Models\Users;
 use Illuminate\Support\Facades\Auth;
 
 class InventoryController extends Controller
 {	
 	protected $redirectTo = 'inventory';
+    protected $credentials;
+
+    public function __construct() {
+
+        $this->middleware(function ($request, $next) {
+            $this->credentials = Users::GetRoleById(Auth::id())->first();
+            return $next($request);
+        });
+        
+    }
+
+
     public function index() {
     	$inventory 			= Inventory_List::all();
     	$inventory_data 	= Inventory_Data::GetDetailInventory()->get();
     	$data['inventory'] = $inventory;
     	$data['inventory_data'] = $inventory_data;
+        $data['credentials']    = $this->credentials;
     	return view('inventory/index',compact('data'));
     }
 

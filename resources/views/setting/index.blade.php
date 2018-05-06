@@ -30,7 +30,7 @@
         </button>
     </a>
 
-    <a href="">
+    <a href="{{route('show_background')}}">
         <button type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-th-list">
           	Edit Background
