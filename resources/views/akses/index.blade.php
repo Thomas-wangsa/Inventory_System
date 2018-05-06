@@ -117,7 +117,6 @@
 			    							<div class="row text-center">
 			    							<form method="POST" action="{{route('post_pendaftaran_diterima')}}">
 			    							{{ csrf_field() }}
-			    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
 			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
 			    							<button type="submit" class="btn btn-success"> Setuju Daftar  </button>
 			    							</form>

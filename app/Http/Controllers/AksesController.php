@@ -107,7 +107,7 @@ class AksesController extends Controller
     public function pendaftaran_diterima(Request $request) {
         Akses_Data::where('id',$request->data_id)
         ->update([
-            "updated_by"    =>$request->updated_by,
+            "updated_by"    =>$this->credentials->id,
             "status_akses"  => 2
         ]);
         return redirect($this->redirectTo);

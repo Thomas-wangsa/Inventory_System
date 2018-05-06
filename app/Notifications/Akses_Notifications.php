@@ -41,13 +41,13 @@ class Akses_Notifications extends Notification
      */
     public function toMail($notifiable)
     {   
+        $data = array(
+            "satu"  => "satu lah",
+            "dua"   => "dua lah" 
+        );
         return (new MailMessage)
-                    ->markdown('vendor.notifications.akses_notification')
-
-                    ->line($this->param['test'])
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->subject('Approval Pendaftaran')
+                    ->markdown('vendor.notifications.akses_notification', ['data' => $data]);
     }
 
     /**
