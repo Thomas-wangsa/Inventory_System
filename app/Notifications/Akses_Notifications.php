@@ -42,6 +42,8 @@ class Akses_Notifications extends Notification
     public function toMail($notifiable)
     {   
         return (new MailMessage)
+                    ->markdown('vendor.notifications.akses_notification')
+
                     ->line($this->param['test'])
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
@@ -57,7 +59,6 @@ class Akses_Notifications extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
         ];
     }
 }
