@@ -101,24 +101,41 @@
 			    				
 			    			<td style="width: 250px"> 
 			    				@switch($val->status_akses)
-			    					@case(1)
+			    					@case(1) 
+			    					@case(3)
+			    					@case(5)
 			    						<div class="col-sm-6">
 			    							<div class="row text-center">
-				    						<form method="POST" action="{{route('post_pendaftaran_diterima')}}">
+				    						<form action="{{route('akses_reject')}}">
 				    							{{ csrf_field() }}
-				    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
-				    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-				    							<button type="submit" class="btn btn-danger"> Tolak Daftar  </button>
+				    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
+				    							<button type="submit" class="btn btn-danger">
+				    								@if($val->status_akses == 1)
+				    									Tolak Daftar
+				    								@elseif($val->status_akses == 3)
+				    									Tolak Cetak
+				    								@elseif($val->status_akses == 5)
+				    									Tolak Aktif
+				    								@endif
+				    							</button>
 				    						</form>
 			    							</div>
 			    						</div>
 
 			    						<div class="col-sm-6">
 			    							<div class="row text-center">
-			    							<form method="POST" action="{{route('post_pendaftaran_diterima')}}">
+			    							<form action="{{route('akses_approval')}}">
 			    							{{ csrf_field() }}
-			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-			    							<button type="submit" class="btn btn-success"> Setuju Daftar  </button>
+			    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
+			    							<button type="submit" class="btn btn-success"> 
+			    								@if($val->status_akses == 1)
+			    									Setuju Daftar
+			    								@elseif($val->status_akses == 3)
+			    									Setuju Cetak
+			    								@elseif($val->status_akses == 5)
+			    									Setuju Aktif
+			    								@endif  
+			    							</button>
 			    							</form>
 			    							</div>
 			    						</div>
@@ -130,15 +147,9 @@
 			    							{{ csrf_field() }}
 			    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
 			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-			    							<button type="submit" class="btn btn-warning"> Cetak Kartu </button>
-			    						</form>
-			    						@break
-			    					@case(3)
-			    						<form method="POST" action="{{route('post_pencetakan_diterima')}}">
-			    							{{ csrf_field() }}
-			    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
-			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-			    							<button type="submit" class="btn btn-warning"> Setuju Cetak </button>
+			    							<div class="text-center">
+			    								<button type="submit" class="btn btn-warning"> Cetak Kartu </button>
+			    							</div>
 			    						</form>
 			    						@break
 			    					@case(4)
@@ -146,22 +157,20 @@
 			    							{{ csrf_field() }}
 			    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
 			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-			    							<button type="submit" class="btn btn-warning"> Aktifkan Kartu </button>
-			    						</form>
-			    						@break
-			    					@case(5)
-			    						<form method="POST" action="{{route('post_aktifkan_diterima')}}">
-			    							{{ csrf_field() }}
-			    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
-			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-			    							<button type="submit" class="btn btn-warning"> Setuju Aktifkan </button>
+			    							<div class="text-center">
+			    								<button type="submit" class="btn btn-warning"> Aktifkan Kartu </button>
+			    							</div>
 			    						</form>
 			    						@break
 			    					@case(6)
-			    						<button class="btn btn-warning">  Kartu Aktif </button>
+			    						<div class="text-center"> 
+			    						 	Kartu Aktif
+			    						</div>
 			    						@break
 			    					@default
-			    						{{$val->status_name}}
+			    						<div class="text-center"> 
+			    							{{$val->comment}}
+			    						</div>
 			    						@break
 			    				@endswitch
 			    			</td>

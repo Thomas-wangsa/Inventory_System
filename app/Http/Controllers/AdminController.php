@@ -13,12 +13,16 @@ use App\Http\Models\Inventory_Role;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\New_User;
 
+use Faker\Factory as Faker;
 
 class AdminController extends Controller
 {	
 	protected $credentials;
+    protected $faker;
 
 	public function __construct() {
+            $this->faker    = Faker::create();
+
 
 		$this->middleware(function ($request, $next) {
             $this->credentials = Users::GetRoleById(Auth::id())->first();
@@ -74,6 +78,7 @@ class AdminController extends Controller
 				$user_role = new Users_Role;
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
+                $user_role->uuid        = $this->faker->uuid();
         		$user_role->save();
 			break;
 			
@@ -82,6 +87,7 @@ class AdminController extends Controller
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
         		$user_role->jabatan 	= $request->select_posisi;
+                $user_role->uuid        = $this->faker->uuid();
         		$user_role->save();
 			break;
 
@@ -97,6 +103,7 @@ class AdminController extends Controller
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
         		$user_role->jabatan 	= $new_inventory_role->id;
+                $user_role->uuid        = $this->faker->uuid();
         		$user_role->save();
 			break;
 

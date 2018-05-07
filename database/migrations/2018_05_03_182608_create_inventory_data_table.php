@@ -19,7 +19,9 @@ class CreateInventoryDataTable extends Migration
             $table->unsignedInteger('inventory_sub_list_id');
             $table->text('comment')->nullable();
             $table->string('serial_number');
+            $table->uuid('uuid');
             $table->string('location');
+            $table->unsignedInteger('status_data')->default(1);
             $table->unsignedInteger('status_inventory');
             $table->unsignedInteger('updated_by');
             $table->timestamps();

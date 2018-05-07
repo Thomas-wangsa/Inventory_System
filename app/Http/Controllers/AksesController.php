@@ -53,6 +53,90 @@ class AksesController extends Controller
     	return view('akses/index',compact("data"));
     }
 
+
+    public function akses_approval(Request $request) {
+        $data = Akses_Data::where('status_data',1)
+        ->where('uuid',$request->uuid)->first();
+        if(count($data) < 1) {
+            return redirect($this->redirectTo);
+        } else {
+            if($data->status_akses == 1 || $data->status_akses == 3 || $data->status_akses == 5) {
+
+                switch ($data->status_akses) {
+                    case 1:
+                        $data->status_akses = 2;
+                        break;
+                    case 3:
+                        $data->status_akses = 4;
+                        break;
+                    case 5;
+                        $data->status_akses = 6;
+                        $data->status_data  = 3;
+                    default:
+                        # code...
+                        break;
+                }
+                
+                $data->updated_by   = $this->credentials->id;
+                $data->save();
+            } else {
+                return redirect($this->redirectTo);
+            }
+            
+        }
+        return view('akses/approval');
+    }
+
+
+    public function akses_reject(Request $request) {
+
+        $data = Akses_Data::where('status_data',1)
+        ->where('uuid',$request->uuid)->first();
+
+        if(count($data) < 1) {
+            return redirect($this->redirectTo);
+        } 
+
+        return view('akses/reject',compact('data'));
+    }
+
+
+    public function proses_reject(Request $request) {
+
+        $data = Akses_Data::where('status_data',1)
+        ->where('uuid',$request->uuid)->first();
+
+        if(count($data) < 1) {
+            return redirect($this->redirectTo);
+        } else {
+            if($data->status_akses == 1 || $data->status_akses == 3 || $data->status_akses == 5) {
+
+                switch ($data->status_akses) {
+                    case 1:
+                        $data->status_akses = 7;
+                        break;
+                    case 3:
+                        $data->status_akses = 8;
+                        break;
+                    case 5;
+                        $data->status_akses = 9;
+                    default:
+                        # code...
+                        break;
+                }
+                
+                $data->status_data  = 2;
+                $data->updated_by   = $this->credentials->id;
+                $data->comment      = $request->desc;
+                $data->save();
+            } else {
+                return redirect($this->redirectTo);
+            }
+            
+        }
+        return redirect($this->redirectTo);
+    }
+
     public function pendaftaran_akses(Request $request) {
     	$akses_data = new Akses_Data;
 
@@ -95,7 +179,7 @@ class AksesController extends Controller
 
         if($bool) {
             $request->session()->flash('alert-success', 'Akses telah di daftarkan');
-            $this->send($akses_data);
+            //$this->send($akses_data);
         } else {
             $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
         }

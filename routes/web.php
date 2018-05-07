@@ -32,8 +32,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/inventory','InventoryController@index')->name('inventory');
 
 	Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
-	Route::post('/pendaftaran_diterima', 'AksesController@pendaftaran_diterima')->name('post_pendaftaran_diterima');
-
+	
 	Route::post('/pencetakan_akses', 'AksesController@pencetakan_akses')->name('post_pencetakan_akses');
 	Route::post('/pencetakan_diterima', 'AksesController@pencetakan_diterima')->name('post_pencetakan_diterima');
 
@@ -57,6 +56,15 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
 	Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
 
+	Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
+	Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
+	Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
 
+	Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
+	Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
+	Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject');
+
+
+	Route::post('/pendaftaran_diterima', 'AksesController@pendaftaran_diterima')->name('post_pendaftaran_diterima');
 
 });

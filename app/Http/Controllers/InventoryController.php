@@ -8,13 +8,19 @@ use App\Http\Models\Inventory_Sub_List;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Users;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Models\Divisi;
+
+use Faker\Factory as Faker;
+
 
 class InventoryController extends Controller
 {	
 	protected $redirectTo = 'inventory';
     protected $credentials;
+    protected $faker;
 
     public function __construct() {
+        $this->faker    = Faker::create();
 
         $this->middleware(function ($request, $next) {
             $this->credentials = Users::GetRoleById(Auth::id())->first();
@@ -25,16 +31,27 @@ class InventoryController extends Controller
 
 
     public function index() {
-    	$inventory 			= Inventory_List::all();
-    	$inventory_data 	= Inventory_Data::GetDetailInventory()->get();
-    	$data['inventory'] = $inventory;
-    	$data['inventory_data'] = $inventory_data;
+    	$data['inventory'] = Inventory_List::all();
+    	$data['inventory_data'] = Inventory_Data::GetDetailInventory()->get();
         $data['credentials']    = $this->credentials;
     	return view('inventory/index',compact('data'));
     }
 
+
+    public function inventory_approval() {
+        return view('inventory/approval');
+    }
+
+    public function inventory_reject() {
+        return view('inventory/reject');
+    }
+
+    public function proses_reject() {
+        echo "AAA";die;
+    }
+
     public function create_new_inventory(Request $request) {
-    	
+
     	$sub_list = Inventory_Sub_List::where('inventory_sub_list_name', strtolower($request->nama_barang))->first();
     	if(count($sub_list) < 1 ) {
     		$sub_list = Inventory_Sub_List::firstOrCreate([
@@ -50,6 +67,7 @@ class InventoryController extends Controller
     		'serial_number'				=> $request->SN,
     		'location'					=> $request->tempat,
     		'status_inventory'			=> 1,
+            'uuid'                      => "XXAGTAGF",
     		'updated_by'				=> Auth::id()
     	]);
     	return redirect($this->redirectTo);

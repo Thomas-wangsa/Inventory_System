@@ -10,7 +10,7 @@ class Inventory_Data extends Model
 
     protected $fillable = [
         'count', 'inventory_sub_list_id','comment','serial_number',
-        'location','status_inventory','updated_by'
+        'location','status_inventory','updated_by','uuid'
     ];
 
     public function scopeGetDetailInventory($query) {

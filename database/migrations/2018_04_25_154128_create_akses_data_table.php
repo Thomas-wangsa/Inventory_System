@@ -18,6 +18,7 @@ class CreateAksesDataTable extends Migration
             $table->string('type');
             $table->string('name');
             $table->string('email');
+            $table->unsignedInteger('status_data')->default(1);
             $table->unsignedInteger('status_akses');
             $table->unsignedInteger('updated_by');
             $table->string('divisi')->nullable();
