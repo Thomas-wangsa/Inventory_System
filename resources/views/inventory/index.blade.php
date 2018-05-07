@@ -92,7 +92,7 @@
 			    							{{ csrf_field() }}
 			    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
 			    							<button type="submit" class="btn btn-success"> 
-			    								@if($val->status_akses == 1)
+			    								@if($val->status_inventory == 1)
 			    									Setuju Nambah
 			    								@endif  
 			    							</button>
@@ -101,6 +101,48 @@
 			    						</div>
 
 			    						<div class="clearfix"> </div>
+			    						@break
+			    					@case(2) 
+			    						<div class="col-sm-6">
+			    							<div class="row text-center">
+				    						<form action="{{route('inventory_reject')}}">
+				    							{{ csrf_field() }}
+				    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
+				    							<button type="submit" class="btn btn-danger">
+				    								@if($val->status_inventory == 2)
+				    									Tolak Permintaan
+				    								@endif
+				    							</button>
+				    						</form>
+			    							</div>
+			    						</div>
+
+			    						<div class="col-sm-6">
+			    							<div class="row text-center">
+			    							<form action="{{route('inventory_approval')}}">
+			    							{{ csrf_field() }}
+			    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
+			    							<button type="submit" class="btn btn-success"> 
+			    								@if($val->status_inventory == 2)
+			    									Setuju Permintaan
+			    								@endif  
+			    							</button>
+			    							</form>
+			    							</div>
+			    						</div>
+
+			    						<div class="clearfix"> </div>
+			    						@break
+			    					@case(3) 
+			    						<div class="text-center">
+			    							Inventory Aktif 
+			    						</div>
+			    						@break
+			    					@case(4) 
+			    					@case(5) 
+			    						<div class="text-center">
+			    							{{$val->comment}} 
+			    						</div>
 			    						@break
 	    						@endswitch
 							</td>

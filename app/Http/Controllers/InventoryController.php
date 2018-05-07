@@ -38,16 +38,78 @@ class InventoryController extends Controller
     }
 
 
-    public function inventory_approval() {
+    public function inventory_approval(Request $request) {
+        $data = Inventory_Data::where('status_data',1)
+        ->where('uuid',$request->uuid)->first();
+        if(count($data) < 1) {
+            return redirect($this->redirectTo);
+        } else {
+            if($data->status_inventory == 1 || $data->status_inventory == 2) {
+
+                switch ($data->status_inventory) {
+                    case 1:
+                        $data->status_inventory = 2;
+                        break;
+                    case 2:
+                        $data->status_inventory = 3;
+                        $data->status_data      = 3;
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                
+                $data->updated_by   = $this->credentials->id;
+                $data->save();
+            } else {
+                return redirect($this->redirectTo);
+            }
+            
+        }
         return view('inventory/approval');
     }
 
-    public function inventory_reject() {
-        return view('inventory/reject');
+    public function inventory_reject(Request $request) {
+        $data = Inventory_Data::where('status_data',1)
+        ->where('uuid',$request->uuid)->first();
+
+        if(count($data) < 1) {
+            return redirect($this->redirectTo);
+        } 
+        return view('inventory/reject',compact("data"));
     }
 
-    public function proses_reject() {
-        echo "AAA";die;
+    public function proses_reject(Request $request) {
+        $data = Inventory_Data::where('status_data',1)
+        ->where('uuid',$request->uuid)->first();
+
+        if(count($data) < 1) {
+            return redirect($this->redirectTo);
+        } else {
+            if($data->status_inventory == 1 || $data->status_inventory == 2 ) {
+
+                switch ($data->status_inventory) {
+                    case 1:
+                        $data->status_inventory = 4;
+                        break;
+                    case 2:
+                        $data->status_inventory = 5;
+                        break;
+                    default:
+                        # code...
+                        break;
+                }
+                
+                $data->status_data  = 2;
+                $data->updated_by   = $this->credentials->id;
+                $data->comment      = $request->desc;
+                $data->save();
+            } else {
+                return redirect($this->redirectTo);
+            }
+            
+        }
+        return redirect($this->redirectTo);
     }
 
     public function create_new_inventory(Request $request) {
@@ -67,7 +129,7 @@ class InventoryController extends Controller
     		'serial_number'				=> $request->SN,
     		'location'					=> $request->tempat,
     		'status_inventory'			=> 1,
-            'uuid'                      => "XXAGTAGF",
+            'uuid'                      => $this->faker->uuid,
     		'updated_by'				=> Auth::id()
     	]);
     	return redirect($this->redirectTo);
