@@ -12,7 +12,7 @@ use App\Http\Models\Status_Akses;
 use App\Http\Models\Status_Inventory;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_List;
-
+use App\Http\Models\Inventory_Role;
 use App\Http\Models\Setting_List;
 use App\Http\Models\Setting_Data;
 
@@ -86,6 +86,16 @@ class DatabaseSeeder extends Seeder
                 "password"=>bcrypt(123456)
             ),
             array(
+                "name"=>"staff_inventoryA",
+                "email"=>"staff.inventoryA@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"head_inventoryA",
+                "email"=>"head.inventoryA@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
                 "name"=>"dummy_data",
                 "email"=>"dummy_data@gmail.com",
                 "password"=>bcrypt(123456)
@@ -118,6 +128,15 @@ class DatabaseSeeder extends Seeder
             Akses_Role::firstOrCreate($value);
         }
 
+
+        $inventory_level_array = array(
+            array("inventory_level_name"=>"head"),
+            array("inventory_level_name"=>"staff")
+        );
+
+        foreach ($inventory_level_array as $key => $value) {
+            Inventory_Level::firstOrCreate($value);
+        }
 
         $users = Users::all();
 
@@ -152,10 +171,28 @@ class DatabaseSeeder extends Seeder
                     $divisi     = 2;
                     $jabatan    = 6;
                     break;
+                case 9:
+                    $divisi     = 3;
+                    $jabatan    = 1;
+                    break;
+                case 10:
+                    $divisi     = 3;
+                    $jabatan    = 2;
+                    break;
                 default:
                     $divisi     = 2;
                     $jabatan    = 1;
                     break;
+            }
+
+            if($divisi == 3) {
+
+                $inventory_role_array = array(
+                    "inventory_list_id"     => 1,
+                    "inventory_level_id"    => $jabatan
+                );
+
+                $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
             }
 
 
@@ -184,14 +221,7 @@ class DatabaseSeeder extends Seeder
             Status_Akses::firstOrCreate($value);
         }
 
-        $inventory_level_array = array(
-            array("inventory_level_name"=>"head"),
-            array("inventory_level_name"=>"staff")
-        );
-
-        foreach ($inventory_level_array as $key => $value) {
-            Inventory_Level::firstOrCreate($value);
-        }
+        
 
 
         $status_akses_array = array(

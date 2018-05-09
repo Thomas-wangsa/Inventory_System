@@ -7,8 +7,11 @@ use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Sub_List;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Users;
+use App\Http\Models\Users_Role;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Divisi;
+use App\Notifications\Inventory_Notification;
+
 
 use Faker\Factory as Faker;
 
@@ -61,6 +64,7 @@ class InventoryController extends Controller
                 
                 $data->updated_by   = $this->credentials->id;
                 $data->save();
+                $this->send($data);
             } else {
                 return redirect($this->redirectTo);
             }
@@ -134,6 +138,7 @@ class InventoryController extends Controller
     	]);
 
         $request->session()->flash('alert-success', 'Inventory berhasil di request !');
+        $this->send($inventory);
     	return redirect($this->redirectTo);
     	
     }
@@ -155,5 +160,39 @@ class InventoryController extends Controller
             "status_inventory"  => 3
         ]);
         return redirect($this->redirectTo);
+    }
+
+    public function send($inventory_data){
+        $error = false;
+        switch($inventory_data->status_inventory) {
+            case 1 :
+                $user    = Users_Role::GetInventoryDecisionMaker(2)->first();
+                $subject = "Pendaftaran Inventory";
+                $desc    = "baru saja mendaftarkan inventory";
+                break;
+            case 2 :
+                $user    = Users_Role::GetInventoryDecisionMaker(3)->first();
+                $subject = "Setuju Inventory";
+                $desc    = "membutuhkan approval inventory";
+                break;
+            default : 
+                $error = true;
+                break;
+        }
+
+        if(!$error) {
+            $data = array(
+                "subject"   => $subject,
+                "head"      => $user->username,
+                "staff"     => Users::find($inventory_data->updated_by)->name,
+                "desc"      => $desc,
+                "nama_barang" => Inventory_Sub_List::find($inventory_data->inventory_sub_list_id)->inventory_sub_list_name,
+                "kategori"    => Inventory_List::find(Inventory_Sub_List::find($inventory_data->inventory_sub_list_id)->inventory_list_id)->inventory_name,
+                "count"       => $inventory_data->count,
+                "uuid"      => $inventory_data->uuid    
+            );
+            $user->notify(new Inventory_Notification($data));
+        } 
+        
     }
 }

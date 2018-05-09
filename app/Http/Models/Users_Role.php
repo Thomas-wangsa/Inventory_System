@@ -21,4 +21,23 @@ class Users_Role extends Model
 
     }
 
+    public function scopeGetInventoryDecisionMaker($query,$param) {
+        if($param == 2) {
+            return $query->join('users','users.id','=','users_role.user_id')
+                ->where('divisi',3)
+                ->where('jabatan',$param)
+                ->select('users.name AS username','users.email','users_role.uuid')
+                ->take(1);
+        } else if($param == 3) {
+            return $query->join('users','users.id','=','users_role.user_id')
+                    ->where('divisi',1)
+                    ->select('users.name AS username','users.email','users_role.uuid')
+                    ->take(1);
+        }
+        
+
+    }
+
+
+
 }
