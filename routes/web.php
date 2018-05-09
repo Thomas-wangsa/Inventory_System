@@ -18,6 +18,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/test', 'TestController@index')->name('test_email');
 
 // Route::get('/test', function () {
 // 	//return redirect('login');
@@ -62,7 +63,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 	Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
 	Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
-	Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject');
+	Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
 
 
 	Route::post('/pendaftaran_diterima', 'AksesController@pendaftaran_diterima')->name('post_pendaftaran_diterima');

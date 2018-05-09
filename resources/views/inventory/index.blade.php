@@ -2,6 +2,30 @@
 
 @section('content')
 	<div style="padding: 0 30px;margin-top: 40px">
+		@if ($errors->any())
+	    <div class="alert alert-danger">
+	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	        <ul>
+	            @foreach ($errors->all() as $error)
+	                <li>{{ $error }}</li>
+	            @endforeach
+	        </ul>
+	    </div>
+		@endif
+
+
+		<div class="flash-message center">
+		    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+		      @if(Session::has('alert-' . $msg))
+
+		      <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} 
+		        <a href="#" class="close" data-dismiss="alert" aria-label="close">
+		          &times;
+		        </a>
+		     </p>
+		      @endif
+		    @endforeach
+		</div> <!-- end .flash-message -->
 		<div >
 			<div class="pull-left"> 
 				<form class="form-inline" action="{{route('route_admin')}}">
@@ -68,7 +92,7 @@
 							<td> {{$val->inventory_name}}</td>
 							<td> {{$val->count}}</td>
 							<td> {{$val->username}}</td>
-							<td> {{$val->status_name}}</td>
+							<td style="color: {{$val->color}}"> {{$val->status_name}}</td>
 							<td>
 								@switch($val->status_inventory)
 									@case(1) 

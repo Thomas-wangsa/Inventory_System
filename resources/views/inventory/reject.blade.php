@@ -25,7 +25,7 @@ textarea {
 			<div style="margin-top: 30px"> </div>
 
 			<div style="width: 100%">
-				<form method="POST" action="{{route('proses_reject')}}">
+				<form method="POST" action="{{route('proses_reject_inventory')}}">
 					{{ csrf_field() }}{{ csrf_field() }}
 					<input type="hidden" name="uuid" value="{{$data['uuid']}}">
 					

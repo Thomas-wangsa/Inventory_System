@@ -242,6 +242,56 @@ img {
     border-left: 18px solid #bf5329;
 }
 
+.new-button-green {
+    background-color: #77d26f;
+    border-top: 10px solid #77d26f;
+    border-right: 18px solid #77d26f;
+    border-bottom: 10px solid #77d26f;
+    border-left: 18px solid #77d26f;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+
+.button-red {
+    background-color: #e5393f;
+    border-top: 10px solid #e5393f;
+    border-right: 18px solid #e5393f;
+    border-bottom: 10px solid #e5393f;
+    border-left: 18px solid #e5393f;
+    border-radius: 5px;
+    border-radius: 5px;
+    font-family: Roboto;
+    font-size: 18px;
+    font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
+
+.TERIMA {
+  width: 66px;
+  height: 24px;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #ffffff;
+}
 /* Panels */
 
 .panel {
@@ -284,4 +334,33 @@ img {
 .promotion p {
     font-size: 15px;
     text-align: center;
+}
+
+.check_block {
+    width: 100%
+
+}
+
+
+.block_center {
+    width: 60%;
+    margin-left: 20%;
+}
+
+.block_left {
+    float:left;
+    width: 50%;
+}
+
+.block_right {
+    float: left
+    width: 50%; 
+}
+
+.text-center {
+    text-align: center;
+}
+
+.clearfix {
+    clear: both;
 }

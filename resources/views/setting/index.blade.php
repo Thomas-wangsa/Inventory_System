@@ -38,5 +38,21 @@
         </button>
     </a>
 
+    <a href="">
+        <button type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-th-list">
+            Kasih Akses
+          </span> 
+        </button>
+    </a>
+
+    <a href="">
+        <button type="button" class="btn btn-default">
+          <span class="glyphicon glyphicon-th-list">
+            Sharing Inventory Akses
+          </span> 
+        </button>
+    </a>
+
 </div>
 @endsection

@@ -122,7 +122,7 @@ class InventoryController extends Controller
     		]);
     	}
 
-    	Inventory_Data::firstOrCreate([
+    	$inventory = Inventory_Data::firstOrCreate([
     		'count'						=> $request->jumlah,
     		'inventory_sub_list_id'		=> $sub_list->id,
     		'comment'					=> $request->keterangan,
@@ -132,6 +132,8 @@ class InventoryController extends Controller
             'uuid'                      => $this->faker->uuid,
     		'updated_by'				=> Auth::id()
     	]);
+
+        $request->session()->flash('alert-success', 'Inventory berhasil di request !');
     	return redirect($this->redirectTo);
     	
     }

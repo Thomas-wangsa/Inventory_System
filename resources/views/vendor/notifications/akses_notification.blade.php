@@ -1,12 +1,57 @@
 @component('mail::message')
-# Invoice Paid
 
-Your invoice has been paid!
+# Hi {{$data['to']}}
 
-@component('mail::button', ['url' => $data['satu']])
+<b> {{$data['from']}} </b> {{$data['desc']}} dengan data sebagai berikut
+
+
+<table class="table" align="center" width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+        <th align="center">
+            Nama Lengkap
+        </th>
+        <th align="center">
+            Divisi
+        </th>
+        <th align="center">
+            KTP
+        </th>
+    </tr>
+    <tr>
+        <td align="center" style="border-bottom: 1px solid #EDEFF2;">
+            {{ $data['nama_user']}}
+        </td>
+        <td align="center" style="border-bottom: 1px solid #EDEFF2;">
+            {{ $data['divisi_user']}}
+        </td>
+        <td align="center" style="border-bottom: 1px solid #EDEFF2;">
+            @if ( $data['ktp'] == null) 
+                -
+            @else
+                <a href="{{$data['url']}}/images/akses/{{$data['ktp']}}">
+                KTP
+                </a>
+            @endif
+            
+        </td>
+    </tr>
+</table>
+
+<br>
+@component('mail::left_button', ['url'=>$data['url'],'url1' => $data['url1'],'url2'=>$data['url2']])
 View Invoice
 @endcomponent
 
+
+<br>
+<br>
 Thanks,<br>
 {{ config('app.name') }}
+
+{{-- Subcopy --}}
+@component('mail::subcopy')
+If you’re having trouble clicking the "{{ $data['url'] }}" button, copy and paste the URL below
+into your web browser: [{{ $data['url'] }}]({{ $data['url'] }})
+@endcomponent
+
 @endcomponent

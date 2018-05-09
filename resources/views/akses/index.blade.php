@@ -64,7 +64,7 @@
 			</div>
 			<div class="pull-right">  
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal">
-					Tambah Pengguna
+					Tambah Pengguna Akses
 				</button>
 			</div>
 			<div class="clearfix"> </div>

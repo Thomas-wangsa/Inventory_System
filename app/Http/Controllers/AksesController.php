@@ -179,11 +179,10 @@ class AksesController extends Controller
 
         if($bool) {
             $request->session()->flash('alert-success', 'Akses telah di daftarkan');
-            //$this->send($akses_data);
+            $this->send($akses_data);
         } else {
             $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
         }
-        //$this->send();
         
     	return redirect($this->redirectTo);
     }
@@ -198,12 +197,21 @@ class AksesController extends Controller
     }
 
     public function pencetakan_akses(Request $request) {
-        Akses_Data::where('id',$request->data_id)
+        $akses_data = Akses_Data::where('id',$request->data_id)
         ->update([
             "updated_by"    =>$request->updated_by,
             "status_akses"  => 3
         ]);
-        return redirect($this->redirectTo);
+
+        if($akses_data) {
+            $request->session()->flash('alert-success', 'Akses sukses di daftarkan untuk cetak');
+            $this->send(Akses_Data::find($request->data_id));
+            return redirect($this->redirectTo);
+        } else {
+            $request->session()->flash('alert-danger', 'Akses gagal di daftarkan untuk cetak');
+            return redirect($this->redirectTo);
+        }
+        
     }
 
     public function pencetakan_diterima(Request $request) {
@@ -216,12 +224,20 @@ class AksesController extends Controller
     }
 
     public function aktifkan_akses(Request $request) {
-        Akses_Data::where('id',$request->data_id)
+        $akses_data = Akses_Data::where('id',$request->data_id)
         ->update([
             "updated_by"    =>$request->updated_by,
             "status_akses"  => 5
         ]);
-        return redirect($this->redirectTo);
+
+        if($akses_data) {
+            $request->session()->flash('alert-success', 'Akses sukses di daftarkan untuk cetak');
+            $this->send(Akses_Data::find($request->data_id));
+            return redirect($this->redirectTo);
+        } else {
+            $request->session()->flash('alert-danger', 'Akses gagal di daftarkan untuk cetak');
+            return redirect($this->redirectTo);
+        }
     }
 
     public function aktifkan_diterima(Request $request) {
@@ -239,12 +255,18 @@ class AksesController extends Controller
         switch($akses_data->status_akses) {
             case 1 :
                 $user = Users_Role::GetAksesDecisionMaker(2)->first();
+                $subject = "Pendaftaran Kartu";
+                $desc    = "baru saja mendaftarkan pengguna kartu";
                 break;
             case 3 :
                 $user = Users_Role::GetAksesDecisionMaker(4)->first();
+                $subject = "Pencetakan Kartu";
+                $desc    = "telah mendaftarkan kartu";
                 break;
             case 5 : 
                 $user = Users_Role::GetAksesDecisionMaker(6)->first();
+                $subject = "Pengaktifan Kartu";
+                $desc    = "telah mengaktifkan kartu";
                 break;
             default : 
                 $error = true;
@@ -253,10 +275,17 @@ class AksesController extends Controller
 
         if(!$error) {
             $data = array(
-                "test"  => 1,
-                "test2" => "afagaf" 
+                "subject"   => $subject,
+                "head"      => $user->username,
+                "staff"     => Users::find($akses_data->updated_by)->name,
+                "desc"      => $desc,
+                "nama_user" => $akses_data->name,
+                "divisi"    => $akses_data->divisi,
+                "ktp"       => $akses_data->foto != null ? $akses_data->foto : null,
+                "uuid"      => $akses_data->uuid    
             );
 
+            //dd($data);
             $user->notify(new Akses_Notifications($data));
         } 
         

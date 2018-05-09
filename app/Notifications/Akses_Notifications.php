@@ -42,11 +42,18 @@ class Akses_Notifications extends Notification
     public function toMail($notifiable)
     {   
         $data = array(
-            "satu"  => "satu lah",
-            "dua"   => "dua lah" 
+            "to"            => $this->param['head'],
+            "from"          => $this->param['staff'],
+            "desc"          => $this->param['desc'],
+            "url"           => config('app.url'),
+            "url1"          => config('app.url')."/akses_approval?uuid=".$this->param['uuid'],
+            "url2"          => config('app.url')."/akses_reject?uuid=".$this->param['uuid'],
+            "nama_user"     => $this->param['nama_user'],
+            "divisi_user"   => $this->param['divisi'],
+            "ktp"           => $this->param['ktp'] != null ? $this->param['ktp'] : null
         );
         return (new MailMessage)
-                    ->subject('Approval Pendaftaran')
+                    ->subject($this->param['subject'])
                     ->markdown('vendor.notifications.akses_notification', ['data' => $data]);
     }
 
