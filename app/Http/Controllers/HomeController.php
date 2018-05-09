@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Users;
 use App\Http\Models\Akses_Data;
+use App\Http\Models\Inventory_Data;
 
 class HomeController extends Controller
 {   
@@ -74,7 +75,14 @@ class HomeController extends Controller
             }
 
         } else if($this->credentials->divisi == 3) {
-
+            switch($this->credentials->id_jabatan) {
+                case 2:
+                    $data['notify']         = Inventory_Data::where('status_inventory',1)->count();
+                    $data['notify_data']    = Inventory_Data::GetNotify(1)->get();
+                    $data['desc']           = " telah menambahkan barang baru dengan informasi ";
+                    break;
+            }
+            
         }
         $data['credentials']        = $this->credentials;
         return view('dashboard/notify',compact('data'));

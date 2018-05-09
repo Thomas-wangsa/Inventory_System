@@ -60,7 +60,7 @@
 			<div class="center" style="">
 				<div style="margin-top: 40px"> </div>
                 <a href="{{ route('login')}}">
-				    <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
+				    <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / >
                 </a>
 				<div class="text-center"> 
 					<h4> Inventory Management </h4> 

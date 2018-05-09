@@ -22,4 +22,11 @@ class Inventory_Data extends Model
     		,'inventory_sub_list.inventory_sub_list_name','inventory_list.inventory_name','users.name AS username')
     	->orderBy('inventory_data.id','DESC');
     }
+
+    public function scopeGetNotify($query,$param) {
+        return $query->join('users','users.id','=','inventory_data.updated_by')
+        ->where('status_inventory',$param)
+        ->select('inventory_data.*','users.name AS username')
+        ->orderBy('inventory_data.id','DESC');
+    }
 }

@@ -1,7 +1,7 @@
 <div class="col-sm-3 menu-left" style="">
                 
   <a href="{{route('home')}}">
-    <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
+    <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / >
   </a>
   
   <div class="text-center" style="margin-bottom: 30px">  
