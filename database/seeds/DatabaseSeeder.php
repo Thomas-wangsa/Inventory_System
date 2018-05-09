@@ -206,11 +206,11 @@ class DatabaseSeeder extends Seeder
         }
 
         $status_akses_array = array(
-            array("name"=>"Menunggu Daftar","color"=>"#FFFF00"),
+            array("name"=>"Pending Daftar","color"=>"#FFFF00"),
             array("name"=>"Diterima Daftar","color"=>"#00FF00"),
-            array("name"=>"Menunggu Cetak","color"=>"#FFFF00"),
+            array("name"=>"Pending Cetak","color"=>"#FFFF00"),
             array("name"=>"Diterima Cetak","color"=>"#00FF00"),
-            array("name"=>"Aktifkan Kartu","color"=>"#FFFF00"),
+            array("name"=>"Pending Pengaktifan","color"=>"#FFFF00"),
             array("name"=>"Kartu Aktif","color"=>"#00FF00"),
             array("name"=>"Ditolak Daftar","color"=>"#FF0000"),
             array("name"=>"Ditolak Cetak","color"=>"#FF0000"),

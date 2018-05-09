@@ -39,6 +39,8 @@
           TAMBAH INVENTORY LIST
         @elseif(Route::current()->getName() == 'show_background')
           GANTI BACKGROUND LOGIN
+        @elseif(Route::current()->getName() == 'route_notify')
+          PEMBERITAHUAN
     		@else 
     			ERROR
 			@endif 

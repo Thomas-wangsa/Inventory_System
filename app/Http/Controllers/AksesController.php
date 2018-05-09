@@ -36,11 +36,11 @@ class AksesController extends Controller
     }
 
     public function index(Request $request) {
-        if($this->credentials->divisi == 1 || $this->credentials->divisi == 2 ) {
-            $access = true;
-        } else {
-            $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur ini');
-            return redirect('home'); 
+        $allow =array(1,2);
+
+        if(!in_array($this->credentials->divisi, $allow)) {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur akses');
+            return redirect('home');
         }
 
         $data = array(
@@ -50,6 +50,10 @@ class AksesController extends Controller
             'user'          => Auth::user()
         );
 
+
+        
+
+        
     	return view('akses/index',compact("data"));
     }
 
@@ -138,6 +142,17 @@ class AksesController extends Controller
     }
 
     public function pendaftaran_akses(Request $request) {
+        if($this->credentials->divisi == 1 
+            || ($this->credentials->divisi == 2 
+                && $this->credentials->id_jabatan == 1 )
+        ) {
+            $allow = true;
+        } else {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur mendaftarkan akses');
+            return redirect($this->redirectTo);
+        }
+
+
     	$akses_data = new Akses_Data;
 
     	if($request->type_daftar == "staff") {

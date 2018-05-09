@@ -14,4 +14,11 @@ class Akses_Data extends Model
     	->select('akses_data.*','status_akses.name AS status_name','status_akses.color','users.name AS username')
     	->orderBy('akses_data.id','DESC');
     }
+
+    public function scopeGetNotify($query,$param) {
+    	return $query->join('users','users.id','=','akses_data.updated_by')
+    	->where('status_akses',$param)
+    	->select('akses_data.*','users.name AS username')
+    	->orderBy('akses_data.id','DESC');
+    }
 }

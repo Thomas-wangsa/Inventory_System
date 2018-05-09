@@ -343,8 +343,9 @@ img {
 
 
 .block_center {
-    width: 60%;
-    margin-left: 20%;
+/*    width: 60%;
+    margin-left: 20%;*/
+    width: 100%;
 }
 
 .block_left {

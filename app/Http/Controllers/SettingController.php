@@ -33,7 +33,7 @@ class SettingController extends Controller {
             if(count($check) > 0) {
                 $access = true;
             } else {
-                $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur ini');
+                $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur setting');
                 return redirect('home'); 
             }  
         }

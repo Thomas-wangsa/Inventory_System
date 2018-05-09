@@ -8,14 +8,14 @@
     Inventory Management 
   </div>  
   
-  <div class="col-sm-12">
+  <div class="col-sm-12" >
     <div class="row">
       
       <h4 class="dashboard">
         Dashboard
       </h4>
 
-      <div class="col-sm-12">
+      <div class="col-sm-12" style="border-bottom : 2px solid gray">
         <div class="row">
           
           <div class="icon-left">
@@ -37,15 +37,21 @@
           
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
-              <a href="{{route('home')}}">
+              <a href="{{route('route_notify')}}">
                 <span class="glyphicon glyphicon-bell" style="color:black">
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('home')}}">
+                <a class="icon-text" href="{{route('route_notify')}}">
                   Pemberitahuan
+                    @if(isset($data['notify']) && $data['notify'] > 0 )
+                      <span class="badge" style="background-color: red;color:white"> 
+                        {{$data['notify']}}
+                    </span>
+                  </a>
+                    @endif
                 </a>
               </div>
             </div>     
@@ -120,8 +126,7 @@
               </div>
             </div>     
           </div>
-          <div class="clearfix"> </div>
-
+          <div class="clearfix" style="margin-bottom: 20px"> </div>
 
         </div>
       </div>
@@ -129,4 +134,51 @@
     </div>
   </div>
 
+  <div class="clearfix"> </div>
+  
+  <div class="col-sm-12" style="margin-top: 20px">
+    <div class="row">
+      <h4 class="dashboard"> Profile </h4>
+
+        <div class="col-sm-12">
+          <div class="row">    
+            <div class="icon-left">
+              <div class="col-sm-2 icon-image">
+                <a href="{{route('home')}}">
+                  <span class="glyphicon glyphicon-envelope" style="color:black">
+                  </span>
+                </a>
+              </div>
+              <div class="col-sm-10">
+                <div class="row">
+                  <a class="icon-text" href="{{route('home')}}">
+                    Profile
+                  </a>
+                </div>
+              </div>     
+            </div>
+            <div class="clearfix"> </div>
+            <div class="icon-left">
+              <div class="col-sm-2 icon-image">
+                <a href="{{route('home')}}">
+                  <span class="glyphicon glyphicon-wrench" style="color:black">
+                  </span>
+                </a>
+              </div>
+              <div class="col-sm-10">
+                <div class="row">
+                  <a class="icon-text" href="{{route('home')}}">
+                    Ganti Password
+                  </a>
+                </div>
+              </div>     
+            </div>
+            <div class="clearfix"> </div>
+          </div>
+        </div>  
+
+    </div>
+  </div>
+
 </div> <!-- col left -->
+

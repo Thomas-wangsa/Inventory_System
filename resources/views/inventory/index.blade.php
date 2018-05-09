@@ -178,6 +178,10 @@
 
 			    </tbody>
 			</table>
+			<div class="pull-right" style="margin-top: -30px!important"> 
+			{{ $data['inventory_data']->links() }}
+			</div>
+			<div class="clearfix"> </div>
 		</div>
 	</div>
 

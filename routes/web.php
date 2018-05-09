@@ -18,8 +18,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/test', 'TestController@index')->name('test_email');
-
 // Route::get('/test', function () {
 // 	//return redirect('login');
 //     return view('auth.old_login');
@@ -27,6 +25,7 @@ Route::get('/test', 'TestController@index')->name('test_email');
 
 Route::group(['middleware' => ['auth']], function() { 
 	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('/notify', 'HomeController@notify')->name('route_notify');
 	Route::get('/akses', 'AksesController@index')->name('akses');
 	Route::get('/admin','AdminController@index')->name('route_admin');
 	Route::get('/setting','SettingController@index')->name('route_setting');

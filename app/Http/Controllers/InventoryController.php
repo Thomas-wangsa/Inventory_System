@@ -33,9 +33,16 @@ class InventoryController extends Controller
     }
 
 
-    public function index() {
+    public function index(Request $request) {
+        $allow =array(1,3);
+
+        if(!in_array($this->credentials->divisi, $allow)) {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur inventory');
+            return redirect('home');
+        }
+
     	$data['inventory'] = Inventory_List::all();
-    	$data['inventory_data'] = Inventory_Data::GetDetailInventory()->get();
+    	$data['inventory_data'] = Inventory_Data::GetDetailInventory()->paginate(5);
         $data['credentials']    = $this->credentials;
     	return view('inventory/index',compact('data'));
     }

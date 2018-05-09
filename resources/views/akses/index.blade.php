@@ -99,80 +99,180 @@
 			    			<td> Updated By : {{ $val->username}} </td>
 			    			<td style="color: {{$val->color}}"> {{$val->status_name}} </td>
 			    				
-			    			<td style="width: 250px"> 
+			    			<td style="width: 250px">
+			    			@if($data['credentials']->divisi == 1)
 			    				@switch($val->status_akses)
-			    					@case(1) 
-			    					@case(3)
-			    					@case(5)
-			    						<div class="col-sm-6">
-			    							<div class="row text-center">
-				    						<form action="{{route('akses_reject')}}">
-				    							{{ csrf_field() }}
-				    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
-				    							<button type="submit" class="btn btn-danger">
-				    								@if($val->status_akses == 1)
-				    									Tolak Daftar
-				    								@elseif($val->status_akses == 3)
-				    									Tolak Cetak
-				    								@elseif($val->status_akses == 5)
-				    									Tolak Aktif
-				    								@endif
-				    							</button>
-				    						</form>
-			    							</div>
-			    						</div>
+									@case(1) 
+									@case(3)
+									@case(5)
+										@include('akses.decision')
+										@break
+									@case(2)
+										<form method="POST" 
+										action="{{route('post_pencetakan_akses')}}">
+											{{ csrf_field() }}
+											<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
+											<input type="hidden" name="data_id" value="{{$val->id}}" >
+											<div class="text-center">
+												<button type="submit" class="btn btn-warning"> Cetak Kartu </button>
+											</div>
+										</form>
+										@break
+									@case(4)
+										<form method="POST" 
+										action="{{route('post_aktifkan_akses')}}">
+											{{ csrf_field() }}
+											<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
+											<input type="hidden" name="data_id" value="{{$val->id}}" >
+											<div class="text-center">
+												<button type="submit" class="btn btn-warning"> Aktifkan Kartu </button>
+											</div>
+										</form>
+										@break
+									@case(6)
+										<div class="text-center"> 
+										 	Kartu Aktif
+										</div>
+										@break
+									@default
+										<div class="text-center"> 
+											{{$val->comment}}
+										</div>
+									@break
+							@endswitch
+		    				@elseif($data['credentials']->id_jabatan == 1)
+		    					@switch($val->status_akses)
+		    						@case(7)
+		    						@case(8)
+		    						@case(9)
+		    							<div class="text-center"> 
+										{{$val->comment}}
+										</div>
+										@break
+									@default
+										<div class="text-center">
+		    							{{$val->status_name}}
+		    							</div>
+		    							@break;
+		    					@endswitch
+		    				@elseif($data['credentials']->id_jabatan == 2)
+		    					@switch($val->status_akses)
+		    						@case(7)
+		    						@case(8)
+		    						@case(9)
+		    							<div class="text-center"> 
+										{{$val->comment}}
+										</div>
+										@break
+		    						@case(1)
+		    							@include('akses.decision')
+		    							@break
+		    						@default
+		    							<div class="text-center">
+		    							{{$val->status_name}}
+		    							</div>
+		    							@break
+		    					@endswitch
+		    				@elseif($data['credentials']->id_jabatan == 3)
+		    					@switch($val->status_akses)
+		    						@case(7)
+		    						@case(8)
+		    						@case(9)
+		    							<div class="text-center"> 
+										{{$val->comment}}
+										</div>
+										@break
+		    						@case(2)
+		    							<form method="POST" 
+		    							action="{{route('post_pencetakan_akses')}}">
+											{{ csrf_field() }}
+											<input type="hidden" name="updated_by" 
+											value="{{$data['credentials']->id}}">
+											<input type="hidden" name="data_id" 
+											value="{{$val->id}}" >
+											<div class="text-center">
+												<button type="submit" class="btn btn-warning"> 
+													Cetak Kartu 
+												</button>
+											</div>
+										</form>
+		    							@break
+		    						@default
+		    							<div class="text-center">
+		    							{{$val->status_name}}
+		    							</div>
+		    							@break
+		    					@endswitch
+		    				@elseif($data['credentials']->id_jabatan == 4)
+		    					@switch($val->status_akses)
+		    						@case(7)
+		    						@case(8)
+		    						@case(9)
+		    							<div class="text-center"> 
+										{{$val->comment}}
+										</div>
+										@break
+		    						@case(3)
+		    							@include('akses.decision')
+		    							@break
+		    						@default
+		    							<div class="text-center">
+		    							{{$val->status_name}}
+		    							</div>
+		    							@break
+		    					@endswitch
+		    				@elseif($data['credentials']->id_jabatan == 5)
+		    					@switch($val->status_akses)
+		    						@case(7)
+		    						@case(8)
+		    						@case(9)
+		    							<div class="text-center"> 
+										{{$val->comment}}
+										</div>
+										@break
+		    						@case(4)
+		    							<form method="POST" 
+		    							action="{{route('post_aktifkan_akses')}}">
+											{{ csrf_field() }}
+											<input type="hidden" name="updated_by" 
+											value="{{$data['credentials']->id}}">
+											<input type="hidden" name="data_id" 
+											value="{{$val->id}}" >
+											<div class="text-center">
+												<button type="submit" class="btn btn-warning"> 
+													Aktifkan Kartu 
+												</button>
+											</div>
+										</form>
+		    							@break
+		    						@default
+		    							<div class="text-center">
+		    							{{$val->status_name}}
+		    							</div>
+		    							@break
+		    					@endswitch
+		    				@elseif($data['credentials']->id_jabatan == 6)
+		    					@switch($val->status_akses)
+		    						@case(7)
+		    						@case(8)
+		    						@case(9)
+		    							<div class="text-center"> 
+										{{$val->comment}}
+										</div>
+										@break
+		    						@case(5)
+		    							@include('akses.decision')
+		    							@break
+		    						@default
+		    							<div class="text-center">
+		    							{{$val->status_name}}
+		    							</div>
+		    							@break
+		    					@endswitch
+		    				@endif
 
-			    						<div class="col-sm-6">
-			    							<div class="row text-center">
-			    							<form action="{{route('akses_approval')}}">
-			    							{{ csrf_field() }}
-			    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
-			    							<button type="submit" class="btn btn-success"> 
-			    								@if($val->status_akses == 1)
-			    									Setuju Daftar
-			    								@elseif($val->status_akses == 3)
-			    									Setuju Cetak
-			    								@elseif($val->status_akses == 5)
-			    									Setuju Aktif
-			    								@endif  
-			    							</button>
-			    							</form>
-			    							</div>
-			    						</div>
 
-			    						<div class="clearfix"> </div>
-			    						@break
-			    					@case(2)
-			    						<form method="POST" action="{{route('post_pencetakan_akses')}}">
-			    							{{ csrf_field() }}
-			    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
-			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-			    							<div class="text-center">
-			    								<button type="submit" class="btn btn-warning"> Cetak Kartu </button>
-			    							</div>
-			    						</form>
-			    						@break
-			    					@case(4)
-			    						<form method="POST" action="{{route('post_aktifkan_akses')}}">
-			    							{{ csrf_field() }}
-			    							<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
-			    							<input type="hidden" name="data_id" value="{{$val->id}}" >
-			    							<div class="text-center">
-			    								<button type="submit" class="btn btn-warning"> Aktifkan Kartu </button>
-			    							</div>
-			    						</form>
-			    						@break
-			    					@case(6)
-			    						<div class="text-center"> 
-			    						 	Kartu Aktif
-			    						</div>
-			    						@break
-			    					@default
-			    						<div class="text-center"> 
-			    							{{$val->comment}}
-			    						</div>
-			    						@break
-			    				@endswitch
+			    				
 			    			</td>
 			    		</tr>
 			    		@endforeach
@@ -188,7 +288,7 @@
 	</div>
   
 	@include('akses.modal');
-	
+
+
 @endsection
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
