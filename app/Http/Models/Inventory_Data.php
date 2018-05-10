@@ -25,8 +25,9 @@ class Inventory_Data extends Model
 
     public function scopeGetNotify($query,$param) {
         return $query->join('users','users.id','=','inventory_data.updated_by')
+        ->join('inventory_sub_list','inventory_sub_list.id','=','inventory_data.inventory_sub_list_id')
         ->where('status_inventory',$param)
-        ->select('inventory_data.*','users.name AS username')
+        ->select('inventory_data.*','users.name AS username','inventory_sub_list.inventory_sub_list_name')
         ->orderBy('inventory_data.id','DESC');
     }
 }

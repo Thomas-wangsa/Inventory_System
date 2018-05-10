@@ -40,7 +40,9 @@ class HomeController extends Controller
         $data['notify'] = 0;
 
         if($this->credentials->divisi == 1 ) {
-
+            $data['notify']         = Inventory_Data::where('status_inventory',2)->count();
+            $data['notify_data']    = Inventory_Data::GetNotify(2)->get();
+            $data['desc']           = " telah menambahkan barang baru dengan informasi ";
         } else if ($this->credentials->divisi == 2) {
             switch ($this->credentials->id_jabatan) {
                 case 2:

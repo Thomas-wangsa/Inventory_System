@@ -19,7 +19,12 @@
                             {{$key+1}}
                         </td>
                         <td>
-                            {{$val->username}}{{$data['desc']}}{{$val->name}}
+                            {{$val->username}}{{$data['desc']}}
+                                @if($data['credentials']->divisi == 2)
+                                    {{$val->name}}
+                                @elseif($data['credentials']->divisi == 3 ||$data['credentials']->divisi == 1)
+                                    {{$val->inventory_sub_list_name}}
+                                @endif
                         </td>
                     </tr>
                     @endforeach

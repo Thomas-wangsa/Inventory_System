@@ -94,81 +94,56 @@
 							<td> {{$val->username}}</td>
 							<td style="color: {{$val->color}}"> {{$val->status_name}}</td>
 							<td>
-								@switch($val->status_inventory)
-									@case(1) 
-			    						<div class="col-sm-6">
-			    							<div class="row text-center">
-				    						<form action="{{route('inventory_reject')}}">
-				    							{{ csrf_field() }}
-				    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
-				    							<button type="submit" class="btn btn-danger">
-				    								@if($val->status_inventory == 1)
-				    									Tolak Nambah
-				    								@endif
-				    							</button>
-				    						</form>
-			    							</div>
-			    						</div>
-
-			    						<div class="col-sm-6">
-			    							<div class="row text-center">
-			    							<form action="{{route('inventory_approval')}}">
-			    							{{ csrf_field() }}
-			    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
-			    							<button type="submit" class="btn btn-success"> 
-			    								@if($val->status_inventory == 1)
-			    									Setuju Nambah
-			    								@endif  
-			    							</button>
-			    							</form>
-			    							</div>
-			    						</div>
-
-			    						<div class="clearfix"> </div>
-			    						@break
-			    					@case(2) 
-			    						<div class="col-sm-6">
-			    							<div class="row text-center">
-				    						<form action="{{route('inventory_reject')}}">
-				    							{{ csrf_field() }}
-				    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
-				    							<button type="submit" class="btn btn-danger">
-				    								@if($val->status_inventory == 2)
-				    									Tolak Permintaan
-				    								@endif
-				    							</button>
-				    						</form>
-			    							</div>
-			    						</div>
-
-			    						<div class="col-sm-6">
-			    							<div class="row text-center">
-			    							<form action="{{route('inventory_approval')}}">
-			    							{{ csrf_field() }}
-			    							<input type="hidden" name="uuid" value="{{$val->uuid}}" >
-			    							<button type="submit" class="btn btn-success"> 
-			    								@if($val->status_inventory == 2)
-			    									Setuju Permintaan
-			    								@endif  
-			    							</button>
-			    							</form>
-			    							</div>
-			    						</div>
-
-			    						<div class="clearfix"> </div>
-			    						@break
-			    					@case(3) 
-			    						<div class="text-center">
-			    							Inventory Aktif 
-			    						</div>
-			    						@break
-			    					@case(4) 
-			    					@case(5) 
-			    						<div class="text-center">
-			    							{{$val->comment}} 
-			    						</div>
-			    						@break
-	    						@endswitch
+								@if($data['credentials']->divisi == 1)
+									@switch($val->status_inventory)
+										@case(1) 
+										@case(2)
+				    						@include('inventory.decision')
+				    						@break 
+				    					@case(3) 
+				    						<div class="text-center">
+				    							Inventory Aktif 
+				    						</div>
+				    						@break
+				    					@case(4) 
+				    					@case(5) 
+				    						<div class="text-center">
+				    							{{$val->comment}} 
+				    						</div>
+				    						@break
+		    						@endswitch
+		    					@elseif($data['credentials']->id_jabatan == 1)
+		    						@switch($val->status_inventory)
+				    					@case(3) 
+				    						<div class="text-center">
+				    							Inventory Aktif 
+				    						</div>
+				    						@break
+				    					@case(4) 
+				    					@case(5) 
+				    						<div class="text-center">
+				    							{{$val->comment}} 
+				    						</div>
+				    						@break
+		    						@endswitch
+		    					@elseif($data['credentials']->id_jabatan == 2)
+		    						@switch($val->status_inventory)
+		    							@case(1)
+		    								@include('inventory.decision')
+		    								@break
+				    					@case(3) 
+				    						<div class="text-center">
+				    							Inventory Aktif 
+				    						</div>
+				    						@break
+				    					@case(4) 
+				    					@case(5) 
+				    						<div class="text-center">
+				    							{{$val->comment}} 
+				    						</div>
+				    						@break
+		    						@endswitch
+	    						@endif
 							</td>
 						</tr>
 						@endforeach 

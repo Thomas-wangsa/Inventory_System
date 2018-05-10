@@ -125,6 +125,16 @@ class InventoryController extends Controller
 
     public function create_new_inventory(Request $request) {
 
+        if($this->credentials->divisi == 1 
+            || ($this->credentials->divisi == 3 
+                && $this->credentials->id_jabatan == 1 )
+        ) {
+            $allow = true;
+        } else {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur menambahkan inventory');
+            return redirect($this->redirectTo);
+        }
+
     	$sub_list = Inventory_Sub_List::where('inventory_sub_list_name', strtolower($request->nama_barang))->first();
     	if(count($sub_list) < 1 ) {
     		$sub_list = Inventory_Sub_List::firstOrCreate([
