@@ -62,16 +62,11 @@
 
                     <ul class="dropdown-menu">
                     	<li>
-                    		<a href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                         document.getElementById('logout-form').submit();">
+                    		<a href="{{ route('profile') }}">
                                 <span class="glyphicon glyphicon-envelope"></span>
                                 Profile Anda
                             </a>
 
-                            <form id="profile-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                            </form>
                     	</li>
                         <li>
                             <a href="{{ route('logout') }}"

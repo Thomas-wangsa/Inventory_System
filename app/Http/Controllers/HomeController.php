@@ -256,4 +256,26 @@ class HomeController extends Controller
 
         return redirect('profile'); 
     }
+
+    public function ganti_profile(Request $request) {
+        $request->validate([
+        'nama_lengkap' => 'required|min:6',
+        'phone'         => 'required|numeric|min:9'
+        ]);
+
+        $user = Users::find($this->credentials->id);
+        $user->name = $request->nama_lengkap;
+        $user->mobile = $request->phone;
+        $cek = $user->save();
+
+        if($cek) {
+                $request->session()->flash('alert-success', 'Data telah di update !');
+                
+            } else {
+                $request->session()->flash('alert-danger', 'Data gagal di update');
+            }
+
+        return redirect('profile'); 
+    }
+
 }

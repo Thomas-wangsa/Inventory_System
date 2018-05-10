@@ -16,6 +16,8 @@ class Users extends Model
     protected $table = "users";
     use Notifiable;
     use SoftDeletes;
+
+    protected $id = "id";
     /**
      * The attributes that are mass assignable.
      *

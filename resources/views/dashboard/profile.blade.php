@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('content')
-	<div style="padding: 0 30px;margin-top: 40px">
+	<div style="padding: 0 20px;margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
 	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -49,6 +49,45 @@
 					  	</button>
 					</form>
 				</div>
+			</div>
+		</div>
+
+		<div class="center" style="background-color: red">
+			<div class="col-sm-6">
+				
+				<div class="center" >
+					<form action="{{route('ganti_profile')}}" method="POST">
+						{{ csrf_field() }}
+					    <div class="form-group">
+					      <label for="pwd"> Nama Lengkap :</label>
+					      <input type="text" class="form-control" id="pwd"  name="nama_lengkap" value="{{$data['credentials']->name}}" required="">
+					    </div>
+
+					    <div class="form-group">
+					      <label for="pwd">Posisi:</label>
+					      <input type="text" class="form-control" id="pwd"  name="posisi" value="{{$data['credentials']->jabatan}}" disabled="">
+					    </div>
+
+					    <div class="form-group">
+					      <label for="pwd"> Email :</label>
+					      <input type="email" class="form-control" id="pwd"  name="email" value="{{$data['credentials']->email}}" disabled="">
+					    </div>
+
+					    <div class="form-group">
+					      <label for="pwd"> Nomor Handphone :</label>
+					      <input type="text" class="form-control" id="pwd"  name="phone" value="{{$data['credentials']->mobile}}" required="">
+					    </div>
+
+					    <div class="text-center">
+					    <button type="submit" class="btn btn-warning">
+					    	UBAH DATA
+					    </button>
+						</div>
+
+					
+				  	</form>
+			  	</div>
+				
 			</div>
 		</div>
 	</div>
