@@ -41,6 +41,10 @@
           GANTI BACKGROUND LOGIN
         @elseif(Route::current()->getName() == 'route_notify')
           PEMBERITAHUAN
+        @elseif(Route::current()->getName() == 'profile')
+          PROFILE PAGE
+        @elseif(Route::current()->getName() == 'password')
+          GANTI PASSWORD
     		@else 
     			ERROR
 			@endif 

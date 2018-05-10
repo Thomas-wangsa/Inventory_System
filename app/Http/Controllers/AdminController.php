@@ -9,6 +9,8 @@ use App\Http\Models\Users_Role;
 use App\Http\Models\Divisi;
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
+use App\Http\Models\Inventory_Data;
+use App\Http\Models\Akses_Data;
 
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\New_User;
@@ -43,6 +45,40 @@ class AdminController extends Controller
     		'divisi'			=> Divisi::all(),
     		'inventory_list'	=> Inventory_List::all()
     	);
+
+        if($this->credentials->divisi == 1 ) {
+            $data['notify']         = Inventory_Data::where('status_inventory',2)->count();
+        } else if ($this->credentials->divisi == 2) {
+            switch ($this->credentials->id_jabatan) {
+                case 2:
+                    $data['notify']         = Akses_Data::where('status_akses',1)->count();
+                    break;
+                case 3:
+                    $data['notify']         = Akses_Data::where('status_akses',2)->count();
+                    break;
+                case 4:
+                    $data['notify']         = Akses_Data::where('status_akses',3)->count();
+                    break;
+                case 5:
+                    $data['notify']         = Akses_Data::where('status_akses',4)->count();
+                    break;
+                case 6:
+                    $data['notify']         = Akses_Data::where('status_akses',5)->count();
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+        } else if($this->credentials->divisi == 3) {
+            switch($this->credentials->id_jabatan) {
+                case 2:
+                    $data['notify']         = Inventory_Data::where('status_inventory',1)->count();
+                    break;
+            }
+            
+        }
 
     	return view('admin/admin',compact('data'));
     }

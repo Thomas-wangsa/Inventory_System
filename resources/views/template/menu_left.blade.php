@@ -144,14 +144,14 @@
           <div class="row">    
             <div class="icon-left">
               <div class="col-sm-2 icon-image">
-                <a href="{{route('home')}}">
+                <a href="{{route('profile')}}">
                   <span class="glyphicon glyphicon-envelope" style="color:black">
                   </span>
                 </a>
               </div>
               <div class="col-sm-10">
                 <div class="row">
-                  <a class="icon-text" href="{{route('home')}}">
+                  <a class="icon-text" href="{{route('profile')}}">
                     Profile
                   </a>
                 </div>
@@ -160,14 +160,14 @@
             <div class="clearfix"> </div>
             <div class="icon-left">
               <div class="col-sm-2 icon-image">
-                <a href="{{route('home')}}">
+                <a href="{{route('password')}}">
                   <span class="glyphicon glyphicon-wrench" style="color:black">
                   </span>
                 </a>
               </div>
               <div class="col-sm-10">
                 <div class="row">
-                  <a class="icon-text" href="{{route('home')}}">
+                  <a class="icon-text" href="{{route('password')}}">
                     Ganti Password
                   </a>
                 </div>

@@ -9,6 +9,8 @@ use Illuminate\Routing\UrlGenerator;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Divisi;
+use App\Http\Models\Inventory_Data;
+
 
 use App\Mail\AksesMail;
 use Illuminate\Support\Facades\Mail;
@@ -50,6 +52,40 @@ class AksesController extends Controller
             'user'          => Auth::user()
         );
 
+
+        if($this->credentials->divisi == 1 ) {
+            $data['notify']         = Inventory_Data::where('status_inventory',2)->count();
+        } else if ($this->credentials->divisi == 2) {
+            switch ($this->credentials->id_jabatan) {
+                case 2:
+                    $data['notify']         = Akses_Data::where('status_akses',1)->count();
+                    break;
+                case 3:
+                    $data['notify']         = Akses_Data::where('status_akses',2)->count();
+                    break;
+                case 4:
+                    $data['notify']         = Akses_Data::where('status_akses',3)->count();
+                    break;
+                case 5:
+                    $data['notify']         = Akses_Data::where('status_akses',4)->count();
+                    break;
+                case 6:
+                    $data['notify']         = Akses_Data::where('status_akses',5)->count();
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+        } else if($this->credentials->divisi == 3) {
+            switch($this->credentials->id_jabatan) {
+                case 2:
+                    $data['notify']         = Inventory_Data::where('status_inventory',1)->count();
+                    break;
+            }
+            
+        }
 
         
 
