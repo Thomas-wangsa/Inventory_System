@@ -28,6 +28,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/notify', 'HomeController@notify')->name('route_notify');
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::get('/password', 'HomeController@password')->name('password');
+	Route::post('/password', 'HomeController@post_password')->name('post_password');
 	Route::get('/akses', 'AksesController@index')->name('akses');
 	Route::get('/admin','AdminController@index')->name('route_admin');
 	Route::get('/setting','SettingController@index')->name('route_setting');

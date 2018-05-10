@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Users;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Inventory_Data;
+use Illuminate\Support\Facades\Hash;
+
 
 class HomeController extends Controller
 {   
@@ -199,5 +201,32 @@ class HomeController extends Controller
         }
         $data['credentials'] = $this->credentials;
         return view('dashboard/password',compact('data'));
+    }
+
+
+    public function post_password(Request $request) {
+
+        $validatedData = $request->validate([
+            'now_password'          => 'required|min:6',
+            'password'              => 'required|min:6|confirmed|different:now_password',
+            'password_confirmation' => 'required|min:6',
+        ]);
+
+        $user = Auth::user();
+        if(Hash::check($request->now_password, $user->password)){
+            $user->password = bcrypt($request->password);
+            $cek = $user->save();
+            if($cek) {
+                $request->session()->flash('alert-success', 'Password telah di update !');
+                
+            } else {
+                $request->session()->flash('alert-danger', 'Password gagal di update');
+            }
+        } else {
+            $request->session()->flash('alert-danger', 'Failed, Data password tidak cocok');
+        }
+
+        return redirect("password");
+        
     }
 }
