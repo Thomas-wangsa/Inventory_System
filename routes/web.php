@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::get('/password', 'HomeController@password')->name('password');
 	Route::post('/password', 'HomeController@post_password')->name('post_password');
+	Route::post('/ganti_foto', 'HomeController@ganti_foto')->name('ganti_foto');
 	Route::get('/akses', 'AksesController@index')->name('akses');
 	Route::get('/admin','AdminController@index')->name('route_admin');
 	Route::get('/setting','SettingController@index')->name('route_setting');

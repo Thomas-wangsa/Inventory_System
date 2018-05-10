@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Users;
+use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Inventory_Data;
 use Illuminate\Support\Facades\Hash;
@@ -228,5 +229,31 @@ class HomeController extends Controller
 
         return redirect("password");
         
+    }
+
+
+    public function ganti_foto(Request $request) {
+        $request->validate([
+        'background' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('background')) {
+            $image = $request->file('background');
+            $name = $this->credentials->id;
+            $destinationPath = public_path('/images/user/');
+            $image->move($destinationPath, $name);
+
+            $user = Users_Role::where('user_id',$this->credentials->id)->first();
+            $user->foto = "/images/user/".$name;
+            $user->save();
+
+            $request->session()->flash('alert-success', 'Foto telah di update');
+            
+        } else {
+            $request->session()->flash('alert-danger', 'Please contact your administrator');
+        }
+
+
+        return redirect('profile'); 
     }
 }

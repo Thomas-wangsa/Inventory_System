@@ -200,7 +200,8 @@ class DatabaseSeeder extends Seeder
                 "user_id"   => $value->id,
                 "divisi"    => $divisi,
                 "jabatan"   => $jabatan,
-                "uuid"      => $faker->uuid
+                "uuid"      => $faker->uuid,
+                "foto"      => "images/user/default.png"
             );
             Users_Role::firstOrCreate($data_array);
         }

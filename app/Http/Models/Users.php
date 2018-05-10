@@ -43,7 +43,7 @@ class Users extends Model
         ->where('users.id','=',$id)
         ->select('users.*','users_role.divisi',
             'users_role.jabatan AS id_jabatan',
-            'users_role.uuid',
+            'users_role.uuid','users_role.foto',
             DB::raw('case 
                 WHEN(users_role.divisi = 1) 
                     THEN (select name from divisi where id = users_role.divisi)

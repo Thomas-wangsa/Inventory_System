@@ -12,6 +12,7 @@ class Users_Role extends Model
     protected $table = "users_role";
     protected $primaryKey = 'id';
 
+
     public function scopeGetAksesDecisionMaker($query,$param) {
     	return $query->join('users','users.id','=','users_role.user_id')
     			->where('divisi',2)
