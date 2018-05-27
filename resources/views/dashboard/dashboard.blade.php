@@ -17,6 +17,75 @@
 }
 
 </style>
+    @if($data['credentials']->divisi == 4) 
+        <div style="padding: 0 30px;margin-top: 40px">
+        <div>
+            <div class="pull-left">
+                <form class="form-inline" action="{{route('route_admin')}}">
+                    
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="glyphicon glyphicon-search">
+                            </i>
+                        </span>
+                        <input type="text" class="form-control" 
+                        name="search_email" placeholder="Cari Nama...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <select class="form-control" name="search_filter">
+                            <option value=""> Filter Berdasarkan </option> 
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <select class="form-control" name="search_order">
+                            <option value=""> Sort Berdasarkan </option>
+                            <option value="1"> Nama </option>
+                            <option value="2"> Email </option>
+                            <option value="3"> Handphone </option>
+                        </select>
+                    </div>
+                  
+                    <button type="submit" class="btn btn-info"> Cari </button>
+                </form> 
+            </div>
+            <div class="pull-right"> 
+                <button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal1">
+                    Daftar
+                </button>
+                <button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal2">
+                    Daftarkan Vendor
+                </button>
+            </div>
+            <div class="clearfix"> </div>
+
+        </div>
+        <div style="margin-top: 10px"> 
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th> No </th>
+                    <th> Nama Lengkap </th>
+                    <th> Divisi </th>
+                    <th> Email </th>
+                    <th> Keterangan </th>
+                    <th> Status </th>
+                    <th> Action </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                </tbody>
+            </table>
+            <div class="pull-right" style="margin-top: -30px!important"> 
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+        </div>
+        @include('dashboard.modal_staff')
+        @include('dashboard.modal_vendor')
+    @else 
     <div style="padding: 25px 30px">
         <div class="flash-message center">
             @foreach (['danger', 'warning', 'success', 'info'] as $msg)
@@ -88,4 +157,5 @@
 
         </div> 
     </div>
+    @endif
 @endsection

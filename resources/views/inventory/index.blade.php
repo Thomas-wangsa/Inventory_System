@@ -34,7 +34,7 @@
 				    <input type="file" class="form-control" name="background" required>
 				</div>
 			  	<button type="submit" class="btn btn-primary">
-			  		Upload csv
+			  		Export csv
 			  	</button>
 			  	<button type="button" class="btn btn-success btn-md">
 				Tambah Inventory List

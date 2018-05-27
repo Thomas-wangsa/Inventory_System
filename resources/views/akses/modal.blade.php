@@ -74,6 +74,26 @@
 				    <label for="email">Email :</label>
 				    <input type="email" class="form-control" id="email" name="vendor_email" value="vendor@gmail.com">
 				  </div>
+
+				  <div class="form-group">
+				    <label for="staff_nama"> Masa Berlaku :</label>
+				    <input type="text" class="form-control" id="nama" name="vendor_nama" placeholder="yyyy-mm-dd">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="staff_nama"> Akses Lantai </label>
+				    <input type="text" class="form-control" id="nama" name="vendor_nama">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="staff_nama"> Pekerjaan </label>
+				    <input type="text" class="form-control" id="nama" name="vendor_nama">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="staff_nama"> Foto :</label>
+				    <input type="file" class="form-control" id="nama" name="staff_foto">
+				  </div>
 				 
 				  <button type="submit" class="btn btn-block btn-warning">Tambah Pengguna </button>
 				</form>

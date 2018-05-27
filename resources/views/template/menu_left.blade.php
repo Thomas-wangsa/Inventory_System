@@ -58,6 +58,8 @@
           </div>
           <div class="clearfix"> </div>
 
+          
+          @if($data['credentials']->divisi != 4)
           <div class="icon-left
           @if(Route::current()->getName() == 'inventory')
             hide
@@ -78,6 +80,7 @@
             </div>     
           </div>
           <div class="clearfix"> </div>
+          @endif
 
 
           @if(Route::current()->getName() == 'akses')
@@ -133,7 +136,7 @@
 
 
 
-
+          @if($data['credentials']->divisi != 4)
           <div class="icon-left
           @if(Route::current()->getName() == 'akses')
             hide
@@ -167,6 +170,7 @@
             </div>     
           </div>
           <div class="clearfix"> </div>
+          @endif
 
           @if($data['credentials']->divisi == 1)
           <div class="icon-left">
@@ -187,6 +191,7 @@
           <div class="clearfix"> </div>
           @endif
 
+          @if($data['credentials']->divisi != 4)
           <div class="icon-left
           @if(Route::current()->getName() == 'akses' || Route::current()->getName() == 'inventory')
             hide
@@ -207,8 +212,9 @@
             </div>     
           </div>
           <div class="clearfix" style="margin-bottom: 20px"> </div>
-
+          @endif
         </div>
+        
       </div>
 
     </div>

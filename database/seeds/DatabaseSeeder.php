@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
     	$divisi_array = array(
     		array("name"=>"administrator"),
     		array("name"=>"akses"),
-    		array("name"=>"inventory")
+    		array("name"=>"inventaris"),
+            array("name"=>"pic")
     	);
 
     	foreach ($divisi_array as $key => $value) {
@@ -180,7 +181,7 @@ class DatabaseSeeder extends Seeder
                     $jabatan    = 2;
                     break;
                 default:
-                    $divisi     = 2;
+                    $divisi     = 4;
                     $jabatan    = 1;
                     break;
             }
