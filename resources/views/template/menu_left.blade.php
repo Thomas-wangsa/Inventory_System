@@ -58,7 +58,11 @@
           </div>
           <div class="clearfix"> </div>
 
-          <div class="icon-left">
+          <div class="icon-left
+          @if(Route::current()->getName() == 'inventory')
+            hide
+          @endif
+          ">
             <div class="col-sm-2 icon-image">
               <a href="{{route('akses')}}">
                 <span class="glyphicon glyphicon-list-alt" style="color:black">
@@ -75,16 +79,88 @@
           </div>
           <div class="clearfix"> </div>
 
-          <div class="icon-left">
+
+          @if(Route::current()->getName() == 'akses')
+            <div class="icon-left">
+              <div class="col-sm-2 icon-image">
+                <a href="{{route('akses')}}">
+                  <span class="glyphicon glyphicon-list-alt" style="color:black">
+                  </span>
+                </a>
+              </div>
+              <div class="col-sm-10">
+                <div class="row">
+                  <a class="icon-text" href="{{route('akses')}}">
+                    Pencetakan Akses
+                  </a>
+                </div>
+              </div>     
+            </div>
+            <div class="clearfix"> </div>
+            <div class="icon-left">
+              <div class="col-sm-2 icon-image">
+                <a href="{{route('akses')}}">
+                  <span class="glyphicon glyphicon-list-alt" style="color:black">
+                  </span>
+                </a>
+              </div>
+              <div class="col-sm-10">
+                <div class="row">
+                  <a class="icon-text" href="{{route('akses')}}">
+                    Pengaktifan Akses
+                  </a>
+                </div>
+              </div>     
+            </div>
+            <div class="clearfix"> </div>
+            <div class="icon-left">
+              <div class="col-sm-2 icon-image">
+                <a href="{{route('akses')}}">
+                  <span class="glyphicon glyphicon-list-alt" style="color:black">
+                  </span>
+                </a>
+              </div>
+              <div class="col-sm-10">
+                <div class="row">
+                  <a class="icon-text" href="{{route('akses')}}">
+                    Aktifkan Akses
+                  </a>
+                </div>
+              </div>     
+            </div>
+            <div class="clearfix"> </div>
+          @endif
+
+
+
+
+          <div class="icon-left
+          @if(Route::current()->getName() == 'akses')
+            hide
+          @endif
+
+          ">
             <div class="col-sm-2 icon-image">
               <a href="{{route('inventory')}}">
-                <span class="glyphicon glyphicon-th-large " style="color:black">
+                <span class="glyphicon glyphicon-th-large "
+                @if(Route::current()->getName() == 'inventory')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('inventory')}}">
+                <a class="icon-text" href="{{route('inventory')}}"
+                @if(Route::current()->getName() == 'inventory')
+                  style="color:blue"
+                @endif
+
+
+                >
                   Inventory
                 </a>
               </div>
@@ -111,7 +187,11 @@
           <div class="clearfix"> </div>
           @endif
 
-          <div class="icon-left">
+          <div class="icon-left
+          @if(Route::current()->getName() == 'akses' || Route::current()->getName() == 'inventory')
+            hide
+          @endif
+          ">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_setting')}}">
                 <span class="glyphicon glyphicon-cog " style="color:black">

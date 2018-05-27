@@ -91,6 +91,7 @@
 			    						<span class="glyphicon glyphicon-trash">
 			    						</span>
 			    					</span>
+			    				<span class="glyphicon glyphicon-plus" style="color: green"></span>
 			    				</div>
 			    			</td>
 			    		</tr>

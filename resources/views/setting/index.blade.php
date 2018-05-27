@@ -14,21 +14,7 @@
     @endforeach
 </div> <!-- end .flash-message -->
 <div class="col-sm-12" style="margin-top: 30px">
-    <a href="{{route('show_inventory')}}">
-        <button type="button" class="btn btn-default">
-          <span class="glyphicon glyphicon-th-list">
-          	Tambah List Inventory
-          </span> 
-        </button>
-    </a>
 
-    <a href="">
-        <button type="button" class="btn btn-default">
-          <span class="glyphicon glyphicon-th-list">
-          	Upload CSV
-          </span> 
-        </button>
-    </a>
 
     <a href="{{route('show_background')}}">
         <button type="button" class="btn btn-default">
@@ -38,21 +24,14 @@
         </button>
     </a>
 
-    <a href="">
-        <button type="button" class="btn btn-default">
-          <span class="glyphicon glyphicon-th-list">
-            Kasih Akses
-          </span> 
-        </button>
-    </a>
-
+<!-- 
     <a href="">
         <button type="button" class="btn btn-default">
           <span class="glyphicon glyphicon-th-list">
             Sharing Inventory Akses
           </span> 
         </button>
-    </a>
+    </a> -->
 
 </div>
 @endsection

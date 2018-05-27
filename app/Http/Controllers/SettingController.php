@@ -27,6 +27,7 @@ class SettingController extends Controller {
     }
 
     public function index(Request $request) {
+        return redirect('setting/show-background');
         if($this->credentials->divisi == 1) {
             $access = true;
         } else {

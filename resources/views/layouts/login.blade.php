@@ -59,15 +59,17 @@
 	<div class="container" style="">
 			<div class="center" style="">
 				<div style="margin-top: 40px"> </div>
-                <a href="{{ route('login')}}">
-				    <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / >
-                </a>
-				<div class="text-center"> 
-					<h4> Inventory Management </h4> 
-				</div>
 
-				@yield('content')
-				
+                <div style="background-color: white">
+                    <a href="{{ route('login')}}">
+    				    <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / >
+                    </a>
+    				<div class="text-center"> 
+    					<h4> Inventory Management </h4> 
+    				</div>
+
+    				@yield('content')
+				</div>
 				<div class="footer" style="margin-bottom: 20px"> XXX Party &#169; 2018 All Right Reserved </div>
 			</div>
 	</div>

@@ -27,6 +27,27 @@
 		    @endforeach
 		</div> <!-- end .flash-message -->
 		<div >
+				
+			<form class="form-inline">
+				{{ csrf_field() }}
+			  	<div class="form-group">
+				    <input type="file" class="form-control" name="background" required>
+				</div>
+			  	<button type="submit" class="btn btn-primary">
+			  		Upload csv
+			  	</button>
+			  	<button type="button" class="btn btn-success btn-md">
+				Tambah Inventory List
+				</button>
+			</form>
+				
+
+
+			
+
+
+
+			<div class="clearfix" style="margin-bottom: 10px"> </div>
 			<div class="pull-left"> 
 				<form class="form-inline" action="{{route('route_admin')}}">
 				    
