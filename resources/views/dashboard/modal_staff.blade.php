@@ -11,7 +11,7 @@
           </h4>
         </div>
         <div class="modal-body">
-	  			<form>
+	  			<form method="POST" action="{{ route('post_pendaftaran_pic') }}">
 				  {{ csrf_field() }}
 				  <input type="hidden" name="type_daftar" value="staff">
 				  <div class="form-group">

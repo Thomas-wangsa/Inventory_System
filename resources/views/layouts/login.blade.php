@@ -70,7 +70,7 @@
 
     				@yield('content')
 				</div>
-				<div class="footer" style="margin-bottom: 20px"> XXX Party &#169; 2018 All Right Reserved </div>
+				<div class="footer" style="margin-bottom: 20px"> Indosat System &#169; 2018 All Right Reserved </div>
 			</div>
 	</div>
 

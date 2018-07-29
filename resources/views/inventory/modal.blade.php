@@ -33,7 +33,7 @@
 				  
 				  <div class="form-group">
 				    <label for="email"> Serial Number : </label>
-				    <input type="text" class="form-control" id="email" name="SN" value="egehshshhwr">
+				    <input type="text" class="form-control" id="email" name="SN" value="6356868-111x">
 				  </div>
 
 				  <div class="form-group">
@@ -44,6 +44,23 @@
 				  <div class="form-group">
 				    <label for="email"> Tempat : </label>
 				    <input type="text" class="form-control" id="email" name="tempat" value="Lantai 1">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="email"> Denah : </label>
+				    <input type="file" class="form-control" name="background">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="email"> Foto : </label>
+				    <input type="file" class="form-control" name="background">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="email"> Lokasi : </label>
+				    <button type="submit" class="btn btn-block btn-primary">
+				    	Set Location
+				    </button>
 				  </div>
 
 				  <div class="form-group">

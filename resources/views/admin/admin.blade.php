@@ -91,7 +91,7 @@
 			    						<span class="glyphicon glyphicon-trash">
 			    						</span>
 			    					</span>
-			    				<span class="glyphicon glyphicon-plus" style="color: green"></span>
+			    				<span class="glyphicon glyphicon-plus" style="color: green" data-toggle="modal" data-target="#modal_special"></span>
 			    				</div>
 			    			</td>
 			    		</tr>
@@ -107,6 +107,7 @@
 	</div>
 
 	@include('admin.modal');
+	@include('admin.modal_special');
 
 <script type="text/javascript">
 

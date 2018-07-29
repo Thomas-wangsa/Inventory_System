@@ -11,7 +11,7 @@
           	<div style="width: 100%">
           		<div class="col-sm-6" id="staff_main"  
           		style="cursor: pointer">
-          			Staff Kami
+          			Staff Indosat
           		</div>
           		<div class="col-sm-6" id="vendor_main"
           		style="cursor: pointer">
@@ -33,6 +33,11 @@
 				  </div>
 				  
 				  <div class="form-group">
+				    <label for="email"> Email :</label>
+				    <input type="email" class="form-control" id="email" name="staff_email" value="thomas@gmail.com">
+				  </div>
+
+				  <div class="form-group">
 				    <label for="staff_divisi"> Divisi :</label>
 				    <input type="text" class="form-control" id="nama" name="staff_divisi" value="divisi">
 				  </div>
@@ -42,10 +47,7 @@
 				    <input type="text" class="form-control" id="nama" name="staff_jabatan" value="Staff">
 				  </div>
 				  
-				  <div class="form-group">
-				    <label for="email"> Email :</label>
-				    <input type="email" class="form-control" id="email" name="staff_email" value="thomas@gmail.com">
-				  </div>
+				  
 				  
 				  <div class="form-group">
 				    <label for="staff_nama"> NIK :</label>
@@ -62,7 +64,8 @@
         	</div>
 
         	<div id="vendor">
-	  			<form method="POST" action="{{ route('post_pendaftaran_akses') }}">
+	  			<form method="POST" enctype="multipart/form-data"
+	  			action="{{ route('post_pendaftaran_akses') }}">
 	  			  {{ csrf_field() }}
 	  			  <input type="hidden" name="type_daftar" value="vendor">
 	  			  <div class="form-group">
@@ -77,17 +80,17 @@
 
 				  <div class="form-group">
 				    <label for="staff_nama"> Masa Berlaku :</label>
-				    <input type="text" class="form-control" id="nama" name="vendor_nama" placeholder="yyyy-mm-dd">
+				    <input type="text" class="form-control" id="nama" name="expiry" placeholder="yyyy-mm-dd">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="staff_nama"> Akses Lantai </label>
-				    <input type="text" class="form-control" id="nama" name="vendor_nama">
+				    <input type="text" class="form-control" id="nama" name="lantai">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="staff_nama"> Pekerjaan </label>
-				    <input type="text" class="form-control" id="nama" name="vendor_nama">
+				    <input type="text" class="form-control" id="nama" name="pekerjaan">
 				  </div>
 
 				  <div class="form-group">

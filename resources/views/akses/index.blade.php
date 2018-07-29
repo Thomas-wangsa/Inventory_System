@@ -44,9 +44,9 @@
 					<div class="form-group">
 				      	<select class="form-control" name="search_filter">
 				      		<option value=""> Filter Berdasarkan </option>
-				        	@foreach($data['divisi'] as $key=>$val)
-				    		<option value="{{$val->id}}"> {{ucfirst($val->name)}}</option>
-				    		@endforeach 
+				        	@foreach($data['status_akses'] as $key=>$val)
+                            <option value="{{$val->id}}"> {{ucfirst($val->name)}}</option>
+                            @endforeach  
 				      	</select>
 				  	</div>
 
@@ -84,205 +84,33 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	@if (count($data['akses']) == 0 ) 
-			    	<td colspan="7" class="text-center"> Kosong </td>
-			    	@else 
-			    		@foreach($data['akses'] as $key=>$val)
-			    		<tr> 
-			    			<td>  
-			    				{{ ($data['akses']->currentpage()-1) 
-			    				* $data['akses']->perpage() + $key + 1 }}
-			    			</td>
-			    			<td> {{$val->name}} </td>
-			    			<td> {{$val->divisi}} </td>
-			    			<td> {{$val->email}} </td>
-			    			<td> Updated By : {{ $val->username}} </td>
-			    			<td style="color: {{$val->color}}"> {{$val->status_name}} </td>
-			    				
-			    			<td style="width: 250px">
-			    			@if($data['credentials']->divisi == 1)
-			    				@switch($val->status_akses)
-									@case(1) 
-									@case(3)
-									@case(5)
-										@include('akses.decision')
-										@break
-									@case(2)
-										<form method="POST" 
-										action="{{route('post_pencetakan_akses')}}">
-											{{ csrf_field() }}
-											<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
-											<input type="hidden" name="data_id" value="{{$val->id}}" >
-											<div class="text-center">
-												<button type="submit" class="btn btn-warning"> Cetak Kartu </button>
-											</div>
-										</form>
-										@break
-									@case(4)
-										<form method="POST" 
-										action="{{route('post_aktifkan_akses')}}">
-											{{ csrf_field() }}
-											<input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
-											<input type="hidden" name="data_id" value="{{$val->id}}" >
-											<div class="text-center">
-												<button type="submit" class="btn btn-warning"> Aktifkan Kartu </button>
-											</div>
-										</form>
-										@break
-									@case(6)
-										<div class="text-center"> 
-										 	Kartu Aktif
-										</div>
-										@break
-									@default
-										<div class="text-center"> 
-											{{$val->comment}}
-										</div>
-									@break
-							@endswitch
-		    				@elseif($data['credentials']->id_jabatan == 1)
-		    					@switch($val->status_akses)
-		    						@case(7)
-		    						@case(8)
-		    						@case(9)
-		    							<div class="text-center"> 
-										{{$val->comment}}
-										</div>
-										@break
-									@default
-										<div class="text-center">
-		    							{{$val->status_name}}
-		    							</div>
-		    							@break;
-		    					@endswitch
-		    				@elseif($data['credentials']->id_jabatan == 2)
-		    					@switch($val->status_akses)
-		    						@case(7)
-		    						@case(8)
-		    						@case(9)
-		    							<div class="text-center"> 
-										{{$val->comment}}
-										</div>
-										@break
-		    						@case(1)
-		    							@include('akses.decision')
-		    							@break
-		    						@default
-		    							<div class="text-center">
-		    							{{$val->status_name}}
-		    							</div>
-		    							@break
-		    					@endswitch
-		    				@elseif($data['credentials']->id_jabatan == 3)
-		    					@switch($val->status_akses)
-		    						@case(7)
-		    						@case(8)
-		    						@case(9)
-		    							<div class="text-center"> 
-										{{$val->comment}}
-										</div>
-										@break
-		    						@case(2)
-		    							<form method="POST" 
-		    							action="{{route('post_pencetakan_akses')}}">
-											{{ csrf_field() }}
-											<input type="hidden" name="updated_by" 
-											value="{{$data['credentials']->id}}">
-											<input type="hidden" name="data_id" 
-											value="{{$val->id}}" >
-											<div class="text-center">
-												<button type="submit" class="btn btn-warning"> 
-													Cetak Kartu 
-												</button>
-											</div>
-										</form>
-		    							@break
-		    						@default
-		    							<div class="text-center">
-		    							{{$val->status_name}}
-		    							</div>
-		    							@break
-		    					@endswitch
-		    				@elseif($data['credentials']->id_jabatan == 4)
-		    					@switch($val->status_akses)
-		    						@case(7)
-		    						@case(8)
-		    						@case(9)
-		    							<div class="text-center"> 
-										{{$val->comment}}
-										</div>
-										@break
-		    						@case(3)
-		    							@include('akses.decision')
-		    							@break
-		    						@default
-		    							<div class="text-center">
-		    							{{$val->status_name}}
-		    							</div>
-		    							@break
-		    					@endswitch
-		    				@elseif($data['credentials']->id_jabatan == 5)
-		    					@switch($val->status_akses)
-		    						@case(7)
-		    						@case(8)
-		    						@case(9)
-		    							<div class="text-center"> 
-										{{$val->comment}}
-										</div>
-										@break
-		    						@case(4)
-		    							<form method="POST" 
-		    							action="{{route('post_aktifkan_akses')}}">
-											{{ csrf_field() }}
-											<input type="hidden" name="updated_by" 
-											value="{{$data['credentials']->id}}">
-											<input type="hidden" name="data_id" 
-											value="{{$val->id}}" >
-											<div class="text-center">
-												<button type="submit" class="btn btn-warning"> 
-													Aktifkan Kartu 
-												</button>
-											</div>
-										</form>
-		    							@break
-		    						@default
-		    							<div class="text-center">
-		    							{{$val->status_name}}
-		    							</div>
-		    							@break
-		    					@endswitch
-		    				@elseif($data['credentials']->id_jabatan == 6)
-		    					@switch($val->status_akses)
-		    						@case(7)
-		    						@case(8)
-		    						@case(9)
-		    							<div class="text-center"> 
-										{{$val->comment}}
-										</div>
-										@break
-		    						@case(5)
-		    							@include('akses.decision')
-		    							@break
-		    						@default
-		    							<div class="text-center">
-		    							{{$val->status_name}}
-		    							</div>
-		    							@break
-		    					@endswitch
-		    				@endif
+				    @if(count($data['data']) < 1)
+	                    <tr>
+	                        <td colspan="10" class="text-center"> No Data Found </td>
+	                    </tr>
+	                @else 
+	                    <?php $no = 1; ?>
+	                    @foreach($data['data'] as $key=>$val)
+	                    <tr>
+	                        <td> {{$no}}</td>
+	                        <td> {{$val->name}}</td>
+	                        <td> {{$val->divisi}}</td>
+	                        <td> {{$val->email}}</td>
+	                        <td> Updated By {{$val->username}}</td>
+	                        <td style="color:{{$val->status_color}}"> {{$val->status_name}}</td>
+	                        <td>
+	                        	@if($val->status_akses == $data['execute'])
+	                        		afa
+	                        	@endif
 
+	                        </td>
 
-			    				
-			    			</td>
-			    		</tr>
-			    		@endforeach
-			      	@endif 
-
+	                    </tr>
+	                    <?php $no++;?>
+	                    @endforeach
+	                @endif
 			    </tbody>
 			</table>
-			<div class="pull-right" style="margin-top: -30px!important"> 
-			{{ $data['akses']->links() }}
-			</div>
 			<div class="clearfix"> </div>
 		</div>
 	</div>

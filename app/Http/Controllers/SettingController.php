@@ -128,32 +128,16 @@ class SettingController extends Controller {
 
 
     public function show_background(Request $request) {
-        $setting_list_id = 4;
-        if($this->credentials->divisi == 1) {
-            $access = true;
-        } else {
-            $check = Setting_Data::where('user_id',$this->credentials->id)
-            ->where('setting_list_id',$setting_list_id)
-            ->first();
 
-            if(count($check) > 0) {
-                $access = true;
-            } else {
-                $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur ini');
-                return redirect('setting'); 
-            }
-        }
-
-        if($access) {
-            $data = array(
+        $data = array(
             'credentials'   => $this->credentials,
             'background'    => Design::first()
             );
             return view('setting/show_background',compact("data"));
-        } else {
-            $request->session()->flash('alert-danger', 'Please contact your administrator');
-            return redirect('setting');
-        }
+
+
+
+        
     }
 
     public function update_background(Request $request) {

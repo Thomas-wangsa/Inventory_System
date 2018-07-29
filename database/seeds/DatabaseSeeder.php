@@ -30,10 +30,10 @@ class DatabaseSeeder extends Seeder
 
         $faker = Faker::create();
     	$divisi_array = array(
-    		array("name"=>"administrator"),
+            array("name"=>"pic"),
     		array("name"=>"akses"),
     		array("name"=>"inventaris"),
-            array("name"=>"pic")
+            array("name"=>"administrator")
     	);
 
     	foreach ($divisi_array as $key => $value) {
@@ -47,23 +47,20 @@ class DatabaseSeeder extends Seeder
 
         $users_array = array(
             array(
-                "name"=>"admin",
-                "email"=>"admin@gmail.com",
+                "name"=>"staff_pic",
+                "email"=>"staff.pic@gmail.com",
                 "password"=>bcrypt(123456)
             ),
+            
             array(
                 "name"=>"thomas",
                 "email"=>"thomas.wangsa@gmail.com",
                 "password"=>bcrypt(123456)
             ),
+            
             array(
                 "name"=>"staff_pendaftaran",
                 "email"=>"staff.pendaftaran@gmail.com",
-                "password"=>bcrypt(123456)
-            ),
-            array(
-                "name"=>"head_pendaftaran",
-                "email"=>"head.pendaftaran@gmail.com",
                 "password"=>bcrypt(123456)
             ),
             array(
@@ -72,18 +69,8 @@ class DatabaseSeeder extends Seeder
                 "password"=>bcrypt(123456)
             ),
             array(
-                "name"=>"head_pencetakan",
-                "email"=>"head.pencetakan@gmail.com",
-                "password"=>bcrypt(123456)
-            ),
-            array(
                 "name"=>"staff_pengaktifan",
                 "email"=>"staff.pengaktifan@gmail.com",
-                "password"=>bcrypt(123456)
-            ),
-            array(
-                "name"=>"head_pengaktifan",
-                "email"=>"head.pengaktifan@gmail.com",
                 "password"=>bcrypt(123456)
             ),
             array(
@@ -97,32 +84,37 @@ class DatabaseSeeder extends Seeder
                 "password"=>bcrypt(123456)
             ),
             array(
+                "name"=>"admin",
+                "email"=>"admin@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
                 "name"=>"dummy_data",
                 "email"=>"dummy_data@gmail.com",
                 "password"=>bcrypt(123456)
             )
         );
 
+        
+
         $inventory_list_array = array(
             "inventory_name"=>"cctv",
             "updated_by"=>1
         );
+
+
         foreach ($users_array as $key => $value) {
-            Users::firstOrCreate($value);
+            Users::firstOrCreate($value); 
             if($key == 1) {
                 Inventory_List::firstOrCreate($inventory_list_array);
-            }
-            
+            }          
         }
-        
+
 
         $akses_role_array = array(
             array("name"=>"staff pendaftaran"),
-            array("name"=>"head pendaftaran"),
             array("name"=>"staff pencetakan"),
-            array("name"=>"head pencetakan"),
             array("name"=>"staff pengaktifan "),
-            array("name"=>"head pengaktifan"),
         );
 
         foreach ($akses_role_array as $key => $value) {
@@ -161,28 +153,28 @@ class DatabaseSeeder extends Seeder
                     $jabatan    = 3;
                     break;
                 case 6:
-                    $divisi     = 2;
-                    $jabatan    = 4;
-                    break;
-                case 7:
-                    $divisi     = 2;
-                    $jabatan    = 5;
-                    break;
-                case 8:
-                    $divisi     = 2;
-                    $jabatan    = 6;
-                    break;
-                case 9:
                     $divisi     = 3;
                     $jabatan    = 1;
+                    break;
+                case 7:
+                    $divisi     = 3;
+                    $jabatan    = 2;
+                    break;
+                case 8:
+                    $divisi     = 4;
+                    $jabatan    = 0;
+                    break;
+                case 9:
+                    $divisi     = 4;
+                    $jabatan    = 0;
                     break;
                 case 10:
                     $divisi     = 3;
                     $jabatan    = 2;
                     break;
                 default:
-                    $divisi     = 4;
-                    $jabatan    = 1;
+                    $divisi     = 1;
+                    $jabatan    = 0;
                     break;
             }
 
@@ -209,10 +201,8 @@ class DatabaseSeeder extends Seeder
 
         $status_akses_array = array(
             array("name"=>"Pending Daftar","color"=>"#FFFF00"),
-            array("name"=>"Diterima Daftar","color"=>"#00FF00"),
-            array("name"=>"Pending Cetak","color"=>"#FFFF00"),
-            array("name"=>"Diterima Cetak","color"=>"#00FF00"),
-            array("name"=>"Pending Pengaktifan","color"=>"#FFFF00"),
+            array("name"=>"Pending Cetak","color"=>"#00FF00"),
+            array("name"=>"Pending Aktif","color"=>"#00FF00"),
             array("name"=>"Kartu Aktif","color"=>"#00FF00"),
             array("name"=>"Ditolak Daftar","color"=>"#FF0000"),
             array("name"=>"Ditolak Cetak","color"=>"#FF0000"),
@@ -226,17 +216,17 @@ class DatabaseSeeder extends Seeder
         
 
 
-        $status_akses_array = array(
-            array("name"=>"Pending Head","color"=>"#FFFF00"),
-            array("name"=>"Diterima Head","color"=>"#00FF00"),
-            array("name"=>"Diterima Admin","color"=>"#FFFF00"),
-            array("name"=>"Ditolak Head","color"=>"#FF0000"),
-            array("name"=>"Ditolak Admin","color"=>"#FF0000")
-        );
+        // $status_akses_array = array(
+        //     array("name"=>"Pending Head","color"=>"#FFFF00"),
+        //     array("name"=>"Diterima Head","color"=>"#00FF00"),
+        //     array("name"=>"Diterima Admin","color"=>"#FFFF00"),
+        //     array("name"=>"Ditolak Head","color"=>"#FF0000"),
+        //     array("name"=>"Ditolak Admin","color"=>"#FF0000")
+        // );
 
-        foreach ($status_akses_array as $key => $value) {
-            Status_Inventory::firstOrCreate($value);
-        }
+        // foreach ($status_akses_array as $key => $value) {
+        //     Status_Inventory::firstOrCreate($value);
+        // }
 
         $setting_list_array = array(
             array('setting_name'  => 'inventory level'),
@@ -249,12 +239,12 @@ class DatabaseSeeder extends Seeder
             Setting_List::firstOrCreate($value);
         }
 
-        $setting_data_array = array(
-            "user_id"=>2,
-            "setting_list_id"=>1,
-            "updated_by"=>1
-        );
-        Setting_Data::firstOrCreate($setting_data_array);
+        // $setting_data_array = array(
+        //     "user_id"=>2,
+        //     "setting_list_id"=>1,
+        //     "updated_by"=>1
+        // );
+        // Setting_Data::firstOrCreate($setting_data_array);
     }
 
 

@@ -20,6 +20,7 @@ class CreateAksesDataTable extends Migration
             $table->string('email');
             $table->unsignedInteger('status_data')->default(1);
             $table->unsignedInteger('status_akses');
+            $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');
             $table->string('divisi')->nullable();
             $table->string('jabatan')->nullable();
@@ -31,6 +32,9 @@ class CreateAksesDataTable extends Migration
 
             $table->foreign('status_akses', 'akses_data_fkey')
                 ->references('id')->on('status_akses')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+            $table->foreign('created_by', 'akses_data_created_fkey')
+                ->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
             $table->foreign('updated_by', 'akses_data_updated_fkey')
                 ->references('id')->on('users')

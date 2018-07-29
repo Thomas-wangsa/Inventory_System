@@ -11,7 +11,7 @@
           </h4>
         </div>
         <div class="modal-body">
-	  			<form method="POST" action="{{ route('post_pendaftaran_akses') }}">
+	  			<form method="POST" action="{{ route('post_pendaftaran_pic') }}">
 	  			  {{ csrf_field() }}
 	  			  <input type="hidden" name="type_daftar" value="vendor">
 	  			  <div class="form-group">
@@ -26,17 +26,17 @@
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Masa Berlaku :</label>
-  				    <input type="text" class="form-control" id="nama" name="vendor_nama" placeholder="yyyy-mm-dd">
+  				    <input type="text" class="form-control" id="nama" name="expiry" placeholder="yyyy-mm-dd">
   				  </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Akses Lantai </label>
-  				    <input type="text" class="form-control" id="nama" name="vendor_nama">
+  				    <input type="text" class="form-control" id="nama" name="floor">
   				  </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Pekerjaan </label>
-  				    <input type="text" class="form-control" id="nama" name="vendor_nama">
+  				    <input type="text" class="form-control" id="nama" name="pekerjaan">
   				  </div>
 
   				  <div class="form-group">

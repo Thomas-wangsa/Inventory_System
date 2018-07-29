@@ -59,12 +59,8 @@
           <div class="clearfix"> </div>
 
           
-          @if($data['credentials']->divisi != 4)
-          <div class="icon-left
-          @if(Route::current()->getName() == 'inventory')
-            hide
-          @endif
-          ">
+          @if($data['credentials']->divisi == 2 || $data['credentials']->divisi == 4)
+          <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('akses')}}">
                 <span class="glyphicon glyphicon-list-alt" style="color:black">
@@ -74,7 +70,7 @@
             <div class="col-sm-10">
               <div class="row">
                 <a class="icon-text" href="{{route('akses')}}">
-                  Pendaftaran Akses
+                 Akses
                 </a>
               </div>
             </div>     
@@ -83,66 +79,12 @@
           @endif
 
 
-          @if(Route::current()->getName() == 'akses')
-            <div class="icon-left">
-              <div class="col-sm-2 icon-image">
-                <a href="{{route('akses')}}">
-                  <span class="glyphicon glyphicon-list-alt" style="color:black">
-                  </span>
-                </a>
-              </div>
-              <div class="col-sm-10">
-                <div class="row">
-                  <a class="icon-text" href="{{route('akses')}}">
-                    Pencetakan Akses
-                  </a>
-                </div>
-              </div>     
-            </div>
-            <div class="clearfix"> </div>
-            <div class="icon-left">
-              <div class="col-sm-2 icon-image">
-                <a href="{{route('akses')}}">
-                  <span class="glyphicon glyphicon-list-alt" style="color:black">
-                  </span>
-                </a>
-              </div>
-              <div class="col-sm-10">
-                <div class="row">
-                  <a class="icon-text" href="{{route('akses')}}">
-                    Pengaktifan Akses
-                  </a>
-                </div>
-              </div>     
-            </div>
-            <div class="clearfix"> </div>
-            <div class="icon-left">
-              <div class="col-sm-2 icon-image">
-                <a href="{{route('akses')}}">
-                  <span class="glyphicon glyphicon-list-alt" style="color:black">
-                  </span>
-                </a>
-              </div>
-              <div class="col-sm-10">
-                <div class="row">
-                  <a class="icon-text" href="{{route('akses')}}">
-                    Aktifkan Akses
-                  </a>
-                </div>
-              </div>     
-            </div>
-            <div class="clearfix"> </div>
-          @endif
+ 
 
 
 
-          @if($data['credentials']->divisi != 4)
-          <div class="icon-left
-          @if(Route::current()->getName() == 'akses')
-            hide
-          @endif
-
-          ">
+          @if($data['credentials']->divisi == 3 || $data['credentials']->divisi == 4)
+          <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('inventory')}}">
                 <span class="glyphicon glyphicon-th-large "
@@ -172,7 +114,7 @@
           <div class="clearfix"> </div>
           @endif
 
-          @if($data['credentials']->divisi == 1)
+          @if($data['credentials']->divisi == 4)
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_admin')}}">
@@ -191,7 +133,7 @@
           <div class="clearfix"> </div>
           @endif
 
-          @if($data['credentials']->divisi != 4)
+          @if($data['credentials']->divisi == 4)
           <div class="icon-left
           @if(Route::current()->getName() == 'akses' || Route::current()->getName() == 'inventory')
             hide

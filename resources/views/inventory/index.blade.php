@@ -30,14 +30,14 @@
 				
 			<form class="form-inline">
 				{{ csrf_field() }}
-			  	<div class="form-group">
+			  	<div class="form-group hide">
 				    <input type="file" class="form-control" name="background" required>
 				</div>
-			  	<button type="submit" class="btn btn-primary">
+			  	<button type="submit" class="btn btn-primary hide">
 			  		Export csv
 			  	</button>
-			  	<button type="button" class="btn btn-success btn-md">
-				Tambah Inventory List
+			  	<button type="button" class="btn btn-danger btn-md">
+				Sharing Access
 				</button>
 			</form>
 				
@@ -81,7 +81,7 @@
 				  	<button type="submit" class="btn btn-info"> Cari </button>
 			  	</form>
 			</div>
-			<div class="pull-right">  
+			<div class="pull-right hide">  
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal">
 					Tambah Barang
 				</button>
@@ -103,74 +103,18 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	@if(count($data['inventory_data']) == 0) 
-					<td colspan="7" class="text-center"> Kosong </td>			    	
-					@else
-						@foreach($data['inventory_data'] as $key=>$val)
-						<tr> 
-							<td> {{$key+1}}</td>
-							<td> {{$val->inventory_sub_list_name}}</td>
-							<td> {{$val->inventory_name}}</td>
-							<td> {{$val->count}}</td>
-							<td> {{$val->username}}</td>
-							<td style="color: {{$val->color}}"> {{$val->status_name}}</td>
-							<td>
-								@if($data['credentials']->divisi == 1)
-									@switch($val->status_inventory)
-										@case(1) 
-										@case(2)
-				    						@include('inventory.decision')
-				    						@break 
-				    					@case(3) 
-				    						<div class="text-center">
-				    							Inventory Aktif 
-				    						</div>
-				    						@break
-				    					@case(4) 
-				    					@case(5) 
-				    						<div class="text-center">
-				    							{{$val->comment}} 
-				    						</div>
-				    						@break
-		    						@endswitch
-		    					@elseif($data['credentials']->id_jabatan == 1)
-		    						@switch($val->status_inventory)
-				    					@case(3) 
-				    						<div class="text-center">
-				    							Inventory Aktif 
-				    						</div>
-				    						@break
-				    					@case(4) 
-				    					@case(5) 
-				    						<div class="text-center">
-				    							{{$val->comment}} 
-				    						</div>
-				    						@break
-		    						@endswitch
-		    					@elseif($data['credentials']->id_jabatan == 2)
-		    						@switch($val->status_inventory)
-		    							@case(1)
-		    								@include('inventory.decision')
-		    								@break
-				    					@case(3) 
-				    						<div class="text-center">
-				    							Inventory Aktif 
-				    						</div>
-				    						@break
-				    					@case(4) 
-				    					@case(5) 
-				    						<div class="text-center">
-				    							{{$val->comment}} 
-				    						</div>
-				    						@break
-		    						@endswitch
-	    						@endif
-							</td>
-						</tr>
-						@endforeach 
-					
-
-			    	@endif
+			    	<tr>
+			    		<td> 1 </td>
+			    		<td> CCTV Samkok </td>
+			    		<td> cctv </td>
+			    		<td> 9 </td>
+			    		<td> Staff Inventory Agus </td>
+			    		<td style="color:blue"> Pending Head </td>
+			    		<td> 
+			    			<span class="glyphicon glyphicon-check" style="color:green" ></span>
+			    			<span class="glyphicon glyphicon-remove" style="color:red" ></span>
+			    		</td> 
+			    	</tr>
 
 			    </tbody>
 			</table>
