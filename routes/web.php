@@ -27,19 +27,26 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/home', 'HomeController@index')->name('home');
 
 
-	// Akses Features
-	
+	// Akses Features	
 	Route::get('/akses', 'AksesController@index')->name('akses');
-	
-	Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');
-
-	
+	Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');	
 	Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
+	Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
+	Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
+	Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
 
 
-
-
+	// Inventory Features
 	Route::get('/inventory','InventoryController@index')->name('inventory');
+	Route::get('/map_location','InventoryController@map_location')->name('map');
+	Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
+	// Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
+	// Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
+
+
+	// Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
+	// Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
+	// Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
 
 
 	// Profile Features
@@ -81,18 +88,7 @@ Route::group(['middleware' => ['auth']], function() {
 	// Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
 	// Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
 
-	// Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
-	// Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
-	// Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
-
-	// Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
-	// Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
-	// Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
-
-	// Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
-	// Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
-	// Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
-
+	
 
 	// Route::post('/pendaftaran_diterima', 'AksesController@pendaftaran_diterima')->name('post_pendaftaran_diterima');
 

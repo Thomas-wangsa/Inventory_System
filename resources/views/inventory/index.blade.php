@@ -2,16 +2,6 @@
 
 @section('content')
 	<div style="padding: 0 30px;margin-top: 40px">
-		@if ($errors->any())
-	    <div class="alert alert-danger">
-	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	        <ul>
-	            @foreach ($errors->all() as $error)
-	                <li>{{ $error }}</li>
-	            @endforeach
-	        </ul>
-	    </div>
-		@endif
 
 
 		<div class="flash-message center">
@@ -26,7 +16,9 @@
 		      @endif
 		    @endforeach
 		</div> <!-- end .flash-message -->
-		<div >
+		
+
+		<div>
 				
 			<form class="form-inline">
 				{{ csrf_field() }}
@@ -36,7 +28,7 @@
 			  	<button type="submit" class="btn btn-primary hide">
 			  		Export csv
 			  	</button>
-			  	<button type="button" class="btn btn-danger btn-md">
+			  	<button type="button" class="btn btn-danger btn-md hide">
 				Sharing Access
 				</button>
 			</form>
@@ -81,7 +73,13 @@
 				  	<button type="submit" class="btn btn-info"> Cari </button>
 			  	</form>
 			</div>
-			<div class="pull-right hide">  
+			<div class="pull-right
+			<?php
+				if($data['credentials']->id_jabatan != 1) {
+					echo "hide";
+				}
+			?>
+			">  
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal">
 					Tambah Barang
 				</button>
@@ -103,23 +101,45 @@
 			      </tr>
 			    </thead>
 			    <tbody>
-			    	<tr>
-			    		<td> 1 </td>
-			    		<td> CCTV Samkok </td>
-			    		<td> cctv </td>
-			    		<td> 9 </td>
-			    		<td> Staff Inventory Agus </td>
-			    		<td style="color:blue"> Pending Head </td>
-			    		<td> 
-			    			<span class="glyphicon glyphicon-check" style="color:green" ></span>
-			    			<span class="glyphicon glyphicon-remove" style="color:red" ></span>
-			    		</td> 
-			    	</tr>
+			    	@if(count($data['data']) < 1)
+	                    <tr>
+	                        <td colspan="10" class="text-center"> No Data Found </td>
+	                    </tr>
+	                @else 
+	                    <?php $no = 1; ?>
+	                    @foreach($data['data'] as $key=>$val)
+	                    <tr>
+	                        <td> {{$no}}</td>
+	                        <td> {{$val->inventory_sub_list_name}}</td>
+	                        <td> {{$val->inventory_name}}</td>
+	                        <td> {{$val->count}}</td>
+	                        <td> Updated By {{$val->username}}</td>
+	                        <td style="color:{{$val->inventory_color}}"> {{$val->status_name}}</td>
+	                        <td>
+                        	@if($data['credentials']->id_jabatan != 1)
+                        		<span class="glyphicon glyphicon-check"
+                        		onclick="approve('{{$val->uuid}}')"
+                        		style="color:green">	
+                        		</span>
+                        		<span class="glyphicon glyphicon-edit" style="color:black">
+                        		</span>
+                        		<span class="glyphicon glyphicon-remove"
+                        		onclick="remove('{{$val->uuid}}')" 
+                        		style="color:red">
+                        		</span>
+                        	@endif
+
+	                        </td>
+
+	                    </tr>
+	                    <?php $no++;?>
+	                    @endforeach
+	                @endif
 
 			    </tbody>
 			</table>
 			<div class="pull-right" style="margin-top: -30px!important"> 
-			{{ $data['inventory_data']->links() }}
+			{{ $data['data']->links() }}
 			</div>
 			<div class="clearfix"> </div>
 		</div>

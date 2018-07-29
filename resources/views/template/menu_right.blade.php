@@ -45,6 +45,8 @@
           PROFILE PAGE
         @elseif(Route::current()->getName() == 'password')
           GANTI PASSWORD
+        @elseif(Route::current()->getName() == 'map')
+          MAP LOCATION
     		@else 
     			ERROR
 			@endif 

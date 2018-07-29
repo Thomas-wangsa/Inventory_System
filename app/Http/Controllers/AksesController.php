@@ -41,7 +41,6 @@ class AksesController extends Controller
 
 
     public function pendaftaran_pic(Request $request) {
-
         $akses_data = new Akses_Data;
         $akses_data->type = $request->type_daftar;
         $akses_data->created_by = $this->credentials['id'];
@@ -72,6 +71,7 @@ class AksesController extends Controller
     }
 
     public function index(Request $request) {
+
         $allow =array(2,4);
         if(!in_array($this->credentials->divisi, $allow)) {
             $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur akses');
@@ -81,8 +81,8 @@ class AksesController extends Controller
 
         switch($this->credentials->id_jabatan) {
             case 1 : $role = array(1,2);$execute = 1;break;
-            case 2 : $role = array(2);$execute=2;break;
-            case 3 : $role = array(3);$execute=3;break;
+            case 2 : $role = array(2,3);$execute=2;break;
+            case 3 : $role = array(3,4);$execute=3;break;
             default : $role = array(0);$execute=0;break;
         }
 
@@ -93,7 +93,6 @@ class AksesController extends Controller
             'user'          => Auth::user(),
             'execute'       => $execute
         );
-
     	return view('akses/index',compact("data"));
     }
 
@@ -104,17 +103,17 @@ class AksesController extends Controller
         if(count($data) < 1) {
             return redirect($this->redirectTo);
         } else {
-            if($data->status_akses == 1 || $data->status_akses == 3 || $data->status_akses == 5) {
+            if($data->status_akses <= 3) {
 
                 switch ($data->status_akses) {
                     case 1:
                         $data->status_akses = 2;
                         break;
-                    case 3:
-                        $data->status_akses = 4;
+                    case 2:
+                        $data->status_akses = 3;
                         break;
-                    case 5;
-                        $data->status_akses = 6;
+                    case 3;
+                        $data->status_akses = 4;
                         $data->status_data  = 3;
                     default:
                         # code...
@@ -133,7 +132,6 @@ class AksesController extends Controller
 
 
     public function akses_reject(Request $request) {
-
         $data = Akses_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
 
@@ -146,24 +144,23 @@ class AksesController extends Controller
 
 
     public function proses_reject(Request $request) {
-
         $data = Akses_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
 
         if(count($data) < 1) {
             return redirect($this->redirectTo);
         } else {
-            if($data->status_akses == 1 || $data->status_akses == 3 || $data->status_akses == 5) {
+            if($data->status_akses <= 3) {
 
                 switch ($data->status_akses) {
                     case 1:
+                        $data->status_akses = 5;
+                        break;
+                    case 2:
+                        $data->status_akses = 6;
+                        break;
+                    case 3;
                         $data->status_akses = 7;
-                        break;
-                    case 3:
-                        $data->status_akses = 8;
-                        break;
-                    case 5;
-                        $data->status_akses = 9;
                     default:
                         # code...
                         break;

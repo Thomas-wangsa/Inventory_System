@@ -99,13 +99,13 @@ class DatabaseSeeder extends Seeder
 
         $inventory_list_array = array(
             "inventory_name"=>"cctv",
-            "updated_by"=>1
+            "updated_by"=>8
         );
 
 
         foreach ($users_array as $key => $value) {
             Users::firstOrCreate($value); 
-            if($key == 1) {
+            if($key == 8) {
                 Inventory_List::firstOrCreate($inventory_list_array);
             }          
         }
@@ -181,7 +181,8 @@ class DatabaseSeeder extends Seeder
             if($divisi == 3) {
 
                 $inventory_role_array = array(
-                    "inventory_list_id"     => 1,
+                    "users_id"              =>$value->id,
+                    "inventory_list_id"     => Inventory_List::first()->id,
                     "inventory_level_id"    => $jabatan
                 );
 
@@ -201,9 +202,9 @@ class DatabaseSeeder extends Seeder
 
         $status_akses_array = array(
             array("name"=>"Pending Daftar","color"=>"#FFFF00"),
-            array("name"=>"Pending Cetak","color"=>"#00FF00"),
+            array("name"=>"Pending Cetak","color"=>"#FFA500"),
             array("name"=>"Pending Aktif","color"=>"#00FF00"),
-            array("name"=>"Kartu Aktif","color"=>"#00FF00"),
+            array("name"=>"Kartu Aktif","color"=>"#0000FF"),
             array("name"=>"Ditolak Daftar","color"=>"#FF0000"),
             array("name"=>"Ditolak Cetak","color"=>"#FF0000"),
             array("name"=>"Ditolak Aktif","color"=>"#FF0000")
@@ -216,17 +217,17 @@ class DatabaseSeeder extends Seeder
         
 
 
-        // $status_akses_array = array(
-        //     array("name"=>"Pending Head","color"=>"#FFFF00"),
-        //     array("name"=>"Diterima Head","color"=>"#00FF00"),
-        //     array("name"=>"Diterima Admin","color"=>"#FFFF00"),
-        //     array("name"=>"Ditolak Head","color"=>"#FF0000"),
-        //     array("name"=>"Ditolak Admin","color"=>"#FF0000")
-        // );
+        $status_akses_array = array(
+            array("name"=>"Pending Head","color"=>"#FFA500"),
+            array("name"=>"Pending Admin","color"=>"#00FF00"),
+            array("name"=>"Diterima Admin","color"=>"#0000FF"),
+            array("name"=>"Ditolak Head","color"=>"#FF0000"),
+            array("name"=>"Ditolak Admin","color"=>"#FF0000")
+        );
 
-        // foreach ($status_akses_array as $key => $value) {
-        //     Status_Inventory::firstOrCreate($value);
-        // }
+        foreach ($status_akses_array as $key => $value) {
+            Status_Inventory::firstOrCreate($value);
+        }
 
         $setting_list_array = array(
             array('setting_name'  => 'inventory level'),

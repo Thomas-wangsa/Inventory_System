@@ -58,9 +58,9 @@
 
 				  <div class="form-group">
 				    <label for="email"> Lokasi : </label>
-				    <button type="submit" class="btn btn-block btn-primary">
-				    	Set Location
-				    </button>
+				    <span onclick="set_location()" style="color:blue">
+				    <span class="glyphicon glyphicon-zoom-in"></span> Set Location
+					</span>
 				  </div>
 
 				  <div class="form-group">
@@ -79,3 +79,18 @@
       
     </div>
   </div>
+
+  <script type="text/javascript">
+	
+	function set_location() {
+		var url = window.location.protocol+"//"+window.location.host+'/map_location';
+		//window.location = url;
+
+		window.open(url, '_blank');
+
+	}
+
+
+	
+
+</script>

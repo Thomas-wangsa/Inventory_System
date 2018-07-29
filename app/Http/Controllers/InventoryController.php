@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Sub_List;
+use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Users;
@@ -35,53 +36,29 @@ class InventoryController extends Controller
 
 
     public function index(Request $request) {
-        $allow =array(1,3);
+        $allow =array(3,4);
 
         if(!in_array($this->credentials->divisi, $allow)) {
             $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur inventory');
             return redirect('home');
         }
 
+        $role = Inventory_Role::where('users_id',$this->credentials['id'])->first();
+
+        $all_role = array($role->inventory_list_id);
+
     	$data['inventory'] = Inventory_List::all();
-    	$data['inventory_data'] = Inventory_Data::GetDetailInventory()->paginate(5);
+    	$data['data'] = Inventory_Data::GetDetailInventory($all_role)->paginate(5);
         $data['credentials']    = $this->credentials;
-
-        if($this->credentials->divisi == 1 ) {
-            $data['notify']         = Inventory_Data::where('status_inventory',2)->count();
-        } else if ($this->credentials->divisi == 2) {
-            switch ($this->credentials->id_jabatan) {
-                case 2:
-                    $data['notify']         = Akses_Data::where('status_akses',1)->count();
-                    break;
-                case 3:
-                    $data['notify']         = Akses_Data::where('status_akses',2)->count();
-                    break;
-                case 4:
-                    $data['notify']         = Akses_Data::where('status_akses',3)->count();
-                    break;
-                case 5:
-                    $data['notify']         = Akses_Data::where('status_akses',4)->count();
-                    break;
-                case 6:
-                    $data['notify']         = Akses_Data::where('status_akses',5)->count();
-                    break;
-                
-                default:
-                    # code...
-                    break;
-            }
-
-        } else if($this->credentials->divisi == 3) {
-            switch($this->credentials->id_jabatan) {
-                case 2:
-                    $data['notify']         = Inventory_Data::where('status_inventory',1)->count();
-                    break;
-            }
-            
-        }
+        $data['role']           = $role;
     	return view('inventory/index',compact('data'));
     }
 
+
+    public function map_location() {
+        $data['credentials']    = $this->credentials;
+        return view('inventory/map',compact('data'));
+    }
 
     public function inventory_approval(Request $request) {
         $data = Inventory_Data::where('status_data',1)
@@ -160,16 +137,6 @@ class InventoryController extends Controller
 
     public function create_new_inventory(Request $request) {
 
-        if($this->credentials->divisi == 1 
-            || ($this->credentials->divisi == 3 
-                && $this->credentials->id_jabatan == 1 )
-        ) {
-            $allow = true;
-        } else {
-            $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur menambahkan inventory');
-            return redirect($this->redirectTo);
-        }
-
     	$sub_list = Inventory_Sub_List::where('inventory_sub_list_name', strtolower($request->nama_barang))->first();
     	if(count($sub_list) < 1 ) {
     		$sub_list = Inventory_Sub_List::firstOrCreate([
@@ -186,11 +153,12 @@ class InventoryController extends Controller
     		'location'					=> $request->tempat,
     		'status_inventory'			=> 1,
             'uuid'                      => $this->faker->uuid,
+            'created_by'                => Auth::id(),
     		'updated_by'				=> Auth::id()
     	]);
 
         $request->session()->flash('alert-success', 'Inventory berhasil di request !');
-        $this->send($inventory);
+        //$this->send($inventory);
     	return redirect($this->redirectTo);
     	
     }

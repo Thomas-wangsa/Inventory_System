@@ -62,7 +62,13 @@
 				  	<button type="submit" class="btn btn-info"> Cari </button>
 			  	</form> 
 			</div>
-			<div class="pull-right">  
+			<div class="pull-right
+			<?php
+				if($data['credentials']->id_jabatan != 1) {
+					echo "hide";
+				}
+			?>
+			">  
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal">
 					Tambah Pengguna Akses
 				</button>
@@ -99,9 +105,18 @@
 	                        <td> Updated By {{$val->username}}</td>
 	                        <td style="color:{{$val->status_color}}"> {{$val->status_name}}</td>
 	                        <td>
-	                        	@if($val->status_akses == $data['execute'])
-	                        		afa
-	                        	@endif
+                        	@if($val->status_akses == $data['execute'])
+                        		<span class="glyphicon glyphicon-check"
+                        		onclick="approve('{{$val->uuid}}')"
+                        		style="color:green">	
+                        		</span>
+                        		<span class="glyphicon glyphicon-edit" style="color:black">
+                        		</span>
+                        		<span class="glyphicon glyphicon-remove"
+                        		onclick="remove('{{$val->uuid}}')" 
+                        		style="color:red">
+                        		</span>
+                        	@endif
 
 	                        </td>
 
@@ -117,6 +132,20 @@
   
 	@include('akses.modal');
 
+<script type="text/javascript">
+	
+	function approve(uuid) {
+		var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
+		window.location = url+uuid;
+	}
+
+
+	function remove(uuid) {
+		var url = window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
+		window.location = url+uuid;
+	}
+
+</script>
 
 @endsection
 

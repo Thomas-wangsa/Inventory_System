@@ -23,6 +23,7 @@ class CreateInventoryDataTable extends Migration
             $table->string('location');
             $table->unsignedInteger('status_data')->default(1);
             $table->unsignedInteger('status_inventory');
+            $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');
             $table->timestamps();
 

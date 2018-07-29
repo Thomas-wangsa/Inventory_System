@@ -15,12 +15,16 @@ class CreateInventoryRoleTable extends Migration
     {
         Schema::create('inventory_role', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('users_id');
             $table->unsignedInteger('inventory_list_id');
             $table->unsignedInteger('inventory_level_id');
             $table->boolean('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('users_id', 'inventory_role_users_id_fkey')
+                ->references('id')->on('users')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
             $table->foreign('inventory_list_id', 'inventory_role_list_id_fkey')
                 ->references('id')->on('inventory_list')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
