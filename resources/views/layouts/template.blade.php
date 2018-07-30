@@ -20,7 +20,7 @@
         height: 100%!important;
         min-height: 100%;
         margin: 0px auto;
-        max-width: 1400px;
+        max-width: 1600px;
         min-width: 700px!important;
       }
 

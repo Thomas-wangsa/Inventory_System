@@ -172,7 +172,7 @@
 		window.location = url+uuid;
 	}
 </script>
-	@include('inventory.modal');
-	@include('inventory.modal_add');
-	@include('inventory.modal_sharing');
+	@include('inventory.modal')
+	@include('inventory.modal_add')
+	@include('inventory.modal_sharing')
 @endsection
