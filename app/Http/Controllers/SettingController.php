@@ -37,6 +37,7 @@ class SettingController extends Controller {
     public function report() {
          if($this->credentials->divisi == 4 || in_array('5',$this->setting)) {
             $data['credentials'] = $this->credentials;
+            $data['setting']     = $this->setting;
             return view('setting/report',compact('data'));
         } else {
             $request->session()->flash('alert-danger', 'Maaf tidak ada akses untuk fitur setting');
@@ -74,13 +75,12 @@ class SettingController extends Controller {
     }
 
     public function add_inventory(Request $request) {
-    	//dd($request);
     	Inventory_List::firstOrCreate([
     		"inventory_name"=>strtolower($request->inventory),
     		"updated_by"=>$request->updated_by
     	]);
         $request->session()->flash('alert-success', 'Inventory list telah di tambahkan');
-    	return redirect('setting');
+    	return redirect('inventory');
     }
 
 
@@ -88,7 +88,8 @@ class SettingController extends Controller {
         if($this->credentials->divisi == 4 || in_array('1',$this->setting)) {
             $data = array(
             'credentials'   => $this->credentials,
-            'background'    => Design::first()
+            'background'    => Design::first(),
+            'setting'       => $this->setting
             );
             return view('setting/show_background',compact("data"));
         } else {

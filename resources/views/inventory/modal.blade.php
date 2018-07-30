@@ -79,7 +79,7 @@
       
     </div>
   </div>
-
+</div>
 <script type="text/javascript">
 	
 	function set_location() {

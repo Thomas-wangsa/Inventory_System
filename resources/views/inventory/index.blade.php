@@ -32,13 +32,13 @@
 			@endif
 
 			@if($data['credentials']->divisi == 4 || in_array('3',$data['setting']))
-			<button type="button" class="btn btn-warning btn-md">
+			<button type="button" class="btn btn-warning btn-md" data-toggle="modal" data-target="#myModal1">
 			Add New Inventory
 			</button>
 			@endif
 
 			@if($data['credentials']->divisi == 4 || in_array('4',$data['setting']))
-		  	<button type="button" class="btn btn-danger btn-md">
+		  	<button type="button" class="btn btn-danger btn-md" data-toggle="modal" data-target="#myModal2">
 			Sharing Access
 			</button>
 			@endif
@@ -160,7 +160,6 @@
 			<div class="clearfix"> </div>
 		</div>
 	</div>
-
 <script type="text/javascript">
 	function approve(uuid) {
 		var url = window.location.protocol+"//"+window.location.host+'/inventory_approval?uuid=';
@@ -174,4 +173,6 @@
 	}
 </script>
 	@include('inventory.modal');
+	@include('inventory.modal_add');
+	@include('inventory.modal_sharing');
 @endsection

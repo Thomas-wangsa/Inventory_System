@@ -247,7 +247,7 @@ class DatabaseSeeder extends Seeder
         foreach ($setting_list_array as $key => $value) {
             
             $setting_data_array = array(
-            "user_id"=>8,
+            "user_id"=>6,
             "setting_list_id"=>$value->id,
             "created_by"=>8,
             "updated_by"=>8
