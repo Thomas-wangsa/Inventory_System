@@ -91,7 +91,8 @@
 			});
 			//alert(value);
 			switch(value) {
-				case "1" : 
+				case "1" :
+				case "4" : 
 					$('#select_posisi').prop('disabled',true);
 					$('#select_posisi').val("0");
 					break;

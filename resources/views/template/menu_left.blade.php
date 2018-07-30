@@ -1,7 +1,8 @@
 <div class="col-sm-3 menu-left" style="">
                 
   <a href="{{route('home')}}">
-    <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / >
+    <!-- <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / > -->
+    <img class="center" src="{{ asset('images/logo/google.png')}}"  / >
   </a>
   
   <div class="text-center" style="margin-bottom: 30px">  
@@ -79,10 +80,6 @@
           @endif
 
 
- 
-
-
-
           @if($data['credentials']->divisi == 3 || $data['credentials']->divisi == 4)
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
@@ -103,8 +100,6 @@
                 @if(Route::current()->getName() == 'inventory')
                   style="color:blue"
                 @endif
-
-
                 >
                   Inventory
                 </a>
@@ -133,12 +128,10 @@
           <div class="clearfix"> </div>
           @endif
 
-          @if($data['credentials']->divisi == 4)
-          <div class="icon-left
-          @if(Route::current()->getName() == 'akses' || Route::current()->getName() == 'inventory')
-            hide
-          @endif
-          ">
+
+
+          @if($data['credentials']->divisi == 4 || in_array('1',$data['setting']))
+          <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_setting')}}">
                 <span class="glyphicon glyphicon-cog " style="color:black">
@@ -153,12 +146,32 @@
               </div>
             </div>     
           </div>
-          <div class="clearfix" style="margin-bottom: 20px"> </div>
+          <div class="clearfix"> </div>
           @endif
-        </div>
-        
-      </div>
 
+
+          @if($data['credentials']->divisi == 4 || in_array('1',$data['setting']))
+          <div class="icon-left">
+            <div class="col-sm-2 icon-image">
+              <a href="{{route('route_report')}}">
+                <span class="glyphicon glyphicon-file " style="color:black">
+                </span>
+              </a>
+            </div>
+            <div class="col-sm-10">
+              <div class="row">
+                <a class="icon-text" href="{{route('route_report')}}">
+                  Report
+                </a>
+              </div>
+            </div>     
+          </div>
+          @endif
+
+          <div class="clearfix" style="margin-bottom: 20px"> </div>
+
+        </div>
+      </div>
     </div>
   </div>
 

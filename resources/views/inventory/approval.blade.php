@@ -16,10 +16,10 @@
 </style>
 	<div class="center_form" style="margin-top: 30px">
 		<div class="text-center">
-			Terima kasih untuk waktu Anda
+			Inventory telah di setujui
 		</div>
 		<div class="text-center">
-			silahkan cek kembali email anda untuk melihat barang baru yang masuk
+			Terima kasih
 		</div>
 
 		<a href="{{route('home')}}">

@@ -23,6 +23,7 @@ Auth::routes();
 //     return view('auth.old_login');
 // });
 
+
 Route::group(['middleware' => ['auth']], function() { 
 	Route::get('/home', 'HomeController@index')->name('home');
 
@@ -40,14 +41,22 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/inventory','InventoryController@index')->name('inventory');
 	Route::get('/map_location','InventoryController@map_location')->name('map');
 	Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
+	Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
+	Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
+	Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
+
 	// Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
 	// Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
 
 
-	// Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
-	// Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
-	// Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
-
+	// Admin Features
+	Route::get('/admin','AdminController@index')->name('route_admin');
+	Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
+	Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
+	Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
+	Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
+	Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+	
 
 	// Profile Features
 	Route::get('/profile', 'HomeController@profile')->name('profile');
@@ -64,10 +73,19 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::post('/password', 'HomeController@post_password')->name('post_password');
 	
 	
-	Route::get('/admin','AdminController@index')->name('route_admin');
-	Route::get('/setting','SettingController@index')->name('route_setting');
 	
 
+
+
+
+
+
+
+	Route::get('/setting','SettingController@index')->name('route_setting');
+	Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
+	Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
+	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
+	Route::get('/report','SettingController@report')->name('route_report');
 	
 	// Route::post('/pencetakan_akses', 'AksesController@pencetakan_akses')->name('post_pencetakan_akses');
 	// Route::post('/pencetakan_diterima', 'AksesController@pencetakan_diterima')->name('post_pencetakan_diterima');
@@ -77,16 +95,13 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 	// Route::get('/setting/add-inventory', 'SettingController@show_inventory')->name('show_inventory');
-	// Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
-	// Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
-	// Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
+	
+	
+	
 
-	// Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
-	// Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+	
 
-	// Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
-	// Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
-	// Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
+	
 
 	
 

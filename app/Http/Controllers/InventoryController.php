@@ -7,6 +7,8 @@ use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Sub_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
+use App\Http\Models\Status_Inventory;
+use App\Http\Models\Setting_Data;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
@@ -29,6 +31,10 @@ class InventoryController extends Controller
 
         $this->middleware(function ($request, $next) {
             $this->credentials = Users::GetRoleById(Auth::id())->first();
+            $this->setting     = Setting_Data::where('user_id',Auth::id())
+                                    ->where('status',1)
+                                    ->select('setting_list_id')
+                                    ->pluck('setting_list_id')->all();
             return $next($request);
         });
         
@@ -43,14 +49,28 @@ class InventoryController extends Controller
             return redirect('home');
         }
 
+        switch($this->credentials->id_jabatan) {
+            case 1 : $execute = 0;break;
+            case 2 : $execute=1;break;
+            default : $execute=0;break;
+        }
+
         $role = Inventory_Role::where('users_id',$this->credentials['id'])->first();
 
-        $all_role = array($role->inventory_list_id);
 
-    	$data['inventory'] = Inventory_List::all();
-    	$data['data'] = Inventory_Data::GetDetailInventory($all_role)->paginate(5);
+        if($this->credentials['divisi'] == 4 ) {
+            $all_role = inventory_list::get();
+        } else {
+            $all_role = array($role->inventory_list_id);
+        }
+        
+
+    	$data['inventory']      = Inventory_List::all();
+    	$data['data']           = Inventory_Data::GetDetailInventory($all_role)->paginate(5);
         $data['credentials']    = $this->credentials;
         $data['role']           = $role;
+        $data['status_inventory'] = Status_Inventory::all();
+        $data['setting']        = $this->setting;
     	return view('inventory/index',compact('data'));
     }
 
@@ -83,7 +103,7 @@ class InventoryController extends Controller
                 
                 $data->updated_by   = $this->credentials->id;
                 $data->save();
-                $this->send($data);
+                //$this->send($data);
             } else {
                 return redirect($this->redirectTo);
             }

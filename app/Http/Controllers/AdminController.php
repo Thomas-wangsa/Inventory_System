@@ -11,6 +11,7 @@ use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Akses_Data;
+use App\Http\Models\Setting_List;
 
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\New_User;
@@ -35,7 +36,7 @@ class AdminController extends Controller
 
 
     public function index() {
-    	if($this->credentials->divisi != 1) {
+    	if($this->credentials->divisi != 4) {
     		return redirect('home'); 
     	}
 
@@ -43,48 +44,16 @@ class AdminController extends Controller
     		'credentials'		=> $this->credentials,
     		'users'				=> Users::GetJabatan()->paginate(5),
     		'divisi'			=> Divisi::all(),
-    		'inventory_list'	=> Inventory_List::all()
+    		'inventory_list'	=> Inventory_List::all(),
+            'setting_list'      => Setting_List::all()
     	);
-
-        if($this->credentials->divisi == 1 ) {
-            $data['notify']         = Inventory_Data::where('status_inventory',2)->count();
-        } else if ($this->credentials->divisi == 2) {
-            switch ($this->credentials->id_jabatan) {
-                case 2:
-                    $data['notify']         = Akses_Data::where('status_akses',1)->count();
-                    break;
-                case 3:
-                    $data['notify']         = Akses_Data::where('status_akses',2)->count();
-                    break;
-                case 4:
-                    $data['notify']         = Akses_Data::where('status_akses',3)->count();
-                    break;
-                case 5:
-                    $data['notify']         = Akses_Data::where('status_akses',4)->count();
-                    break;
-                case 6:
-                    $data['notify']         = Akses_Data::where('status_akses',5)->count();
-                    break;
-                
-                default:
-                    # code...
-                    break;
-            }
-
-        } else if($this->credentials->divisi == 3) {
-            switch($this->credentials->id_jabatan) {
-                case 2:
-                    $data['notify']         = Inventory_Data::where('status_inventory',1)->count();
-                    break;
-            }
-            
-        }
 
     	return view('admin/admin',compact('data'));
     }
 
     public function create_new_users(Request $request) {
-    	if($this->credentials->divisi != 1) {
+    	if($this->credentials->divisi != 4) {
+            $request->session()->flash('alert-danger', 'Not allowed');
     		return redirect('home'); 
     	}
 
@@ -110,11 +79,13 @@ class AdminController extends Controller
 		$new_users = Users::firstOrCreate($array_users);
 		switch($request->select_divisi) {
 			
-			case 1 : 
+			case 1 :
+            case 4 :  
 				$user_role = new Users_Role;
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
                 $user_role->uuid        = $this->faker->uuid();
+                $user_role->foto        = "images/user/default.png";
         		$user_role->save();
 			break;
 			
@@ -124,6 +95,7 @@ class AdminController extends Controller
         		$user_role->divisi 		= $request->select_divisi;
         		$user_role->jabatan 	= $request->select_posisi;
                 $user_role->uuid        = $this->faker->uuid();
+                $user_role->foto        = "images/user/default.png";
         		$user_role->save();
 			break;
 
@@ -139,6 +111,7 @@ class AdminController extends Controller
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
         		$user_role->jabatan 	= $new_inventory_role->id;
+                $user_role->foto        = "images/user/default.png";
                 $user_role->uuid        = $this->faker->uuid();
         		$user_role->save();
 			break;

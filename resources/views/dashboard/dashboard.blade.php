@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            @if($data['credentials']->divisi == 1)
+            @if($data['credentials']->divisi == 4)
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -82,7 +82,7 @@
                             <img  class="center" src="{{ asset('images/logo/settings.png')}}"  style="width:30%;margin-top: 45px" / >
                         </a>
                         <div style="margin-top: 20px"> </div>
-                        <div class="text-center"> Report </div>
+                        <div class="text-center"> Settings </div>
                     </div>
                 </div>
             </div>

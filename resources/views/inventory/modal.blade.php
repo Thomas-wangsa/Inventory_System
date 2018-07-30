@@ -80,7 +80,7 @@
     </div>
   </div>
 
-  <script type="text/javascript">
+<script type="text/javascript">
 	
 	function set_location() {
 		var url = window.location.protocol+"//"+window.location.host+'/map_location';
@@ -89,8 +89,4 @@
 		window.open(url, '_blank');
 
 	}
-
-
-	
-
 </script>

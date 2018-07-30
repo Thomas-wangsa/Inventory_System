@@ -17,8 +17,11 @@ class CreateSettingDataTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('setting_list_id');
+            $table->boolean('status')->default(1);
+            $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');
             $table->timestamps();
+
 
             $table->foreign('user_id', 'setting_data_id_fkey')
                 ->references('id')->on('users')
@@ -26,6 +29,10 @@ class CreateSettingDataTable extends Migration
 
             $table->foreign('setting_list_id', 'setting_data_user_id_fkey')
                 ->references('id')->on('setting_list')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
+            $table->foreign('created_by', 'setting_data_created_by_fkey')
+                ->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
 
             $table->foreign('updated_by', 'setting_data_updated_id_fkey')

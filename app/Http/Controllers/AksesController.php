@@ -12,6 +12,7 @@ use App\Http\Models\Status_Akses;
 
 use App\Http\Models\Divisi;
 use App\Http\Models\Inventory_Data;
+use App\Http\Models\Setting_Data;
 
 
 use App\Mail\AksesMail;
@@ -35,6 +36,10 @@ class AksesController extends Controller
 
         $this->middleware(function ($request, $next) {
             $this->credentials = Users::GetRoleById(Auth::id())->first();
+            $this->setting     = Setting_Data::where('user_id',Auth::id())
+                                    ->where('status',1)
+                                    ->select('setting_list_id')
+                                    ->pluck('setting_list_id')->all();
             return $next($request);
         });
     }
@@ -91,8 +96,10 @@ class AksesController extends Controller
             'data'         => Akses_Data::GetSpecific($role)->get(),
             'status_akses'  => Status_Akses::all(),
             'user'          => Auth::user(),
-            'execute'       => $execute
+            'execute'       => $execute,
+            'setting'       => $this->setting
         );
+
     	return view('akses/index',compact("data"));
     }
 

@@ -8,7 +8,7 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Status_Akses;
-
+use App\Http\Models\Setting_Data;
 use App\Http\Models\Inventory_Data;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,6 +25,17 @@ class HomeController extends Controller
     {
         $this->middleware(function ($request, $next) {
             $this->credentials = Users::GetRoleById(Auth::id())->first();
+            $this->setting     = Setting_Data::where('user_id',Auth::id())
+                                    ->where('status',1)
+                                    ->select('setting_list_id')
+                                    ->pluck('setting_list_id')->all();
+            if($this->credentials == null) {
+                Auth::guard()->logout();
+                $request->session()->invalidate();
+                $request->session()->flash('alert-warning', 'Maaf, User sudah tidak aktif');
+                return redirect('/login');
+            }
+
             return $next($request);
         });
     }
@@ -34,11 +45,13 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {   
-        //dd($this->credentials);
+    public function index() {
+
         $role  = array(1);
         $data['credentials']    = $this->credentials;
-        $data['status_akses']   = Status_Akses::all(); 
+        $data['status_akses']   = Status_Akses::all();
+        $data['setting']        = $this->setting;
+        // dd($setting);
         if($this->credentials['divisi'] == 1) {
             $data['data']           = Akses_Data::GetSpecific($role)
             ->where('created_by',$this->credentials['id'])->get();
@@ -50,9 +63,8 @@ class HomeController extends Controller
         
     }
 
-
     public function notify() {
-
+        $data['setting']        = $this->setting;
         $data['notify'] = 0;
 
         if($this->credentials->divisi == 1 ) {
@@ -107,21 +119,20 @@ class HomeController extends Controller
     }
 
     public function profile() {
-        
+        $data['setting']        = $this->setting;
         $data['credentials'] = $this->credentials;
         return view('dashboard/profile',compact('data'));
     }
 
 
     public function password() {
-        
+        $data['setting']        = $this->setting;
         $data['credentials'] = $this->credentials;
         return view('dashboard/password',compact('data'));
     }
 
 
     public function post_password(Request $request) {
-
         $validatedData = $request->validate([
             'now_password'          => 'required|min:6',
             'password'              => 'required|min:6|confirmed|different:now_password',

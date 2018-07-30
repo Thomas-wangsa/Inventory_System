@@ -47,6 +47,8 @@
           GANTI PASSWORD
         @elseif(Route::current()->getName() == 'map')
           MAP LOCATION
+        @elseif(Route::current()->getName() == 'route_report')
+          REPORT
     		@else 
     			ERROR
 			@endif 

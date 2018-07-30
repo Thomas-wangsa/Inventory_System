@@ -19,25 +19,31 @@
 		
 
 		<div>
-				
-			<form class="form-inline">
+			@if($data['credentials']->divisi == 4 || in_array('2',$data['setting']))
+			<form class="form-inline" style="margin-bottom: 10px">
 				{{ csrf_field() }}
-			  	<div class="form-group hide">
+			  	<div class="form-group ">
 				    <input type="file" class="form-control" name="background" required>
 				</div>
-			  	<button type="submit" class="btn btn-primary hide">
+			  	<button type="submit" class="btn btn-primary">
 			  		Export csv
 			  	</button>
-			  	<button type="button" class="btn btn-danger btn-md hide">
-				Sharing Access
-				</button>
 			</form>
-				
+			@endif
 
+			@if($data['credentials']->divisi == 4 || in_array('3',$data['setting']))
+			<button type="button" class="btn btn-warning btn-md">
+			Add New Inventory
+			</button>
+			@endif
 
+			@if($data['credentials']->divisi == 4 || in_array('4',$data['setting']))
+		  	<button type="button" class="btn btn-danger btn-md">
+			Sharing Access
+			</button>
+			@endif
 			
-
-
+			
 
 			<div class="clearfix" style="margin-bottom: 10px"> </div>
 			<div class="pull-left"> 
@@ -55,8 +61,8 @@
 					<div class="form-group">
 				      	<select class="form-control" name="search_filter">
 				      		<option value=""> Filter Berdasarkan </option>
-				        	@foreach($data['inventory'] as $key=>$val)
-				    		<option value="{{$val->id}}"> {{ucfirst($val->inventory_name)}}</option>
+				        	@foreach($data['status_inventory'] as $key=>$val)
+				    		<option value="{{$val->id}}"> {{ucfirst($val->name)}}</option>
 				    		@endforeach 
 				      	</select>
 				  	</div>
@@ -116,7 +122,17 @@
 	                        <td> Updated By {{$val->username}}</td>
 	                        <td style="color:{{$val->inventory_color}}"> {{$val->status_name}}</td>
 	                        <td>
-                        	@if($data['credentials']->id_jabatan != 1)
+                        	@if(
+                        		($data['credentials']->id_jabatan == 2 
+                        		&& $val->status_inventory == 1) 
+                        	||  
+                        		($data['credentials']->divisi == 4 
+                        		&& ($val->status_inventory == 1 
+                        			||
+                        			$val->status_inventory == 2
+                        			)
+                        		)
+                        	)
                         		<span class="glyphicon glyphicon-check"
                         		onclick="approve('{{$val->uuid}}')"
                         		style="color:green">	
@@ -145,5 +161,17 @@
 		</div>
 	</div>
 
+<script type="text/javascript">
+	function approve(uuid) {
+		var url = window.location.protocol+"//"+window.location.host+'/inventory_approval?uuid=';
+		window.location = url+uuid;
+	}
+
+
+	function remove(uuid) {
+		var url = window.location.protocol+"//"+window.location.host+'/inventory_reject?uuid=';
+		window.location = url+uuid;
+	}
+</script>
 	@include('inventory.modal');
 @endsection

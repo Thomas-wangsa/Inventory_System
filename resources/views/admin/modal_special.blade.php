@@ -76,52 +76,19 @@ input:checked + .slider:before {
 			      </tr>
 			    </thead>
 			    <tbody>
-			      <tr>
-			        <td> Edit Background </td>
-			        <td>
-			        	<label class="switch">
-						  <input type="checkbox">
-						  <span class="slider round"></span>
-						</label> 
-			        </td>
-			      </tr>
-			      <tr>
-			        <td> Export CSV Inventory </td>
-			        <td>
-			        	<label class="switch">
-						  <input type="checkbox">
-						  <span class="slider round"></span>
-						</label> 
-			        </td>
-			      </tr>
-			      <tr>
-			        <td> Add List Inventory </td>
-			        <td>
-			        	<label class="switch">
-						  <input type="checkbox">
-						  <span class="slider round"></span>
-						</label>  
-			        </td>
-			      </tr>
-			      <tr>
-			        <td> Sharing Role Inventory </td>
-			        <td>
-			        	<label class="switch">
-						  <input type="checkbox">
-						  <span class="slider round"></span>
-						</label> 
-			         </td>
-			      </tr>
+			    	@foreach($data['setting_list'] as $key=>$val)
+		    		<tr>
+				        <td> {{$val->setting_name}} </td>
+				        <td>
+				        	<label class="switch">
+							  <input type="checkbox">
+							  <span class="slider round"></span>
+							</label> 
+				        </td>
+			      	</tr>
+			    	@endforeach
 
-			      <tr>
-			        <td> Report </td>
-			        <td>
-			        	<label class="switch">
-						  <input type="checkbox">
-						  <span class="slider round"></span>
-						</label> 
-			         </td>
-			      </tr>
+			   
 			    </tbody>
 			  </table>
         </div>

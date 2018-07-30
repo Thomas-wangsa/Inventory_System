@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
 
         $faker = Faker::create();
     	$divisi_array = array(
-            array("name"=>"pic"),
+            array("name"=>"staff pic"),
     		array("name"=>"akses"),
-    		array("name"=>"inventaris"),
+    		array("name"=>"inventory"),
             array("name"=>"administrator")
     	);
 
@@ -229,23 +229,32 @@ class DatabaseSeeder extends Seeder
             Status_Inventory::firstOrCreate($value);
         }
 
-        $setting_list_array = array(
-            array('setting_name'  => 'inventory level'),
-            array('setting_name'  => 'upload level'),
-            array('setting_name'  => 'setting level'),
-            array('setting_name'  => 'user level'),
-        );
 
+        $setting_list_array = array(
+            array('setting_name'  => 'background level'),
+            array('setting_name'  => 'upload level'),
+            array('setting_name'  => 'new inventory level'),
+            array('setting_name'  => 'sharing inventory level'),
+            array('setting_name'  => 'report level'),
+        );
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
         }
 
-        // $setting_data_array = array(
-        //     "user_id"=>2,
-        //     "setting_list_id"=>1,
-        //     "updated_by"=>1
-        // );
-        // Setting_Data::firstOrCreate($setting_data_array);
+
+        $setting_list_array = Setting_List::get();
+
+        foreach ($setting_list_array as $key => $value) {
+            
+            $setting_data_array = array(
+            "user_id"=>8,
+            "setting_list_id"=>$value->id,
+            "created_by"=>8,
+            "updated_by"=>8
+            );
+
+            Setting_Data::firstOrCreate($setting_data_array);
+        }        
     }
 
 

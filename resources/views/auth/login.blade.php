@@ -122,5 +122,13 @@
 				Anda mengalami gangguan
 			</div>
         @endif
+        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+          @if(Session::has('alert-' . $msg))
+          	<div style="margin-top: 30px">
+				<div class="text-center" style="color:red;border: 1px solid red;padding: 10px">
+				{{ Session::get('alert-' . $msg) }}
+			</div>
+          @endif
+        @endforeach
 	</div>
 @endsection
