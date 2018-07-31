@@ -22,13 +22,25 @@
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('home')}}">
-                <span class="glyphicon glyphicon-home" style="color:black">
+                <span class="glyphicon glyphicon-home"
+                @if(Route::current()->getName() == 'home')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('home')}}">
+                <a class="icon-text" href="{{route('home')}}"
+                @if(Route::current()->getName() == 'home')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                   Beranda
                 </a>
               </div>
@@ -39,13 +51,25 @@
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_notify')}}">
-                <span class="glyphicon glyphicon-bell" style="color:black">
+                <span class="glyphicon glyphicon-bell"
+                @if(Route::current()->getName() == 'route_notify')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('route_notify')}}">
+                <a class="icon-text" href="{{route('route_notify')}}"
+                @if(Route::current()->getName() == 'route_notify')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                   Pemberitahuan
                     @if(isset($data['notify']) && $data['notify'] > 0 )
                       <span class="badge" style="background-color: red;color:white"> 
@@ -64,13 +88,25 @@
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('akses')}}">
-                <span class="glyphicon glyphicon-list-alt" style="color:black">
+                <span class="glyphicon glyphicon-list-alt"
+                @if(Route::current()->getName() == 'akses')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('akses')}}">
+                <a class="icon-text" href="{{route('akses')}}"
+                @if(Route::current()->getName() == 'akses')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                  Akses
                 </a>
               </div>
@@ -113,13 +149,25 @@
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_admin')}}">
-                <span class="glyphicon glyphicon-user " style="color:black">
+                <span class="glyphicon glyphicon-user"
+                @if(Route::current()->getName() == 'route_admin')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('route_admin')}}">
+                <a class="icon-text" href="{{route('route_admin')}}"
+                @if(Route::current()->getName() == 'route_admin')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                   Kelola Akun
                 </a>
               </div>
@@ -134,13 +182,25 @@
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_setting')}}">
-                <span class="glyphicon glyphicon-cog " style="color:black">
+                <span class="glyphicon glyphicon-cog"
+                @if(Route::current()->getName() == 'show_background')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('route_setting')}}">
+                <a class="icon-text" href="{{route('route_setting')}}"
+                @if(Route::current()->getName() == 'show_background')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                   Setting
                 </a>
               </div>
@@ -154,13 +214,24 @@
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_report')}}">
-                <span class="glyphicon glyphicon-file " style="color:black">
+                <span class="glyphicon glyphicon-file"
+                @if(Route::current()->getName() == 'route_report')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif>
                 </span>
               </a>
             </div>
             <div class="col-sm-10">
               <div class="row">
-                <a class="icon-text" href="{{route('route_report')}}">
+                <a class="icon-text" href="{{route('route_report')}}"
+                @if(Route::current()->getName() == 'route_report')
+                  style="color:blue"
+                @else
+                  style="color:black"
+                @endif
+                >
                   Report
                 </a>
               </div>
@@ -186,13 +257,25 @@
             <div class="icon-left">
               <div class="col-sm-2 icon-image">
                 <a href="{{route('profile')}}">
-                  <span class="glyphicon glyphicon-envelope" style="color:black">
+                  <span class="glyphicon glyphicon-envelope"
+                  @if(Route::current()->getName() == 'profile')
+                    style="color:blue"
+                  @else
+                    style="color:black"
+                  @endif
+                  >
                   </span>
                 </a>
               </div>
               <div class="col-sm-10">
                 <div class="row">
-                  <a class="icon-text" href="{{route('profile')}}">
+                  <a class="icon-text" href="{{route('profile')}}"
+                  @if(Route::current()->getName() == 'profile')
+                    style="color:blue"
+                  @else
+                    style="color:black"
+                  @endif
+                  >
                     Profile
                   </a>
                 </div>
@@ -202,13 +285,25 @@
             <div class="icon-left">
               <div class="col-sm-2 icon-image">
                 <a href="{{route('password')}}">
-                  <span class="glyphicon glyphicon-wrench" style="color:black">
+                  <span class="glyphicon glyphicon-wrench"
+                  @if(Route::current()->getName() == 'password')
+                    style="color:blue"
+                  @else
+                    style="color:black"
+                  @endif
+                  >
                   </span>
                 </a>
               </div>
               <div class="col-sm-10">
                 <div class="row">
-                  <a class="icon-text" href="{{route('password')}}">
+                  <a class="icon-text" href="{{route('password')}}"
+                  @if(Route::current()->getName() == 'password')
+                    style="color:blue"
+                  @else
+                    style="color:black"
+                  @endif
+                  >
                     Ganti Password
                   </a>
                 </div>
