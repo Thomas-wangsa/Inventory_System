@@ -23,21 +23,21 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            $this->credentials = Users::GetRoleById(Auth::id())->first();
-            $this->setting     = Setting_Data::where('user_id',Auth::id())
-                                    ->where('status',1)
-                                    ->select('setting_list_id')
-                                    ->pluck('setting_list_id')->all();
-            if($this->credentials == null) {
-                Auth::guard()->logout();
-                $request->session()->invalidate();
-                $request->session()->flash('alert-warning', 'Maaf, User sudah tidak aktif');
-                return redirect('/login');
-            }
+        // $this->middleware(function ($request, $next) {
+        //     $this->credentials = Users::GetRoleById(Auth::id())->first();
+        //     $this->setting     = Setting_Data::where('user_id',Auth::id())
+        //                             ->where('status',1)
+        //                             ->select('setting_list_id')
+        //                             ->pluck('setting_list_id')->all();
+        //     if($this->credentials == null) {
+        //         Auth::guard()->logout();
+        //         $request->session()->invalidate();
+        //         $request->session()->flash('alert-warning', 'Maaf, User sudah tidak aktif');
+        //         return redirect('/login');
+        //     }
 
-            return $next($request);
-        });
+        //     return $next($request);
+        // });
     }
 
     /**
@@ -46,20 +46,22 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $data = "";
+        return view('dashboard/dashboard',compact('data'));
 
-        $role  = array(1);
-        $data['credentials']    = $this->credentials;
-        $data['status_akses']   = Status_Akses::all();
-        $data['setting']        = $this->setting;
-        // dd($setting);
-        if($this->credentials['divisi'] == 1) {
-            $data['data']           = Akses_Data::GetSpecific($role)
-            ->where('created_by',$this->credentials['id'])->get();
+        // $role  = array(1);
+        // $data['credentials']    = $this->credentials;
+        // $data['status_akses']   = Status_Akses::all();
+        // $data['setting']        = $this->setting;
+        // // dd($setting);
+        // if($this->credentials['divisi'] == 1) {
+        //     $data['data']           = Akses_Data::GetSpecific($role)
+        //     ->where('created_by',$this->credentials['id'])->get();
              
-            return view('dashboard/pic',compact('data'));
-        } else {
-            return view('dashboard/dashboard',compact('data'));
-        }
+        //     return view('dashboard/pic',compact('data'));
+        // } else {
+        //     return view('dashboard/dashboard',compact('data'));
+        // }
         
     }
 

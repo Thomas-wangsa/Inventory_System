@@ -10,7 +10,7 @@ class Users_Role extends Model
 	use Notifiable;
 	
     protected $table = "users_role";
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'user_id';
 
 
     public function scopeGetAksesDecisionMaker($query,$param) {

@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Http\Models\Divisi;
 use App\Http\Models\Design;
 use App\Http\Models\Users;
+use App\Http\Models\Users_Detail;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Status_Akses;
@@ -30,10 +31,9 @@ class DatabaseSeeder extends Seeder
 
         $faker = Faker::create();
     	$divisi_array = array(
-            array("name"=>"staff pic"),
-    		array("name"=>"akses"),
-    		array("name"=>"inventory"),
-            array("name"=>"administrator")
+    		array("name"=>"administrator"),
+            array("name"=>"akses"),
+    		array("name"=>"inventory")
     	);
 
     	foreach ($divisi_array as $key => $value) {
@@ -112,6 +112,7 @@ class DatabaseSeeder extends Seeder
 
 
         $akses_role_array = array(
+            array("name"=>"staff pic"),
             array("name"=>"staff pendaftaran"),
             array("name"=>"staff pencetakan"),
             array("name"=>"staff pengaktifan "),
@@ -137,20 +138,21 @@ class DatabaseSeeder extends Seeder
             $jabatan = 0;
             switch ($value->id) {
                 case 1:
-                    $divisi = 1;
+                    $divisi = 2;
+                    $jabatan = 1;
                     break;
                 case 2:
                 case 3: 
                     $divisi     = 2;
-                    $jabatan    = 1;
+                    $jabatan    = 2;
                     break;
                 case 4:
                     $divisi     = 2;
-                    $jabatan    = 2;
+                    $jabatan    = 3;
                     break;
                 case 5:
                     $divisi     = 2;
-                    $jabatan    = 3;
+                    $jabatan    = 4;
                     break;
                 case 6:
                     $divisi     = 3;
@@ -161,11 +163,11 @@ class DatabaseSeeder extends Seeder
                     $jabatan    = 2;
                     break;
                 case 8:
-                    $divisi     = 4;
+                    $divisi     = 1;
                     $jabatan    = 0;
                     break;
                 case 9:
-                    $divisi     = 4;
+                    $divisi     = 1;
                     $jabatan    = 0;
                     break;
                 case 10:
@@ -190,18 +192,23 @@ class DatabaseSeeder extends Seeder
             }
 
 
-            $data_array = array(
+            $data_user_role = array(
                 "user_id"   => $value->id,
-                "divisi"    => $divisi,
-                "jabatan"   => $jabatan,
                 "uuid"      => $faker->uuid,
                 "foto"      => "images/user/default.png"
             );
-            Users_Role::firstOrCreate($data_array);
+            Users_Role::firstOrCreate($data_user_role);
+
+            $data_user_detail = array(
+                "user_id"   => $value->id,
+                "divisi"    => $divisi,
+                "jabatan"   => $jabatan
+            );
+            Users_Detail::firstOrCreate($data_user_detail);
         }
 
         $status_akses_array = array(
-            array("name"=>"Pending Daftar","color"=>"#FFFF00"),
+            array("name"=>"Pending Daftar","color"=>"#00000"),
             array("name"=>"Pending Cetak","color"=>"#FFA500"),
             array("name"=>"Pending Aktif","color"=>"#00FF00"),
             array("name"=>"Kartu Aktif","color"=>"#0000FF"),

@@ -31,7 +31,7 @@
               @endif
             @endforeach
         </div> <!-- end .flash-message -->
-        <h2> Hi {{ ucfirst($data['credentials']->name) }} </h2>
+        <h2> Hi {{ ucfirst(Auth::user()->name) }}  </h2>
         <h4> Apa yang anda lakukan hari ini </h4>
 
         <div> 
@@ -61,7 +61,7 @@
                 </div>
             </div>
 
-            @if($data['credentials']->divisi == 4)
+        
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            @endif
+            
 
             <div class="col-sm-3">
                 <div class="row">

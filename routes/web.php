@@ -45,8 +45,7 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
 	Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
 
-	// Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
-	// Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
+	
 
 
 	// Admin Features
@@ -75,18 +74,20 @@ Route::group(['middleware' => ['auth']], function() {
 	
 	
 
-
-
-
-
-
-
 	Route::get('/setting','SettingController@index')->name('route_setting');
 	Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
 	Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
 	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
 	Route::get('/report','SettingController@report')->name('route_report');
 	
+
+	// END
+
+	// Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
+	// Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
+
+
+
 	// Route::post('/pencetakan_akses', 'AksesController@pencetakan_akses')->name('post_pencetakan_akses');
 	// Route::post('/pencetakan_diterima', 'AksesController@pencetakan_diterima')->name('post_pencetakan_diterima');
 
@@ -97,14 +98,6 @@ Route::group(['middleware' => ['auth']], function() {
 	// Route::get('/setting/add-inventory', 'SettingController@show_inventory')->name('show_inventory');
 	
 	
-	
-
-	
-
-	
-
-	
-
 	// Route::post('/pendaftaran_diterima', 'AksesController@pendaftaran_diterima')->name('post_pendaftaran_diterima');
 
 });
