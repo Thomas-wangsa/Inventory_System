@@ -31,7 +31,7 @@
 			<div class="col-sm-6">
 				<img class="img-responsive img-thumbnail" 
 				style="max-height: 300px" 
-				src="{{ URL::asset($data['credentials']->foto) }}"
+				src="{{ URL::asset($user_detail->foto) }}"
 				/>
 
 				<div class="" style="margin-top: 7px">
@@ -41,6 +41,8 @@
 					method="POST" enctype="multipart/form-data" 
 					style="margin-top: 15px">
 						{{ csrf_field() }}
+						<input type="hidden" name="user_uuid" 
+						value="{{$user_detail->uuid}}">
 					  	<div class="form-group">
 						    <input type="file" class="form-control" name="background" required>
 						</div>
@@ -60,22 +62,22 @@
 						{{ csrf_field() }}
 					    <div class="form-group">
 					      <label for="pwd"> Nama Lengkap :</label>
-					      <input type="text" class="form-control" id="pwd"  name="nama_lengkap" value="{{$data['credentials']->name}}" required="">
+					      <input type="text" class="form-control" id="pwd"  name="nama_lengkap" value="{{$user_detail->name}}" required="">
 					    </div>
 
 					    <div class="form-group">
 					      <label for="pwd">Posisi:</label>
-					      <input type="text" class="form-control" id="pwd"  name="posisi" value="{{$data['credentials']->jabatan}}" disabled="">
+					      <input type="text" class="form-control" id="pwd"  name="posisi" value="{{$user_detail->jabatan}}" disabled="">
 					    </div>
 
 					    <div class="form-group">
 					      <label for="pwd"> Email :</label>
-					      <input type="email" class="form-control" id="pwd"  name="email" value="{{$data['credentials']->email}}" disabled="">
+					      <input type="email" class="form-control" id="pwd"  name="email" value="{{$user_detail->email}}" disabled="">
 					    </div>
 
 					    <div class="form-group">
 					      <label for="pwd"> Nomor Handphone :</label>
-					      <input type="text" class="form-control" id="pwd"  name="phone" value="{{$data['credentials']->mobile}}" required="">
+					      <input type="text" class="form-control" id="pwd"  name="phone" value="{{$user_detail->mobile}}" required="">
 					    </div>
 
 					    <div class="text-center">

@@ -65,7 +65,7 @@
 			        <th> Nama Lengkap </th>
 			        <th> Email </th>
 			        <th> No Handphone </th>
-			        <th> Posisi </th>
+			        <th> Identitas Diri </th>
 			        <th> Action </th>
 			      </tr>
 			    </thead>
@@ -82,16 +82,41 @@
 			    			<td> {{ ucfirst($val->name) }} </td>
 			    			<td> {{ $val->email }} </td>
 			    			<td> {{ $val->mobile }} </td>
-			    			<td> {{ ucfirst($val->jabatan) }} </td>
 			    			<td>
-			    				<div class="text-center"> 
-			    				<span class="glyphicon glyphicon-pencil"></span>
+			    				<a href="{{$val->foto}}" target="_blank" >
+			    					<img src="{{$val->foto}}"/ width="80px"> 
+			    				</a>
+			    			</td>
+			    			<td>
+			    				<div class="text-center" > 
+			    					<span class="glyphicon glyphicon-pencil"
+			    					style="color:black;cursor:pointer" 
+			    					title="Edit Data"
+			    					onclick='get_data_user("{{$val->uuid}}")'>
+			    						
+			    					</span> &nbsp;
 
 			    					<span onclick='delete_akun("{{ $val->uuid }}")' >
-			    						<span class="glyphicon glyphicon-trash">
+			    						<span class="glyphicon glyphicon-trash"
+			    						style="color:red;cursor:pointer" 
+			    						title="Hapus Data">
 			    						</span>
-			    					</span>
-			    				<span class="glyphicon glyphicon-plus" style="color: green" data-toggle="modal" data-target="#modal_special"></span>
+			    					</span> &nbsp;
+			    					
+			    					<span class="glyphicon glyphicon-plus" 
+			    					style="color: green;cursor:pointer" 
+			    					title="Tambah Role" 
+			    					onclick='get_role_user("{{$val->uuid}}")'>
+			    						
+			    					</span> &nbsp;
+
+			    					<span class="glyphicon glyphicon-cog" 
+			    					style="color: blue;cursor:pointer" 
+			    					title="Tambah Feature"
+			    					data-toggle="modal" data-target="#modal_special">
+			    						
+			    					</span> &nbsp;
+
 			    				</div>
 			    			</td>
 			    		</tr>
@@ -107,9 +132,37 @@
 	</div>
 
 	@include('admin.modal');
+	@include('admin.modal_edit');
+	@include('admin.modal_role');
 	@include('admin.modal_special');
 
 <script type="text/javascript">
+
+	function get_role_user(uuid) {
+		var data = {
+    		"uuid":uuid
+    	};
+
+	    $.ajaxSetup({
+		    headers: {
+		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		    }
+		});
+		$.ajax({
+			type : "POST",
+			url: " {{ route('get_role_user') }}",
+			contentType: "application/json",
+			data : JSON.stringify(data),
+			success: function(result) {
+				var response = JSON.parse(result);
+				alert(response.length);
+				$('#modal_role').modal('show'); 
+			},
+			error: function( jqXhr, textStatus, errorThrown ){
+				console.log( errorThrown );
+			}
+		})
+	}
 
     function delete_akun(uuid) {
     	$(document).ready(function(){
@@ -144,6 +197,36 @@
 			}
 		});
     };
+
+    function get_data_user(uuid) {
+    	var data = {
+    		"uuid":uuid
+    	};
+
+	    $.ajaxSetup({
+		    headers: {
+		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		    }
+		});
+		$.ajax({
+			type : "POST",
+			url: " {{ route('get_data_user') }}",
+			contentType: "application/json",
+			data : JSON.stringify(data),
+			success: function(result) {
+				var response = JSON.parse(result);
+				$('#edit_nama').val(response.name);
+				$('#edit_email').val(response.email);
+				$('#edit_email2').val(response.email_2);
+				$('#edit_phone').val(response.mobile);
+				$('#edit_uuid').val(response.uuid);
+ 				$('#modal_edit').modal('show'); 
+			},
+			error: function( jqXhr, textStatus, errorThrown ){
+				console.log( errorThrown );
+			}
+		})
+    }
 
 	
 </script>

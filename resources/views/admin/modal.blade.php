@@ -16,17 +16,29 @@
 				  {{ csrf_field() }}
 				  <div class="form-group">
 				    <label for="staff_nama"> Nama Lengkap :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_nama" value="Thomas">
+				    <input type="text" class="form-control" id="nama" 
+				    name="staff_nama" value="Thomas" 
+				    placeholder="Username">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="email"> Email :</label>
-				    <input type="email" class="form-control" id="email" name="staff_email" value="thomas@gmail.com">
+				    <input type="email" class="form-control" id="email" 
+				    name="staff_email" value="thomas@gmail.com" 
+				    placeholder="User Email Default">
+				  </div>
+
+				  <div class="form-group">
+				    <label for="email"> Email-2 :</label>
+				    <input type="email" class="form-control" id="email" 
+				    name="staff_email2" value="" 
+				    placeholder="User Email Secondary">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="email"> No Handphone :</label>
-				    <input type="text" class="form-control" id="email" name="staff_mobile" value="92595305">
+				    <input type="text" class="form-control" id="email" name="staff_mobile" value="081222117788"
+				    placeholder="User Phone">
 				  </div>
 				  
 				  <div class="form-group">
@@ -92,7 +104,6 @@
 			//alert(value);
 			switch(value) {
 				case "1" :
-				case "4" : 
 					$('#select_posisi').prop('disabled',true);
 					$('#select_posisi').val("0");
 					break;

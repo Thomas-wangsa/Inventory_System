@@ -15,17 +15,13 @@ class CreateUsersDetailTable extends Migration
     {
         Schema::create('users_detail', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
-            $table->unsignedInteger('divisi');
-            $table->unsignedInteger('jabatan')->default(0);
-            $table->boolean('status')->default(1);
+            $table->uuid('uuid'); 
+            $table->string('foto')->nullable();
+            $table->string('email_2')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id', 'users_detail_fkey')
                 ->references('id')->on('users')
-                ->onUpdate('CASCADE')->onDelete('RESTRICT');
-
-            $table->foreign('divisi', 'users_detail_divisi_fkey')
-                ->references('id')->on('divisi')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
         });
     }

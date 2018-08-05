@@ -32,9 +32,10 @@
             @endforeach
         </div> <!-- end .flash-message -->
         <h2> Hi {{ ucfirst(Auth::user()->name) }}  </h2>
-        <h4> Apa yang anda lakukan hari ini </h4>
+
 
         <div> 
+            @if(in_array(1,$user_divisi) || in_array(2,$user_divisi))
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -47,8 +48,9 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-
+            @if(in_array(1,$user_divisi) || in_array(3,$user_divisi))
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -60,8 +62,9 @@
                     </div>
                 </div>
             </div>
+            @endif
 
-        
+            @if(in_array(1,$user_divisi))
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -73,8 +76,9 @@
                     </div>
                 </div>
             </div>
+            @endif
             
-
+            @if(in_array(1,$user_divisi) || in_array(2,$user_divisi))
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -86,7 +90,7 @@
                     </div>
                 </div>
             </div>
-
+            @endif
         </div> 
     </div>
 @endsection

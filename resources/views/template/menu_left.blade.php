@@ -83,7 +83,7 @@
           </div>
           <div class="clearfix"> </div>
 
-          
+          @if(in_array(1,$user_divisi) || in_array(2,$user_divisi))
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('akses')}}">
@@ -112,9 +112,9 @@
             </div>     
           </div>
           <div class="clearfix"> </div>
-          
+          @endif
 
-
+          @if(in_array(1,$user_divisi) || in_array(3,$user_divisi))
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('inventory')}}">
@@ -141,8 +141,9 @@
             </div>     
           </div>
           <div class="clearfix"> </div>
-          
+          @endif
 
+          @if(in_array(1,$user_divisi))
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_admin')}}">
@@ -171,10 +172,9 @@
             </div>     
           </div>
           <div class="clearfix"> </div>
-          
+          @endif
 
-
-
+          @if(in_array(1,$user_divisi) || in_array(1,$user_setting))
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_setting')}}">
@@ -203,9 +203,9 @@
             </div>     
           </div>
           <div class="clearfix"> </div>
-          
+          @endif
 
-
+          @if(in_array(1,$user_divisi) || in_array(2,$user_divisi))
           <div class="icon-left">
             <div class="col-sm-2 icon-image">
               <a href="{{route('route_report')}}">
@@ -232,6 +232,7 @@
               </div>
             </div>     
           </div>
+          @endif
           
 
           <div class="clearfix" style="margin-bottom: 20px"> </div>

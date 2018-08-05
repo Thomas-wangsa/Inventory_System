@@ -192,19 +192,19 @@ class DatabaseSeeder extends Seeder
             }
 
 
-            $data_user_role = array(
+            $data_user_detail = array(
                 "user_id"   => $value->id,
                 "uuid"      => $faker->uuid,
                 "foto"      => "images/user/default.png"
             );
-            Users_Role::firstOrCreate($data_user_role);
+            Users_Detail::firstOrCreate($data_user_detail);
 
-            $data_user_detail = array(
+            $data_user_role = array(
                 "user_id"   => $value->id,
                 "divisi"    => $divisi,
                 "jabatan"   => $jabatan
             );
-            Users_Detail::firstOrCreate($data_user_detail);
+            Users_Role::firstOrCreate($data_user_role);
         }
 
         $status_akses_array = array(

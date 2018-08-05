@@ -24,6 +24,8 @@
 		html, body {
         height: 100%!important;
         margin: 0px!important;
+        max-width: 1700px;
+        min-width: 800px;
     	}
 
     	.center {

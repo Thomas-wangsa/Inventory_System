@@ -13,6 +13,12 @@ class Users_Role extends Model
     protected $primaryKey = 'user_id';
 
 
+    public function scopeGetDivisiById($query,$user_id) {
+        return 
+        $query->where('users_role.user_id','=',$user_id)
+        ->select('divisi')->distinct();
+    }
+
     public function scopeGetAksesDecisionMaker($query,$param) {
     	return $query->join('users','users.id','=','users_role.user_id')
     			->where('divisi',2)

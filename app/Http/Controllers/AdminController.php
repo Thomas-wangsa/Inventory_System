@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
-
+use App\Http\Models\Users_Detail;
 use App\Http\Models\Divisi;
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
@@ -20,29 +20,22 @@ use Faker\Factory as Faker;
 
 class AdminController extends Controller
 {	
-	protected $credentials;
+	protected $restrict = 1;
     protected $faker;
 
 	public function __construct() {
-            $this->faker    = Faker::create();
-
-
-		$this->middleware(function ($request, $next) {
-            $this->credentials = Users::GetRoleById(Auth::id())->first();
-            return $next($request);
-        });
-        
+        $this->faker    = Faker::create();
     }
 
 
-    public function index() {
-    	if($this->credentials->divisi != 4) {
-    		return redirect('home'); 
-    	}
+    public function index(Request $request) {
+        if(!in_array($this->restrict,\Request::get('user_divisi'))) {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur admin');
+            return redirect('home');
+        }
 
     	$data	= array(
-    		'credentials'		=> $this->credentials,
-    		'users'				=> Users::GetJabatan()->paginate(5),
+    		'users'				=> Users::GetDetailAll()->paginate(5),
     		'divisi'			=> Divisi::all(),
     		'inventory_list'	=> Inventory_List::all(),
             'setting_list'      => Setting_List::all()
@@ -52,10 +45,6 @@ class AdminController extends Controller
     }
 
     public function create_new_users(Request $request) {
-    	if($this->credentials->divisi != 4) {
-            $request->session()->flash('alert-danger', 'Not allowed');
-    		return redirect('home'); 
-    	}
 
     	if (!preg_match("/^[a-zA-Z ]*$/",$request->staff_nama)) {
     		$request->session()->flash('alert-danger', 'Only letters and white space allowed!');
@@ -77,43 +66,61 @@ class AdminController extends Controller
 		);
 
 		$new_users = Users::firstOrCreate($array_users);
+
 		switch($request->select_divisi) {
 			
 			case 1 :
-            case 4 :  
-				$user_role = new Users_Role;
+				$user_role      = new Users_Role;
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
-                $user_role->uuid        = $this->faker->uuid();
-                $user_role->foto        = "images/user/default.png";
-        		$user_role->save();
+                $user_role->save();
+
+                $user_detail    = new Users_Detail;
+                $user_detail->user_id     = $new_users->id;
+                $user_detail->email_2     = $request->staff_email2;
+                $user_detail->uuid        = $this->faker->uuid();
+                $user_detail->foto        = "images/user/default.png";
+        		$user_detail->save();
 			break;
 			
-			case 2 : 
-				$user_role = new Users_Role;
-        		$user_role->user_id 	= $new_users->id;
-        		$user_role->divisi 		= $request->select_divisi;
-        		$user_role->jabatan 	= $request->select_posisi;
-                $user_role->uuid        = $this->faker->uuid();
-                $user_role->foto        = "images/user/default.png";
-        		$user_role->save();
+			case 2 :
+                $user_role      = new Users_Role;
+                $user_role->user_id     = $new_users->id;
+                $user_role->divisi      = $request->select_divisi;
+                $user_role->jabatan     = $request->select_posisi;
+                $user_role->save();
+
+                $user_detail    = new Users_Detail;
+                $user_detail->user_id     = $new_users->id;
+                $user_detail->email_2     = $request->staff_email2;
+                $user_detail->uuid        = $this->faker->uuid();
+                $user_detail->foto        = "images/user/default.png";
+                $user_detail->save();
 			break;
 
 			case 3 : 
 				$inventory_role_array = array(
+                    "users_id"              => $new_users->id,
 					"inventory_list_id"		=> $request->inventory_list,
 					"inventory_level_id"	=> $request->select_posisi
 				);
 
 				$new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
 
-				$user_role = new Users_Role;
-        		$user_role->user_id 	= $new_users->id;
-        		$user_role->divisi 		= $request->select_divisi;
-        		$user_role->jabatan 	= $new_inventory_role->id;
-                $user_role->foto        = "images/user/default.png";
-                $user_role->uuid        = $this->faker->uuid();
-        		$user_role->save();
+
+                $user_role      = new Users_Role;
+                $user_role->user_id     = $new_users->id;
+                $user_role->divisi      = $request->select_divisi;
+                $user_role->jabatan     = $new_inventory_role->id;
+                $user_role->save();
+
+                $user_detail    = new Users_Detail;
+                $user_detail->user_id     = $new_users->id;
+                $user_detail->email_2     = $request->staff_email2;
+                $user_detail->uuid        = $this->faker->uuid();
+                $user_detail->foto        = "images/user/default.png";
+                $user_detail->save();
+
 			break;
 
 			default : 
@@ -128,16 +135,51 @@ class AdminController extends Controller
 		return redirect('admin');
     }
 
+    public function edit_user(Request $request) {
+        if (!preg_match("/^[a-zA-Z ]*$/",$request->staff_nama)) {
+            $request->session()->flash('alert-danger', 'Only letters and white space allowed!');
+            return redirect('admin');
+        }
+
+        if (!preg_match("/^[0-9]*$/",$request->staff_mobile)) {
+            $request->session()->flash('alert-danger', 'Only numbers allowed!');
+            return redirect('admin'); 
+        }
+
+        $user_data = Users::GetDetailByUUID($request->uuid)->first();
+        $check_exist   = Users::where('email',$request->staff_email)
+                        ->where('id','!=',$user_data->id)
+                        ->first();
+
+        if(count($check_exist) > 0) {
+            $request->session()->flash('alert-danger', 'Email telah terdaftar di Akun lain');
+            return redirect('admin');
+        }
+
+        $user           = Users::find($user_data->id);
+        $user->name     = $request->staff_nama;
+        $user->email    = $request->staff_email;
+        $user->mobile   = $request->staff_mobile;
+
+        $user_detail    = Users_Detail::find($user_data->id);
+        $user_detail->email_2 = $request->staff_email2;
+
+
+        $user->save();
+        $user_detail->save();
+
+        $request->session()->flash('alert-success', 'Akun Berhasil di Edit!');
+        return redirect('admin');
+
+    }
 
     public function delete_user(Request $request) {
-    	$users = Users::join('users_role','users_role.user_id','=','users.id')
+    	$users = Users::join('users_detail','users_detail.user_id','=','users.id')
     				->where('uuid',$request->uuid)->first()->delete();
     	$response = array(
     		"status"=>$users
     	);
-
     	return json_encode($response);
-    	
     }
 
     public function delete_user_notif(Request $request) {

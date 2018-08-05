@@ -39,6 +39,29 @@ class Users extends Model
     protected $dates = ['deleted_at'];
 
 
+    public function scopeGetDetailById($query,$id) {
+        return 
+        $query->join('users_detail','users_detail.user_id','=','users.id')
+        ->where('users.id','=',$id)
+        ->select('users.*','users_detail.foto','users_detail.uuid');
+    }
+
+    public function scopeGetDetailByUUID($query,$uuid) {
+        return 
+        $query->join('users_detail','users_detail.user_id','=','users.id')
+        ->where('users_detail.uuid','=',$uuid)
+        ->select('users.*','users_detail.foto',
+            'users_detail.uuid','users_detail.email_2');
+    }
+
+    public function scopeGetDetailAll($query) {
+        return
+        $query->join('users_detail','users_detail.user_id','=','users.id')
+        ->select('users.*','users_detail.foto','users_detail.uuid');
+    }
+
+
+
     public function scopeGetRoleById($query,$id) {
         return 
         $query->join('users_role','users_role.user_id','=','users.id')

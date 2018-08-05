@@ -23,9 +23,45 @@ Auth::routes();
 //     return view('auth.old_login');
 // });
 
+Route::get('/logout',function(){
+	Auth::guard()->logout();
+    return redirect('/login');
+});
 
-Route::group(['middleware' => ['auth']], function() { 
-	Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware' => ['auth']], function() {
+
+
+
+
+	Route::group(['middleware' => ['get_credentials']], function() { 
+		Route::get('/home', 'HomeController@index')->name('home');
+		Route::get('/notify', 'HomeController@notify')->name('route_notify');
+		// Profile Features
+		Route::get('/profile', 'HomeController@profile')->name('profile');
+		Route::post('/ganti_foto', 'HomeController@ganti_foto')->name('ganti_foto');
+		Route::post('/ganti_profile', 'HomeController@ganti_profile')->name('ganti_profile');
+		// Password Features
+		Route::get('/password', 'HomeController@password')->name('password');
+		Route::post('/password', 'HomeController@post_password')->name('post_password');
+
+
+		Route::get('/admin','AdminController@index')->name('route_admin');
+		Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
+
+		Route::post('/admin/edit_user', 'AdminController@edit_user')->name('edit_user');
+		Route::post('/ajax/get_data_user', 'AjaxController@get_data_user')->name('get_data_user');
+		Route::post('/ajax/get_role_user', 'AjaxController@get_role_user')->name('get_role_user');
+
+		Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
+		Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
+		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
+		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+	});
+		
+		
+
+	
+
 
 
 	// Akses Features	
@@ -48,28 +84,11 @@ Route::group(['middleware' => ['auth']], function() {
 	
 
 
-	// Admin Features
-	Route::get('/admin','AdminController@index')->name('route_admin');
-	Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
-	Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
-	Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
-	Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
-	Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+	
 	
 
-	// Profile Features
-	Route::get('/profile', 'HomeController@profile')->name('profile');
-	Route::post('/ganti_foto', 'HomeController@ganti_foto')->name('ganti_foto');
-	Route::post('/ganti_profile', 'HomeController@ganti_profile')->name('ganti_profile');
-
-
-
-	Route::get('/notify', 'HomeController@notify')->name('route_notify');
 	
 
-	// Password Features
-	Route::get('/password', 'HomeController@password')->name('password');
-	Route::post('/password', 'HomeController@post_password')->name('post_password');
 	
 	
 	

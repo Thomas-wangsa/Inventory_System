@@ -14,14 +14,23 @@ class CreateUsersRoleTable extends Migration
     public function up()
     {
         Schema::create('users_role', function (Blueprint $table) {
+
             $table->unsignedInteger('user_id');
-            $table->uuid('uuid'); 
-            $table->string('foto')->nullable();
+            $table->unsignedInteger('divisi');
+            $table->unsignedInteger('jabatan')->default(0);
+            $table->boolean('status')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id', 'users_role_fkey')
                 ->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
+            $table->foreign('divisi', 'users_role_divisi_fkey')
+                ->references('id')->on('divisi')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
+
+            
         });
 
         
