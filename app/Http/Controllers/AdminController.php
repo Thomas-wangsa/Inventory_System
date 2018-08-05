@@ -67,20 +67,20 @@ class AdminController extends Controller
 
 		$new_users = Users::firstOrCreate($array_users);
 
+
+        $user_detail    = new Users_Detail;
+        $user_detail->user_id     = $new_users->id;
+        $user_detail->email_2     = $request->staff_email2;
+        $user_detail->uuid        = $this->faker->uuid();
+        $user_detail->foto        = "images/user/default.png";
+        
 		switch($request->select_divisi) {
 			
 			case 1 :
 				$user_role      = new Users_Role;
         		$user_role->user_id 	= $new_users->id;
         		$user_role->divisi 		= $request->select_divisi;
-                $user_role->save();
-
-                $user_detail    = new Users_Detail;
-                $user_detail->user_id     = $new_users->id;
-                $user_detail->email_2     = $request->staff_email2;
-                $user_detail->uuid        = $this->faker->uuid();
-                $user_detail->foto        = "images/user/default.png";
-        		$user_detail->save();
+                
 			break;
 			
 			case 2 :
@@ -88,19 +88,11 @@ class AdminController extends Controller
                 $user_role->user_id     = $new_users->id;
                 $user_role->divisi      = $request->select_divisi;
                 $user_role->jabatan     = $request->select_posisi;
-                $user_role->save();
-
-                $user_detail    = new Users_Detail;
-                $user_detail->user_id     = $new_users->id;
-                $user_detail->email_2     = $request->staff_email2;
-                $user_detail->uuid        = $this->faker->uuid();
-                $user_detail->foto        = "images/user/default.png";
-                $user_detail->save();
 			break;
 
 			case 3 : 
 				$inventory_role_array = array(
-                    "users_id"              => $new_users->id,
+                    "user_id"              => $new_users->id,
 					"inventory_list_id"		=> $request->inventory_list,
 					"inventory_level_id"	=> $request->select_posisi
 				);
@@ -112,15 +104,6 @@ class AdminController extends Controller
                 $user_role->user_id     = $new_users->id;
                 $user_role->divisi      = $request->select_divisi;
                 $user_role->jabatan     = $new_inventory_role->id;
-                $user_role->save();
-
-                $user_detail    = new Users_Detail;
-                $user_detail->user_id     = $new_users->id;
-                $user_detail->email_2     = $request->staff_email2;
-                $user_detail->uuid        = $this->faker->uuid();
-                $user_detail->foto        = "images/user/default.png";
-                $user_detail->save();
-
 			break;
 
 			default : 
@@ -128,6 +111,9 @@ class AdminController extends Controller
     			return redirect('admin');
     		break;
 		}
+
+        $user_role->save();
+        $user_detail->save();
 
 		$new_users->notify(new New_User($generated_password));
 
@@ -137,12 +123,12 @@ class AdminController extends Controller
 
     public function edit_user(Request $request) {
         if (!preg_match("/^[a-zA-Z ]*$/",$request->staff_nama)) {
-            $request->session()->flash('alert-danger', 'Only letters and white space allowed!');
+            $request->session()->flash('alert-danger', 'Only letters and white space allowed! in name field');
             return redirect('admin');
         }
 
         if (!preg_match("/^[0-9]*$/",$request->staff_mobile)) {
-            $request->session()->flash('alert-danger', 'Only numbers allowed!');
+            $request->session()->flash('alert-danger', 'Only numbers allowed! in phone field');
             return redirect('admin'); 
         }
 
@@ -185,5 +171,19 @@ class AdminController extends Controller
     public function delete_user_notif(Request $request) {
     	$request->session()->flash('alert-warning', 'Akun Berhasil di Delete!');
     	return redirect('admin');
+    }
+
+
+    function delete_role_user(Request $request) {
+        $role = Users_Role::find($request->role_id)->delete();
+        $response = array(
+            "status"=>$role
+        );
+        return json_encode($response);
+    }
+
+    public function delete_role_notif(Request $request) {
+        $request->session()->flash('alert-warning', 'Role Berhasil di Delete!');
+        return redirect('admin');
     }
 }

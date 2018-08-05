@@ -4,13 +4,14 @@ namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Users_Role extends Model
 {	
 	use Notifiable;
-	
+	use SoftDeletes;
     protected $table = "users_role";
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'role_id';
 
 
     public function scopeGetDivisiById($query,$user_id) {

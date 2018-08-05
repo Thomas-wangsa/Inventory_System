@@ -124,8 +124,8 @@ class DatabaseSeeder extends Seeder
 
 
         $inventory_level_array = array(
-            array("inventory_level_name"=>"head"),
-            array("inventory_level_name"=>"staff")
+            array("inventory_level_name"=>"staff"),
+            array("inventory_level_name"=>"head")
         );
 
         foreach ($inventory_level_array as $key => $value) {
@@ -180,18 +180,7 @@ class DatabaseSeeder extends Seeder
                     break;
             }
 
-            if($divisi == 3) {
-
-                $inventory_role_array = array(
-                    "users_id"              =>$value->id,
-                    "inventory_list_id"     => Inventory_List::first()->id,
-                    "inventory_level_id"    => $jabatan
-                );
-
-                $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
-            }
-
-
+            
             $data_user_detail = array(
                 "user_id"   => $value->id,
                 "uuid"      => $faker->uuid,
@@ -205,6 +194,17 @@ class DatabaseSeeder extends Seeder
                 "jabatan"   => $jabatan
             );
             Users_Role::firstOrCreate($data_user_role);
+
+            if($divisi == 3) {
+
+                $inventory_role_array = array(
+                    "user_id"              =>$value->id,
+                    "inventory_list_id"     => Inventory_List::first()->id,
+                    "inventory_level_id"    => $jabatan
+                );
+
+                $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
+            }
         }
 
         $status_akses_array = array(

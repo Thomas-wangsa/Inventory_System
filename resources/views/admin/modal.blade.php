@@ -54,7 +54,6 @@
 				  <div class="form-group" id="inventory_head">
 				    <label for="staff_divisi"> Inventory Role :</label>
 				    <select class="form-control" id="inventory_role" name="inventory_list">
-				    	<option value=""> </option>
 				    	@foreach($data['inventory_list'] as $key=>$val)
 				    	<option value="{{$val->id}}"> {{$val->inventory_name}} </option>
 				    	@endforeach
@@ -62,7 +61,7 @@
 				  </div>
 
 				  <div class="form-group">
-				    <label for="staff_divisi"> Posisi :</label>
+				    <label for="staff_divisi"> Jabatan :</label>
 				    <select class="form-control" id="select_posisi" name="select_posisi">
 				    	<option value=""> </option>
 				    </select>

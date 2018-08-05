@@ -52,8 +52,12 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/ajax/get_data_user', 'AjaxController@get_data_user')->name('get_data_user');
 		Route::post('/ajax/get_role_user', 'AjaxController@get_role_user')->name('get_role_user');
 
+
 		Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
 		Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
+
+		Route::post('/admin/delete_role_user', 'AdminController@delete_role_user')->name('delete_role_user');
+		Route::get('/admin/delete_role_notif', 'AdminController@delete_role_notif')->name('delete_role_notif');
 		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
 	});

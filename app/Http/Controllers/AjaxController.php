@@ -8,6 +8,8 @@ use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Divisi;
 use App\Http\Models\Inventory_Level;
+use App\Http\Models\Inventory_Role;
+use App\Http\Models\Inventory_List;
 
 class AjaxController extends Controller
 {
@@ -33,11 +35,59 @@ class AjaxController extends Controller
         $response = array();
         foreach ($roles as $key => $value) {
             $response[$key] = $value;
+            $response[$key]['uuid']        = $data->uuid;
             $response[$key]['divisi_name'] = Divisi::find($value['divisi'])->name;
+            $response[$key]['inventory']   = "-";
+
+            switch ($value['divisi']) {
+                case 1:
+                    $response[$key]['jabatan_name'] = "super admin";
+                    break;
+                case 2:
+                    $jabatan = Akses_Role::find($value['jabatan']);
+                    if(count($jabatan) < 1 ) {
+                        $response[$key]['jabatan_name'] = "null";
+                    } else {
+                        $response[$key]['jabatan_name'] = $jabatan->name;
+                    }
+                    break;
+                case 3:
+                    $jabatan = Inventory_Role::find($value['jabatan']);
+
+                    if(count($jabatan) < 1 ) {
+                        $response[$key]['jabatan_name'] = "null";
+                    } else {
+                        $inv_name = Inventory_List::find($jabatan->inventory_list_id);
+                        $pos_name = inventory_level::find($jabatan->inventory_level_id);
+
+                        if(count($inv_name) > 0 && count($pos_name) > 0) {
+                            $response[$key]['inventory']   = $inv_name->inventory_name;
+                            $response[$key]['jabatan_name'] = $pos_name->inventory_level_name." ".$inv_name->inventory_name;
+                        } else {
+                            $response[$key]['jabatan_name'] = "null";
+                        }
+
+                        
+                    }
+                    break;
+                
+                default:
+                    $response[$key]['jabatan_name'] = "Null";
+                    break;
+            }
 
             
+        }
+        return json_encode($response);
+    }
 
-            $response[$key]['data'] = "data";  
+
+    function delete_role_user(Request $request) {
+        $response = "";
+        if(Users_Role::find($request->role_id)->delete()) {
+            $response = "Role telah di delete";
+        } else {
+            $response = "Role tidak aktif";
         }
 
         return json_encode($response);

@@ -138,31 +138,7 @@
 
 <script type="text/javascript">
 
-	function get_role_user(uuid) {
-		var data = {
-    		"uuid":uuid
-    	};
-
-	    $.ajaxSetup({
-		    headers: {
-		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		    }
-		});
-		$.ajax({
-			type : "POST",
-			url: " {{ route('get_role_user') }}",
-			contentType: "application/json",
-			data : JSON.stringify(data),
-			success: function(result) {
-				var response = JSON.parse(result);
-				alert(response.length);
-				$('#modal_role').modal('show'); 
-			},
-			error: function( jqXhr, textStatus, errorThrown ){
-				console.log( errorThrown );
-			}
-		})
-	}
+	
 
     function delete_akun(uuid) {
     	$(document).ready(function(){
@@ -192,41 +168,13 @@
        					console.log( errorThrown );
     				}
 	    		});
-			} else {
-				
-			}
+			} 
 		});
     };
 
-    function get_data_user(uuid) {
-    	var data = {
-    		"uuid":uuid
-    	};
+    
 
-	    $.ajaxSetup({
-		    headers: {
-		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		    }
-		});
-		$.ajax({
-			type : "POST",
-			url: " {{ route('get_data_user') }}",
-			contentType: "application/json",
-			data : JSON.stringify(data),
-			success: function(result) {
-				var response = JSON.parse(result);
-				$('#edit_nama').val(response.name);
-				$('#edit_email').val(response.email);
-				$('#edit_email2').val(response.email_2);
-				$('#edit_phone').val(response.mobile);
-				$('#edit_uuid').val(response.uuid);
- 				$('#modal_edit').modal('show'); 
-			},
-			error: function( jqXhr, textStatus, errorThrown ){
-				console.log( errorThrown );
-			}
-		})
-    }
+    
 
 	
 </script>

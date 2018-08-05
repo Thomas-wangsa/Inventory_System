@@ -14,11 +14,11 @@ class CreateUsersRoleTable extends Migration
     public function up()
     {
         Schema::create('users_role', function (Blueprint $table) {
-
+            $table->increments('role_id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('divisi');
             $table->unsignedInteger('jabatan')->default(0);
-            $table->boolean('status')->default(1);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id', 'users_role_fkey')
