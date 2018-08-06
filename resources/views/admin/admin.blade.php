@@ -19,13 +19,14 @@
 			<div class="pull-left">
 				<form class="form-inline" action="{{route('route_admin')}}">
 				    
+				    <input type="hidden" name="search" value="on"> </input>
 				    <div class="input-group">
 				    	<span class="input-group-addon">
 				    		<i class="glyphicon glyphicon-search">
 				    		</i>
 				    	</span>
 				    	<input type="text" class="form-control" 
-				    	name="search_email" placeholder="Cari Nama...">
+				    	name="search_nama" placeholder="Cari Nama...">
 				  	</div>
 					
 					<div class="form-group">
@@ -33,7 +34,8 @@
 				      		<option value=""> Filter Berdasarkan </option>
 				        	@foreach($data['divisi'] as $key=>$val)
 				    		<option value="{{$val->id}}"> {{ucfirst($val->name)}}</option>
-				    		@endforeach 
+				    		@endforeach
+				    		<option value="is_deleted"> Deleted Users </option> 
 				      	</select>
 				  	</div>
 
@@ -125,16 +127,25 @@
 			    </tbody>
 			</table>
 			<div class="pull-right" style="margin-top: -30px!important"> 
-			{{ $data['users']->links() }}
+			{{ $data['users']->appends(
+				[
+				'search' => Request::get('search'),
+				'search_nama' => Request::get('search_nama'),
+				'search_filter' => Request::get('search_filter'),
+				'search_order' => Request::get('search_order')
+				])
+
+			->links() }}
+	
 			</div>
 			<div class="clearfix"> </div>
 		</div>
 	</div>
 
-	@include('admin.modal');
-	@include('admin.modal_edit');
-	@include('admin.modal_role');
-	@include('admin.modal_special');
+	@include('admin.modal')
+	@include('admin.modal_edit')
+	@include('admin.modal_role')
+	@include('admin.modal_special')
 
 <script type="text/javascript">
 

@@ -29,13 +29,38 @@ class AdminController extends Controller
 
 
     public function index(Request $request) {
+        $users = Users::GetDetailAll();
+        
+        // if($request->search == "on") {
+        //     if($request->search_nama != null) {
+        //         $users = $users->where('users.name','like',$request->search_nama."%");
+        //     } else if($request->search_filter != null) {
+        //         if($request->search_filter == "is_deleted") {
+        //             $users =  $users->onlyTrashed();
+        //         } else {
+        //             $users = $users->join('users_role','users_role.user_id','=','users.id')->where('users_role.divisi',$request->search_filter);
+        //         }
+        //     } else {
+        //         echo "D";
+        //     }
+            
+        // }
+        
+        $users = $users->paginate(5);
+
+        //dd($users);
+
+
+        //dd($users);
+
+
         if(!in_array($this->restrict,\Request::get('user_divisi'))) {
             $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur admin');
             return redirect('home');
         }
 
     	$data	= array(
-    		'users'				=> Users::GetDetailAll()->paginate(5),
+    		'users'				=> $users,
     		'divisi'			=> Divisi::all(),
     		'inventory_list'	=> Inventory_List::all(),
             'setting_list'      => Setting_List::all()
@@ -251,10 +276,24 @@ class AdminController extends Controller
 
 
     function delete_role_user(Request $request) {
-        $role = Users_Role::find($request->role_id)->delete();
+        $user_id = Users_Role::find($request->role_id)->user_id;
+
+        $count_data = Users_Role::where('user_id',$user_id)->count();
+
+
+        if($count_data <= 1) {
+            $status  = false;
+            $message = "Minimal 1 user 1 role";
+        } else {
+            $status = Users_Role::find($request->role_id)->delete();
+            $message = "";            
+        }
+        
         $response = array(
-            "status"=>$role
+            "status"=>$status,
+            "message"=>$message
         );
+
         return json_encode($response);
     }
 
