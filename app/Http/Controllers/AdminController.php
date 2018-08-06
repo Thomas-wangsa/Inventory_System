@@ -121,6 +121,82 @@ class AdminController extends Controller
 		return redirect('admin');
     }
 
+    public function add_role_user(Request $request) {
+        $response['status']   = false;
+        $response['message']  = "";
+
+        $user = Users::GetDetailByUUID($request->uuid)->first();
+        if(count($user) < 1) {
+            $response['message']  = "Data User tidak di temukan";
+            return json_encode($response);
+        }
+
+        $count_exist = 0;
+        switch($request->divisi_role) {
+            case "1" :
+                $count_exist = Users_Role::where('user_id',$user->id)
+                        ->where('divisi',$request->divisi_role)
+                        ->count();
+            break;
+            case "2" :
+            case "3" :
+                $count_exist = Users_Role::where('user_id',$user->id)
+                        ->where('divisi',$request->divisi_role)
+                        ->where('jabatan',$request->jabatan_role)
+                        ->count();
+            break;
+            default : 
+                $count_exist = 1;
+            break;
+        }
+
+        if($count_exist > 0) {
+            $response['message']  = "Role Sudah Terdaftar";
+            return json_encode($response);
+        }
+
+
+        
+        switch($request->divisi_role) {
+            case "1" :
+                $new_user_role = new Users_Role;
+                $new_user_role->user_id = $user->id;
+                $new_user_role->divisi  = $request->divisi_role;
+                $new_user_role->jabatan = "0";
+                $new_user_role->save();
+            break;
+            case "2" :
+                $new_user_role = new Users_Role;
+                $new_user_role->user_id = $user->id;
+                $new_user_role->divisi  = $request->divisi_role;
+                $new_user_role->jabatan = $request->jabatan_role;
+                $new_user_role->save();
+            break;
+            case "3" :
+                $inventory_role_array = array(
+                    "user_id"               => $user->id,
+                    "inventory_list_id"     => $request->inv_role,
+                    "inventory_level_id"    => $request->jabatan_role
+                );
+
+                $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
+
+                $new_user_role = new Users_Role;
+                $new_user_role->user_id = $user->id;
+                $new_user_role->divisi  = $request->divisi_role;
+                $new_user_role->jabatan     = $new_inventory_role->id;
+                $new_user_role->save();
+            break;
+            default :
+                $new_user_role->divisi = "0";
+            break;
+        }
+
+        $response['status']   = true;
+        $response['message']  = "Role telah di tambahkan";
+        return json_encode($response); 
+    }
+
     public function edit_user(Request $request) {
         if (!preg_match("/^[a-zA-Z ]*$/",$request->staff_nama)) {
             $request->session()->flash('alert-danger', 'Only letters and white space allowed! in name field');
@@ -184,6 +260,11 @@ class AdminController extends Controller
 
     public function delete_role_notif(Request $request) {
         $request->session()->flash('alert-warning', 'Role Berhasil di Delete!');
+        return redirect('admin');
+    }
+
+    public function add_role_notif(Request $request) {
+        $request->session()->flash('alert-success', 'Role Berhasil di Tambahkan!');
         return redirect('admin');
     }
 }

@@ -25,7 +25,7 @@
 			   </table>
         </div>
         <div class="modal-footer">
-          <div id="uuid_edit"> asa </div>
+          <div id="uuid_edit" class="hidden">  </div>
           <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
         </div>
       </div>
@@ -57,16 +57,17 @@
         var data = "";
         $.each(response, function (key,val) {
           if(key == 0) {
-          $('#uuid_edit').text(val.uuid);
-          data += '<tr>' +
-                '<td colspan=4 class="text-center">' +
-                  '<button '+
-                  'class="btn btn-primary" ' +
-                  'onclick="append_table()" >' +
-                    'TAMBAH ROLE' +
-                   '</button>' +
-                '</td>' +
-              '</tr>';
+            $('#uuid_edit').text(val.uuid);
+            data += '<tr>' +
+                  '<td colspan=4 class="text-center">' +
+                    '<button '+
+                    'class="btn btn-primary" ' +
+                    'id="add_role_btn" ' +
+                    'onclick="append_table()" >' +
+                      'TAMBAH ROLE' +
+                     '</button>' +
+                  '</td>' +
+                '</tr>';
           }
           data += '<tr>' +
                 '<td class="text-center">' +
@@ -80,13 +81,14 @@
                 '</td>' +
                 '<td class="text-center">' +
                   '<button class="btn btn-danger" onclick="delete_role('+val.role_id+')">'+
-                    'DELETE ROLE' +
+                    'Delete Role' +
                    '</button>' +
                 '</td>' +
               '</tr>';
-          $('#tbody_edit').append(data);
+          
               // alert(val.divisi_name);
-          });
+        });
+        $('#tbody_edit').append(data);
         $('#modal_role').modal('show'); 
       },
       error: function( jqXhr, textStatus, errorThrown ){
@@ -104,7 +106,6 @@
                 'id="select_divisi_edit" '+
                 'onchange="conditional_add_role()" '+
                 'required="">' +
-                  '<option> select divisi </option>' +
                   @foreach($data['divisi'] as $key=>$val)
                   '<option value="{{$val->id}}">'+
                     '{{ucfirst($val->name)}}'+
@@ -137,14 +138,15 @@
               '</div>'+
           '</td>' +
           '<td>' +
-            '<button class="btn btn-success"'+
+            '<button class="btn btn-success text-center"'+
             'onclick="add_role()">'+
               'Submit Role' +
             '</button>' +
           '</td>' +
         '</tr>';
     $('#tbody_edit').append(data);
-    $('#inventory_head_edit').hide();  
+    $('#inventory_head_edit').hide();
+    $('#add_role_btn').prop('disabled',true);
   }
 
   function conditional_add_role() {
@@ -191,15 +193,46 @@
                                 .attr("value",value.id)
                                 .text(value.inventory_level_name));
             });
-            }
-          });
+          }
+        });
         break;
     }
   }
 
   function add_role() {
-    var uuid = $('#uuid_edit').text();
-    alert(uuid);
+    var uuid          = $('#uuid_edit').text();
+    var divisi_role   = $('#select_divisi_edit').val();
+    var jabatan_role  = $('#select_posisi_edit').val();
+    var inv_role      = $('#inventory_role').val();
+
+    var data = {
+      "uuid":uuid,
+      "divisi_role":divisi_role,
+      "jabatan_role":jabatan_role,
+      "inv_role":inv_role
+    };
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+      type : "POST",
+      url: " {{ route('add_role_user') }}",
+      contentType: "application/json",
+      data : JSON.stringify(data),
+      success: function(result) {
+        response = JSON.parse(result);
+        if(response.status == true) {
+          window.location = "{{route('add_role_notif')}}";
+        };
+        
+      },
+      error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+      }
+    });
   }
 
   function delete_role(role_id) {
@@ -212,22 +245,22 @@
           headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
           }
-      });
-      $.ajax({
-        type : "POST",
-        url: " {{ route('delete_role_user') }}",
-        contentType: "application/json",
-        data : JSON.stringify(data),
-        success: function(result) {
-          response = JSON.parse(result);
-            if(response.status == true) {
-              window.location = "{{route('delete_role_notif')}}";
-            }; 
-        },
-        error: function( jqXhr, textStatus, errorThrown ){
-          console.log( errorThrown );
-        }
-      });
+        });
+        $.ajax({
+          type : "POST",
+          url: " {{ route('delete_role_user') }}",
+          contentType: "application/json",
+          data : JSON.stringify(data),
+          success: function(result) {
+            response = JSON.parse(result);
+              if(response.status == true) {
+                window.location = "{{route('delete_role_notif')}}";
+              }; 
+          },
+          error: function( jqXhr, textStatus, errorThrown ){
+            console.log( errorThrown );
+          }
+        });
       }     
     }
 </script>

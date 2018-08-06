@@ -30,7 +30,10 @@ class AjaxController extends Controller
 
     public function get_role_user(Request $request) {
         $data = Users::GetDetailByUUID($request->uuid)->first();
-        $roles = Users_Role::where('user_id',$data->id)->get();
+        $roles = Users_Role::where('user_id',$data->id) 
+                    ->orderBy('divisi', 'asc')
+                    ->orderBy('jabatan', 'asc')
+                    ->get();
 
         $response = array();
         foreach ($roles as $key => $value) {
