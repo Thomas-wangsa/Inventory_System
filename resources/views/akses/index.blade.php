@@ -1,7 +1,6 @@
 @extends('layouts.template')
 
 @section('content')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 	<div style="padding: 0 30px;margin-top: 40px">
 		@if ($errors->any())
