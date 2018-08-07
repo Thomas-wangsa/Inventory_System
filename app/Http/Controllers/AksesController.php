@@ -158,7 +158,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
-                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -167,7 +167,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
-                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -326,10 +326,11 @@ class AksesController extends Controller
             ]);
             if ($request->hasFile('staff_foto')) {
                 $image = $request->file('staff_foto');
-                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".".$image->getClientOriginalExtension();
-                $destinationPath = public_path('/images/akses/');
+                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
-                $akses_data->foto  = $file_name;
+                $akses_data->foto  = $path.$file_name;
             }
 
             $akses_data->type   = $request->type_daftar;
@@ -356,7 +357,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
-                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.$image->getClientOriginalExtension();
+                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -365,7 +366,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
-                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.$image->getClientOriginalExtension();
+                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);

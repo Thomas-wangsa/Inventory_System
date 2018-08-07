@@ -66,7 +66,7 @@ class HomeController extends Controller
 
         if ($request->hasFile('background')) {
             $image = $request->file('background');
-            $name = $request->user_uuid.$image->getClientOriginalExtension();
+            $name = $request->user_uuid.".".$image->getClientOriginalExtension();
             $destinationPath = public_path('/images/user/');
             $image->move($destinationPath, $name);
 

@@ -94,7 +94,7 @@
                 </button>
                 @endif
                 
-                @if(in_array(1,$data['jabatan']) || in_array(2,$data['jabatan']))
+                @if(in_array(1,$data['jabatan']))
                 <button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_vendor">
                     Daftarkan Vendor
                 </button>
@@ -148,12 +148,16 @@
 	                        	@endif
 	                        </td>
 	                        <td> 
-	                        	<a href="{{$val->po}}" target="_blank" >
-			    					<img src="{{$val->po}}"/ width="80px"> 
-			    				</a>
 			    				<a href="{{$val->foto}}" target="_blank" >
 			    					<img src="{{$val->foto}}"/ width="80px"> 
-			    				</a> 
+			    				</a>
+			    				@if($val->type == 'vendor')
+			    				<div style="margin-top: 5px"> </div>
+			    				<a href="{{$val->po}}" target="_blank" >
+			    					<img src="{{$val->po}}"/ width="80px"> 
+			    				</a>
+			    				@endif
+
 	                        </td>
 	                        <td> {{$val->comment}}</td>
 	                        <td> {{$val->username}}</td>
@@ -162,7 +166,7 @@
 	                        	@if($val->status_akses == 1) 
 	                        		<?php 
 	                        		if(count($data['jabatan']) == 1 && in_array(1, $data['jabatan'])) {
-	                        			echo "Waiting For Staff Pendaftaran Action";
+	                        			echo "Pending For Staff Pendaftaran Action";
 	                        		} else if(in_array(2, $data['jabatan'])) { ?>
 	                        			<div class="btn-group-vertical">
 										  <button type="button" class="btn btn-primary"
@@ -182,7 +186,7 @@
 	                        	@if($val->status_akses == 2) 
 	                        		<?php 
 	                        		if(count($data['jabatan']) == 1 && in_array(2, $data['jabatan'])) {
-	                        			echo "Waiting For Staff Pencetakan Action";
+	                        			echo "Pending For Staff Pencetakan Action";
 	                        		} else if(in_array(3, $data['jabatan'])) { ?>
 	                        			<div class="btn-group-vertical">
 										  <button type="button" class="btn btn-primary"
@@ -202,7 +206,7 @@
 	                        	@if($val->status_akses == 3) 
 	                        		<?php 
 	                        		if(count($data['jabatan']) == 1 && in_array(3, $data['jabatan'])) {
-	                        			echo "Waiting For Staff Pengaktifan Action";
+	                        			echo "Pending For Staff Pengaktifan Action";
 	                        		} else if(in_array(4, $data['jabatan'])) { ?>
 	                        			<div class="btn-group-vertical">
 										  <button type="button" class="btn btn-primary"

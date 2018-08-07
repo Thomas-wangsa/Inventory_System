@@ -184,7 +184,7 @@ class DatabaseSeeder extends Seeder
             $data_user_detail = array(
                 "user_id"   => $value->id,
                 "uuid"      => $faker->uuid,
-                "foto"      => "images/user/default.png"
+                "foto"      => "images/template/default.png"
             );
             Users_Detail::firstOrCreate($data_user_detail);
 
