@@ -29,29 +29,43 @@ class AdminController extends Controller
 
 
     public function index(Request $request) {
-        $users = Users::GetDetailAll();
+        $users = Users::where('id','!=',Auth::user()->id);
         
-        // if($request->search == "on") {
-        //     if($request->search_nama != null) {
-        //         $users = $users->where('users.name','like',$request->search_nama."%");
-        //     } else if($request->search_filter != null) {
-        //         if($request->search_filter == "is_deleted") {
-        //             $users =  $users->onlyTrashed();
-        //         } else {
-        //             $users = $users->join('users_role','users_role.user_id','=','users.id')->where('users_role.divisi',$request->search_filter);
-        //         }
-        //     } else {
-        //         echo "D";
-        //     }
-            
-        // }
+        $deleted = false;
+        if($request->search == "on") {
+            if($request->search_nama != null) {
+                $users = $users->where('users.name','like',$request->search_nama."%");
+            } else if($request->search_filter != null) {
+                if($request->search_filter == "is_deleted") {
+                    $users =  Users::onlyTrashed();
+                    $deleted = true;
+                } else {
+                    $roles = $users->join('users_role','users_role.user_id','=','users.id')
+                    ->where('users_role.divisi',$request->search_filter)
+                    ->select('users.id')
+                    ->distinct()
+                    ->get()
+                    ->pluck('id');
+
+                    $users = Users::whereIn('id', $roles);
+                }
+            } else {
+                
+            }
+
+
+            if($request->search_order != null) {
+                $users = $users->orderBy($request->search_order, 'asc');
+            }
+        }
         
+        $users_id   = $users->get()->pluck('id');
+        $users      = Users::join('users_detail','users_detail.user_id','=','users.id')
+                ->select('users.id','users.name','users.email',
+            'users_detail.foto','users_detail.uuid')
+                ->whereIn('users.id', $users_id)
+                ->withTrashed();
         $users = $users->paginate(5);
-
-        //dd($users);
-
-
-        //dd($users);
 
 
         if(!in_array($this->restrict,\Request::get('user_divisi'))) {
@@ -258,6 +272,19 @@ class AdminController extends Controller
         $request->session()->flash('alert-success', 'Akun Berhasil di Edit!');
         return redirect('admin');
 
+    }
+
+    public function aktifkan_user(Request $request) {
+        $users = Users::withTrashed()->where('id',$request->id)->restore();
+        $response = array(
+            "status"=>$users
+        );
+        return json_encode($response);
+    }
+
+    public function aktif_user_notif(Request $request) {
+        $request->session()->flash('alert-success', 'Akun Berhasil di Restore!');
+        return redirect('admin');
     }
 
     public function delete_user(Request $request) {

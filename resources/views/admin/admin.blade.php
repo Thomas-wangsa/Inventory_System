@@ -26,29 +26,65 @@
 				    		</i>
 				    	</span>
 				    	<input type="text" class="form-control" 
-				    	name="search_nama" placeholder="Cari Nama...">
+				    	name="search_nama" placeholder="Cari Nama..."
+				    	value="{{Request::get('search_nama')}}">
 				  	</div>
 					
 					<div class="form-group">
 				      	<select class="form-control" name="search_filter">
 				      		<option value=""> Filter Berdasarkan </option>
 				        	@foreach($data['divisi'] as $key=>$val)
-				    		<option value="{{$val->id}}"> {{ucfirst($val->name)}}</option>
+				    		<option value="{{$val->id}}" 
+				    			@if($val->id == Request::get('search_filter')) 
+				    				selected
+				    			@endif
+				    			> 
+				    			{{ucfirst($val->name)}}
+				    		</option>
 				    		@endforeach
-				    		<option value="is_deleted"> Deleted Users </option> 
+				    		<option value="is_deleted"
+				    			@if('is_deleted' == Request::get('search_filter')) 
+				    				selected
+				    			@endif
+				    			> 
+				    			Deleted Users 
+				    		</option> 
 				      	</select>
 				  	</div>
 
 				  	<div class="form-group">
 				      	<select class="form-control" name="search_order">
 				      		<option value=""> Sort Berdasarkan </option>
-				        	<option value="1"> Nama </option>
-				        	<option value="2"> Email </option>
-				        	<option value="3"> Handphone </option>
+				        	<option value="name"
+				        		@if('name' == Request::get('search_order')) 
+				    				selected
+				    			@endif
+				    			> 
+				        		Nama 
+				        	</option>
+				        	<option value="email"
+				        		@if('email' == Request::get('search_order')) 
+				    				selected
+				    			@endif
+				        		> 
+				        		Email 
+				        	</option>
+				        	<option value="mobile"
+				        		@if('mobile' == Request::get('search_order')) 
+				    				selected
+				    			@endif
+				        		> 
+				        		Handphone 
+				        	</option>
 				      	</select>
 				  	</div>
 				  
 				  	<button type="submit" class="btn btn-info"> Cari </button>
+				  	<button type="reset" 
+				  	class="btn btn-danger"
+				  	onclick="reset_filter()"> 
+				  		Reset 
+				  	</button>
 			  	</form>
 			</div>
 			<div class="pull-right">  
@@ -91,6 +127,14 @@
 			    			</td>
 			    			<td>
 			    				<div class="text-center" > 
+			    				@if(Request::get('search_filter') == 'is_deleted')
+			    					<button class="btn btn-primary"
+			    					onclick="aktifkan_user('{{$val->id}}')">
+			    						Aktifkan user
+			    					</button>
+
+			    				@else
+			    				
 			    					<span class="glyphicon glyphicon-pencil"
 			    					style="color:black;cursor:pointer" 
 			    					title="Edit Data"
@@ -118,7 +162,7 @@
 			    					data-toggle="modal" data-target="#modal_special">
 			    						
 			    					</span> &nbsp;
-
+			    				@endif
 			    				</div>
 			    			</td>
 			    		</tr>
@@ -183,6 +227,43 @@
 		});
     };
 
+
+    function aktifkan_user(id) {
+    	$(document).ready(function(){
+	        if (confirm('Apakah anda yakin ingin restore Akun ini ?')) {
+
+	        	var data = {
+	        		"id":id
+	        	};
+
+			    $.ajaxSetup({
+				    headers: {
+				        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				    }
+				});
+	    		$.ajax({
+	    			type : "POST",
+	    			url: " {{ route('admin_aktifkan_user') }}",
+	    			contentType: "application/json",
+	    			data : JSON.stringify(data),
+	    			success: function(result) {
+	    				response = JSON.parse(result);
+	    				if(response.status == true) {
+	    					window.location = "{{route('aktif_user_notif')}}";
+	    				}
+	    			},
+	    			error: function( jqXhr, textStatus, errorThrown ){
+       					console.log( errorThrown );
+    				}
+	    		});
+			} 
+		});
+    };
+
+
+    function reset_filter() {
+    	window.location = "{{route('route_admin')}}";
+    }
     
 
     

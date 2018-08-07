@@ -54,8 +54,11 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 		Route::post('/admin/delete_user', 'AdminController@delete_user')->name('admin_delete_user');
+		Route::post('/admin/aktifkan_user', 'AdminController@aktifkan_user')->name('admin_aktifkan_user');
+
 		
 		Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
+		Route::get('/admin/aktif_user_notif', 'AdminController@aktif_user_notif')->name('aktif_user_notif');
 		Route::get('/admin/add_role_notif', 'AdminController@add_role_notif')->name('add_role_notif');
 
 
