@@ -12,6 +12,14 @@
       dateFormat: 'yy-mm-dd' ,
       showButtonPanel: true
     });
+    $("#start_card_new" ).datepicker({
+      dateFormat: 'yy-mm-dd' ,
+      showButtonPanel: true
+    });
+    $("#end_card_new" ).datepicker({
+      dateFormat: 'yy-mm-dd' ,
+      showButtonPanel: true
+    });
   });
   </script>
 
@@ -69,7 +77,7 @@
   				  </div>
 
             <div class="form-group">
-              <label for="staff_nama"> Kontrak Kerja :</label>
+              <label for="staff_nama"> Kontrak Kerja (PO) :</label>
               <input type="file" class="form-control" id="nama" name="po" required="">
             </div>
 

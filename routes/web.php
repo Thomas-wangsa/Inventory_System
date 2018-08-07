@@ -48,7 +48,10 @@ Route::group(['middleware' => ['auth']], function() {
 		// Akses
 		Route::get('/akses', 'AksesController@index')->name('akses');
 		Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');
-
+		Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
+		Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
+		Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
+		Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
 
 
 
@@ -88,10 +91,7 @@ Route::group(['middleware' => ['auth']], function() {
 	// Akses Features	
 	
 		
-	Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
-	Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
-	Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
-	Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
+	
 
 
 	// Inventory Features

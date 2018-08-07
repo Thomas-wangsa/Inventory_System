@@ -30,28 +30,61 @@
 
 		<div>
 			<div class="pull-left">
-			 	<form class="form-inline" action="{{route('route_admin')}}">
+			 	<form class="form-inline" action="{{route('akses')}}">
 				    
+				    <input type="hidden" name="search" value="on"> </input>
 				    <div class="input-group">
 				    	<span class="input-group-addon">
 				    		<i class="glyphicon glyphicon-search">
 				    		</i>
 				    	</span>
 				    	<input type="text" class="form-control" 
-				    	name="search_email" placeholder="Cari Nama...">
+				    	name="search_nama" placeholder="Cari Nama..."
+				    	value="{{Request::get('search_nama')}}">
 				  	</div>
 					
 					<div class="form-group">
 				      	<select class="form-control" name="search_filter">
-				      		<option value=""> Filter Berdasarkan </option>
+				      		<option value=""> Filter  </option>
 				        	@foreach($data['status_akses'] as $key=>$val)
-                            <option value="{{$val->id}}"> {{ucfirst($val->name)}}</option>
-                            @endforeach  
+				    		<option value="{{$val->id}}" 
+				    			@if($val->id == Request::get('search_filter')) 
+				    				selected
+				    			@endif
+				    			> 
+				    			{{ucfirst($val->name)}}
+				    		</option>
+				    		@endforeach 
 				      	</select>
 				  	</div>
 
+				  	<div class="form-group">
+				      	<select class="form-control" name="search_order">
+				      		<option value=""> Sort  </option>
+				        	<option value="name"
+				        		@if('name' == Request::get('search_order')) 
+				    				selected
+				    			@endif
+				    			> 
+				        		Nama 
+				        	</option>
+				        	<option value="email"
+				        		@if('email' == Request::get('search_order')) 
+				    				selected
+				    			@endif
+				        		> 
+				        		Email 
+				        	</option>
+				      	</select>
+				  	</div>
+				  
 				  	<button type="submit" class="btn btn-info"> Cari </button>
-			  	</form> 
+				  	<button type="reset" 
+				  	class="btn btn-danger"
+				  	onclick="reset_filter()"> 
+				  		Reset 
+				  	</button>
+			  	</form>
 			</div>
 			<div class="pull-right">
 
@@ -67,9 +100,9 @@
                 </button>
                 @endif 
 
-                @if(in_array(1,$data['jabatan']))
+                @if(in_array(2,$data['jabatan']))
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_staff">
-					Daftarkan Staff
+					Daftarkan Akses
 				</button>
 				@endif
 			</div>
@@ -100,23 +133,96 @@
 	                    <?php $no = 1; ?>
 	                    @foreach($data['data'] as $key=>$val)
 	                    <tr>
-	                        <td> {{$no}}</td>
+	                        <td> 
+	                        	{{ ($data['data']->currentpage()-1) 
+			    				* $data['data']->perpage() + $key + 1 }}
+	                        </td>
 	                        <td> {{$val->name}}</td>
 	                        <td> {{$val->email}}</td>
 	                        <td> 
-	                        	@if($val->type == 'self')
+	                        	@if($val->type == 'self' || $val->type == 'staff')
 	                        		{{$val->no_card}}
 	                        	@else
 	                        		Expiry : {{$val->date_start}}
 	                        				- {{$val->date_end}}
 	                        	@endif
 	                        </td>
-	                        <td> Feature is on progres </td>
+	                        <td> 
+	                        	<a href="{{$val->po}}" target="_blank" >
+			    					<img src="{{$val->po}}"/ width="80px"> 
+			    				</a>
+			    				<a href="{{$val->foto}}" target="_blank" >
+			    					<img src="{{$val->foto}}"/ width="80px"> 
+			    				</a> 
+	                        </td>
 	                        <td> {{$val->comment}}</td>
 	                        <td> {{$val->username}}</td>
 	                        <td style="color:{{$val->status_color}}"> {{$val->status_name}}</td>
 	                        <td>
-                        		<span class="glyphicon glyphicon-check"
+	                        	@if($val->status_akses == 1) 
+	                        		<?php 
+	                        		if(count($data['jabatan']) == 1 && in_array(1, $data['jabatan'])) {
+	                        			echo "Waiting For Staff Pendaftaran Action";
+	                        		} else if(in_array(2, $data['jabatan'])) { ?>
+	                        			<div class="btn-group-vertical">
+										  <button type="button" class="btn btn-primary"
+										  onclick="approve(2,'{{$val->uuid}}')">
+										  	Setuju Daftar
+										  </button>
+										  <button type="button" class="btn btn-info" onclick="edit()">
+										  	Edit Daftar
+										  </button>
+										  <button type="button" class="btn btn-danger"
+										  onclick="remove(5,'{{$val->uuid}}')">
+										  	Tolak Daftar
+										  </button>
+										</div>
+	                        		<?php } ?>	
+	                        	@endif
+	                        	@if($val->status_akses == 2) 
+	                        		<?php 
+	                        		if(count($data['jabatan']) == 1 && in_array(2, $data['jabatan'])) {
+	                        			echo "Waiting For Staff Pencetakan Action";
+	                        		} else if(in_array(3, $data['jabatan'])) { ?>
+	                        			<div class="btn-group-vertical">
+										  <button type="button" class="btn btn-primary"
+										  onclick="approve(3,'{{$val->uuid}}')">
+										  	Setuju Cetak
+										  </button>
+										  <button type="button" class="btn btn-info" onclick="edit()">
+										  	Edit Cetak
+										  </button>
+										  <button type="button" class="btn btn-danger"
+										  onclick="remove(6,'{{$val->uuid}}')">
+										  	Tolak Cetak
+										  </button>
+										</div>
+	                        		<?php } ?>	
+	                        	@endif
+	                        	@if($val->status_akses == 3) 
+	                        		<?php 
+	                        		if(count($data['jabatan']) == 1 && in_array(3, $data['jabatan'])) {
+	                        			echo "Waiting For Staff Pengaktifan Action";
+	                        		} else if(in_array(4, $data['jabatan'])) { ?>
+	                        			<div class="btn-group-vertical">
+										  <button type="button" class="btn btn-primary"
+										  onclick="approve(4,'{{$val->uuid}}')">
+										  	Setuju Aktif
+										  </button>
+										  <button type="button" class="btn btn-info" onclick="edit()">
+										  	Edit Kartu
+										  </button>
+										  <button type="button" class="btn btn-danger"
+										  onclick="remove(7,'{{$val->uuid}}')">
+										  	Tolak Aktif
+										  </button>
+										</div>
+	                        		<?php } ?>	
+	                        	@endif
+	                        	@if($val->status_akses == 4) 
+	                        		Kartu Aktif	
+	                        	@endif
+     <!--                    		<span class="glyphicon glyphicon-check"
                         		onclick="approve('{{$val->uuid}}')"
                         		style="color:green">	
                         		</span>
@@ -125,7 +231,7 @@
                         		<span class="glyphicon glyphicon-remove"
                         		onclick="remove('{{$val->uuid}}')" 
                         		style="color:red">
-                        		</span>
+                        		</span> -->
 
 	                        </td>
 
@@ -135,6 +241,16 @@
 	                @endif
 			    </tbody>
 			</table>
+			<div class="pull-right" style="margin-top: -30px!important"> 
+			{{ $data['data']->appends(
+				[
+				'search' => Request::get('search'),
+				'search_nama' => Request::get('search_nama'),
+				'search_filter' => Request::get('search_filter'),
+				'search_order' => Request::get('search_order')
+				])->links() }}
+	
+			</div>
 			<div class="clearfix"> </div>
 		</div>
 	</div>
@@ -145,17 +261,26 @@
 
 <script type="text/javascript">
 	
-	function approve(uuid) {
+	function approve(status,uuid) {
 		var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
-		window.location = url+uuid;
+		var url_status = "&next_status=";
+		window.location = url+uuid+url_status+status;
 	}
 
 
-	function remove(uuid) {
+	function remove(status,uuid) {
 		var url = window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
-		window.location = url+uuid;
+		var url_status = "&next_status=";
+		window.location = url+uuid+url_status+status;
 	}
 
+	function edit() {
+		alert('on_progress');
+	}
+
+	function reset_filter() {
+    	window.location = "{{route('akses')}}";
+    }
 </script>
 
 

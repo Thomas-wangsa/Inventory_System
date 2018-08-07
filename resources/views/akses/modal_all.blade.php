@@ -29,34 +29,31 @@
 				  <input type="hidden" name="type_daftar" value="staff">
 				  <div class="form-group">
 				    <label for="staff_nama"> Nama Lengkap :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_nama" value="Thomas">
+				    <input type="text" class="form-control" id="nama" name="staff_nama" value="Thomas"
+				    placeholder="Masukan nama staff" required="">
 				  </div>
 				  
 				  <div class="form-group">
 				    <label for="email"> Email :</label>
-				    <input type="email" class="form-control" id="email" name="staff_email" value="thomas@gmail.com">
+				    <input type="email" class="form-control" id="email" name="staff_email" value="thomas@gmail.com"
+				    placeholder="Masukan email staff" required="">
 				  </div>
 
 				  <div class="form-group">
-				    <label for="staff_divisi"> Divisi :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_divisi" value="divisi">
-				  </div>
-				  
-				  <div class="form-group">
-				    <label for="staff_jabatan"> Jabatan :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_jabatan" value="Staff">
-				  </div>
-				  
-				  
-				  
-				  <div class="form-group">
-				    <label for="staff_nama"> NIK :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_nik" value="11414">
+				    <label for="staff_divisi"> No Kartu Akses :</label>
+				    <input type="text" class="form-control" id="nama" name="staff_no_card" value="11452525"
+				    placeholder="Masukan nomor kartu akses" required="">
 				  </div>
 
 				  <div class="form-group">
-				    <label for="staff_nama"> Foto :</label>
-				    <input type="file" class="form-control" id="nama" name="staff_foto">
+				    <label for="staff_divisi"> Catatan :</label>
+				    <input type="text" class="form-control" id="nama" name="staff_note" value="ga suka"
+				    placeholder="Isi catatan bila perlu" >
+				  </div>
+				  
+				  <div class="form-group">
+				    <label for="staff_nama"> Identitas Diri :</label>
+				    <input type="file" class="form-control" id="nama" name="staff_foto" required="">
 				  </div>
 				  
 				  <button type="submit" class="btn btn-block btn-warning">Tambah Pengguna </button>
@@ -67,7 +64,59 @@
 	  			<form method="POST" enctype="multipart/form-data"
 	  			action="{{ route('post_pendaftaran_akses') }}">
 	  			  {{ csrf_field() }}
+
+
 	  			  <input type="hidden" name="type_daftar" value="vendor">
+	  			  <div class="form-group">
+  				    <label for="staff_nama"> Nama Lengkap :</label>
+  				    <input type="text" class="form-control" id="nama" 
+              			name="vendor_nama" value="Vendor"
+              		placeholder="isikan nama" required="">
+				    </div>
+				  
+  				  <div class="form-group">
+  				    <label for="email">Email :</label>
+  				    <input type="email" class="form-control" 
+  				    id="email" name="vendor_email" value="vendor@gmail.com"
+              		placeholder="isikan email" required="">
+  				  </div>
+
+  				  <div class="form-group">
+  				    <label for="staff_nama"> Aktifkan Kartu :</label>
+  				    <input type="text" class="form-control" 
+  				    id="start_card_new" name="start_card" 
+              		placeholder="tanggal mulai kartu aktif" required="">
+  				  </div>
+
+	            <div class="form-group">
+	              <label for="staff_nama"> Matikan Kartu :</label>
+	              <input type="text" class="form-control" 
+	              id="end_card_new" name="end_card"
+	              placeholder="tanggal berakhir kartu aktif" required="">
+	            </div>
+
+  				  <div class="form-group">
+  				    <label for="staff_nama"> Akses Lantai </label>
+  				    <input type="text" class="form-control" id="nama" name="floor"
+              placeholder="input nomor lantai" required="">
+  				  </div>
+
+  				  <div class="form-group">
+  				    <label for="staff_nama"> Pekerjaan </label>
+  				    <input type="text" class="form-control" id="nama" name="pekerjaan"
+              placeholder="pekerjaan yang dilakukan" required="">
+  				  </div>
+
+            <div class="form-group">
+              <label for="staff_nama"> Kontrak Kerja (PO) :</label>
+              <input type="file" class="form-control" id="nama" name="po" required="">
+            </div>
+
+  				  <div class="form-group">
+  				    <label for="staff_nama"> Identitas Diri :</label>
+  				    <input type="file" class="form-control" id="nama" name="foto" required="">
+  				  </div>
+	  			  <!-- <input type="hidden" name="type_daftar" value="vendor">
 	  			  <div class="form-group">
 				    <label for="staff_nama"> Nama Lengkap :</label>
 				    <input type="text" class="form-control" id="nama" name="vendor_nama" value="Vendor">
@@ -96,7 +145,7 @@
 				  <div class="form-group">
 				    <label for="staff_nama"> Foto :</label>
 				    <input type="file" class="form-control" id="nama" name="staff_foto">
-				  </div>
+				  </div> -->
 				 
 				  <button type="submit" class="btn btn-block btn-warning">Tambah Pengguna </button>
 				</form>

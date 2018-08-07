@@ -29,14 +29,14 @@ class InventoryController extends Controller
     public function __construct() {
         $this->faker    = Faker::create();
 
-        $this->middleware(function ($request, $next) {
-            $this->credentials = Users::GetRoleById(Auth::id())->first();
-            $this->setting     = Setting_Data::where('user_id',Auth::id())
-                                    ->where('status',1)
-                                    ->select('setting_list_id')
-                                    ->pluck('setting_list_id')->all();
-            return $next($request);
-        });
+        // $this->middleware(function ($request, $next) {
+        //     $this->credentials = Users::GetRoleById(Auth::id())->first();
+        //     $this->setting     = Setting_Data::where('user_id',Auth::id())
+        //                             ->where('status',1)
+        //                             ->select('setting_list_id')
+        //                             ->pluck('setting_list_id')->all();
+        //     return $next($request);
+        // });
         
     }
 

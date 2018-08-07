@@ -66,7 +66,7 @@ class HomeController extends Controller
 
         if ($request->hasFile('background')) {
             $image = $request->file('background');
-            $name = $request->user_uuid.".jpg";
+            $name = $request->user_uuid.$image->getClientOriginalExtension();
             $destinationPath = public_path('/images/user/');
             $image->move($destinationPath, $name);
 
@@ -88,7 +88,7 @@ class HomeController extends Controller
         ]);
 
         $user = Users::find(Auth::user()->id);
-        $user->name = $request->nama_lengkap;
+        $user->name = strtolower($request->nama_lengkap);
         $user->mobile = $request->phone;
         $cek = $user->save();
 

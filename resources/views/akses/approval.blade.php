@@ -19,7 +19,7 @@
 			Terima kasih untuk waktu Anda
 		</div>
 		<div class="text-center">
-			silahkan cek kembali email anda untuk melihat barang baru yang masuk
+			kartu akses telah di setujui
 		</div>
 
 		<a href="{{route('home')}}">

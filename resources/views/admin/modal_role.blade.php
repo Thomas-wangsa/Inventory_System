@@ -226,7 +226,9 @@
         response = JSON.parse(result);
         if(response.status == true) {
           window.location = "{{route('add_role_notif')}}";
-        };
+        } else {
+          alert(response.message);
+        }
         
       },
       error: function( jqXhr, textStatus, errorThrown ){

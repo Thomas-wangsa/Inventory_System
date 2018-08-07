@@ -90,9 +90,33 @@ class AksesController extends Controller
             }
         } 
 
+        //array_push($status_data,4,5,6,7);
+        //$akses_data = Akses_Data::GetSpecific($status_data);
+        $akses_data   = Akses_Data::join('status_akses','akses_data.status_akses','=','status_akses.id')
+            ->join('users','users.id','=','akses_data.updated_by')
+            //->whereIn('akses_data.status_akses',$status_data)
+            ->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','users.name AS username');
+
+
+        if($request->search == "on") {
+            if($request->search_nama != null) {
+                $akses_data = $akses_data->where('akses_data.name','like',$request->search_nama."%");
+            } 
+            else if($request->search_filter != null) {
+                $akses_data = $akses_data->where('akses_data.status_akses',$request->search_filter);
+                
+            } 
+        }    
+
+        if($request->search_order != null) {
+            $akses_data =    $akses_data->orderBy($request->search_order,'asc');
+        } else {
+            $akses_data =    $akses_data->orderBy('akses_data.id','DESC');
+        }
+        
         
         $data = array(
-            'data'         => Akses_Data::GetSpecific($status_data)->get(),
+            'data'         => $akses_data->paginate(5),
             'status_akses'  => Status_Akses::all(),
             'user'          => Auth::user(),
             'jabatan'       => $jabatan->toArray()
@@ -104,7 +128,6 @@ class AksesController extends Controller
     }
 
     public function pendaftaran_pic(Request $request) {
-        dd($request);
         $akses_data = new Akses_Data;
         $akses_data->type = $request->type_daftar;
         $akses_data->created_by = Auth::user()->id;
@@ -117,7 +140,7 @@ class AksesController extends Controller
         if($request['type_daftar'] == "self") {
             $akses_data->name = $user->name;
             $akses_data->email = $user->email;
-            $akses_data->no_card = $request->no_kartu;
+            $akses_data->no_card = strtolower($request->no_kartu);
             $akses_data->foto   = $detail->foto;
             $akses_data->comment   = "Di Daftarkan oleh staff PIC";
         } else if ($request['type_daftar'] == "vendor") {
@@ -126,16 +149,16 @@ class AksesController extends Controller
                 'foto' => 'required|image|mimes:jpeg,png,jpg|max:550',
             ]);
 
-            $akses_data->name = $request->vendor_nama;
-            $akses_data->email = $request->vendor_email;
+            $akses_data->name = strtolower($request->vendor_nama);
+            $akses_data->email = strtolower($request->vendor_email);
             $akses_data->date_start = $request->start_card;
             $akses_data->date_end = $request->end_card;
-            $akses_data->floor = $request->floor;
+            $akses_data->floor = strtolower($request->floor);
             $akses_data->comment = $request->pekerjaan;
 
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
-                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".jpg";
+                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -144,15 +167,12 @@ class AksesController extends Controller
 
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
-                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".jpg";
+                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
                 $akses_data->foto = $path.$file_name;
             }
-
-            dd($request);
-
         }
 
         
@@ -167,35 +187,76 @@ class AksesController extends Controller
 
 
 
-
     public function akses_approval(Request $request) {
+
+        
         $data = Akses_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
         if(count($data) < 1) {
+            $request->session()->flash('alert-danger', 'Data Kosong');
             return redirect($this->redirectTo);
         } else {
-            if($data->status_akses <= 3) {
 
-                switch ($data->status_akses) {
-                    case 1:
-                        $data->status_akses = 2;
-                        break;
-                    case 2:
-                        $data->status_akses = 3;
-                        break;
-                    case 3;
-                        $data->status_akses = 4;
-                        $data->status_data  = 3;
-                    default:
-                        # code...
-                        break;
+            if($data->status_akses == 1) {
+
+                if($request->next_status == 2) {
+                    $data->status_akses = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Kartu Akses gagal daftarkan');
+                    return redirect($this->redirectTo);
                 }
-                
-                $data->updated_by   = $this->credentials->id;
-                $data->save();
+
+            } else if ($data->status_akses == 2) {
+
+                if($request->next_status == 3) {
+                    $data->status_akses = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Kartu Akses gagal cetak');
+                    return redirect($this->redirectTo);
+                }
+            } else if ($data->status_akses == 3) {
+
+                if($request->next_status == 4) {
+                    $data->status_akses = $request->next_status;
+                    $data->status_data  = 3;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Kartu Akses gagal aktifkan');
+                    return redirect($this->redirectTo);
+                }
             } else {
+                $request->session()->flash('alert-danger', 'System Approval Error');
                 return redirect($this->redirectTo);
             }
+
+
+            // if($data->status_akses <= 3) {
+
+            //     switch ($data->status_akses) {
+            //         case 1:
+            //             $data->status_akses = 2;
+            //             break;
+            //         case 2:
+            //             $data->status_akses = 3;
+            //             break;
+            //         case 3;
+            //             $data->status_akses = 4;
+            //             $data->status_data  = 3;
+            //         default:
+            //             # code...
+            //             break;
+            //     }
+                
+            //     $data->updated_by   = $this->credentials->id;
+            //     $data->save();
+            // } else {
+            //     return redirect($this->redirectTo);
+            // }
             
         }
         return view('akses/approval');
@@ -207,6 +268,7 @@ class AksesController extends Controller
         ->where('uuid',$request->uuid)->first();
 
         if(count($data) < 1) {
+            $request->session()->flash('alert-danger', 'Data Kosong');
             return redirect($this->redirectTo);
         } 
 
@@ -238,48 +300,77 @@ class AksesController extends Controller
                 }
                 
                 $data->status_data  = 2;
-                $data->updated_by   = $this->credentials->id;
+                $data->updated_by   = Auth::user()->id;
                 $data->comment      = $request->desc;
                 $data->save();
             } else {
+                $request->session()->flash('alert-danger', 'Kartu Akses gagal di Tolak');
                 return redirect($this->redirectTo);
             }
             
         }
+
+        $request->session()->flash('alert-success', 'Kartu Akses telah di tolak');
         return redirect($this->redirectTo);
     }
 
     public function pendaftaran_akses(Request $request) {
-        $request->validate([
-        'staff_foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
+        
 
+            	
         $akses_data = new Akses_Data;
-
-        if ($request->hasFile('staff_foto')) {
-            $image = $request->file('staff_foto');
-            $name = time().'.'.$image->getClientOriginalExtension();
-            $destinationPath = public_path('/images/akses/');
-            $image->move($destinationPath, $name);
-            $akses_data->foto  = $name;
-        }
-
-    	
-
     	if($request->type_daftar == "staff") {
+
+            $request->validate([
+            'staff_foto' => 'image|mimes:jpeg,png,jpg,gif,svg|max:550',
+            ]);
+            if ($request->hasFile('staff_foto')) {
+                $image = $request->file('staff_foto');
+                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $destinationPath = public_path('/images/akses/');
+                $image->move($destinationPath, $file_name);
+                $akses_data->foto  = $file_name;
+            }
+
             $akses_data->type   = $request->type_daftar;
             $akses_data->name   = strtolower($request->staff_nama);
-            $akses_data->divisi = strtolower($request->staff_divisi);
-            $akses_data->jabatan = strtolower($request->staff_jabatan);
-            $akses_data->email  = strtolower($request->staff_email);
-            $akses_data->nik  = strtolower($request->staff_nik);
+            $akses_data->email  = strtolower($request->staff_email);            
+            $akses_data->no_card  = strtolower($request->staff_no_card);
+            $akses_data->comment  = $request->staff_note;
             
     	} elseif($request->type_daftar == "vendor") {
-    		// dd($request);
+    		//dd($request);
     		
-    		$akses_data->type 	= $request->type_daftar;
-    		$akses_data->name 	= strtolower($request->vendor_nama);
-    		$akses_data->email 	= strtolower($request->vendor_email);
+    		$request->validate([
+                'po' => 'required|image|mimes:jpeg,png,jpg|max:550',
+                'foto' => 'required|image|mimes:jpeg,png,jpg|max:550',
+            ]);
+
+            $akses_data->type = $request->type_daftar;
+            $akses_data->name = strtolower($request->vendor_nama);
+            $akses_data->email = strtolower($request->vendor_email);
+            $akses_data->date_start = $request->start_card;
+            $akses_data->date_end = $request->end_card;
+            $akses_data->floor = strtolower($request->floor);
+            $akses_data->comment = $request->pekerjaan;
+
+            if ($request->hasFile('po')) {
+                $image = $request->file('po');
+                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $akses_data->po = $path.$file_name;
+            }
+
+            if ($request->hasFile('foto')) {
+                $image = $request->file('foto');
+                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $akses_data->foto = $path.$file_name;
+            }
     		
     	} else {
             $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur ini');

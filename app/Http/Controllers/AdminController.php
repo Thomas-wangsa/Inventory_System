@@ -49,14 +49,7 @@ class AdminController extends Controller
 
                     $users = Users::whereIn('id', $roles);
                 }
-            } else {
-                
-            }
-
-
-            if($request->search_order != null) {
-                $users = $users->orderBy($request->search_order, 'asc');
-            }
+            } 
         }
         
         $users_id   = $users->get()->pluck('id');
@@ -65,6 +58,10 @@ class AdminController extends Controller
             'users_detail.foto','users_detail.uuid')
                 ->whereIn('users.id', $users_id)
                 ->withTrashed();
+        if($request->search_order != null) {
+                $users = $users->orderBy($request->search_order, 'asc');
+                //dd($users->get());
+            }
         $users = $users->paginate(5);
 
 
@@ -109,7 +106,7 @@ class AdminController extends Controller
 
         $user_detail    = new Users_Detail;
         $user_detail->user_id     = $new_users->id;
-        $user_detail->email_2     = $request->staff_email2;
+        $user_detail->email_2     = strtolower($request->staff_email2);
         $user_detail->uuid        = $this->faker->uuid();
         $user_detail->foto        = "images/user/default.png";
         
@@ -190,7 +187,7 @@ class AdminController extends Controller
         }
 
         if($count_exist > 0) {
-            $response['message']  = "Role Sudah Terdaftar";
+            $response['message']  = "Gagal,Role Sudah Terdaftar";
             return json_encode($response);
         }
 
@@ -258,9 +255,9 @@ class AdminController extends Controller
         }
 
         $user           = Users::find($user_data->id);
-        $user->name     = $request->staff_nama;
-        $user->email    = $request->staff_email;
-        $user->mobile   = $request->staff_mobile;
+        $user->name     = strtolower($request->staff_nama);
+        $user->email    = strtolower($request->staff_email);
+        $user->mobile   = strtolower($request->staff_mobile);
 
         $user_detail    = Users_Detail::find($user_data->id);
         $user_detail->email_2 = $request->staff_email2;
