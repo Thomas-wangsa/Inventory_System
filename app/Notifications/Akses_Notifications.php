@@ -49,12 +49,14 @@ class Akses_Notifications extends Notification
             "url1"          => config('app.url')."/akses_approval?uuid=".$this->param['uuid'],
             "url2"          => config('app.url')."/akses_reject?uuid=".$this->param['uuid'],
             "nama_user"     => $this->param['nama_user'],
-            "divisi_user"   => $this->param['divisi'],
-            "ktp"           => $this->param['ktp'] != null ? $this->param['ktp'] : null
+            "email"   => $this->param['email'],
+            "comment"           => $this->param['comment'],
+            "attachment"        => $this->param['attachment']
         );
         return (new MailMessage)
                     ->subject($this->param['subject'])
-                    ->markdown('vendor.notifications.akses_notification', ['data' => $data]);
+                    ->markdown('vendor.notifications.akses_notification', ['data' => $data])
+                    ->cc($this->param['cc_email']);
     }
 
     /**

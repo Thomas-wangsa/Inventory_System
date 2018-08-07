@@ -96,13 +96,13 @@
                 
                 @if(in_array(1,$data['jabatan']))
                 <button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_vendor">
-                    Daftarkan Vendor
+                    Daftar Vendor
                 </button>
                 @endif 
 
                 @if(in_array(2,$data['jabatan']))
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_staff">
-					Daftarkan Akses
+					Daftar Akses
 				</button>
 				@endif
 			</div>

@@ -11,10 +11,13 @@
             Nama Lengkap
         </th>
         <th align="center">
-            Divisi
+            Email
         </th>
         <th align="center">
-            KTP
+            Keterangan
+        </th>
+        <th align="center">
+            Attachment
         </th>
     </tr>
     <tr>
@@ -22,18 +25,15 @@
             {{ $data['nama_user']}}
         </td>
         <td align="center" style="border-bottom: 1px solid #EDEFF2;">
-            {{ $data['divisi_user']}}
+            {{ $data['email']}}
         </td>
         <td align="center" style="border-bottom: 1px solid #EDEFF2;">
-            @if ( $data['ktp'] == null) 
-                -
-            @else
-                <a href="{{$data['url']}}/images/akses/{{$data['ktp']}}">
-                KTP
-                </a>
-            @endif
+            {{$data['comment']}}
             
         </td>
+        <a href="{{$data['url']}}{{$data['attachment']}}">
+            Attachment
+        </a>
     </tr>
 </table>
 

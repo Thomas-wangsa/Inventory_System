@@ -32,6 +32,7 @@ class AksesController extends Controller
     protected $faker;
     protected $restrict = 2;
     protected $admin    = 1;
+    protected $send_email_control = true;
 
     public function __construct(UrlGenerator $url){
         // $this->url      = $url;
@@ -128,12 +129,14 @@ class AksesController extends Controller
     }
 
     public function pendaftaran_pic(Request $request) {
+
         $akses_data = new Akses_Data;
         $akses_data->type = $request->type_daftar;
         $akses_data->created_by = Auth::user()->id;
         $akses_data->updated_by = Auth::user()->id;
         $akses_data->uuid       = $this->faker->uuid;
         $akses_data->status_akses = 1;
+        $recheck_data = $akses_data->uuid;
 
         $user   = Users::find(Auth::user()->id);
         $detail = Users_Detail::where('user_id',Auth::user()->id)->first();
@@ -156,10 +159,10 @@ class AksesController extends Controller
             $akses_data->floor = strtolower($request->floor);
             $akses_data->comment = $request->pekerjaan;
 
+            $path = "/images/akses/";
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
                 $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
-                $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
                 $akses_data->po = $path.$file_name;
@@ -168,7 +171,6 @@ class AksesController extends Controller
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
                 $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
-                $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
                 $akses_data->foto = $path.$file_name;
@@ -181,6 +183,12 @@ class AksesController extends Controller
             $request->session()->flash('alert-success', 'Akses telah di daftarkan');
         } else {
             $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
+        }
+
+        if($this->send_email_control) {
+
+            $new_akses = Akses_Data::where('uuid',$recheck_data)->first();
+            $this->send($new_akses);
         }
         return redirect($this->redirectTo);       
     }
@@ -258,6 +266,11 @@ class AksesController extends Controller
             //     return redirect($this->redirectTo);
             // }
             
+        }
+
+        if($this->send_email_control) {
+            $new_akses = Akses_Data::where('uuid',$request->uuid)->first();
+            $this->send($new_akses);
         }
         return view('akses/approval');
     }
@@ -391,6 +404,12 @@ class AksesController extends Controller
             $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
         }
         
+        if($this->send_email_control) {
+
+            $new_akses = Akses_Data::where('uuid',$akses_data->uuid)->first();
+            $this->send($new_akses);
+        }
+
     	return redirect($this->redirectTo);
     }
 
@@ -456,40 +475,95 @@ class AksesController extends Controller
         return redirect($this->redirectTo);
     }
 
-    public function send($akses_data){
-        $error = false;
+    public function send($new_akses){
 
-        switch($akses_data->status_akses) {
+        $cc_email = array();
+        $target_divisi = 2;
+
+        $error = false;
+        switch($new_akses->status_akses) {
             case 1 :
-                $user = Users_Role::GetAksesDecisionMaker(2)->first();
-                $subject = "Pendaftaran Kartu";
+                $target_jabatan = 2;
+                $next = 2;
+                $user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+                
+                $list_email = Users_Role::join('users',
+                                'users.id','=','users_role.user_id')
+                                ->where('divisi',$target_divisi)
+                                ->where('jabatan',$target_jabatan)
+                                ->select('users.email')
+                                ->distinct()
+                                ->get()->pluck('email');
+                $cc_email = $list_email->toArray();
+                $subject = "Pendaftaran Kartu atas nama ".$new_akses->name ;
                 $desc    = "baru saja mendaftarkan pengguna kartu";
                 break;
-            case 3 :
-                $user = Users_Role::GetAksesDecisionMaker(4)->first();
-                $subject = "Pencetakan Kartu";
-                $desc    = "telah mendaftarkan kartu";
+            case 2 :
+                $target_jabatan = 3;
+                $next = 3;
+                $user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+                
+                $list_email = Users_Role::join('users',
+                                'users.id','=','users_role.user_id')
+                                ->where('divisi',$target_divisi)
+                                ->where('jabatan',$target_jabatan)
+                                ->select('users.email')
+                                ->distinct()
+                                ->get()->pluck('email');
+                $cc_email = $list_email->toArray();
+
+                $subject = "Pencetakan Kartu atas nama ".$new_akses->name ;
+                $desc    = "telah mendaftarkan kartu untuk di cetak";
                 break;
-            case 5 : 
-                $user = Users_Role::GetAksesDecisionMaker(6)->first();
-                $subject = "Pengaktifan Kartu";
-                $desc    = "telah mengaktifkan kartu";
+            case 3 : 
+                $target_jabatan = 4;
+                $next = 4;
+                $user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+                
+                $list_email = Users_Role::join('users',
+                                'users.id','=','users_role.user_id')
+                                ->where('divisi',$target_divisi)
+                                ->where('jabatan',$target_jabatan)
+                                ->select('users.email')
+                                ->distinct()
+                                ->get()->pluck('email');
+                $cc_email = $list_email->toArray();
+
+                $subject = "Pengaktifan Kartu atas nama ".$new_akses->name ;
+                $desc    = "baru saja mencetakan kartu untuk di aktifkan";
                 break;
             default : 
                 $error = true;
                 break;
         }
 
+        $created_by = Users::where('id','=',$new_akses->created_by)
+                    ->select('email')
+                    ->first();
+
+        if(!in_array($created_by->email,$cc_email)) {
+            array_push($cc_email,$created_by->email);
+        }
+        
+        $attachment =  "";
+        if($new_akses->type == 'self' || $new_akses->type == 'staff') {
+            $attachment = $new_akses->foto;
+        } else if ($new_akses->type == 'vendor') {
+            $attachment = $new_akses->po;
+        } 
+
         if(!$error) {
             $data = array(
                 "subject"   => $subject,
-                "head"      => $user->username,
-                "staff"     => Users::find($akses_data->updated_by)->name,
+                "head"      => $user->name,
+                "staff"     => Users::find($new_akses->updated_by)->name,
                 "desc"      => $desc,
-                "nama_user" => $akses_data->name,
-                "divisi"    => $akses_data->divisi,
-                "ktp"       => $akses_data->foto != null ? $akses_data->foto : null,
-                "uuid"      => $akses_data->uuid    
+                "nama_user" => $new_akses->name,
+                "email"     => $new_akses->email,
+                "comment"    => $new_akses->comment,
+                "uuid"      => $new_akses->uuid.'&next_status='.$next,
+                "cc_email" => $cc_email,
+                "attachment" => $attachment      
             );
 
             //dd($data);

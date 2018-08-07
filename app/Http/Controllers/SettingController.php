@@ -66,6 +66,7 @@ class SettingController extends Controller {
         $data['tolak_daftar'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',5)->count();
         $data['tolak_cetak'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',6)->count();
         $data['tolak_aktif'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',7)->count();
+        $data['period']      = $current." to ".$last_date;
         return view('setting/report',compact('data'));
     }
 

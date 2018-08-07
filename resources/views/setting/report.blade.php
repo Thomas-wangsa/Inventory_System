@@ -27,7 +27,7 @@
         ]);
 
         var options = {
-          title: 'Weekly Report',
+          title: 'Weekly Report ' +"{{$data['period']}}" ,
            slices: {
             0: { color: '#000000' },
             1: { color: '#FFA500' },

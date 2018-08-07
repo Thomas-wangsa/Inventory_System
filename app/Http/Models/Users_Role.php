@@ -24,8 +24,7 @@ class Users_Role extends Model
     	return $query->join('users','users.id','=','users_role.user_id')
     			->where('divisi',2)
     			->where('jabatan',$param)
-    			->select('users.name AS username','users.email','users_role.uuid')
-    			->take(1);
+    			->select('users.name','users.email');
 
     }
 
