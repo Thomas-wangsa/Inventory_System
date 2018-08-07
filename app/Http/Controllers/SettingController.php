@@ -9,24 +9,24 @@ use App\Http\Models\Setting_Data;
 use App\Http\Models\Design;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Inventory_Data;
-
 use App\Http\Models\Users;
+
+use Carbon\Carbon;
 
 
 class SettingController extends Controller {
 
-    protected $credentials;
-
+    protected $restrict_divisi = 2;
+    protected $restrict_admin = 1;
     public function __construct() {
-
-        $this->middleware(function ($request, $next) {
-            $this->credentials = Users::GetRoleById(Auth::id())->first();
-            $this->setting     = Setting_Data::where('user_id',Auth::id())
-                                    ->where('status',1)
-                                    ->select('setting_list_id')
-                                    ->pluck('setting_list_id')->all();
-            return $next($request);
-        });
+        // $this->middleware(function ($request, $next) {
+        //     $this->credentials = Users::GetRoleById(Auth::id())->first();
+        //     $this->setting     = Setting_Data::where('user_id',Auth::id())
+        //                             ->where('status',1)
+        //                             ->select('setting_list_id')
+        //                             ->pluck('setting_list_id')->all();
+        //     return $next($request);
+        // });
         
     }
 
@@ -34,15 +34,39 @@ class SettingController extends Controller {
         return redirect('setting/show-background');    
     }
 
-    public function report() {
-         if($this->credentials->divisi == 4 || in_array('5',$this->setting)) {
-            $data['credentials'] = $this->credentials;
-            $data['setting']     = $this->setting;
-            return view('setting/report',compact('data'));
-        } else {
-            $request->session()->flash('alert-danger', 'Maaf tidak ada akses untuk fitur setting');
+    public function report(Request $request) {
+        $user_divisi = \Request::get('user_divisi');
+        $allow = false;
+        if(
+            in_array($this->restrict_divisi,$user_divisi)
+            ||
+            in_array($this->restrict_admin,$user_divisi)
+            ) 
+        {
+            $allow = true;
+        }
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur report');
             return redirect('home');
         }
+
+
+        // get the current time
+        $current = date('Y-m-d H:i:s');
+        // add 30 days to the current time
+        $last_date = Carbon::now()->addDays(-7);
+
+        
+
+        $data['pending_daftar'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',1)->count();
+        $data['pending_cetak'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',2)->count();
+        $data['pending_aktif'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',3)->count();
+        $data['kartu_aktif'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',4)->count();
+        $data['tolak_daftar'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',5)->count();
+        $data['tolak_cetak'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',6)->count();
+        $data['tolak_aktif'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',7)->count();
+        return view('setting/report',compact('data'));
     }
 
 

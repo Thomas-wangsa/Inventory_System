@@ -80,6 +80,11 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::get('/admin/delete_role_notif', 'AdminController@delete_role_notif')->name('delete_role_notif');
 		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+
+
+		// Setting 
+		Route::get('/report','SettingController@report')->name('route_report');
+
 	});
 		
 		
@@ -118,7 +123,6 @@ Route::group(['middleware' => ['auth']], function() {
 	Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
 	Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
 	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
-	Route::get('/report','SettingController@report')->name('route_report');
 	
 
 	// END

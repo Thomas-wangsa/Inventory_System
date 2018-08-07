@@ -78,7 +78,7 @@
             </div>
             @endif
             
-            @if(in_array(1,$user_divisi) || in_array(2,$user_divisi))
+            @if(in_array(1,$user_divisi))
             <div class="col-sm-3">
                 <div class="row">
                     <div class="Rectangle-5">
@@ -87,6 +87,20 @@
                         </a>
                         <div style="margin-top: 20px"> </div>
                         <div class="text-center"> Settings </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if(in_array(1,$user_divisi) || in_array(2,$user_divisi))
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="Rectangle-5">
+                        <a href="{{route('route_report')}}">
+                            <img  class="center" src="{{ asset('images/logo/settings.png')}}"  style="width:30%;margin-top: 45px" / >
+                        </a>
+                        <div style="margin-top: 20px"> </div>
+                        <div class="text-center"> Report </div>
                     </div>
                 </div>
             </div>

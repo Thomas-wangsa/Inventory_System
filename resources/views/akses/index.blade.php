@@ -173,7 +173,7 @@
 										  onclick="approve(2,'{{$val->uuid}}')">
 										  	Setuju Daftar
 										  </button>
-										  <button type="button" class="btn btn-info" onclick="edit()">
+										  <button type="button" class="btn btn-info hidden" onclick="edit()">
 										  	Edit Daftar
 										  </button>
 										  <button type="button" class="btn btn-danger"

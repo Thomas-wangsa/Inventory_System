@@ -37,6 +37,8 @@ class CheckCredentials
         view()->share('user_setting',$this->user_setting);
 
         $request->attributes->add(['user_divisi' => $this->user_divisi]);
+        $request->attributes->add(['user_detail' => $this->user_detail]);
+        $request->attributes->add(['user_setting' => $this->user_setting]);
 
 
         return $next($request);
