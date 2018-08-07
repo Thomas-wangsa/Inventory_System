@@ -24,7 +24,11 @@ class CreateAksesDataTable extends Migration
             $table->unsignedInteger('updated_by');
             $table->string('divisi')->nullable();
             $table->string('jabatan')->nullable();
-            $table->string('nik')->nullable();
+            $table->string('no_card')->nullable();
+            $table->string('floor')->nullable();
+            $table->string('date_start')->nullable();
+            $table->string('date_end')->nullable();
+            $table->string('po')->nullable();
             $table->string('foto')->nullable();
             $table->uuid('uuid'); 
             $table->text('comment')->nullable();

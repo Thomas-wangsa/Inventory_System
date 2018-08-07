@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\UrlGenerator;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
+use App\Http\Models\Users_Detail;
 use App\Http\Models\Status_Akses;
 
 use App\Http\Models\Divisi;
@@ -29,79 +30,142 @@ class AksesController extends Controller
     protected $url;
     protected $credentials;
     protected $faker;
+    protected $restrict = 2;
+    protected $admin    = 1;
 
     public function __construct(UrlGenerator $url){
-        $this->url      = $url;
+        // $this->url      = $url;
         $this->faker    = Faker::create();
 
-        $this->middleware(function ($request, $next) {
-            $this->credentials = Users::GetRoleById(Auth::id())->first();
-            $this->setting     = Setting_Data::where('user_id',Auth::id())
-                                    ->where('status',1)
-                                    ->select('setting_list_id')
-                                    ->pluck('setting_list_id')->all();
-            return $next($request);
-        });
-    }
-
-
-    public function pendaftaran_pic(Request $request) {
-        $akses_data = new Akses_Data;
-        $akses_data->type = $request->type_daftar;
-        $akses_data->created_by = $this->credentials['id'];
-        $akses_data->updated_by = $this->credentials['id'];
-        $akses_data->uuid       = $this->faker->uuid;
-        $akses_data->status_akses = 1;
-
-        if($request['type_daftar'] == "staff") {
-            $akses_data->name = $this->credentials['name'];
-            $akses_data->email = $this->credentials['email'];
-        } else {
-            $akses_data->name = $request->vendor_nama;
-            $akses_data->email = $request->vendor_email;
-        }
-
-
-
-        $bool = $akses_data->save();
-
-        if($bool) {
-            $request->session()->flash('alert-success', 'Akses telah di daftarkan');
-        } else {
-            $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
-        }
-        return redirect("home");
-
-        
+        // $this->middleware(function ($request, $next) {
+        //     $this->credentials = Users::GetRoleById(Auth::id())->first();
+        //     $this->setting     = Setting_Data::where('user_id',Auth::id())
+        //                             ->where('status',1)
+        //                             ->select('setting_list_id')
+        //                             ->pluck('setting_list_id')->all();
+        //     return $next($request);
+        // });
     }
 
     public function index(Request $request) {
+        $user_divisi = \Request::get('user_divisi');
+        $allow = false;
+        if(
+            in_array($this->restrict,$user_divisi)
+            ||
+            in_array($this->admin,$user_divisi)
+            ) 
+        {
+            $allow = true;
+        }
 
-        $allow =array(2,4);
-        if(!in_array($this->credentials->divisi, $allow)) {
+        if(!$allow) {
             $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur akses');
             return redirect('home');
         }
 
 
-        switch($this->credentials->id_jabatan) {
-            case 1 : $role = array(1,2);$execute = 1;break;
-            case 2 : $role = array(2,3);$execute=2;break;
-            case 3 : $role = array(3,4);$execute=3;break;
-            default : $role = array(0);$execute=0;break;
-        }
+        $jabatan = Users_Role::where('user_id',Auth::user()->id)
+                ->where('divisi',$this->restrict)->select('jabatan')->get()->pluck('jabatan');
 
+        $status_data = array();
+        foreach($jabatan as $key=>$val) {
+
+            switch($val) {
+                case 1 : 
+                    array_push($status_data,1);
+                break;
+                case 2 : 
+                    array_push($status_data,1,2);
+                break;
+                case 3 : 
+                    array_push($status_data,2,3);
+                break;
+                case 4 : 
+                    array_push($status_data,3,4);
+                break;
+                default :
+                    unset($status_data);
+                break;
+            }
+        } 
+
+        
         $data = array(
-            'credentials'   => $this->credentials,
-            'data'         => Akses_Data::GetSpecific($role)->get(),
+            'data'         => Akses_Data::GetSpecific($status_data)->get(),
             'status_akses'  => Status_Akses::all(),
             'user'          => Auth::user(),
-            'execute'       => $execute,
-            'setting'       => $this->setting
+            'jabatan'       => $jabatan->toArray()
+            //'execute'       => $execute
         );
 
-    	return view('akses/index',compact("data"));
+
+        return view('akses/index',compact('data'));
     }
+
+    public function pendaftaran_pic(Request $request) {
+        dd($request);
+        $akses_data = new Akses_Data;
+        $akses_data->type = $request->type_daftar;
+        $akses_data->created_by = Auth::user()->id;
+        $akses_data->updated_by = Auth::user()->id;
+        $akses_data->uuid       = $this->faker->uuid;
+        $akses_data->status_akses = 1;
+
+        $user   = Users::find(Auth::user()->id);
+        $detail = Users_Detail::where('user_id',Auth::user()->id)->first();
+        if($request['type_daftar'] == "self") {
+            $akses_data->name = $user->name;
+            $akses_data->email = $user->email;
+            $akses_data->no_card = $request->no_kartu;
+            $akses_data->foto   = $detail->foto;
+            $akses_data->comment   = "Di Daftarkan oleh staff PIC";
+        } else if ($request['type_daftar'] == "vendor") {
+            $request->validate([
+                'po' => 'required|image|mimes:jpeg,png,jpg|max:550',
+                'foto' => 'required|image|mimes:jpeg,png,jpg|max:550',
+            ]);
+
+            $akses_data->name = $request->vendor_nama;
+            $akses_data->email = $request->vendor_email;
+            $akses_data->date_start = $request->start_card;
+            $akses_data->date_end = $request->end_card;
+            $akses_data->floor = $request->floor;
+            $akses_data->comment = $request->pekerjaan;
+
+            if ($request->hasFile('po')) {
+                $image = $request->file('po');
+                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".jpg";
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $akses_data->po = $path.$file_name;
+            }
+
+            if ($request->hasFile('foto')) {
+                $image = $request->file('foto');
+                $file_name = date('Y-m-d H:i:s')." ".$this->faker->uuid.".jpg";
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $akses_data->foto = $path.$file_name;
+            }
+
+            dd($request);
+
+        }
+
+        
+        $bool = $akses_data->save();
+        if($bool) {
+            $request->session()->flash('alert-success', 'Akses telah di daftarkan');
+        } else {
+            $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
+        }
+        return redirect($this->redirectTo);       
+    }
+
+
 
 
     public function akses_approval(Request $request) {

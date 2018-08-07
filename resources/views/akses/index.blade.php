@@ -1,7 +1,8 @@
 @extends('layouts.template')
 
 @section('content')
-	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 	<div style="padding: 0 30px;margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
@@ -50,28 +51,28 @@
 				      	</select>
 				  	</div>
 
-				  	<div class="form-group">
-				      	<select class="form-control" name="search_order">
-				      		<option value=""> Sort Berdasarkan </option>
-				        	<option value="1"> Nama </option>
-				        	<option value="2"> Email </option>
-				        	<option value="3"> Handphone </option>
-				      	</select>
-				  	</div>
-				  
 				  	<button type="submit" class="btn btn-info"> Cari </button>
 			  	</form> 
 			</div>
-			<div class="pull-right
-			<?php
-				if($data['credentials']->id_jabatan != 1) {
-					echo "hide";
-				}
-			?>
-			">  
-				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal">
-					Tambah Pengguna Akses
+			<div class="pull-right">
+
+				@if(in_array(1,$data['jabatan']))
+				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_self">
+                    Daftar
+                </button>
+                @endif
+                
+                @if(in_array(1,$data['jabatan']) || in_array(2,$data['jabatan']))
+                <button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_vendor">
+                    Daftarkan Vendor
+                </button>
+                @endif 
+
+                @if(in_array(1,$data['jabatan']))
+				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_staff">
+					Daftarkan Staff
 				</button>
+				@endif
 			</div>
 			<div class="clearfix"> </div>
 
@@ -81,10 +82,12 @@
 			    <thead>
 			      <tr>
 			      	<th> No </th>
-			        <th> Nama Lengkap </th>
-			        <th> Divisi </th>
+			        <th> Nama </th>
 			        <th> Email </th>
+			        <th> No /Period Card </th>
+			        <th> Ref </th>
 			        <th> Keterangan </th>
+			        <th> Updated By </th>
 			        <th> Status </th>
 			        <th> Action </th>
 			      </tr>
@@ -100,12 +103,20 @@
 	                    <tr>
 	                        <td> {{$no}}</td>
 	                        <td> {{$val->name}}</td>
-	                        <td> {{$val->divisi}}</td>
 	                        <td> {{$val->email}}</td>
-	                        <td> Updated By {{$val->username}}</td>
+	                        <td> 
+	                        	@if($val->type == 'self')
+	                        		{{$val->no_card}}
+	                        	@else
+	                        		Expiry : {{$val->date_start}}
+	                        				- {{$val->date_end}}
+	                        	@endif
+	                        </td>
+	                        <td> Feature is on progres </td>
+	                        <td> {{$val->comment}}</td>
+	                        <td> {{$val->username}}</td>
 	                        <td style="color:{{$val->status_color}}"> {{$val->status_name}}</td>
 	                        <td>
-                        	@if($val->status_akses == $data['execute'])
                         		<span class="glyphicon glyphicon-check"
                         		onclick="approve('{{$val->uuid}}')"
                         		style="color:green">	
@@ -116,7 +127,6 @@
                         		onclick="remove('{{$val->uuid}}')" 
                         		style="color:red">
                         		</span>
-                        	@endif
 
 	                        </td>
 
@@ -129,8 +139,10 @@
 			<div class="clearfix"> </div>
 		</div>
 	</div>
-  
-	@include('akses.modal');
+  	
+  	@include('akses.modal_self')
+    @include('akses.modal_vendor')
+	@include('akses.modal_all');
 
 <script type="text/javascript">
 	
@@ -146,6 +158,31 @@
 	}
 
 </script>
+
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#vendor").hide();
+	    $("#staff_main").css("border-bottom","3px solid #e1a435");
+	    $("#vendor_main").css("border-bottom","1px solid #979797")
+
+	    $("#staff_main").click(function(){
+	        $("#staff").show();
+	        $("#vendor").hide();
+	        $("#staff_main").css("border-bottom","3px solid #e1a435");
+	        $("#vendor_main").css("border-bottom","1px solid #979797");
+	    });
+
+	    $("#vendor_main").click(function(){
+	        $("#staff").hide();
+	        $("#vendor").show();
+	        $("#vendor_main").css("border-bottom","3px solid #e1a435");
+	        $("#staff_main").css("border-bottom","1px solid #979797");
+	    });
+	});
+</script>
+
 
 @endsection
 

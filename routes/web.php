@@ -45,6 +45,15 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/password', 'HomeController@post_password')->name('post_password');
 
 
+		// Akses
+		Route::get('/akses', 'AksesController@index')->name('akses');
+		Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');
+
+
+
+
+
+		// Admin
 		Route::get('/admin','AdminController@index')->name('route_admin');
 		Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
 
@@ -77,8 +86,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 	// Akses Features	
-	Route::get('/akses', 'AksesController@index')->name('akses');
-	Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');	
+	
+		
 	Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
 	Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
 	Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
