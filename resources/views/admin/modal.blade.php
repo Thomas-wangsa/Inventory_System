@@ -17,27 +17,32 @@
 				  <div class="form-group">
 				    <label for="staff_nama"> Nama Lengkap :</label>
 				    <input type="text" class="form-control" id="nama" 
-				    name="staff_nama" value="Thomas" 
+				    name="staff_nama" 
+				    value="" 
 				    placeholder="Username">
 				  </div>
+
 
 				  <div class="form-group">
 				    <label for="email"> Email :</label>
 				    <input type="email" class="form-control" id="email" 
-				    name="staff_email" value="thomas@gmail.com" 
+				    name="staff_email" 
+				    value="" 
 				    placeholder="User Email Default">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="email"> Email-2 :</label>
 				    <input type="email" class="form-control" id="email" 
-				    name="staff_email2" value="" 
+				    name="staff_email2" 
+				    value="" 
 				    placeholder="User Email Secondary">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="email"> No Handphone :</label>
-				    <input type="text" class="form-control" id="email" name="staff_mobile" value="081222117788"
+				    <input type="text" class="form-control" id="email" name="staff_mobile" 
+				    value=""
 				    placeholder="User Phone">
 				  </div>
 				  

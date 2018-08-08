@@ -110,6 +110,8 @@ class SettingController extends Controller {
 
 
     public function show_background(Request $request) {
+        $request->session()->flash('alert-danger', 'Maaf fitur edit background akan ada di tanggal 10 Agustus');
+            return redirect('home');
         if($this->credentials->divisi == 4 || in_array('1',$this->setting)) {
             $data = array(
             'credentials'   => $this->credentials,

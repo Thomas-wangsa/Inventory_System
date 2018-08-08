@@ -47,8 +47,50 @@ class DatabaseSeeder extends Seeder
 
         $users_array = array(
             array(
-                "name"=>"sir kat",
-                "email"=>"katimin@gmail.com",
+                "name"=>"staff_pic",
+                "email"=>"staff.pic@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            
+            array(
+                "name"=>"thomas",
+                "email"=>"thomas.wangsa@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            
+            array(
+                "name"=>"staff_pendaftaran",
+                "email"=>"staff.pendaftaran@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"staff_pencetakan",
+                "email"=>"staff.pencetakan@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"staff_pengaktifan",
+                "email"=>"staff.pengaktifan@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"staff_inventoryA",
+                "email"=>"staff.inventoryA@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"head_inventoryA",
+                "email"=>"head.inventoryA@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"admin",
+                "email"=>"admin@gmail.com",
+                "password"=>bcrypt(123456)
+            ),
+            array(
+                "name"=>"dummy_data",
+                "email"=>"dummy_data@gmail.com",
                 "password"=>bcrypt(123456)
             )
         );
@@ -57,13 +99,13 @@ class DatabaseSeeder extends Seeder
 
         $inventory_list_array = array(
             "inventory_name"=>"cctv",
-            "updated_by"=>1
+            "updated_by"=>8
         );
 
 
         foreach ($users_array as $key => $value) {
             Users::firstOrCreate($value); 
-            if($key == 0) {
+            if($key == 8) {
                 Inventory_List::firstOrCreate($inventory_list_array);
             }          
         }
@@ -96,8 +138,8 @@ class DatabaseSeeder extends Seeder
             $jabatan = 0;
             switch ($value->id) {
                 case 1:
-                    $divisi = 1;
-                    $jabatan = 0;
+                    $divisi = 2;
+                    $jabatan = 1;
                     break;
                 case 2:
                 case 3: 
@@ -212,10 +254,10 @@ class DatabaseSeeder extends Seeder
         foreach ($setting_list_array as $key => $value) {
             
             $setting_data_array = array(
-            "user_id"=>1,
+            "user_id"=>6,
             "setting_list_id"=>$value->id,
-            "created_by"=>1,
-            "updated_by"=>1
+            "created_by"=>8,
+            "updated_by"=>8
             );
 
             Setting_Data::firstOrCreate($setting_data_array);

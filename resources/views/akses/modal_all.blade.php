@@ -29,25 +29,30 @@
 				  <input type="hidden" name="type_daftar" value="staff">
 				  <div class="form-group">
 				    <label for="staff_nama"> Nama Lengkap :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_nama" value="Thomas"
+				    <input type="text" class="form-control" 
+				    id="nama" name="staff_nama" value=""
 				    placeholder="Masukan nama staff" required="">
 				  </div>
 				  
 				  <div class="form-group">
 				    <label for="email"> Email :</label>
-				    <input type="email" class="form-control" id="email" name="staff_email" value="thomas@gmail.com"
+				    <input type="email" class="form-control" 
+				    id="email" name="staff_email" 
+				    value=""
 				    placeholder="Masukan email staff" required="">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="staff_divisi"> No Kartu Akses :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_no_card" value="11452525"
+				    <input type="text" class="form-control" 
+				    id="nama" name="staff_no_card" value=""
 				    placeholder="Masukan nomor kartu akses" required="">
 				  </div>
 
 				  <div class="form-group">
 				    <label for="staff_divisi"> Catatan :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_note" value="ga suka"
+				    <input type="text" class="form-control" 
+				    id="nama" name="staff_note" value=""
 				    placeholder="Isi catatan bila perlu" >
 				  </div>
 				  
@@ -70,14 +75,14 @@
 	  			  <div class="form-group">
   				    <label for="staff_nama"> Nama Lengkap :</label>
   				    <input type="text" class="form-control" id="nama" 
-              			name="vendor_nama" value="Vendor"
+              			name="vendor_nama" value=""
               		placeholder="isikan nama" required="">
 				    </div>
 				  
   				  <div class="form-group">
   				    <label for="email">Email :</label>
   				    <input type="email" class="form-control" 
-  				    id="email" name="vendor_email" value="vendor@gmail.com"
+  				    id="email" name="vendor_email" value=""
               		placeholder="isikan email" required="">
   				  </div>
 

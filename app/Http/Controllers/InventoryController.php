@@ -42,6 +42,9 @@ class InventoryController extends Controller
 
 
     public function index(Request $request) {
+        $request->session()->flash('alert-warning', 'Maaf fitur Inventory sedang di update');
+        return redirect('home');
+
         $allow =array(3,4);
 
         if(!in_array($this->credentials->divisi, $allow)) {

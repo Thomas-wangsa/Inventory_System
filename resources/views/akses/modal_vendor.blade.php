@@ -42,13 +42,13 @@
 	  			  <div class="form-group">
   				    <label for="staff_nama"> Nama Lengkap :</label>
   				    <input type="text" class="form-control" id="nama" 
-              name="vendor_nama" value="Vendor"
+              name="vendor_nama" value=""
               placeholder="isikan nama" required="">
 				    </div>
 				  
   				  <div class="form-group">
   				    <label for="email">Email :</label>
-  				    <input type="email" class="form-control" id="email" name="vendor_email" value="vendor@gmail.com"
+  				    <input type="email" class="form-control" id="email" name="vendor_email" value=""
               placeholder="isikan email required">
   				  </div>
 

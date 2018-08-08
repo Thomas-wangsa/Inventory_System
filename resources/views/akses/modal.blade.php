@@ -29,12 +29,16 @@
 				  <input type="hidden" name="type_daftar" value="staff">
 				  <div class="form-group">
 				    <label for="staff_nama"> Nama Lengkap :</label>
-				    <input type="text" class="form-control" id="nama" name="staff_nama" value="Thomas">
+				    <input type="text" class="form-control" 
+				    id="nama" name="staff_nama" 
+				    value="">
 				  </div>
 				  
 				  <div class="form-group">
 				    <label for="email"> Email :</label>
-				    <input type="email" class="form-control" id="email" name="staff_email" value="thomas@gmail.com">
+				    <input type="email" class="form-control" 
+				    id="email" name="staff_email" 
+				    value="">
 				  </div>
 
 				  <div class="form-group">

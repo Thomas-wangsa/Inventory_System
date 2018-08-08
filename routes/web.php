@@ -55,6 +55,10 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 
+		// Akses
+		Route::get('/inventory','InventoryController@index')->name('inventory');
+
+
 
 		// Admin
 		Route::get('/admin','AdminController@index')->name('route_admin');
@@ -100,7 +104,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 	// Inventory Features
-	Route::get('/inventory','InventoryController@index')->name('inventory');
 	Route::get('/map_location','InventoryController@map_location')->name('map');
 	Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
 	Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
