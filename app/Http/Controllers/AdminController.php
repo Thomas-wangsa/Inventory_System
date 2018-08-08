@@ -108,7 +108,7 @@ class AdminController extends Controller
         $user_detail->user_id     = $new_users->id;
         $user_detail->email_2     = strtolower($request->staff_email2);
         $user_detail->uuid        = $this->faker->uuid();
-        $user_detail->foto        = "images/template/default.png";
+        $user_detail->foto        = "/images/template/default.png";
         
 		switch($request->select_divisi) {
 			

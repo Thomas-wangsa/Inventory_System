@@ -35,10 +35,12 @@ class CheckCredentials
         view()->share('user_detail', $this->user_detail);
         view()->share('user_divisi',$this->user_divisi);
         view()->share('user_setting',$this->user_setting);
+        view()->share('indosat_path',"/indosat/Inventory_System/public");
 
         $request->attributes->add(['user_divisi' => $this->user_divisi]);
         $request->attributes->add(['user_detail' => $this->user_detail]);
         $request->attributes->add(['user_setting' => $this->user_setting]);
+        $request->attributes->add(['indosat_path' => "/Inventory_System/public"]);
 
 
         return $next($request);

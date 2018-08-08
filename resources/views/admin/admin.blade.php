@@ -121,8 +121,8 @@
 			    			<td> {{ $val->email }} </td>
 			    			<td> {{ $val->mobile }} </td>
 			    			<td>
-			    				<a href="{{$val->foto}}" target="_blank" >
-			    					<img src="{{$val->foto}}"/ width="80px"> 
+			    				<a href="{{$indosat_path}}{{$val->foto}}" target="_blank" >
+			    					<img src="{{$indosat_path}}{{$val->foto}}"/ width="80px"> 
 			    				</a>
 			    			</td>
 			    			<td>

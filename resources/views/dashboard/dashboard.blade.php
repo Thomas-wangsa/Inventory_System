@@ -44,7 +44,7 @@
                             style="width:30%;margin-top: 35px" / >
                         </a>
                         <div style="margin-top: 10px"> </div>
-                        <div class="text-center"> Akses </div>
+                        <div class="text-center"> Access </div>
                     </div>
                 </div>
             </div>

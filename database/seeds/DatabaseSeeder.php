@@ -48,7 +48,7 @@ class DatabaseSeeder extends Seeder
         $users_array = array(
             array(
                 "name"=>"sir kat",
-                "email"=>"katimin@gmail.com",
+                "email"=>"katimin@indosatooredoo.com",
                 "password"=>bcrypt(123456)
             )
         );

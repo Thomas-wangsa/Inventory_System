@@ -33,6 +33,7 @@ class AksesController extends Controller
     protected $restrict = 2;
     protected $admin    = 1;
     protected $send_email_control = true;
+    protected $indosat_path;
 
     public function __construct(UrlGenerator $url){
         // $this->url      = $url;
@@ -49,6 +50,7 @@ class AksesController extends Controller
     }
 
     public function index(Request $request) {
+
         $user_divisi = \Request::get('user_divisi');
         $allow = false;
         if(
@@ -162,7 +164,7 @@ class AksesController extends Controller
             $path = "/images/akses/";
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
-                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
                 $akses_data->po = $path.$file_name;
@@ -170,7 +172,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
-                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
                 $akses_data->foto = $path.$file_name;
@@ -339,7 +341,7 @@ class AksesController extends Controller
             ]);
             if ($request->hasFile('staff_foto')) {
                 $image = $request->file('staff_foto');
-                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -370,7 +372,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
-                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -379,7 +381,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
-                $file_name = date('Y-m-d H:i:s').$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -477,6 +479,8 @@ class AksesController extends Controller
 
     public function send($new_akses){
 
+        $indosat_path = \Request::get('indosat_path');
+
         $cc_email = array();
         $target_divisi = 2;
 
@@ -502,7 +506,8 @@ class AksesController extends Controller
                 $target_jabatan = 3;
                 $next = 3;
                 $user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
-                
+            
+
                 $list_email = Users_Role::join('users',
                                 'users.id','=','users_role.user_id')
                                 ->where('divisi',$target_divisi)
@@ -552,6 +557,11 @@ class AksesController extends Controller
             $attachment = $new_akses->po;
         } 
 
+
+        if(count($user) < 1) {
+            $error = true;            
+        }
+
         if(!$error) {
             $data = array(
                 "subject"   => $subject,
@@ -561,7 +571,7 @@ class AksesController extends Controller
                 "nama_user" => $new_akses->name,
                 "email"     => $new_akses->email,
                 "comment"    => $new_akses->comment,
-                "uuid"      => $new_akses->uuid.'&next_status='.$next,
+                "uuid"      =>  $new_akses->uuid.'&next_status='.$next,
                 "cc_email" => $cc_email,
                 "attachment" => $attachment      
             );

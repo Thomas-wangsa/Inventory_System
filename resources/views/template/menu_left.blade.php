@@ -106,7 +106,7 @@
                   style="color:black"
                 @endif
                 >
-                 Akses
+                 Access
                 </a>
               </div>
             </div>     

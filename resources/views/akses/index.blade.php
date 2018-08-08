@@ -134,6 +134,7 @@
 	                    @foreach($data['data'] as $key=>$val)
 	                    <tr>
 	                        <td> 
+
 	                        	{{ ($data['data']->currentpage()-1) 
 			    				* $data['data']->perpage() + $key + 1 }}
 	                        </td>
@@ -148,13 +149,13 @@
 	                        	@endif
 	                        </td>
 	                        <td> 
-			    				<a href="{{$val->foto}}" target="_blank" >
-			    					<img src="{{$val->foto}}"/ width="80px"> 
+			    				<a href="{{$indosat_path}}{{$val->foto}}" target="_blank" >
+			    					<img src="{{$indosat_path}}{{$val->foto}}"/ width="80px"> 
 			    				</a>
 			    				@if($val->type == 'vendor')
 			    				<div style="margin-top: 5px"> </div>
-			    				<a href="{{$val->po}}" target="_blank" >
-			    					<img src="{{$val->po}}"/ width="80px"> 
+			    				<a href="{{$indosat_path}}{{$val->po}}" target="_blank" >
+			    					<img src="{{$indosat_path}}{{$val->po}}"/ width="80px"> 
 			    				</a>
 			    				@endif
 
@@ -193,7 +194,7 @@
 										  onclick="approve(3,'{{$val->uuid}}')">
 										  	Setuju Cetak
 										  </button>
-										  <button type="button" class="btn btn-info" onclick="edit()">
+										  <button type="button" class="btn btn-info hidden" onclick="edit()">
 										  	Edit Cetak
 										  </button>
 										  <button type="button" class="btn btn-danger"
@@ -213,7 +214,7 @@
 										  onclick="approve(4,'{{$val->uuid}}')">
 										  	Setuju Aktif
 										  </button>
-										  <button type="button" class="btn btn-info" onclick="edit()">
+										  <button type="button" class="btn btn-info hidden" onclick="edit()">
 										  	Edit Kartu
 										  </button>
 										  <button type="button" class="btn btn-danger"
@@ -266,14 +267,14 @@
 <script type="text/javascript">
 	
 	function approve(status,uuid) {
-		var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
+		var url = window.location.protocol+"//"+window.location.host+'{{$indosat_path}}'+'/akses_approval?uuid=';
 		var url_status = "&next_status=";
 		window.location = url+uuid+url_status+status;
 	}
 
 
 	function remove(status,uuid) {
-		var url = window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
+		var url = window.location.protocol+"//"+window.location.host+'{{$indosat_path}}'+'/akses_reject?uuid=';
 		var url_status = "&next_status=";
 		window.location = url+uuid+url_status+status;
 	}
