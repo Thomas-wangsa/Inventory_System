@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
-    <meta charset="utf-8">
+
+	<title>{{ config('app.name', 'Laravel') }}</title>
+
+	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+</head>
 
-    <style type="text/css">
-    	body {
-    	background-image: url("{{URL::asset(DB::table("design")->pluck('logo')->first())}}");
+
+<style type="text/css">
+	body {
+		background-image: url("{{URL::asset(DB::table("design")->pluck('logo')->first())}}");
         background-repeat: no-repeat;
         background-size: 100% 100%;
-		}
-		
-		html, body {
+		background-color: LightGray;
+	}
+
+	html, body {
         height: 100%!important;
-        margin: 0px!important;
-        max-width: 1700px;
-        min-width: 800px;
-    	}
 
-    	.center {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-        }
+    }
+	.wrapper {
+		min-width: 1000px;
+		max-width: 1700px;
+		margin : 0 auto;
+		height: 100%!important;
+	}
 
-        .footer {
-	    position: fixed;
+	.mid_wrapper {
+		height: 100%!important;
+	}
+
+	.center {
+	    display: block;
+	    margin-left: auto;
+	    margin-right: auto;
+	    width: 65%;
+    }
+
+    .footer {
+	    position: absolute;
 	    left: 0;
 	    bottom: 0;
 	    width: 100%;
 	    color: gray;
 	    text-align: center;
 	    padding-bottom: 5px
-		}
-
-
-		.center_form {
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            width: 65%;
-        }
-
-    </style>
-
-
-</head>
-
-	<div class="container" style="">
-			<div class="center" style="">
-				<div style="margin-top: 40px"> </div>
-
-                <div style="background-color: white">
-                    <a href="{{ route('login')}}">
-    				    <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / >
-                    </a>
-    				<div class="text-center"> 
-    					<h4> Inventory Management </h4> 
-    				</div>
-
-    				@yield('content')
-				</div>
-				<div class="footer" style="margin-bottom: 20px"> Indosat System &#169; 2018 All Right Reserved </div>
-			</div>
-	</div>
-
+	}
+</style>
 <body>
+
+	<div class="wrapper">
+		<div class="col-sm-3">
+		</div>
+
+		<div class="col-sm-6 mid_wrapper" >
+
+			<div style="background-color: white" >
+                <a href="{{ route('login')}}">
+				    <img class="img-responsive center"  
+				    src="{{ asset('images/logo/indosat.png')}}"
+				    style="max-width: 300px"  / >
+                </a>
+				<div class="text-center"> 
+					<h4> Access & Inventory Management </h4> 
+				</div>
+				@yield('content')
+			</div>
+
+			<div class="footer" style="margin-bottom: 10px"> 
+				Indosat System &#169; 2018 All Right Reserved 
+			</div>
+
+		</div>
+
+		<div class="col-sm-3">
+		</div>
+
+		<div class="clearfix"> </div>
+	</div>
 	
 
 </body>

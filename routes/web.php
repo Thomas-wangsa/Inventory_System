@@ -30,11 +30,11 @@ Route::get('/logout',function(){
 
 Route::group(['middleware' => ['auth']], function() {
 
-
+	Route::get('/home', 'HomeController@index')->name('home');
 
 
 	Route::group(['middleware' => ['get_credentials']], function() { 
-		Route::get('/home', 'HomeController@index')->name('home');
+		
 		Route::get('/notify', 'HomeController@notify')->name('route_notify');
 		// Profile Features
 		Route::get('/profile', 'HomeController@profile')->name('profile');

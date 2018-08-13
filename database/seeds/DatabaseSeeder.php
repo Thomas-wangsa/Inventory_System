@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
         $faker = Faker::create();
     	$divisi_array = array(
     		array("name"=>"administrator"),
+            array("name"=>"pic"),
             array("name"=>"akses"),
     		array("name"=>"inventory")
     	);
@@ -47,30 +48,18 @@ class DatabaseSeeder extends Seeder
 
         $users_array = array(
             array(
-                "name"=>"sir kat",
-                "email"=>"katimin@indosatooredoo.com",
+                "name"=>"superman",
+                "email"=>"admin@gmail.com",
                 "password"=>bcrypt(123456)
             )
         );
 
-        
-
-        $inventory_list_array = array(
-            "inventory_name"=>"cctv",
-            "updated_by"=>1
-        );
-
-
         foreach ($users_array as $key => $value) {
-            Users::firstOrCreate($value); 
-            if($key == 0) {
-                Inventory_List::firstOrCreate($inventory_list_array);
-            }          
+            Users::firstOrCreate($value);         
         }
 
 
         $akses_role_array = array(
-            array("name"=>"staff pic"),
             array("name"=>"staff pendaftaran"),
             array("name"=>"staff pencetakan"),
             array("name"=>"staff pengaktifan "),
@@ -153,26 +142,22 @@ class DatabaseSeeder extends Seeder
             );
             Users_Role::firstOrCreate($data_user_role);
 
-            if($divisi == 3) {
-
-                $inventory_role_array = array(
-                    "user_id"              =>$value->id,
-                    "inventory_list_id"     => Inventory_List::first()->id,
-                    "inventory_level_id"    => $jabatan
-                );
-
-                $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
-            }
         }
 
         $status_akses_array = array(
+            array("name"=>"Pending Sponsor","color"=>"#000000"),
             array("name"=>"Pending Daftar","color"=>"#000000"),
             array("name"=>"Pending Cetak","color"=>"#FFA500"),
+            array("name"=>"Pending Manager Cetak","color"=>"#FFA500"),
             array("name"=>"Pending Aktif","color"=>"#00FF00"),
+            array("name"=>"Pending Manager Pengaktifan","color"=>"#00FF00"),
             array("name"=>"Kartu Aktif","color"=>"#0000FF"),
+            array("name"=>"Ditolak Sponsor","color"=>"#FF0000"),
             array("name"=>"Ditolak Daftar","color"=>"#FF0000"),
             array("name"=>"Ditolak Cetak","color"=>"#FF0000"),
-            array("name"=>"Ditolak Aktif","color"=>"#FF0000")
+            array("name"=>"Ditolak Manager Cetak","color"=>"#FF0000"),
+            array("name"=>"Ditolak Aktif","color"=>"#FF0000"),
+            array("name"=>"Ditolak Manager Pengaktifan","color"=>"#FF0000")
         );
 
         foreach ($status_akses_array as $key => $value) {
@@ -182,44 +167,28 @@ class DatabaseSeeder extends Seeder
         
 
 
-        $status_akses_array = array(
+        $status_inventory_array = array(
             array("name"=>"Pending Head","color"=>"#FFA500"),
-            array("name"=>"Pending Admin","color"=>"#00FF00"),
-            array("name"=>"Diterima Admin","color"=>"#0000FF"),
+            array("name"=>"Inventory Aktif","color"=>"#0000FF"),
             array("name"=>"Ditolak Head","color"=>"#FF0000"),
-            array("name"=>"Ditolak Admin","color"=>"#FF0000")
         );
 
-        foreach ($status_akses_array as $key => $value) {
+        foreach ($status_inventory_array as $key => $value) {
             Status_Inventory::firstOrCreate($value);
         }
 
 
         $setting_list_array = array(
-            array('setting_name'  => 'background level'),
-            array('setting_name'  => 'upload level'),
-            array('setting_name'  => 'new inventory level'),
-            array('setting_name'  => 'sharing inventory level'),
+            array('setting_name'  => 'edit background'),
+            array('setting_name'  => 'upload excel'),
+            array('setting_name'  => 'add new vendor'),
+            array('setting_name'  => 'add new inventory'),
             array('setting_name'  => 'report level'),
         );
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
         }
-
-
-        $setting_list_array = Setting_List::get();
-
-        foreach ($setting_list_array as $key => $value) {
-            
-            $setting_data_array = array(
-            "user_id"=>1,
-            "setting_list_id"=>$value->id,
-            "created_by"=>1,
-            "updated_by"=>1
-            );
-
-            Setting_Data::firstOrCreate($setting_data_array);
-        }        
+        
     }
 
 
