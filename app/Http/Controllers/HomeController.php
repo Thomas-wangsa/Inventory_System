@@ -50,6 +50,10 @@ class HomeController extends Controller
         return view('dashboard/dashboard');        
     }
 
+    public function old_index() {
+        return view('dashboard/dashboard_bck');        
+    }
+
     public function notify() {
         return view('dashboard/notify');
     }

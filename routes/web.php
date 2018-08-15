@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 	Route::group(['middleware' => ['get_credentials']], function() { 
-		
+		Route::get('/old_home', 'HomeController@old_index')->name('old_home');
 		Route::get('/notify', 'HomeController@notify')->name('route_notify');
 		// Profile Features
 		Route::get('/profile', 'HomeController@profile')->name('profile');

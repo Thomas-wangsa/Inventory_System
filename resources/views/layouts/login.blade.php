@@ -38,6 +38,7 @@
 
 	.mid_wrapper {
 		height: 100%!important;
+		background-color: white;
 	}
 
 	.center {
@@ -65,7 +66,7 @@
 
 		<div class="col-sm-6 mid_wrapper" >
 
-			<div style="background-color: white" >
+			<div style="" >
                 <a href="{{ route('login')}}">
 				    <img class="img-responsive center"  
 				    src="{{ asset('images/logo/indosat.png')}}"

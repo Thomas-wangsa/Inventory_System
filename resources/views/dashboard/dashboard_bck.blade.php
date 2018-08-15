@@ -1,4 +1,4 @@
-@extends('layouts.template')
+@extends('layouts.template_bck')
 
 @section('content')
 <style type="text/css">
