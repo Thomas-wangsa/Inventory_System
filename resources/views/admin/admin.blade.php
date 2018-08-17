@@ -1,6 +1,11 @@
 @extends('layouts.template')
 
 @section('content')
+
+<style type="text/css">
+	th,td {text-align: center}
+	.table>tbody>tr>td {vertical-align: middle}
+</style>
 	<div class="flash-message center">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
       @if(Session::has('alert-' . $msg))
@@ -20,19 +25,21 @@
 				<form class="form-inline" action="{{route('route_admin')}}">
 				    
 				    <input type="hidden" name="search" value="on"> </input>
-				    <div class="input-group">
-				    	<span class="input-group-addon">
-				    		<i class="glyphicon glyphicon-search">
-				    		</i>
-				    	</span>
-				    	<input type="text" class="form-control" 
-				    	name="search_nama" placeholder="Cari Nama..."
-				    	value="{{Request::get('search_nama')}}">
+				    <div class="form-group">
+					    <div class="input-group">
+					    	<span class="input-group-addon">
+					    		<i class="glyphicon glyphicon-search">
+					    		</i>
+					    	</span>
+					    	<input type="text" class="form-control" 
+					    	name="search_nama" placeholder="Find Name..."
+					    	value="{{Request::get('search_nama')}}">
+					  	</div>
 				  	</div>
 					
 					<div class="form-group">
 				      	<select class="form-control" name="search_filter">
-				      		<option value=""> Filter Berdasarkan </option>
+				      		<option value=""> Filter By </option>
 				        	@foreach($data['divisi'] as $key=>$val)
 				    		<option value="{{$val->id}}" 
 				    			@if($val->id == Request::get('search_filter')) 
@@ -54,7 +61,7 @@
 
 				  	<div class="form-group">
 				      	<select class="form-control" name="search_order">
-				      		<option value=""> Sort Berdasarkan </option>
+				      		<option value=""> Sort By </option>
 				        	<option value="name"
 				        		@if('name' == Request::get('search_order')) 
 				    				selected
@@ -89,7 +96,7 @@
 			</div>
 			<div class="pull-right">  
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal">
-					Tambah Akun
+					Add new user
 				</button>
 			</div>
 			<div class="clearfix"> </div>
@@ -121,8 +128,8 @@
 			    			<td> {{ $val->email }} </td>
 			    			<td> {{ $val->mobile }} </td>
 			    			<td>
-			    				<a href="{{$indosat_path}}{{$val->foto}}" target="_blank" >
-			    					<img src="{{$indosat_path}}{{$val->foto}}"/ width="80px"> 
+			    				<a href="{{$val->foto}}" target="_blank" >
+			    					<img src="{{$val->foto}}"/ width="80px"> 
 			    				</a>
 			    			</td>
 			    			<td>

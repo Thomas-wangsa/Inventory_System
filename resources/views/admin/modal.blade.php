@@ -65,6 +65,16 @@
 				    </select>
 				  </div>
 
+
+				  <div class="form-group" id="pic_head_html">
+				    <label for="staff_divisi"> PIC Role :</label>
+				    <select class="form-control" id="pic_role" name="pic_list">
+				    	@foreach($data['pic_list'] as $key=>$val)
+				    	<option value="{{$val->id}}"> {{$val->vendor_name}} </option>
+				    	@endforeach
+				    </select>
+				  </div>
+
 				  <div class="form-group">
 				    <label for="staff_divisi"> Jabatan :</label>
 				    <select class="form-control" id="select_posisi" name="select_posisi">
@@ -89,8 +99,10 @@
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#inventory_head').hide();
+		$('#pic_head_html').hide();
 		$('#select_divisi').change(function(){
 			$('#inventory_head').hide();
+			$('#pic_head_html').hide();
 			$('#select_posisi').prop('disabled',false);
 			var value = $('#select_divisi').val();
 			var data = {"divisi":value};
@@ -110,38 +122,55 @@
 					$('#select_posisi').prop('disabled',true);
 					$('#select_posisi').val("0");
 					break;
+				case "2" :
+					$('#pic_head_html').show();
+					$.ajax({
+						url: 	"{{route('get_pic_level')}}",
+						method: "POST", 
+						contentType	: "application/json; charset=utf-8",
+						data : JSON.stringify(data),
+						success: function(result){
+	        				$.each(JSON.parse(result), function(key, value) {   
+							     $('#select_posisi')
+							         .append($("<option></option>")
+							                    .attr("value",value.id)
+							                    .text(value.pic_level_name));
+							});
+	    				}
+    				});
+					break;
 				case "3" : 
-				$.ajax({
-					url: 	"{{route('get_akses_role')}}",
-					method: "POST", 
-					contentType	: "application/json; charset=utf-8",
-					data : JSON.stringify(data),
-					success: function(result){
-        				$.each(JSON.parse(result), function(key, value) {   
-						     $('#select_posisi')
-						         .append($("<option></option>")
-						                    .attr("value",value.id)
-						                    .text(value.name));
-						});
-    				}
-    			});
+					$.ajax({
+						url: 	"{{route('get_akses_role')}}",
+						method: "POST", 
+						contentType	: "application/json; charset=utf-8",
+						data : JSON.stringify(data),
+						success: function(result){
+	        				$.each(JSON.parse(result), function(key, value) {   
+							     $('#select_posisi')
+							         .append($("<option></option>")
+							                    .attr("value",value.id)
+							                    .text(value.name));
+							});
+	    				}
+	    			});
 					break;
 				case "4" :
-				$('#inventory_head').show(); 
-				$.ajax({
-					url: 	"{{route('get_inventory_level')}}",
-					method: "POST", 
-					contentType	: "application/json; charset=utf-8",
-					data : JSON.stringify(data),
-					success: function(result){
-        				$.each(JSON.parse(result), function(key, value) {   
-						     $('#select_posisi')
-						         .append($("<option></option>")
-						                    .attr("value",value.id)
-						                    .text(value.inventory_level_name));
-						});
-    				}
-    			});
+					$('#inventory_head').show(); 
+					$.ajax({
+						url: 	"{{route('get_inventory_level')}}",
+						method: "POST", 
+						contentType	: "application/json; charset=utf-8",
+						data : JSON.stringify(data),
+						success: function(result){
+	        				$.each(JSON.parse(result), function(key, value) {   
+							     $('#select_posisi')
+							         .append($("<option></option>")
+							                    .attr("value",value.id)
+							                    .text(value.inventory_level_name));
+							});
+	    				}
+	    			});
 				break;
 				default : alert("Please contact your administrator");break
 			}

@@ -7,6 +7,7 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Divisi;
+use App\Http\Models\Pic_Level;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_List;
@@ -16,6 +17,11 @@ class AjaxController extends Controller
     public function get_akses_role(Request $request) {
     	$role = Akses_Role::all();
     	return json_encode($role);
+    }
+
+    public function get_pic_level(Request $request) {
+        $inventory_level = Pic_Level::all();
+        return json_encode($inventory_level);
     }
 
     public function get_inventory_level(Request $request) {

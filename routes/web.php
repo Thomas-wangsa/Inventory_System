@@ -87,6 +87,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::get('/admin/delete_role_notif', 'AdminController@delete_role_notif')->name('delete_role_notif');
 		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+		Route::post('/ajax/get_pic_level', 'AjaxController@get_pic_level')->name('get_pic_level');
 
 
 		// Setting 

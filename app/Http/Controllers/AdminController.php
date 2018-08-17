@@ -55,7 +55,7 @@ class AdminController extends Controller
         
         $users_id   = $users->get()->pluck('id');
         $users      = Users::join('users_detail','users_detail.user_id','=','users.id')
-                ->select('users.id','users.name','users.email',
+                ->select('users.id','users.name','users.email','users.mobile',
             'users_detail.foto','users_detail.uuid')
                 ->whereIn('users.id', $users_id)
                 ->withTrashed();
