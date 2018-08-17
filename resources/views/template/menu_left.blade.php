@@ -2,7 +2,7 @@
     .wrapper_left {
         width: 20%;
         box-shadow: 3px 2px 4px 0 rgba(212, 212, 212, 0.5);
-        min-height: 100%;
+        min-height: 100%!important;
         height: auto;
         float: left;
     }

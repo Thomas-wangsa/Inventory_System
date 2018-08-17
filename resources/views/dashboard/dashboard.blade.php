@@ -2,99 +2,99 @@
 
 @section('content')
 <style type="text/css">
-    .Rectangle-5 {
-  width: 207px;
-  height: 196px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  border: solid 0.8px #979797;
-}
+    .menu_wrap_body {
+        width: 100%;
+    }
 
-.id-card {
-  width: 56px;
-  height: 84px;
-  object-fit: contain;
-}
+    .menu_block {
+        float: left;
+        width: 25%;
+        /*background-color: blue;*/
+    }
 
+    .sub_menu_block {
+        /*background-color: green;*/
+        margin: 20px;
+        height: 170px;
+        border-radius: 10px;
+        border: solid 0.8px #979797;
+    }
+
+    .icon_block {
+        margin : 20px;
+        text-align: center;
+        /*background-color: tomato;*/
+    }
+
+    .icon_block a {
+        text-decoration: none;
+        color:gray;
+    }
+
+    .icon_block span {
+        font-size: 80px;
+    }
 </style>
-    
-    <div style="padding: 25px 30px">
-        <div class="flash-message center">
-            @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-              @if(Session::has('alert-' . $msg))
-
-              <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} 
-                <a href="#" class="close" data-dismiss="alert" aria-label="close">
-                    &times;
-                </a>
-             </p>
-              @endif
-            @endforeach
-        </div> <!-- end .flash-message -->
-        <h2> Hi {{ ucfirst(Auth::user()->name) }}  </h2>
-
-
-        <div> 
-            <div class="col-sm-3">
-                <div class="row">
-                    <div class="Rectangle-5">
-                        <a href="{{route('akses')}}">
-                            <img  class="center" src="{{ asset('images/logo/id-card.png')}}"  
-                            style="width:30%;margin-top: 35px" / >
-                        </a>
-                        <div style="margin-top: 10px"> </div>
-                        <div class="text-center"> Access </div>
-                    </div>
-                </div>
+    <div class="menu_wrap_body">
+        <div class="menu_block">
+            <div class="sub_menu_block">
+                <div class="icon_block">
+                    <a href="{{route('akses')}}">
+                        <img src="{{ asset('images/logo/id-card.png')}}" / >
+                        <h4> Access Page </h4> 
+                    </a>
+                </div>                
             </div>
+        </div>
 
-            <div class="col-sm-3">
-                <div class="row">
-                    <div class="Rectangle-5">
-                        <a href="{{route('inventory')}}">
-                            <img  class="center" src="{{ asset('images/logo/checklist.png')}}"  style="width:30%;margin-top: 35px" / >
-                        </a>
-                        <div style="margin-top: 10px"> </div>
-                        <div class="text-center"> Inventory </div>
-                    </div>
-                </div>
+        <div class="menu_block">
+            <div class="sub_menu_block">
+                <div class="icon_block">
+                    <a href="{{route('inventory')}}">
+                        <img src="{{ asset('images/logo/checklist.png')}}" / >
+                        <h4> Inventory Page </h4> 
+                    </a>
+                </div>                
             </div>
+        </div>
 
-            <div class="col-sm-3">
-                <div class="row">
-                    <div class="Rectangle-5">
-                        <a href="{{route('route_admin')}}">
-                            <img  class="center" src="{{ asset('images/logo/user.png')}}"  style="width:30%;margin-top: 45px" / >
-                        </a>
-                        <div style="margin-top: 20px"> </div>
-                        <div class="text-center"> Kelola Akun </div>
-                    </div>
-                </div>
+        <div class="menu_block">
+            <div class="sub_menu_block">
+                <div class="icon_block">
+                    <a href="{{route('route_admin')}}">
+                        <img src="{{ asset('images/logo/user.png')}}" / >
+                        <h4> Admin Page </h4> 
+                    </a>
+                </div>                
             </div>
-            
-            <div class="col-sm-3">
-                <div class="row">
-                    <div class="Rectangle-5">
-                        <a href="{{route('route_setting')}}">
-                            <img  class="center" src="{{ asset('images/logo/settings.png')}}"  style="width:30%;margin-top: 45px" / >
-                        </a>
-                        <div style="margin-top: 20px"> </div>
-                        <div class="text-center"> Settings </div>
-                    </div>
-                </div>
-            </div>
+        </div>
 
-            <div class="col-sm-3">
-                <div class="row">
-                    <div class="Rectangle-5">
-                        <a href="{{route('route_report')}}">
-                            <img  class="center" src="{{ asset('images/logo/settings.png')}}"  style="width:30%;margin-top: 45px" / >
-                        </a>
-                        <div style="margin-top: 20px"> </div>
-                        <div class="text-center"> Report </div>
-                    </div>
-                </div>
+        <div class="menu_block">
+            <div class="sub_menu_block">
+                <div class="icon_block">
+                    <a href="{{route('route_setting')}}">
+                        <img src="{{ asset('images/logo/settings.png')}}" / >
+                        <h4> Setting Page </h4> 
+                    </a>
+                </div>                
             </div>
-        </div> 
+        </div>
+
+        <div class="menu_block">
+            <div class="sub_menu_block">
+                <div class="icon_block">
+                    <a href="{{route('route_report')}}">
+                        <span class="glyphicon glyphicon-file">
+                        </span> &nbsp;
+                        <h4> Report Page </h4> 
+                    </a>
+                </div>                
+            </div>
+        </div>
+
+        <div class="clearfix"> </div>
     </div>
+
+    
+
 @endsection
