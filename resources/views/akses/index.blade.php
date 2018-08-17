@@ -30,6 +30,12 @@
 
 		<div>
 			<div class="pull-left">
+				<div class="btn btn-primary">
+					Add New Vendor List 
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"> </div>
+			<div class="pull-left">
 			 	<form class="form-inline" action="{{route('akses')}}">
 				    
 				    <input type="hidden" name="search" value="on"> </input>
@@ -149,13 +155,13 @@
 	                        	@endif
 	                        </td>
 	                        <td> 
-			    				<a href="{{$indosat_path}}{{$val->foto}}" target="_blank" >
-			    					<img src="{{$indosat_path}}{{$val->foto}}"/ width="80px"> 
+			    				<a href="{{$val->foto}}" target="_blank" >
+			    					<img src="{{$val->foto}}"/ width="80px"> 
 			    				</a>
 			    				@if($val->type == 'vendor')
 			    				<div style="margin-top: 5px"> </div>
-			    				<a href="{{$indosat_path}}{{$val->po}}" target="_blank" >
-			    					<img src="{{$indosat_path}}{{$val->po}}"/ width="80px"> 
+			    				<a href="{{$val->po}}" target="_blank" >
+			    					<img src="{{$val->po}}"/ width="80px"> 
 			    				</a>
 			    				@endif
 
@@ -267,14 +273,14 @@
 <script type="text/javascript">
 	
 	function approve(status,uuid) {
-		var url = window.location.protocol+"//"+window.location.host+'{{$indosat_path}}'+'/akses_approval?uuid=';
+		var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
 		var url_status = "&next_status=";
 		window.location = url+uuid+url_status+status;
 	}
 
 
 	function remove(status,uuid) {
-		var url = window.location.protocol+"//"+window.location.host+'{{$indosat_path}}'+'/akses_reject?uuid=';
+		var url = window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
 		var url_status = "&next_status=";
 		window.location = url+uuid+url_status+status;
 	}

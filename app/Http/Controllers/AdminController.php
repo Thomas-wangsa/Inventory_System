@@ -7,6 +7,7 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Users_Detail;
 use App\Http\Models\Divisi;
+use App\Http\Models\Pic_List;
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
@@ -74,6 +75,7 @@ class AdminController extends Controller
     		'users'				=> $users,
     		'divisi'			=> Divisi::all(),
     		'inventory_list'	=> Inventory_List::all(),
+            'pic_list'          => Pic_List::all(),
             'setting_list'      => Setting_List::all()
     	);
 

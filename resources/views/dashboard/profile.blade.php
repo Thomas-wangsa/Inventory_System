@@ -46,7 +46,7 @@
 					  	<div class="form-group">
 						    <input type="file" class="form-control" name="background" required>
 						</div>
-					  	<button type="submit" class="btn btn-primary">
+					  	<button type="submit" class="btn btn-primary btn-block">
 					  		Ganti Foto
 					  	</button>
 					</form>
@@ -65,9 +65,15 @@
 					      <input type="text" class="form-control" id="pwd"  name="nama_lengkap" value="{{$user_detail->name}}" required="">
 					    </div>
 
+
+
 					    <div class="form-group">
 					      <label for="pwd">Posisi:</label>
-					      <input type="text" class="form-control" id="pwd"  name="posisi" value="{{$user_detail->jabatan}}" disabled="">
+
+					      @foreach($user_jabatan as $key=>$val)
+					      <input type="text" class="form-control" id="pwd"  name="posisi" value="{{$val->nama_jabatan}}" disabled="">
+					      <br/>
+					      @endforeach
 					    </div>
 
 					    <div class="form-group">

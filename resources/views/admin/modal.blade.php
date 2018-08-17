@@ -110,7 +110,7 @@
 					$('#select_posisi').prop('disabled',true);
 					$('#select_posisi').val("0");
 					break;
-				case "2" : 
+				case "3" : 
 				$.ajax({
 					url: 	"{{route('get_akses_role')}}",
 					method: "POST", 
@@ -126,7 +126,7 @@
     				}
     			});
 					break;
-				case "3" :
+				case "4" :
 				$('#inventory_head').show(); 
 				$.ajax({
 					url: 	"{{route('get_inventory_level')}}",

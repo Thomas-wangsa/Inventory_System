@@ -65,6 +65,7 @@
 	    			Notification
     			</a>
     		</div>
+            @if(in_array(1,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('akses')}}"> 
 	    			<span class="glyphicon glyphicon-list-alt">
@@ -72,6 +73,8 @@
 	    			Access
     			</a>
     		</div>
+            @endif
+            @if(in_array(1,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('inventory')}}"> 
 	    			<span class="glyphicon glyphicon-th-large">
@@ -79,6 +82,8 @@
 	    			Inventory
     			</a>
     		</div>
+            @endif
+            @if(in_array(1,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('route_admin')}}"> 
 	    			<span class="glyphicon glyphicon-user">
@@ -86,6 +91,8 @@
 	    			Admin
     			</a>
     		</div>
+            @endif
+            @if(in_array(1,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('route_setting')}}"> 
 	    			<span class="glyphicon glyphicon-cog">
@@ -93,6 +100,8 @@
 	    			Setting
     			</a>
     		</div>
+            @endif
+            @if(in_array(1,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('route_report')}}"> 
 	    			<span class="glyphicon glyphicon-file">
@@ -100,6 +109,7 @@
 	    			Report
     			</a>
     		</div>
+            @endif
     	</div>
     </div> <!--menu_icon_left-->
     <div class="menu_icon_left" 

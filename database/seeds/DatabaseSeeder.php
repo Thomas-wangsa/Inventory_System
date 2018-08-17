@@ -9,6 +9,8 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Detail;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
+use App\Http\Models\Pic_Level;
+use App\Http\Models\Pic_List;
 use App\Http\Models\Status_Akses;
 use App\Http\Models\Status_Inventory;
 use App\Http\Models\Inventory_Level;
@@ -54,15 +56,32 @@ class DatabaseSeeder extends Seeder
             )
         );
 
+        $inventory_list_array = array(
+            "inventory_name"=>"cctv",
+            "updated_by"=>1
+        );
+
+        $pic_list_array = array(
+            "vendor_name"=>"ccms",
+            "vendor_detail_name"=>"PT ABC INDONESIA",
+            "updated_by"=>1
+        );
+
         foreach ($users_array as $key => $value) {
-            Users::firstOrCreate($value);         
+            Users::firstOrCreate($value); 
+            if($key == 0) {
+                Inventory_List::firstOrCreate($inventory_list_array);
+                PIC_List::firstOrCreate($pic_list_array);
+            }        
         }
 
 
         $akses_role_array = array(
             array("name"=>"staff pendaftaran"),
             array("name"=>"staff pencetakan"),
+            array("name"=>"manager pendaftaran dan pencetakan"),
             array("name"=>"staff pengaktifan "),
+            array("name"=>"manager pengaktifan "),
         );
 
         foreach ($akses_role_array as $key => $value) {
@@ -77,6 +96,16 @@ class DatabaseSeeder extends Seeder
 
         foreach ($inventory_level_array as $key => $value) {
             Inventory_Level::firstOrCreate($value);
+        }
+
+
+        $pic_level_array = array(
+            array("pic_level_name"=>"staff"),
+            array("pic_level_name"=>"head")
+        );
+
+        foreach ($pic_level_array as $key => $value) {
+            Pic_Level::firstOrCreate($value);
         }
 
         $users = Users::all();

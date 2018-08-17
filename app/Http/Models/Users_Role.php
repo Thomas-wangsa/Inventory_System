@@ -5,6 +5,8 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+
 
 class Users_Role extends Model
 {	
@@ -20,6 +22,34 @@ class Users_Role extends Model
         ->select('divisi')->distinct();
     }
 
+    public function scopeGetAllRoleById($query,$user_id) {
+        return
+        $query->where('users_role.user_id','=',$user_id)
+        ->select('divisi','jabatan',
+            DB::raw('case 
+                WHEN(users_role.divisi = 1)
+                    THEN (
+                        select name
+                        from divisi where id = users_role.divisi
+                    )
+                WHEN(users_role.divisi = 3)
+                    THEN (
+                        select CONCAT(name," ","(Access)") 
+                        from akses_role where id = jabatan
+                    )
+                WHEN(users_role.divisi = 4)
+                    THEN (select CONCAT(il.inventory_level_name," ",i_list.inventory_name) 
+                        FROM inventory_role ir
+                        INNER JOIN inventory_level il
+                        ON il.id = ir.inventory_level_id
+                        INNER JOIN inventory_list i_list
+                        ON i_list.id = ir.inventory_list_id
+                        where ir.id = jabatan 
+                    )
+                ELSE "NULL"
+                END AS nama_jabatan')
+        );
+    }
     public function scopeGetAksesDecisionMaker($query,$param) {
     	return $query->join('users','users.id','=','users_role.user_id')
     			->where('divisi',2)

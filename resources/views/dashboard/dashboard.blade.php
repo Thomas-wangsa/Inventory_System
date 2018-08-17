@@ -35,6 +35,20 @@
         font-size: 80px;
     }
 </style>
+
+    <div class="flash-message center">
+        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+          @if(Session::has('alert-' . $msg))
+
+          <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} 
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">
+                &times;
+            </a>
+         </p>
+          @endif
+        @endforeach
+    </div> <!-- end .flash-message -->
+
     <div class="menu_wrap_body">
         <div class="menu_block">
             <div class="sub_menu_block">
