@@ -8,11 +8,13 @@ use App\Http\Models\Users_Role;
 use App\Http\Models\Users_Detail;
 use App\Http\Models\Divisi;
 use App\Http\Models\Pic_List;
+use App\Http\Models\Pic_Role;
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Setting_List;
+use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\New_User;
@@ -23,9 +25,11 @@ class AdminController extends Controller
 {	
 	protected $restrict = 1;
     protected $faker;
+    protected $env;
 
 	public function __construct() {
         $this->faker    = Faker::create();
+        $this->env      = env("ENV_STATUS", "development");
     }
 
 
@@ -94,67 +98,102 @@ class AdminController extends Controller
     		return redirect('admin'); 
 		}
 
-		$generated_password = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);
+        DB::beginTransaction();
+        try {
+            $generated_password = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);
 
-		$array_users = array(
-			"name"		=> strtolower($request->staff_nama),
-			"email"		=> strtolower($request->staff_email),
-			"mobile"	=> strtolower($request->staff_mobile),
-			"password"	=> bcrypt($generated_password)
-		);
+            $this->env == "development" ? $define_password = bcrypt(123456) : $define_password = $generated_password; 
+            
 
-		$new_users = Users::firstOrCreate($array_users);
+            $array_users = array(
+                "name"      => strtolower($request->staff_nama),
+                "email"     => strtolower($request->staff_email),
+                "mobile"    => strtolower($request->staff_mobile),
+                "password"  => bcrypt($define_password)
+            );
 
 
-        $user_detail    = new Users_Detail;
-        $user_detail->user_id     = $new_users->id;
-        $user_detail->email_2     = strtolower($request->staff_email2);
-        $user_detail->uuid        = $this->faker->uuid();
-        $user_detail->foto        = "/images/template/default.png";
+            $new_users = Users::firstOrCreate($array_users);
+
+            $user_detail    = new Users_Detail;
+            $user_detail->user_id     = $new_users->id;
+            $user_detail->email_2     = strtolower($request->staff_email2);
+            $user_detail->uuid        = $this->faker->uuid();
+            $user_detail->foto        = "/images/template/default.png";
         
-		switch($request->select_divisi) {
-			
-			case 1 :
-				$user_role      = new Users_Role;
-        		$user_role->user_id 	= $new_users->id;
-        		$user_role->divisi 		= $request->select_divisi;
-                
-			break;
-			
-			case 2 :
-                $user_role      = new Users_Role;
-                $user_role->user_id     = $new_users->id;
-                $user_role->divisi      = $request->select_divisi;
-                $user_role->jabatan     = $request->select_posisi;
-			break;
+    		switch($request->select_divisi) {
+    			
+    			case 1 :
+    				$user_role      = new Users_Role;
+            		$user_role->user_id 	= $new_users->id;
+            		$user_role->divisi 		= $request->select_divisi;
+                    
+    			break;
+    			
+                case 2 :
+                    //dd($request); 
+                    $pic_role_array = array(
+                        "user_id"              => $new_users->id,
+                        "pic_list_id"     => $request->pic_list,
+                        "pic_level_id"    => $request->select_posisi
+                    );
 
-			case 3 : 
-				$inventory_role_array = array(
-                    "user_id"              => $new_users->id,
-					"inventory_list_id"		=> $request->inventory_list,
-					"inventory_level_id"	=> $request->select_posisi
-				);
-
-				$new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
+                    $new_pic_role = Pic_Role::firstOrCreate($pic_role_array);
 
 
-                $user_role      = new Users_Role;
-                $user_role->user_id     = $new_users->id;
-                $user_role->divisi      = $request->select_divisi;
-                $user_role->jabatan     = $new_inventory_role->id;
-			break;
+                    $user_role      = new Users_Role;
+                    $user_role->user_id     = $new_users->id;
+                    $user_role->divisi      = $request->select_divisi;
+                    $user_role->jabatan     = $new_pic_role->id;
+                break;
 
-			default : 
-				$request->session()->flash('alert-danger', 'Please contact your administrator !');
-    			return redirect('admin');
-    		break;
-		}
+    			case 3 :
+                    $user_role      = new Users_Role;
+                    $user_role->user_id     = $new_users->id;
+                    $user_role->divisi      = $request->select_divisi;
+                    $user_role->jabatan     = $request->select_posisi;
+    			break;
 
-        $user_role->save();
-        $user_detail->save();
+    			case 4 : 
+    				$inventory_role_array = array(
+                        "user_id"              => $new_users->id,
+    					"inventory_list_id"		=> $request->inventory_list,
+    					"inventory_level_id"	=> $request->select_posisi
+    				);
+
+    				$new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
+
+
+                    $user_role      = new Users_Role;
+                    $user_role->user_id     = $new_users->id;
+                    $user_role->divisi      = $request->select_divisi;
+                    $user_role->jabatan     = $new_inventory_role->id;
+    			break;
+
+    			default : 
+    				$request->session()->flash('alert-danger', 'Please contact your administrator !');
+        			return redirect('admin');
+        		break;
+    		}
+
+            $user_role->save();
+            $user_detail->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            echo "Please Contact your administrator";
+            dd($e);
+            // something went wrong
+        }
+
+
+        if($this->env == "development") {
+            $request->session()->flash('alert-warning', 'Development Mode');
+            return redirect('admin');
+        }
 
 		$new_users->notify(new New_User($generated_password));
-
 		$request->session()->flash('alert-success', 'Akun Berhasil di Tambahkan!');
 		return redirect('admin');
     }

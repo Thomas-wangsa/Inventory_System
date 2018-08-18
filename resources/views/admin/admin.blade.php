@@ -86,7 +86,9 @@
 				      	</select>
 				  	</div>
 				  
-				  	<button type="submit" class="btn btn-info"> Cari </button>
+				  	<button type="submit" class="btn btn-info"> 
+				  		Find 
+				  	</button>
 				  	<button type="reset" 
 				  	class="btn btn-danger"
 				  	onclick="reset_filter()"> 
@@ -107,9 +109,9 @@
 			    <thead>
 			      <tr>
 			      	<th> No </th>
-			        <th> Nama Lengkap </th>
+			        <th> Name </th>
 			        <th> Email </th>
-			        <th> No Handphone </th>
+			        <th> Mobile </th>
 			        <th> Identitas Diri </th>
 			        <th> Action </th>
 			      </tr>

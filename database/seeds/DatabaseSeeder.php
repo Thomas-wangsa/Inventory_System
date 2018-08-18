@@ -100,8 +100,8 @@ class DatabaseSeeder extends Seeder
 
 
         $pic_level_array = array(
-            array("pic_level_name"=>"staff"),
-            array("pic_level_name"=>"head")
+            array("pic_level_name"=>"staff pic"),
+            array("pic_level_name"=>"sponsor")
         );
 
         foreach ($pic_level_array as $key => $value) {
