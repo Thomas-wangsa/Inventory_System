@@ -28,7 +28,7 @@
 
 		
 		<div class="center" style="background-color: red">
-			<div class="col-sm-6">
+			<div class="col-xs-6">
 				<img class="img-responsive img-thumbnail" 
 				style="max-height: 300px" 
 				src="{{ URL::asset($user_detail->foto) }}"
@@ -55,7 +55,7 @@
 		</div>
 
 		<div class="center" style="background-color: red">
-			<div class="col-sm-6">
+			<div class="col-xs-6">
 				
 				<div class="center" >
 					<form action="{{route('ganti_profile')}}" method="POST">

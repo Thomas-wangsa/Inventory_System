@@ -50,8 +50,8 @@ class Users extends Model
         return 
         $query->join('users_detail','users_detail.user_id','=','users.id')
         ->where('users_detail.uuid','=',$uuid)
-        ->select('users.*','users_detail.foto',
-            'users_detail.uuid','users_detail.email_2');
+        ->select('users.*','users_detail.foto','users_detail.nik',
+            'users_detail.uuid','users_detail.email_2','users_detail.company');
     }
 
     public function scopeGetDetailAll($query) {

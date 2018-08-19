@@ -11,6 +11,7 @@ use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Pic_Level;
 use App\Http\Models\Pic_List;
+use App\Http\Models\Pic_Role;
 use App\Http\Models\Status_Akses;
 use App\Http\Models\Status_Inventory;
 use App\Http\Models\Inventory_Level;
@@ -118,6 +119,18 @@ class DatabaseSeeder extends Seeder
             array(
                 "name"=>$faker->name,
                 "email"=>"viewer.inventoryA@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"dummy.pic@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"dummy.inv@gmail.com",
                 "password"=>bcrypt(123456),
                 "mobile"=>$faker->phoneNumber
             ),
@@ -229,6 +242,14 @@ class DatabaseSeeder extends Seeder
                 case 12:
                     $divisi     = 4;
                     $jabatan    = 3;
+                    break;
+                case 13:
+                    $divisi     = 2;
+                    $jabatan    = 1;
+                    break;
+                case 14:
+                    $divisi     = 4;
+                    $jabatan    = 3;
                     break;    
                 default:
                     $divisi     = 1;
@@ -237,6 +258,33 @@ class DatabaseSeeder extends Seeder
             }
 
             
+            if($divisi == 2) {
+
+                $pic_role_array = array(
+                    "user_id"              =>$value->id,
+                    "pic_list_id"     => Pic_List::first()->id,
+                    "pic_level_id"    => $jabatan
+                );
+
+                $new_pic_role = Pic_Role::firstOrCreate($pic_role_array);
+
+                $jabatan = $new_pic_role->id;
+            }
+
+            if($divisi == 4) {
+
+                $inventory_role_array = array(
+                    "user_id"              =>$value->id,
+                    "inventory_list_id"     => Inventory_List::first()->id,
+                    "inventory_level_id"    => $jabatan
+                );
+
+                $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
+
+                $jabatan = $new_inventory_role->id;
+            }
+
+
             $data_user_detail = array(
                 "user_id"   => $value->id,
                 "uuid"      => $faker->uuid,
@@ -252,6 +300,8 @@ class DatabaseSeeder extends Seeder
                 "jabatan"   => $jabatan
             );
             Users_Role::firstOrCreate($data_user_role);
+
+
 
         }
 

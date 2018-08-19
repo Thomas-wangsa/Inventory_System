@@ -54,7 +54,7 @@
               		<label for="staff_nama"> Personal Identity : </label>
               		<input type="file" class="form-control" id="nama" 
               		name="Personal_Identity" required="">
-            	</div>
+            	 </div>
 
 				  <div class="form-group">
 				    <label for="staff_divisi"> Level Authority :</label>

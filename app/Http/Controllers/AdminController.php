@@ -156,7 +156,6 @@ class AdminController extends Controller
     				$user_role      = new Users_Role;
             		$user_role->user_id 	= $new_users->id;
             		$user_role->divisi 		= $request->divisi;
-                    
     			break;
     			
                 case 2 :
@@ -168,7 +167,6 @@ class AdminController extends Controller
                     );
 
                     $new_pic_role = Pic_Role::firstOrCreate($pic_role_array);
-
 
                     $user_role      = new Users_Role;
                     $user_role->user_id     = $new_users->id;
@@ -223,7 +221,7 @@ class AdminController extends Controller
         }
 
 		$new_users->notify(new New_User($generated_password));
-		$request->session()->flash('alert-success', 'Akun Berhasil di Tambahkan!');
+		$request->session()->flash('alert-success', 'new user has been created');
 		return redirect('admin');
     }
 
@@ -233,7 +231,7 @@ class AdminController extends Controller
 
         $user = Users::GetDetailByUUID($request->uuid)->first();
         if(count($user) < 1) {
-            $response['message']  = "Data User tidak di temukan";
+            $response['message']  = "User data is not found";
             return json_encode($response);
         }
 
@@ -257,7 +255,7 @@ class AdminController extends Controller
         }
 
         if($count_exist > 0) {
-            $response['message']  = "Gagal,Role Sudah Terdaftar";
+            $response['message']  = "Failed,level authority already exist";
             return json_encode($response);
         }
 
@@ -299,44 +297,64 @@ class AdminController extends Controller
         }
 
         $response['status']   = true;
-        $response['message']  = "Role telah di tambahkan";
+        $response['message']  = "level authority has been added";
         return json_encode($response); 
     }
 
     public function edit_user(Request $request) {
-        if (!preg_match("/^[a-zA-Z ]*$/",$request->staff_nama)) {
+
+        $request->validate([
+            'name'  => 'required|max:50',
+            'nik'   => 'required',
+            'email' => 'required',
+            'mobile' => 'required',
+            'company' => 'required|max:50',
+        ]);
+
+        if (!preg_match("/^[a-zA-Z ]*$/",$request->name)) {
             $request->session()->flash('alert-danger', 'Only letters and white space allowed! in name field');
             return redirect('admin');
         }
 
-        if (!preg_match("/^[0-9]*$/",$request->staff_mobile)) {
-            $request->session()->flash('alert-danger', 'Only numbers allowed! in phone field');
+        if (!preg_match("/^[0-9]*$/",$request->mobile)) {
+            $request->session()->flash('alert-danger', 'Only numbers allowed! in mobile field');
             return redirect('admin'); 
         }
 
-        $user_data = Users::GetDetailByUUID($request->uuid)->first();
-        $check_exist   = Users::where('email',$request->staff_email)
-                        ->where('id','!=',$user_data->id)
-                        ->first();
+        DB::beginTransaction();
+        try {
+            $user_data = Users::GetDetailByUUID($request->uuid)->first();
+            $check_exist   = Users::where('email',$request->email)
+                            ->where('id','!=',$user_data->id)
+                            ->first();
 
-        if(count($check_exist) > 0) {
-            $request->session()->flash('alert-danger', 'Email telah terdaftar di Akun lain');
-            return redirect('admin');
+            if(count($check_exist) > 0) {
+                $request->session()->flash('alert-danger', 'email already exist in another user');
+                return redirect('admin');
+            }
+
+            $user           = Users::find($user_data->id);
+            $user->name     = strtolower($request->name);
+            $user->email    = strtolower($request->email);
+            $user->mobile   = strtolower($request->mobile);
+
+            $user_detail    = Users_Detail::find($user_data->id);
+            $user_detail->nik = $request->nik;
+            $user_detail->company = $request->company;
+            $user_detail->email_2 = $request->email_second;
+
+
+            $user->save();
+            $user_detail->save();
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            echo "Please Contact your administrator";
+            dd($e);
+            // something went wrong
         }
 
-        $user           = Users::find($user_data->id);
-        $user->name     = strtolower($request->staff_nama);
-        $user->email    = strtolower($request->staff_email);
-        $user->mobile   = strtolower($request->staff_mobile);
-
-        $user_detail    = Users_Detail::find($user_data->id);
-        $user_detail->email_2 = $request->staff_email2;
-
-
-        $user->save();
-        $user_detail->save();
-
-        $request->session()->flash('alert-success', 'Akun Berhasil di Edit!');
+        $request->session()->flash('alert-success', 'updated user success');
         return redirect('admin');
 
     }
@@ -350,7 +368,7 @@ class AdminController extends Controller
     }
 
     public function aktif_user_notif(Request $request) {
-        $request->session()->flash('alert-success', 'Akun Berhasil di Restore!');
+        $request->session()->flash('alert-success', 'user status already active');
         return redirect('admin');
     }
 
@@ -364,7 +382,7 @@ class AdminController extends Controller
     }
 
     public function delete_user_notif(Request $request) {
-    	$request->session()->flash('alert-warning', 'Akun Berhasil di Delete!');
+    	$request->session()->flash('alert-warning', 'user status already inactive');
     	return redirect('admin');
     }
 
@@ -377,7 +395,7 @@ class AdminController extends Controller
 
         if($count_data <= 1) {
             $status  = false;
-            $message = "Minimal 1 user 1 role";
+            $message = "at least each user level authority must be selected";
         } else {
             $status = Users_Role::find($request->role_id)->delete();
             $message = "";            
@@ -392,12 +410,12 @@ class AdminController extends Controller
     }
 
     public function delete_role_notif(Request $request) {
-        $request->session()->flash('alert-warning', 'Role Berhasil di Delete!');
+        $request->session()->flash('alert-warning', 'user level authority status already inactive');
         return redirect('admin');
     }
 
     public function add_role_notif(Request $request) {
-        $request->session()->flash('alert-success', 'Role Berhasil di Tambahkan!');
+        $request->session()->flash('alert-success', 'level authority has been added');
         return redirect('admin');
     }
 }

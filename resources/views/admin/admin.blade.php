@@ -5,6 +5,7 @@
 <style type="text/css">
 	th,td {text-align: center}
 	.table>tbody>tr>td,.table>thead>tr>th {vertical-align: middle}
+	.scrollme {overflow-y: auto;}
 </style>
 	<div class="flash-message center">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
@@ -29,7 +30,7 @@
 		</div>
 	@endif
 
-	<div style="padding: 0 10px;margin-top: 15px">
+	<div style="margin-top: 15px">
 		<div>
 			
 			<div class="pull-left">
@@ -115,8 +116,8 @@
 			<div class="clearfix"> </div>
 		</div>
 
-		<div style="margin-top: 10px"> 
-			<table class="table table-bordered">
+		<div style="margin-top: 10px"  class=""> 
+			<table class="table table-bordered table-responsive">
 			    <thead>
 			      <tr>
 			      	<th> No </th>
@@ -138,7 +139,7 @@
 			        <th> 
 			        	Company
 			        </th>
-			        <th> Action </th>
+			        <th style="min-width: 120px"> Action </th>
 			      </tr>
 			    </thead>
 			    <tbody>
