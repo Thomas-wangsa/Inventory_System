@@ -1,3 +1,9 @@
+<style type="text/css">
+  .unselectable{
+   background-color: #ddd;
+   cursor: not-allowed;
+  }
+</style>
 <!-- Modal -->
   <div class="modal fade" id="modal_role" role="dialog">
     <div class="modal-dialog">
@@ -42,18 +48,20 @@
 
 <script type="text/javascript">
 
-  var no = 1;
+  var no_id_unique = 1;
 
   function get_role_user(uuid,username) {
+    $('#add_role_btn').prop('disabled',false);
+    no_id_unique = 1;
     $('#username_in_modal_role').html(username);
     var data = {
         "uuid":uuid
       };
 
-      $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
     });
     $.ajax({
       type : "POST",
@@ -68,7 +76,11 @@
           if(key == 0) {
             $('#uuid_edit').text(val.uuid);
           }
-          data += '<tr>';
+          data += '<tr id="tr_no'+no_id_unique+'" ';
+          if(val.deleted_at != null) {
+            data += 'class="unselectable" ';
+          }  
+          data += '>';
           data +=   '<td class="text-center">' +
                       val.divisi_name +
                     '</td>' +
@@ -78,24 +90,23 @@
                     '<td class="text-center">' +
                       val.jabatan_name +
                     '</td>';
+          data += '<td id="td_button_no'+no_id_unique+'" '+
+                  'class="text-center ';
+          data +=  '">';
           if(val.deleted_at != null) {
-            data +=   '<td class="text-center">' +
-                        '<button class="btn btn-primary" '+
-                          'onclick="active_role('+val.role_id+')">'+
-                            'Set Active' +
-                        '</button>' +
-                      '</td>';
+            data +=   '<button class="btn btn-primary" '+
+                        'onclick="restore_role('+val.role_id+','+no_id_unique+')">'+
+                          'Set Active' +
+                      '</button>';
           } else {
-            data +=   '<td class="text-center">' +
-                        '<button class="btn btn-danger" '+
-                          'onclick="delete_role('+val.role_id+')">'+
-                            'Delete Role' +
-                        '</button>' +
-                      '</td>';
+            data +=   '<button class="btn btn-danger" '+
+                        'onclick="delete_role('+val.role_id+','+no_id_unique+')">'+
+                          'Delete Role' +
+                      '</button>';
           }
-                  
+          data += '</td>';       
           data += '</tr>';
-          
+          no_id_unique++;
               // alert(val.divisi_name);
         });
         $('#tbody_edit').append(data);
@@ -107,14 +118,15 @@
     })
   }
 
+
   function append_table() {
-    data = '<tr>' +
+    data = '<tr id="tr_no'+no_id_unique+'" >' +
           '<td>' +
             '<div class="form-group">' +
                 '<select '+ 
                 'class="form-control" '+
-                'id="select_divisi_edit" '+
-                'onchange="conditional_add_role()" '+
+                'id="select_divisi_edit'+no_id_unique+'" '+
+                'onchange="conditional_add_role('+no_id_unique+')" '+
                 'required="">' +
                   @foreach($data['divisi'] as $key=>$val)
                   '<option value="{{$val->id}}">'+
@@ -125,10 +137,10 @@
               '</div>'+
           '</td>' +
           '<td id="edit_inventory_role">' +
-            '<div class="form-group" id="inventory_head_edit">' +
+            '<div class="form-group" id="inventory_head_edit'+no_id_unique+'">' +
                 '<select '+ 
                 'class="form-control" '+
-                'id="inventory_role" '+
+                'id="inventory_role'+no_id_unique+'" '+
                 '>' +
                   @foreach($data['inventory_list'] as $key=>$val)
                   '<option value="{{$val->id}}">'+
@@ -137,10 +149,10 @@
                   @endforeach
                 '</select>'+
               '</div>'+
-              '<div class="form-group" id="pic_list_html">' +
+              '<div class="form-group" id="pic_list_html'+no_id_unique+'">' +
                 '<select '+ 
                 'class="form-control" '+
-                'id="pic_role" '+
+                'id="pic_role'+no_id_unique+'" '+
                 '>' +
                   @foreach($data['pic_list'] as $key=>$val)
                   '<option value="{{$val->id}}">'+
@@ -154,42 +166,42 @@
             '<div class="form-group">' +
               '<select '+ 
               'class="form-control" '+
-              'id="select_posisi_edit" '+
+              'id="select_posisi_edit'+no_id_unique+'" '+
               'required="">' +
               '</select>'+
               '</div>'+
           '</td>' +
-          '<td>' +
+          '<td id="td_button_no'+no_id_unique+'" >' +
             '<button class="btn btn-success text-center"'+
-            'onclick="add_role()">'+
+            'onclick="add_role('+no_id_unique+')">'+
               'Submit Role' +
             '</button>' +
           '</td>' +
         '</tr>';
     $('#tbody_edit').append(data);
-    $('#inventory_head_edit').hide();
-    $('#pic_list_html').hide();
-    no++;
-    // $('#add_role_btn').prop('disabled',true);
+    $('#inventory_head_edit'+no_id_unique).hide();
+    $('#pic_list_html'+no_id_unique).hide();
+    no_id_unique++;
+    $('#add_role_btn').prop('disabled',true);
   }
 
-  function conditional_add_role() {
-    $('#select_posisi_edit').prop('disabled',false);
-    $('#inventory_head_edit').hide();
-    $('#pic_list_html').hide();
-    var divisi_id = $('#select_divisi_edit').val();
-    $('#select_posisi_edit')
+  function conditional_add_role(no_id_unique_param) {
+    $('#select_posisi_edit'+no_id_unique_param).prop('disabled',false);
+    $('#inventory_head_edit'+no_id_unique_param).hide();
+    $('#pic_list_html'+no_id_unique_param).hide();
+    var divisi_id = $('#select_divisi_edit'+no_id_unique_param).val();
+    $('#select_posisi_edit'+no_id_unique_param)
           .find('option')
           .remove()
           .end()
 
     switch(divisi_id) {
       case "1" : 
-        $('#select_posisi_edit').prop('disabled',true);
-        $('#select_posisi_edit').val("0");
+        $('#select_posisi_edit'+no_id_unique_param).prop('disabled',true);
+        $('#select_posisi_edit'+no_id_unique_param).val("0");
       break;
       case "2" :
-        $('#pic_list_html').show(); 
+        $('#pic_list_html'+no_id_unique_param).show(); 
         $.ajax({
           url:  "{{route('get_pic_level')}}",
           method: "POST", 
@@ -197,7 +209,7 @@
           data : JSON.stringify(data),
           success: function(result){
                 $.each(JSON.parse(result), function(key, value) {   
-                 $('#select_posisi_edit')
+                 $('#select_posisi_edit'+no_id_unique_param)
                      .append($("<option></option>")
                                 .attr("value",value.id)
                                 .text(value.pic_level_name));
@@ -213,7 +225,7 @@
           data : JSON.stringify(data),
           success: function(result){
             $.each(JSON.parse(result), function(key, value) {   
-             $('#select_posisi_edit')
+             $('#select_posisi_edit'+no_id_unique_param)
                  .append($("<option></option>")
                             .attr("value",value.id)
                             .text(value.name));
@@ -222,7 +234,7 @@
         });
       break;
       case "4" :
-        $('#inventory_head_edit').show(); 
+        $('#inventory_head_edit'+no_id_unique_param).show(); 
         $.ajax({
           url:  "{{route('get_inventory_level')}}",
           method: "POST", 
@@ -230,7 +242,7 @@
           data : JSON.stringify(data),
           success: function(result){
                 $.each(JSON.parse(result), function(key, value) {   
-                 $('#select_posisi_edit')
+                 $('#select_posisi_edit'+no_id_unique_param)
                      .append($("<option></option>")
                                 .attr("value",value.id)
                                 .text(value.inventory_level_name));
@@ -241,12 +253,12 @@
     }
   }
 
-  function add_role() {
+  function add_role(no_id_unique_param) {
     var uuid          = $('#uuid_edit').text();
-    var divisi_role   = $('#select_divisi_edit').val();
-    var jabatan_role  = $('#select_posisi_edit').val();
-    var inv_role      = $('#inventory_role').val();
-    var pic_role      = $('#pic_role').val();
+    var divisi_role   = $('#select_divisi_edit'+no_id_unique_param).val();
+    var jabatan_role  = $('#select_posisi_edit'+no_id_unique_param).val();
+    var inv_role      = $('#inventory_role'+no_id_unique_param).val();
+    var pic_role      = $('#pic_role'+no_id_unique_param).val();
 
     var data = {
       "uuid":uuid,
@@ -269,7 +281,16 @@
       success: function(result) {
         response = JSON.parse(result);
         if(response.status == true) {
-          window.location = "{{route('add_role_notif')}}";
+          var append = '<button class="btn btn-danger" '+
+                        'onclick="delete_role('+response.role_id+','+no_id_unique_param+')">'+
+                          'Delete Role' +
+                      '</button>';
+            $('#td_button_no'+no_id_unique_param).find('button')
+                              .remove()
+                              .end();
+            $('#td_button_no'+no_id_unique_param).append(append);
+            $('#tr_no'+no_id_unique_param).removeClass('unselectable');
+            $('#add_role_btn').prop('disabled',false);
         } else {
           alert(response.message);
         }
@@ -281,34 +302,87 @@
     });
   }
 
-  function delete_role(role_id) {
-      if (confirm('Apakah anda yakin ingin menghapus Akun ini ?')) {
-        var data = {
-          "role_id":role_id
-        };
+  function restore_role(role_id,no_id_unique_param) {
+    if (confirm('Apakah anda yakin ingin mengaktifkan posisi ini ?')) {
+      var data = {
+        "role_id":role_id
+      };
 
-        $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.ajax({
+        type : "POST",
+        url: " {{ route('restore_role_user') }}",
+        contentType: "application/json",
+        data : JSON.stringify(data),
+        success: function(result) {
+          response = JSON.parse(result);
+          if(response.status == true) {
+            var append = '<button class="btn btn-danger" '+
+                        'onclick="delete_role('+role_id+','+no_id_unique_param+')">'+
+                          'Delete Role' +
+                      '</button>';
+            $('#td_button_no'+no_id_unique_param).find('button')
+                              .remove()
+                              .end();
+            $('#td_button_no'+no_id_unique_param).append(append);
+            $('#tr_no'+no_id_unique_param).removeClass('unselectable');
+          } else {
+            alert(response.message);
           }
-        });
-        $.ajax({
-          type : "POST",
-          url: " {{ route('delete_role_user') }}",
-          contentType: "application/json",
-          data : JSON.stringify(data),
-          success: function(result) {
-            response = JSON.parse(result);
-              if(response.status == true) {
-                window.location = "{{route('delete_role_notif')}}";
-              } else {
-                alert(response.message);
-              }
-          },
-          error: function( jqXhr, textStatus, errorThrown ){
-            console.log( errorThrown );
-          }
-        });
-      }     
+          
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+        }
+      });
     }
+  }
+
+  function delete_role(role_id,no_id_unique_param) {
+    if (confirm('Apakah anda yakin ingin menghapus Akun ini ?')) {
+      var data = {
+        "role_id":role_id
+      };
+
+      $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.ajax({
+        type : "POST",
+        url: " {{ route('delete_role_user') }}",
+        contentType: "application/json",
+        data : JSON.stringify(data),
+        success: function(result) {
+          response = JSON.parse(result);
+            if(response.status == true) {
+              var append = '<button class="btn btn-primary" '+
+                              'onclick="restore_role('+role_id+','+no_id_unique_param+')">'+
+                                'Set Active' +
+                            '</button>';
+              $('#td_button_no'+no_id_unique_param).find('button')
+                                .remove()
+                                .end();
+              $('#td_button_no'+no_id_unique_param).append(append);
+              $('#tr_no'+no_id_unique_param).addClass('unselectable');
+
+              $('#select_divisi_edit'+no_id_unique_param).prop('disabled',true);
+              $('#select_posisi_edit'+no_id_unique_param).prop('disabled',true);
+              $('#inventory_role'+no_id_unique_param).prop('disabled',true);
+              $('#pic_role'+no_id_unique_param).prop('disabled',true);
+            } else {
+              alert(response.message);
+            }
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+        }
+      });
+    }     
+  }
 </script>

@@ -78,13 +78,14 @@ Route::group(['middleware' => ['auth']], function() {
 		
 		Route::get('/admin/delete_user_notif', 'AdminController@delete_user_notif')->name('delete_user_notif');
 		Route::get('/admin/aktif_user_notif', 'AdminController@aktif_user_notif')->name('aktif_user_notif');
-		Route::get('/admin/add_role_notif', 'AdminController@add_role_notif')->name('add_role_notif');
+		
 
 
 		Route::post('/admin/delete_role_user', 'AdminController@delete_role_user')->name('delete_role_user');
+		Route::post('/admin/restore_role_user', 'AdminController@restore_role_user')->name('restore_role_user');
 		Route::post('/admin/add_role_user', 'AdminController@add_role_user')->name('add_role_user');
 
-		Route::get('/admin/delete_role_notif', 'AdminController@delete_role_notif')->name('delete_role_notif');
+		
 		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
 		Route::post('/ajax/get_pic_level', 'AjaxController@get_pic_level')->name('get_pic_level');
@@ -92,6 +93,10 @@ Route::group(['middleware' => ['auth']], function() {
 
 		// Setting 
 		Route::get('/report','SettingController@report')->name('route_report');
+
+		// Disabled since crud role/position using full ajax
+		// Route::get('/admin/delete_role_notif', 'AdminController@delete_role_notif')->name('delete_role_notif');
+		// Route::get('/admin/add_role_notif', 'AdminController@add_role_notif')->name('add_role_notif');
 
 	});
 		

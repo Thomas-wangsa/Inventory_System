@@ -274,10 +274,11 @@ class AdminController extends Controller
         
         switch($request->divisi_role) {
             case "1" :
+                $param_jabatan = "0";
                 $new_user_role = new Users_Role;
                 $new_user_role->user_id = $user->id;
                 $new_user_role->divisi  = $request->divisi_role;
-                $new_user_role->jabatan = "0";
+                $new_user_role->jabatan = $param_jabatan;
                 $new_user_role->save();
             break;
             case "2" :
@@ -289,17 +290,21 @@ class AdminController extends Controller
 
                 $new_pic_role = Pic_Role::firstOrCreate($pic_role_array);
 
+                $param_jabatan = $new_pic_role->id;
+
                 $new_user_role          = new Users_Role;
                 $new_user_role->user_id = $user->id;
                 $new_user_role->divisi  = $request->divisi_role;
-                $new_user_role->jabatan = $new_pic_role->id;
+                $new_user_role->jabatan = $param_jabatan;
                 $new_user_role->save();
             break;
             case "3" :
+                $param_jabatan = $request->jabatan_role;
+
                 $new_user_role = new Users_Role;
                 $new_user_role->user_id = $user->id;
                 $new_user_role->divisi  = $request->divisi_role;
-                $new_user_role->jabatan = $request->jabatan_role;
+                $new_user_role->jabatan = $param_jabatan;
                 $new_user_role->save();
             break;
             case "4" :
@@ -311,10 +316,12 @@ class AdminController extends Controller
 
                 $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
 
+                $param_jabatan = $new_inventory_role->id;
+
                 $new_user_role = new Users_Role;
                 $new_user_role->user_id = $user->id;
                 $new_user_role->divisi  = $request->divisi_role;
-                $new_user_role->jabatan     = $new_inventory_role->id;
+                $new_user_role->jabatan     = $param_jabatan;
                 $new_user_role->save();
             break;
             default :
@@ -323,8 +330,19 @@ class AdminController extends Controller
             break;
         }
 
+        $user_role_id = Users_Role::where('user_id',$user->id)
+                        ->where('divisi',$request->divisi_role)
+                        ->where('jabatan',$param_jabatan)
+                        ->select('users_role.role_id')
+                        ->first();
+        if(count($user_role_id) < 1) {
+            $response['message']  = "level authority error,user role id is not found";
+            return json_encode($response);
+        }
+
         $response['status']   = true;
         $response['message']  = "level authority has been added";
+        $response['role_id']  = $user_role_id->role_id;
         return json_encode($response); 
     }
 
@@ -413,6 +431,21 @@ class AdminController extends Controller
     	return redirect('admin');
     }
 
+
+    function restore_role_user(Request $request) {
+        $status     = false;
+        $message    = "Error : Position of users is available";
+        $status = Users_Role::onlyTrashed()->find($request->role_id)->restore();
+            if($status) {
+                $message = "Position has been restored";
+            }
+        $response = array(
+            "status"=>$status,
+            "message"=>$message
+        );
+
+        return json_encode($response);
+    }
 
     function delete_role_user(Request $request) {
         $user_id = Users_Role::find($request->role_id)->user_id;
