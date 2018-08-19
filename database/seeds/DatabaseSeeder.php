@@ -138,12 +138,24 @@ class DatabaseSeeder extends Seeder
 
         $inventory_list_array = array(
             "inventory_name"=>"cctv",
+            "inventory_detail_name"=>"CCTV Management",
+            "updated_by"=>1
+        );
+
+        $inventory_list_array_2 = array(
+            "inventory_name"=>"ccms",
+            "inventory_detail_name"=>"CCMS BUILDING",
             "updated_by"=>1
         );
 
         $pic_list_array = array(
-            "vendor_name"=>"ccms",
+            "vendor_name"=>"abc",
             "vendor_detail_name"=>"PT ABC INDONESIA",
+            "updated_by"=>1
+        );
+        $pic_list_array_2 = array(
+            "vendor_name"=>"bulkan",
+            "vendor_detail_name"=>"PT BULKAN INDONESIA",
             "updated_by"=>1
         );
 
@@ -151,7 +163,9 @@ class DatabaseSeeder extends Seeder
             Users::firstOrCreate($value); 
             if($key == 0) {
                 Inventory_List::firstOrCreate($inventory_list_array);
+                Inventory_List::firstOrCreate($inventory_list_array_2);
                 PIC_List::firstOrCreate($pic_list_array);
+                PIC_List::firstOrCreate($pic_list_array_2);
             }        
         }
 
@@ -181,7 +195,7 @@ class DatabaseSeeder extends Seeder
 
 
         $pic_level_array = array(
-            array("pic_level_name"=>"staff pic"),
+            array("pic_level_name"=>"staff"),
             array("pic_level_name"=>"sponsor"),
             array("pic_level_name"=>"viewer")
         );

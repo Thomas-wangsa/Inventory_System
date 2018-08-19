@@ -16,6 +16,7 @@ class CreateInventoryListTable extends Migration
         Schema::create('inventory_list', function (Blueprint $table) {
             $table->increments('id');
             $table->string('inventory_name')->unique();
+            $table->string('inventory_detail_name');
             $table->unsignedInteger('updated_by');
             $table->timestamps();
             $table->softDeletes();

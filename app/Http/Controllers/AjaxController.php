@@ -41,6 +41,7 @@ class AjaxController extends Controller
         $roles = Users_Role::where('user_id',$data->id) 
                     ->orderBy('divisi', 'asc')
                     ->orderBy('jabatan', 'asc')
+                    ->withTrashed()
                     ->get();
 
         $response = array();
@@ -55,22 +56,27 @@ class AjaxController extends Controller
                     $response[$key]['jabatan_name'] = "super admin";
                 break;
                 case 2:
-                    $jabatan = Pic_Role::find($value['jabatan']);
+                    $detail_jabatan = Pic_Role::join('pic_list',
+                        'pic_list.id','=','pic_role.pic_list_id')
+                        ->join('pic_level',
+                        'pic_level.id','=','pic_role.pic_level_id')
+                        ->where('pic_role.id',$value['jabatan'])
+                        ->where('pic_role.user_id',$data->id)
+                        ->select('pic_role.id','pic_list.vendor_name','pic_level.pic_level_name')
+                        ->first();
 
-                    if(count($jabatan) < 1 ) {
+                    if(count($detail_jabatan) < 1 ) {
                         $response[$key]['jabatan_name'] = "null";
                     } else {
-                        $inv_name = Pic_List::find($jabatan->pic_list_id);
-                        $pos_name = Pic_level::find($jabatan->pic_level_id);
-
-                        if(count($inv_name) > 0 && count($pos_name) > 0) {
-                            $response[$key]['sub_level']   = $inv_name->vendor_name;
-                            $response[$key]['jabatan_name'] = $pos_name->pic_level_name." ".$inv_name->vendor_name;
+                        if(
+                            $detail_jabatan->vendor_name != null &&
+                            $detail_jabatan->pic_level_name != null
+                        ) {
+                            $response[$key]['sub_level']   = $detail_jabatan->vendor_name;
+                            $response[$key]['jabatan_name'] = $detail_jabatan->pic_level_name." ".$detail_jabatan->vendor_name;
                         } else {
-                            $response[$key]['jabatan_name'] = "null";
-                        }
-
-                        
+                            $response[$key]['jabatan_name'] = "undefined";
+                        }      
                     }
                 break;
                 case 3:
@@ -82,22 +88,27 @@ class AjaxController extends Controller
                     }
                 break;
                 case 4:
-                    $jabatan = Inventory_Role::find($value['jabatan']);
+                    $detail_jabatan = Inventory_Role::join('inventory_list',
+                        'inventory_list.id','=','inventory_role.inventory_list_id')
+                        ->join('inventory_level',
+                        'inventory_level.id','=','inventory_role.inventory_level_id')
+                        ->where('inventory_role.id',$value['jabatan'])
+                        ->where('inventory_role.user_id',$data->id)
+                        ->select('inventory_role.id','inventory_list.inventory_name','inventory_level.inventory_level_name')
+                        ->first();
 
-                    if(count($jabatan) < 1 ) {
+                    if(count($detail_jabatan) < 1 ) {
                         $response[$key]['jabatan_name'] = "null";
                     } else {
-                        $inv_name = Inventory_List::find($jabatan->inventory_list_id);
-                        $pos_name = inventory_level::find($jabatan->inventory_level_id);
-
-                        if(count($inv_name) > 0 && count($pos_name) > 0) {
-                            $response[$key]['sub_level']   = $inv_name->inventory_name;
-                            $response[$key]['jabatan_name'] = $pos_name->inventory_level_name." ".$inv_name->inventory_name;
+                        if(
+                            $detail_jabatan->inventory_name != null &&
+                            $detail_jabatan->inventory_level_name != null
+                        ) {
+                            $response[$key]['sub_level']   = $detail_jabatan->inventory_name;
+                            $response[$key]['jabatan_name'] = $detail_jabatan->inventory_level_name." ".$detail_jabatan->inventory_name;
                         } else {
-                            $response[$key]['jabatan_name'] = "null";
-                        }
-
-                        
+                            $response[$key]['jabatan_name'] = "undefined";
+                        }      
                     }
                 break;
                 

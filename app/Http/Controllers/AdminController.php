@@ -89,8 +89,6 @@ class AdminController extends Controller
 
     public function create_new_users(Request $request) {
         
-        
-
         $request->validate([
             'name'  => 'required|max:50',
             'nik'   => 'required',
@@ -226,7 +224,6 @@ class AdminController extends Controller
     }
 
     public function add_role_user(Request $request) {
-        return $request;
         $response['status']   = false;
         $response['message']  = "";
 
@@ -241,13 +238,26 @@ class AdminController extends Controller
             case "1" :
                 $count_exist = Users_Role::where('user_id',$user->id)
                         ->where('divisi',$request->divisi_role)
+                        ->withTrashed()
                         ->count();
             break;
             case "2" :
+                $count_exist = Pic_Role::where('user_id',$user->id)
+                        ->where('pic_list_id',$request->pic_role)
+                        ->where('pic_level_id',$request->jabatan_role)
+                        ->count();
+            break;
             case "3" :
                 $count_exist = Users_Role::where('user_id',$user->id)
                         ->where('divisi',$request->divisi_role)
                         ->where('jabatan',$request->jabatan_role)
+                        ->withTrashed()
+                        ->count();
+            break;
+            case "4" :
+                $count_exist = Inventory_Role::where('user_id',$user->id)
+                        ->where('inventory_list_id',$request->inv_role)
+                        ->where('inventory_level_id',$request->jabatan_role)
                         ->count();
             break;
             default : 
@@ -271,13 +281,28 @@ class AdminController extends Controller
                 $new_user_role->save();
             break;
             case "2" :
+                $pic_role_array = array(
+                    "user_id"               => $user->id,
+                    "pic_list_id"           => $request->pic_role,
+                    "pic_level_id"          => $request->jabatan_role
+                );
+
+                $new_pic_role = Pic_Role::firstOrCreate($pic_role_array);
+
+                $new_user_role          = new Users_Role;
+                $new_user_role->user_id = $user->id;
+                $new_user_role->divisi  = $request->divisi_role;
+                $new_user_role->jabatan = $new_pic_role->id;
+                $new_user_role->save();
+            break;
+            case "3" :
                 $new_user_role = new Users_Role;
                 $new_user_role->user_id = $user->id;
                 $new_user_role->divisi  = $request->divisi_role;
                 $new_user_role->jabatan = $request->jabatan_role;
                 $new_user_role->save();
             break;
-            case "3" :
+            case "4" :
                 $inventory_role_array = array(
                     "user_id"               => $user->id,
                     "inventory_list_id"     => $request->inv_role,
@@ -293,7 +318,8 @@ class AdminController extends Controller
                 $new_user_role->save();
             break;
             default :
-                $new_user_role->divisi = "0";
+                $response['message']  = "outside of scope level authority";
+                return json_encode($response);
             break;
         }
 

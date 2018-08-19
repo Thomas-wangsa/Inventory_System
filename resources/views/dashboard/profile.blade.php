@@ -96,7 +96,7 @@
 					    </div>
 
 					    <div class="text-center">
-					    <button type="submit" class="btn btn-warning">
+					    <button type="submit" class="btn btn-warning btn-block">
 					    	Update Data
 					    </button>
 						</div>

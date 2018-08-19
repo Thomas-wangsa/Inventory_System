@@ -11,6 +11,12 @@
           </h4>
         </div>
         <div class="modal-body">
+          <button class="btn btn-primary"
+          style="margin-bottom: 5px" 
+          id="add_role_btn"
+          onclick="append_table()""> 
+            Add Role 
+          </button>
         	<table class="table table-bordered">
   			    <thead>
   			      <tr>
@@ -61,33 +67,34 @@
         $.each(response, function (key,val) {
           if(key == 0) {
             $('#uuid_edit').text(val.uuid);
-            data += '<tr>' +
-                  '<td colspan=4 class="text-center">' +
-                    '<button '+
-                    'class="btn btn-primary" ' +
-                    'id="add_role_btn" ' +
-                    'onclick="append_table()" >' +
-                      'ADD ROLE' +
-                     '</button>' +
-                  '</td>' +
-                '</tr>';
           }
-          data += '<tr>' +
-                '<td class="text-center">' +
-                  val.divisi_name +
-                '</td>' +
-                '<td class="text-center">' +
-                  val.sub_level +
-                '</td>' +
-                '<td class="text-center">' +
-                  val.jabatan_name +
-                '</td>' +
-                '<td class="text-center">' +
-                  '<button class="btn btn-danger" onclick="delete_role('+val.role_id+')">'+
-                    'Delete Role' +
-                   '</button>' +
-                '</td>' +
-              '</tr>';
+          data += '<tr>';
+          data +=   '<td class="text-center">' +
+                      val.divisi_name +
+                    '</td>' +
+                    '<td class="text-center">' +
+                      val.sub_level +
+                    '</td>' +
+                    '<td class="text-center">' +
+                      val.jabatan_name +
+                    '</td>';
+          if(val.deleted_at != null) {
+            data +=   '<td class="text-center">' +
+                        '<button class="btn btn-primary" '+
+                          'onclick="active_role('+val.role_id+')">'+
+                            'Set Active' +
+                        '</button>' +
+                      '</td>';
+          } else {
+            data +=   '<td class="text-center">' +
+                        '<button class="btn btn-danger" '+
+                          'onclick="delete_role('+val.role_id+')">'+
+                            'Delete Role' +
+                        '</button>' +
+                      '</td>';
+          }
+                  
+          data += '</tr>';
           
               // alert(val.divisi_name);
         });
@@ -111,7 +118,7 @@
                 'required="">' +
                   @foreach($data['divisi'] as $key=>$val)
                   '<option value="{{$val->id}}">'+
-                    '{{ucfirst($val->name)}}'+
+                    '{{$val->name}}'+
                   '</option>' +
                   @endforeach
                 '</select>'+
@@ -125,7 +132,7 @@
                 '>' +
                   @foreach($data['inventory_list'] as $key=>$val)
                   '<option value="{{$val->id}}">'+
-                    '{{ucfirst($val->inventory_name)}}'+
+                    '{{$val->inventory_name}}'+
                   '</option>' +
                   @endforeach
                 '</select>'+
