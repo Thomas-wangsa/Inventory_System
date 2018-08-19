@@ -16,13 +16,15 @@
           	Add New Position for : <span id="username_in_modal_role"> </span>
           </h4>
         </div>
-        <div class="modal-body">
-          <button class="btn btn-primary"
-          style="margin-bottom: 5px" 
-          id="add_role_btn"
-          onclick="append_table()""> 
-            Add Role 
-          </button>
+        <div class="modal-body" style="padding-top: 0px">
+          <div class="pull-right">
+            <button class="btn btn-primary"
+            style="margin-bottom: 10px" 
+            id="add_role_btn"
+            onclick="append_table()""> 
+              Add new role position
+            </button>
+          </div>
         	<table class="table table-bordered">
   			    <thead>
   			      <tr>
@@ -291,6 +293,11 @@
             $('#td_button_no'+no_id_unique_param).append(append);
             $('#tr_no'+no_id_unique_param).removeClass('unselectable');
             $('#add_role_btn').prop('disabled',false);
+
+            $('#select_divisi_edit'+no_id_unique_param).prop('disabled',true);
+            $('#select_posisi_edit'+no_id_unique_param).prop('disabled',true);
+            $('#inventory_role'+no_id_unique_param).prop('disabled',true);
+            $('#pic_role'+no_id_unique_param).prop('disabled',true);
         } else {
           alert(response.message);
         }
@@ -371,10 +378,7 @@
               $('#td_button_no'+no_id_unique_param).append(append);
               $('#tr_no'+no_id_unique_param).addClass('unselectable');
 
-              $('#select_divisi_edit'+no_id_unique_param).prop('disabled',true);
-              $('#select_posisi_edit'+no_id_unique_param).prop('disabled',true);
-              $('#inventory_role'+no_id_unique_param).prop('disabled',true);
-              $('#pic_role'+no_id_unique_param).prop('disabled',true);
+              
             } else {
               alert(response.message);
             }
