@@ -174,14 +174,14 @@
 			    				@if(Request::get('search_filter') == 'is_deleted')
 			    					<button class="btn btn-primary"
 			    					onclick="aktifkan_user('{{$val->id}}')">
-			    						Aktifkan user
+			    						set active
 			    					</button>
 
 			    				@else
 			    				
 			    					<span class="glyphicon glyphicon-pencil"
 			    					style="color:black;cursor:pointer" 
-			    					title="Edit Data"
+			    					title="Edit User"
 			    					onclick='get_data_user("{{$val->uuid}}")'>
 			    						
 			    					</span> &nbsp;
@@ -189,20 +189,20 @@
 			    					<span onclick='delete_akun("{{ $val->uuid }}")' >
 			    						<span class="glyphicon glyphicon-trash"
 			    						style="color:red;cursor:pointer" 
-			    						title="Hapus Data">
+			    						title="Delete User">
 			    						</span>
 			    					</span> &nbsp;
 			    					
 			    					<span class="glyphicon glyphicon-plus" 
 			    					style="color: green;cursor:pointer" 
-			    					title="Tambah Role" 
-			    					onclick='get_role_user("{{$val->uuid}}")'>
+			    					title="Edit Position User" 
+			    					onclick='get_role_user("{{$val->uuid}}","{{$val->name}}")'>
 			    						
 			    					</span> &nbsp;
 
 			    					<span class="glyphicon glyphicon-cog" 
 			    					style="color: blue;cursor:pointer" 
-			    					title="Tambah Feature"
+			    					title="Edit Feature User"
 			    					data-toggle="modal" data-target="#modal_special">
 			    						
 			    					</span> &nbsp;

@@ -32,6 +32,16 @@ class Users_Role extends Model
                         select name
                         from divisi where id = users_role.divisi
                     )
+                WHEN(users_role.divisi = 2)
+                    THEN (select CONCAT(pl.pic_level_name," ",p_list.vendor_name) 
+                        FROM pic_role pr
+                        INNER JOIN pic_level pl
+                        ON pl.id = pr.pic_level_id
+                        INNER JOIN pic_list p_list
+                        ON p_list.id = pr.pic_list_id
+                        where pr.id = jabatan
+                        and user_id = '.$user_id.' 
+                    )
                 WHEN(users_role.divisi = 3)
                     THEN (
                         select CONCAT(name," ","(Access)") 
@@ -45,6 +55,7 @@ class Users_Role extends Model
                         INNER JOIN inventory_list i_list
                         ON i_list.id = ir.inventory_list_id
                         where ir.id = jabatan 
+                        and user_id = '.$user_id.'
                     )
                 ELSE "NULL"
                 END AS nama_jabatan')

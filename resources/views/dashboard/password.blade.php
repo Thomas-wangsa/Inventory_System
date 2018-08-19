@@ -1,7 +1,7 @@
 @extends('layouts.template')
 
 @section('content')
-	<div style="padding: 0 30px;margin-top: 40px">
+	<div style="padding: 0 80px;margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
 	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -34,23 +34,23 @@
 					<form action="{{route('post_password')}}" method="POST">
 						{{ csrf_field() }}
 					    <div class="form-group">
-					      <label for="pwd">Password Lama:</label>
+					      <label for="pwd">Old Password : </label>
 					      <input type="password" class="form-control" id="pwd"  name="now_password" required="">
 					    </div>
 
 					    <div class="form-group">
-					      <label for="pwd">Password Baru:</label>
+					      <label for="pwd">New Password :</label>
 					      <input type="password" class="form-control" id="pwd"  name="password" required="">
 					    </div>
 
 					    <div class="form-group">
-					      <label for="pwd">Ketik Ulang Password :</label>
+					      <label for="pwd">Confirm New Password :</label>
 					      <input type="password" class="form-control" id="pwd"  name="password_confirmation" required="">
 					    </div>
 
 					    <div class="text-center">
-					    <button type="submit" class="btn btn-warning">
-					    	UBAH PASSWORD
+					    <button type="submit" class="btn btn-primary btn-block">
+					    	Update Password
 					    </button>
 						</div>
 				  	</form>

@@ -50,6 +50,7 @@
     </div> <!-- end .flash-message -->
 
     <div class="menu_wrap_body">
+        @if(in_array(1,$user_divisi))
         <div class="menu_block">
             <div class="sub_menu_block">
                 <div class="icon_block">
@@ -60,7 +61,8 @@
                 </div>                
             </div>
         </div>
-
+        @endif
+        @if(in_array(1,$user_divisi))
         <div class="menu_block">
             <div class="sub_menu_block">
                 <div class="icon_block">
@@ -71,7 +73,8 @@
                 </div>                
             </div>
         </div>
-
+        @endif
+        @if(in_array(1,$user_divisi))
         <div class="menu_block">
             <div class="sub_menu_block">
                 <div class="icon_block">
@@ -82,7 +85,8 @@
                 </div>                
             </div>
         </div>
-
+        @endif
+        @if(in_array(1,$user_divisi))
         <div class="menu_block">
             <div class="sub_menu_block">
                 <div class="icon_block">
@@ -93,7 +97,8 @@
                 </div>                
             </div>
         </div>
-
+        @endif
+        @if(in_array(1,$user_divisi))
         <div class="menu_block">
             <div class="sub_menu_block">
                 <div class="icon_block">
@@ -105,8 +110,8 @@
                 </div>                
             </div>
         </div>
-
-        <div class="clearfix"> </div>
+        @endif
+        <div class="clearfix"> </div>   
     </div>
 
     

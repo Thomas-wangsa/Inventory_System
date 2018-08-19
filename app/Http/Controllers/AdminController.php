@@ -226,6 +226,7 @@ class AdminController extends Controller
     }
 
     public function add_role_user(Request $request) {
+        return $request;
         $response['status']   = false;
         $response['message']  = "";
 

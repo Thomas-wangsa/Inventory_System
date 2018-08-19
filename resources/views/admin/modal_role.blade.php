@@ -7,7 +7,7 @@
         <div class="modal-header" style="border-bottom:0px">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">
-          	Add New Position
+          	Add New Position for : <span id="username_in_modal_role"> </span>
           </h4>
         </div>
         <div class="modal-body">
@@ -36,7 +36,10 @@
 
 <script type="text/javascript">
 
-  function get_role_user(uuid) {
+  var no = 1;
+
+  function get_role_user(uuid,username) {
+    $('#username_in_modal_role').html(username);
     var data = {
         "uuid":uuid
       };
@@ -64,7 +67,7 @@
                     'class="btn btn-primary" ' +
                     'id="add_role_btn" ' +
                     'onclick="append_table()" >' +
-                      'TAMBAH ROLE' +
+                      'ADD ROLE' +
                      '</button>' +
                   '</td>' +
                 '</tr>';
@@ -127,6 +130,18 @@
                   @endforeach
                 '</select>'+
               '</div>'+
+              '<div class="form-group" id="pic_list_html">' +
+                '<select '+ 
+                'class="form-control" '+
+                'id="pic_role" '+
+                '>' +
+                  @foreach($data['pic_list'] as $key=>$val)
+                  '<option value="{{$val->id}}">'+
+                    '{{$val->vendor_name}}'+
+                  '</option>' +
+                  @endforeach
+                '</select>'+
+              '</div>'+
           '</td>' +
           '<td>' +
             '<div class="form-group">' +
@@ -146,12 +161,15 @@
         '</tr>';
     $('#tbody_edit').append(data);
     $('#inventory_head_edit').hide();
-    $('#add_role_btn').prop('disabled',true);
+    $('#pic_list_html').hide();
+    no++;
+    // $('#add_role_btn').prop('disabled',true);
   }
 
   function conditional_add_role() {
     $('#select_posisi_edit').prop('disabled',false);
     $('#inventory_head_edit').hide();
+    $('#pic_list_html').hide();
     var divisi_id = $('#select_divisi_edit').val();
     $('#select_posisi_edit')
           .find('option')
@@ -163,7 +181,24 @@
         $('#select_posisi_edit').prop('disabled',true);
         $('#select_posisi_edit').val("0");
       break;
-      case "2" : 
+      case "2" :
+        $('#pic_list_html').show(); 
+        $.ajax({
+          url:  "{{route('get_pic_level')}}",
+          method: "POST", 
+          contentType : "application/json; charset=utf-8",
+          data : JSON.stringify(data),
+          success: function(result){
+                $.each(JSON.parse(result), function(key, value) {   
+                 $('#select_posisi_edit')
+                     .append($("<option></option>")
+                                .attr("value",value.id)
+                                .text(value.pic_level_name));
+            });
+          }
+        });
+        break;
+      case "3" : 
         $.ajax({
           url:  "{{route('get_akses_role')}}",
           method: "POST", 
@@ -179,7 +214,7 @@
           }
         });
       break;
-      case "3" :
+      case "4" :
         $('#inventory_head_edit').show(); 
         $.ajax({
           url:  "{{route('get_inventory_level')}}",
@@ -204,12 +239,14 @@
     var divisi_role   = $('#select_divisi_edit').val();
     var jabatan_role  = $('#select_posisi_edit').val();
     var inv_role      = $('#inventory_role').val();
+    var pic_role      = $('#pic_role').val();
 
     var data = {
       "uuid":uuid,
       "divisi_role":divisi_role,
       "jabatan_role":jabatan_role,
-      "inv_role":inv_role
+      "inv_role":inv_role,
+      "pic_role":pic_role
     };
 
     $.ajaxSetup({

@@ -35,7 +35,7 @@
 				/>
 
 				<div class="" style="margin-top: 7px">
-					<b> Unggah Tema Gambar </b>
+					<b> Upload Profile image </b>
 
 					<form action="{{route('ganti_foto')}}" 
 					method="POST" enctype="multipart/form-data" 
@@ -47,7 +47,7 @@
 						    <input type="file" class="form-control" name="background" required>
 						</div>
 					  	<button type="submit" class="btn btn-primary btn-block">
-					  		Ganti Foto
+					  		Updated Profile
 					  	</button>
 					</form>
 				</div>
@@ -61,18 +61,27 @@
 					<form action="{{route('ganti_profile')}}" method="POST">
 						{{ csrf_field() }}
 					    <div class="form-group">
-					      <label for="pwd"> Nama Lengkap :</label>
+					      <label for="pwd"> Name :</label>
 					      <input type="text" class="form-control" id="pwd"  name="nama_lengkap" value="{{$user_detail->name}}" required="">
 					    </div>
 
 
 
 					    <div class="form-group">
-					      <label for="pwd">Posisi:</label>
+					      <label for="pwd">Position:</label>
 
 					      @foreach($user_jabatan as $key=>$val)
 					      <input type="text" class="form-control" id="pwd"  name="posisi" value="{{$val->nama_jabatan}}" disabled="">
-					      <br/>
+					      	<?php if(	count($user_jabatan) > 1
+					      				&& $key != (count($user_jabatan)-1) 
+					      			) 
+					      		{ 
+					      	?>
+					      		<br/>
+					      	<?php
+					      		 } 
+					      	?>
+					      
 					      @endforeach
 					    </div>
 
@@ -82,13 +91,13 @@
 					    </div>
 
 					    <div class="form-group">
-					      <label for="pwd"> Nomor Handphone :</label>
+					      <label for="pwd"> Mobile :</label>
 					      <input type="text" class="form-control" id="pwd"  name="phone" value="{{$user_detail->mobile}}" required="">
 					    </div>
 
 					    <div class="text-center">
 					    <button type="submit" class="btn btn-warning">
-					    	UBAH DATA
+					    	Update Data
 					    </button>
 						</div>
 

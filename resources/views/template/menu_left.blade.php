@@ -127,7 +127,7 @@
     			<a href="{{route('password')}}"> 
 	    			<span class="glyphicon glyphicon-wrench">
 	    			</span> &nbsp;
-	    			Change Password
+	    			Edit Password
     			</a>
     		</div>
     	</div>
