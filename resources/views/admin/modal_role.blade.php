@@ -7,16 +7,16 @@
         <div class="modal-header" style="border-bottom:0px">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">
-          	Tambah Role
+          	Add New Position
           </h4>
         </div>
         <div class="modal-body">
         	<table class="table table-bordered">
   			    <thead>
   			      <tr>
-  			        <th class="text-center"> Divisi </th>
-                <th class="text-center"> Inventory </th>
-                <th class="text-center"> Jabatan </th>
+  			        <th class="text-center"> Level Authority </th>
+                <th class="text-center"> Sub Level Authority </th>
+                <th class="text-center"> Position </th>
   			        <th class="text-center"> Action </th>
   			      </tr>
   			    </thead>
@@ -74,7 +74,7 @@
                   val.divisi_name +
                 '</td>' +
                 '<td class="text-center">' +
-                  val.inventory +
+                  val.sub_level +
                 '</td>' +
                 '<td class="text-center">' +
                   val.jabatan_name +

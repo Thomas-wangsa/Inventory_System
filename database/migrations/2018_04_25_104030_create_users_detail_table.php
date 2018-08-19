@@ -16,7 +16,9 @@ class CreateUsersDetailTable extends Migration
         Schema::create('users_detail', function (Blueprint $table) {
             $table->unsignedInteger('user_id');
             $table->uuid('uuid'); 
+            $table->string('nik')->nullable();
             $table->string('foto')->nullable();
+            $table->string('company')->nullable();
             $table->string('email_2')->nullable();
             $table->timestamps();
 

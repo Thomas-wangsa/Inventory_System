@@ -59,16 +59,17 @@ class AdminController extends Controller
         
         $users_id   = $users->get()->pluck('id');
         $users      = Users::join('users_detail','users_detail.user_id','=','users.id')
-                ->select('users.id','users.name','users.email','users.mobile',
-            'users_detail.foto','users_detail.uuid')
+                ->select('users.id','users.name','users.email'
+                    ,'users.mobile','users_detail.nik','users_detail.foto',
+                    'users_detail.company','users_detail.uuid')
                 ->whereIn('users.id', $users_id)
                 ->withTrashed();
         if($request->search_order != null) {
                 $users = $users->orderBy($request->search_order, 'asc');
                 //dd($users->get());
             }
-        $users = $users->paginate(5);
 
+        $users = $users->paginate(5);
 
         if(!in_array($this->restrict,\Request::get('user_divisi'))) {
             $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur admin');
@@ -87,17 +88,36 @@ class AdminController extends Controller
     }
 
     public function create_new_users(Request $request) {
+        
+        
 
-    	if (!preg_match("/^[a-zA-Z ]*$/",$request->staff_nama)) {
+        $request->validate([
+            'name'  => 'required|max:50',
+            'nik'   => 'required',
+            'email' => 'required',
+            'mobile' => 'required',
+            'divisi' => 'required',
+            'Personal_Identity' => 'required|image|mimes:jpeg,png,jpg|max:550',
+            'company' => 'required|max:50',
+        ]);
+
+    	if (!preg_match("/^[a-zA-Z ]*$/",$request->name)) {
     		$request->session()->flash('alert-danger', 'Only letters and white space allowed!');
     		return redirect('admin');
 		}
 
-		if (!preg_match("/^[0-9]*$/",$request->staff_mobile)) {
+		if (!preg_match("/^[0-9]*$/",$request->mobile)) {
 			$request->session()->flash('alert-danger', 'Only numbers allowed!');
     		return redirect('admin'); 
 		}
 
+
+        if (!$request->hasFile('Personal_Identity')) {
+            $request->session()->flash('alert-danger', 'Personal_Identity is required'); 
+            return redirect('admin');            
+        }
+
+                        
         DB::beginTransaction();
         try {
             $generated_password = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);
@@ -106,27 +126,36 @@ class AdminController extends Controller
             
 
             $array_users = array(
-                "name"      => strtolower($request->staff_nama),
-                "email"     => strtolower($request->staff_email),
-                "mobile"    => strtolower($request->staff_mobile),
+                "name"      => strtolower($request->name),
+                "email"     => strtolower($request->email),
+                "mobile"    => strtolower($request->mobile),
                 "password"  => bcrypt($define_password)
             );
 
-
             $new_users = Users::firstOrCreate($array_users);
+
+
+
+            $image      = $request->file('Personal_Identity');
+            $img_path   = '/images/user/';
+            $img_name   = $this->faker->uuid().".".$image->getClientOriginalExtension();
+            $destinationPath = public_path($img_path);
+            $image->move($destinationPath, $img_name);
 
             $user_detail    = new Users_Detail;
             $user_detail->user_id     = $new_users->id;
-            $user_detail->email_2     = strtolower($request->staff_email2);
+            $user_detail->nik         = $request->nik;
+            $user_detail->email_2     = strtolower($request->email_second);
             $user_detail->uuid        = $this->faker->uuid();
-            $user_detail->foto        = "/images/template/default.png";
+            $user_detail->foto        = $img_path.$img_name;
+            $user_detail->company     = $request->company;
         
-    		switch($request->select_divisi) {
+    		switch($request->divisi) {
     			
     			case 1 :
     				$user_role      = new Users_Role;
             		$user_role->user_id 	= $new_users->id;
-            		$user_role->divisi 		= $request->select_divisi;
+            		$user_role->divisi 		= $request->divisi;
                     
     			break;
     			
@@ -135,7 +164,7 @@ class AdminController extends Controller
                     $pic_role_array = array(
                         "user_id"              => $new_users->id,
                         "pic_list_id"     => $request->pic_list,
-                        "pic_level_id"    => $request->select_posisi
+                        "pic_level_id"    => $request->position
                     );
 
                     $new_pic_role = Pic_Role::firstOrCreate($pic_role_array);
@@ -143,22 +172,22 @@ class AdminController extends Controller
 
                     $user_role      = new Users_Role;
                     $user_role->user_id     = $new_users->id;
-                    $user_role->divisi      = $request->select_divisi;
+                    $user_role->divisi      = $request->divisi;
                     $user_role->jabatan     = $new_pic_role->id;
                 break;
 
     			case 3 :
                     $user_role      = new Users_Role;
                     $user_role->user_id     = $new_users->id;
-                    $user_role->divisi      = $request->select_divisi;
-                    $user_role->jabatan     = $request->select_posisi;
+                    $user_role->divisi      = $request->divisi;
+                    $user_role->jabatan     = $request->position;
     			break;
 
     			case 4 : 
     				$inventory_role_array = array(
                         "user_id"              => $new_users->id,
     					"inventory_list_id"		=> $request->inventory_list,
-    					"inventory_level_id"	=> $request->select_posisi
+    					"inventory_level_id"	=> $request->position
     				);
 
     				$new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
@@ -166,12 +195,12 @@ class AdminController extends Controller
 
                     $user_role      = new Users_Role;
                     $user_role->user_id     = $new_users->id;
-                    $user_role->divisi      = $request->select_divisi;
+                    $user_role->divisi      = $request->divisi;
                     $user_role->jabatan     = $new_inventory_role->id;
     			break;
 
     			default : 
-    				$request->session()->flash('alert-danger', 'Please contact your administrator !');
+    				$request->session()->flash('alert-danger', 'Please contact your administrator !,Failed in Transaction Data Process');
         			return redirect('admin');
         		break;
     		}

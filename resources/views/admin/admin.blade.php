@@ -4,7 +4,7 @@
 
 <style type="text/css">
 	th,td {text-align: center}
-	.table>tbody>tr>td {vertical-align: middle}
+	.table>tbody>tr>td,.table>thead>tr>th {vertical-align: middle}
 </style>
 	<div class="flash-message center">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
@@ -18,12 +18,23 @@
       @endif
     @endforeach
   	</div> <!-- end .flash-message -->
-	<div style="padding: 0 30px;margin-top: 40px">
+
+  	@if ($errors->any())
+		<div class="alert alert-danger">
+		    <ul>
+		        @foreach ($errors->all() as $error)
+		            <li>{{ $error }}</li>
+		        @endforeach
+		    </ul>
+		</div>
+	@endif
+
+	<div style="padding: 0 10px;margin-top: 15px">
 		<div>
 			
 			<div class="pull-left">
 				<form class="form-inline" action="{{route('route_admin')}}">
-				    
+	
 				    <input type="hidden" name="search" value="on"> </input>
 				    <div class="form-group">
 					    <div class="input-group">
@@ -110,15 +121,29 @@
 			      <tr>
 			      	<th> No </th>
 			        <th> Name </th>
+			        <th> NIK </th>
 			        <th> Email </th>
 			        <th> Mobile </th>
-			        <th> Identitas Diri </th>
+			        <th> 
+			        	Personal <br/>
+			        	Identity 
+			        </th>
+			        <th>
+			        	Level <br/>
+			        	Authority
+			        </th>
+			        <th> 
+			        	Position
+			        </th>
+			        <th> 
+			        	Company
+			        </th>
 			        <th> Action </th>
 			      </tr>
 			    </thead>
 			    <tbody>
 			    	@if (count($data['users']) == 0 ) 
-			    	<td colspan="6" class="text-center"> Kosong </td>
+			    	<td colspan="10" class="text-center"> Kosong </td>
 			    	@else 
 			    		@foreach($data['users'] as $key=>$val)
 			    		<tr> 
@@ -127,12 +152,21 @@
 			    				* $data['users']->perpage() + $key + 1 }}
 			    			</td>
 			    			<td> {{ ucfirst($val->name) }} </td>
+			    			<td> {{ ucfirst($val->nik) }} </td>
 			    			<td> {{ $val->email }} </td>
 			    			<td> {{ $val->mobile }} </td>
 			    			<td>
 			    				<a href="{{$val->foto}}" target="_blank" >
 			    					<img src="{{$val->foto}}"/ width="80px"> 
 			    				</a>
+			    			</td>
+			    			<td> 
+
+			    			</td>
+			    			<td> 
+			    			</td>
+			    			<td> 
+			    				{{$val->company}}
 			    			</td>
 			    			<td>
 			    				<div class="text-center" > 

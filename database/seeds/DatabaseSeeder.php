@@ -52,8 +52,75 @@ class DatabaseSeeder extends Seeder
             array(
                 "name"=>"superman",
                 "email"=>"admin@gmail.com",
-                "password"=>bcrypt(123456)
-            )
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber,
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"staff.pic@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"sponsor.pic@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"viewer.pic@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"staff.pendaftaran@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"staff.pencetakan@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"manager.pendaftaran.pencetakan@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"staff.pengaktifan@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"manager.pengaktifan@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"staff.inventoryA@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"head.inventoryA@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"viewer.inventoryA@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
         );
 
         $inventory_list_array = array(
@@ -91,7 +158,8 @@ class DatabaseSeeder extends Seeder
 
         $inventory_level_array = array(
             array("inventory_level_name"=>"staff"),
-            array("inventory_level_name"=>"head")
+            array("inventory_level_name"=>"head"),
+            array("inventory_level_name"=>"viewer")
         );
 
         foreach ($inventory_level_array as $key => $value) {
@@ -101,7 +169,8 @@ class DatabaseSeeder extends Seeder
 
         $pic_level_array = array(
             array("pic_level_name"=>"staff pic"),
-            array("pic_level_name"=>"sponsor")
+            array("pic_level_name"=>"sponsor"),
+            array("pic_level_name"=>"viewer")
         );
 
         foreach ($pic_level_array as $key => $value) {
@@ -118,6 +187,9 @@ class DatabaseSeeder extends Seeder
                     $jabatan = 0;
                     break;
                 case 2:
+                    $divisi = 2;
+                    $jabatan = 1;
+                    break;
                 case 3: 
                     $divisi     = 2;
                     $jabatan    = 2;
@@ -127,29 +199,37 @@ class DatabaseSeeder extends Seeder
                     $jabatan    = 3;
                     break;
                 case 5:
-                    $divisi     = 2;
-                    $jabatan    = 4;
-                    break;
-                case 6:
                     $divisi     = 3;
                     $jabatan    = 1;
                     break;
+                case 6:
+                    $divisi     = 3;
+                    $jabatan    = 2;
+                    break;
                 case 7:
                     $divisi     = 3;
-                    $jabatan    = 2;
+                    $jabatan    = 3;
                     break;
                 case 8:
-                    $divisi     = 1;
-                    $jabatan    = 0;
+                    $divisi     = 3;
+                    $jabatan    = 4;
                     break;
                 case 9:
-                    $divisi     = 1;
-                    $jabatan    = 0;
+                    $divisi     = 3;
+                    $jabatan    = 5;
                     break;
                 case 10:
-                    $divisi     = 3;
+                    $divisi     = 4;
+                    $jabatan    = 1;
+                    break;
+                case 11:
+                    $divisi     = 4;
                     $jabatan    = 2;
                     break;
+                case 12:
+                    $divisi     = 4;
+                    $jabatan    = 3;
+                    break;    
                 default:
                     $divisi     = 1;
                     $jabatan    = 0;
@@ -160,7 +240,9 @@ class DatabaseSeeder extends Seeder
             $data_user_detail = array(
                 "user_id"   => $value->id,
                 "uuid"      => $faker->uuid,
-                "foto"      => "images/template/default.png"
+                "foto"      => "images/template/default.png",
+                "nik"       => $faker->phoneNumber,
+                "company"   => $faker->company
             );
             Users_Detail::firstOrCreate($data_user_detail);
 

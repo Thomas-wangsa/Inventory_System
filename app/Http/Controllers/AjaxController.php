@@ -8,6 +8,8 @@ use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
 use App\Http\Models\Divisi;
 use App\Http\Models\Pic_Level;
+use App\Http\Models\Pic_List;
+use App\Http\Models\Pic_Role;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_List;
@@ -46,21 +48,40 @@ class AjaxController extends Controller
             $response[$key] = $value;
             $response[$key]['uuid']        = $data->uuid;
             $response[$key]['divisi_name'] = Divisi::find($value['divisi'])->name;
-            $response[$key]['inventory']   = "-";
+            $response[$key]['sub_level']   = "-";
 
             switch ($value['divisi']) {
                 case 1:
                     $response[$key]['jabatan_name'] = "super admin";
-                    break;
+                break;
                 case 2:
+                    $jabatan = Pic_Role::find($value['jabatan']);
+
+                    if(count($jabatan) < 1 ) {
+                        $response[$key]['jabatan_name'] = "null";
+                    } else {
+                        $inv_name = Pic_List::find($jabatan->pic_list_id);
+                        $pos_name = Pic_level::find($jabatan->pic_level_id);
+
+                        if(count($inv_name) > 0 && count($pos_name) > 0) {
+                            $response[$key]['sub_level']   = $inv_name->vendor_name;
+                            $response[$key]['jabatan_name'] = $pos_name->pic_level_name." ".$inv_name->vendor_name;
+                        } else {
+                            $response[$key]['jabatan_name'] = "null";
+                        }
+
+                        
+                    }
+                break;
+                case 3:
                     $jabatan = Akses_Role::find($value['jabatan']);
                     if(count($jabatan) < 1 ) {
                         $response[$key]['jabatan_name'] = "null";
                     } else {
                         $response[$key]['jabatan_name'] = $jabatan->name;
                     }
-                    break;
-                case 3:
+                break;
+                case 4:
                     $jabatan = Inventory_Role::find($value['jabatan']);
 
                     if(count($jabatan) < 1 ) {
@@ -70,7 +91,7 @@ class AjaxController extends Controller
                         $pos_name = inventory_level::find($jabatan->inventory_level_id);
 
                         if(count($inv_name) > 0 && count($pos_name) > 0) {
-                            $response[$key]['inventory']   = $inv_name->inventory_name;
+                            $response[$key]['sub_level']   = $inv_name->inventory_name;
                             $response[$key]['jabatan_name'] = $pos_name->inventory_level_name." ".$inv_name->inventory_name;
                         } else {
                             $response[$key]['jabatan_name'] = "null";
@@ -78,7 +99,7 @@ class AjaxController extends Controller
 
                         
                     }
-                    break;
+                break;
                 
                 default:
                     $response[$key]['jabatan_name'] = "Null";
