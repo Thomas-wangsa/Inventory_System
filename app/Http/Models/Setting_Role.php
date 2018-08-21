@@ -3,10 +3,12 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Setting_Data extends Model
-{
-    protected $table = "setting_data";
+class Setting_Role extends Model
+{	
+	use SoftDeletes;
+    protected $table = "setting_role";
 
     public function scopeGetListById($query,$user_id) {
         return 

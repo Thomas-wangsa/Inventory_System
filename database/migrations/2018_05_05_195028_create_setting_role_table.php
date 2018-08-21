@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSettingDataTable extends Migration
+class CreateSettingRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateSettingDataTable extends Migration
      */
     public function up()
     {
-        Schema::create('setting_data', function (Blueprint $table) {
+        Schema::create('setting_role', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('setting_list_id');
             $table->boolean('status')->default(1);
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');
+            $table->softDeletes();
             $table->timestamps();
 
 
@@ -48,6 +49,6 @@ class CreateSettingDataTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('setting_data');
+        Schema::dropIfExists('setting_role');
     }
 }

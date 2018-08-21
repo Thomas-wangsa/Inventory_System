@@ -34,6 +34,11 @@ class AdminController extends Controller
 
 
     public function index(Request $request) {
+        if(!in_array($this->restrict,\Request::get('user_divisi'))) {
+            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur admin');
+            return redirect('home');
+        }
+        
         $users = Users::where('id','!=',Auth::user()->id);
         
         $deleted = false;
@@ -70,18 +75,22 @@ class AdminController extends Controller
             }
 
         $users = $users->paginate(5);
-
-        if(!in_array($this->restrict,\Request::get('user_divisi'))) {
-            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur admin');
-            return redirect('home');
+        $level_authorization = array();
+        
+        foreach ($users as $key => $value) {
+            $user_role = Users_Role::GetAllRoleById($value->id)->orderBy('divisi')->get();
+            $level_authorization[$key] = $user_role;        
         }
+        
+
 
     	$data	= array(
     		'users'				=> $users,
     		'divisi'			=> Divisi::all(),
     		'inventory_list'	=> Inventory_List::all(),
             'pic_list'          => Pic_List::all(),
-            'setting_list'      => Setting_List::all()
+            'setting_list'      => Setting_List::all(),
+            'level_authorization'=> $level_authorization
     	);
 
     	return view('admin/admin',compact('data'));

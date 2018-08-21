@@ -120,22 +120,12 @@
 			<table class="table table-bordered table-responsive">
 			    <thead>
 			      <tr>
-			      	<th> No </th>
 			        <th> Name </th>
-			        <th> NIK </th>
-			        <th> Email </th>
-			        <th> Mobile </th>
-			        <th> 
-			        	Personal <br/>
-			        	Identity 
+			        
+			        <th>
+			        	Level <br/>
+			        	Authority
 			        </th>
-			        <th style="min-width: 120px"> 
-			        	Position
-			        </th>
-			        <th> 
-			        	Company
-			        </th>
-			        <th style="min-width: 120px"> Action </th>
 			      </tr>
 			    </thead>
 			    <tbody>
@@ -143,78 +133,27 @@
 			    	<td colspan="10" class="text-center"> Kosong </td>
 			    	@else 
 			    		@foreach($data['users'] as $key=>$val)
+			    		<?php 
+			    		$count_rowspan = count($data['level_authorization'][$key]);
+			    		?>
 			    		<tr> 
-			    			<td> 
-			    				{{ ($data['users']->currentpage()-1) 
-			    				* $data['users']->perpage() + $key + 1 }}
+			    			<td rowspan="{{$count_rowspan}}"> 
+			    				{{ ucfirst($val->name) }} 
 			    			</td>
-			    			<td> {{ ucfirst($val->name) }} </td>
-			    			<td> {{ ucfirst($val->nik) }} </td>
-			    			<td> {{ $val->email }} </td>
-			    			<td> {{ $val->mobile }} </td>
-			    			<td>
-			    				<a href="{{$val->foto}}" target="_blank" >
-			    					<img src="{{$val->foto}}"/ width="80px"> 
-			    				</a>
-			    			</td>
-			    			<td style="padding-top: 10px"> 
-			    				<?php 
-			    				foreach($data['level_authorization'][$key] as $key_level=>$val_level) :
-			    				?>	
-			    					@if($val_level->divisi == 1) 
-			    						super admin
-			    					@else 
-			    						{{$val_level->nama_jabatan}}
-			    					@endif
-			    					<br/><br/>
 
-			    				<?php 
-			    				endforeach;
-			    				?>
-			    			</td>
-			    			<td> 
-			    				{{$val->company}}
-			    			</td>
-			    			<td>
-			    				<div class="text-center" > 
-			    				@if(Request::get('search_filter') == 'is_deleted')
-			    					<button class="btn btn-primary"
-			    					onclick="aktifkan_user('{{$val->id}}')">
-			    						set active
-			    					</button>
+			    			<?php foreach($data['level_authorization'][$key] as $key_row=>$val_row) : ?>
 
-			    				@else
-			    				
-			    					<span class="glyphicon glyphicon-pencil"
-			    					style="color:black;cursor:pointer" 
-			    					title="Edit User"
-			    					onclick='get_data_user("{{$val->uuid}}")'>
-			    						
-			    					</span> &nbsp;
+			    				<?php if($key_row != 0) : ?>
+			    					<tr>
+			    				<?php endif; ?>
 
-			    					<span onclick='delete_akun("{{ $val->uuid }}")' >
-			    						<span class="glyphicon glyphicon-trash"
-			    						style="color:red;cursor:pointer" 
-			    						title="Delete User">
-			    						</span>
-			    					</span> &nbsp;
-			    					
-			    					<span class="glyphicon glyphicon-plus" 
-			    					style="color: green;cursor:pointer" 
-			    					title="Edit Position User" 
-			    					onclick='get_role_user("{{$val->uuid}}","{{$val->name}}")'>
-			    						
-			    					</span> &nbsp;
+			    				<td> {{$val_row['divisi_name']}} </td>
 
-			    					<span class="glyphicon glyphicon-cog" 
-			    					style="color: blue;cursor:pointer" 
-			    					title="Edit Feature User"
-			    					data-toggle="modal" data-target="#modal_special">
-			    						
-			    					</span> &nbsp;
-			    				@endif
-			    				</div>
-			    			</td>
+			    				<?php if($key_row != $count_rowspan-1) : ?>
+			    					</tr>
+			    				<?php endif; ?>
+
+			    			<?php endforeach; ?>
 			    		</tr>
 			    		@endforeach
 			    	@endif

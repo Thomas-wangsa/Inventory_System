@@ -35,8 +35,8 @@ class CheckCredentials
 
 
 
-        $this->user_jabatan = Users_Role::GetAllRoleById($id)->get();
-
+        $this->user_jabatan = Users_Role::GetAllRoleById($id)->orderBy('divisi')->get();
+        //dd($this->user_jabatan);
 
         // Share
         view()->share('user_detail', $this->user_detail);
