@@ -209,7 +209,7 @@
 			    					<span class="glyphicon glyphicon-cog" 
 			    					style="color: blue;cursor:pointer" 
 			    					title="Edit Feature User"
-			    					data-toggle="modal" data-target="#modal_special">
+			    					onclick='get_features_user("{{$val->uuid}}","{{$val->name}}")'>
 			    						
 			    					</span> &nbsp;
 			    				@endif

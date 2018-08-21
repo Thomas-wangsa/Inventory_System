@@ -5,11 +5,10 @@ namespace App\Http\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Setting_Role extends Model
+class Setting_Data extends Model
 {	
 	use SoftDeletes;
     protected $table = "setting_role";
-     protected $primaryKey = 'id';
 
     public function scopeGetListById($query,$user_id) {
         return 

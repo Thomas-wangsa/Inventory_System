@@ -13,6 +13,7 @@ use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Akses_Data;
+use App\Http\Models\Setting_Role;
 use App\Http\Models\Setting_List;
 use Illuminate\Support\Facades\DB;
 
@@ -355,6 +356,40 @@ class AdminController extends Controller
         return json_encode($response); 
     }
 
+
+    public function add_role_special_user(Request $request) {
+        $response['status']   = false;
+        $response['message']  = "";
+
+        $user = Users::GetDetailByUUID($request->uuid)->first();
+        if(count($user) < 1) {
+            $response['message']  = "User data is not found";
+            return json_encode($response);
+        }
+
+        $count_exist = Setting_Role::where('user_id',$user->id)
+            ->where('setting_list_id',$request->feature_role)
+            ->withTrashed()->count();
+
+        if($count_exist > 0) {
+            $response['message']  = "Failed,features already exist";
+            return json_encode($response);
+        }
+
+        $setting_role = new Setting_Role;
+        $setting_role->user_id = $user->id;
+        $setting_role->setting_list_id  = $request->feature_role ;
+        $setting_role->created_by = Auth::user()->id;
+        $setting_role->updated_by= Auth::user()->id;
+        $setting_role->save();
+
+
+        $response['status']   = true;
+        $response['message']  = "new features has been added";
+        $response['role_id']  = $setting_role->id;
+        return json_encode($response); 
+    }
+
     public function edit_user(Request $request) {
 
         $request->validate([
@@ -456,6 +491,22 @@ class AdminController extends Controller
         return json_encode($response);
     }
 
+
+    function restore_role_special_user(Request $request) {
+        $status     = false;
+        $message    = "Error : Position of features is available";
+        $status = Setting_Role::onlyTrashed()->find($request->role_id)->restore();
+            if($status) {
+                $message = "Position has been restored";
+            }
+        $response = array(
+            "status"=>$status,
+            "message"=>$message
+        );
+
+        return json_encode($response);
+    }
+
     function delete_role_user(Request $request) {
         $user_id = Users_Role::find($request->role_id)->user_id;
 
@@ -473,6 +524,19 @@ class AdminController extends Controller
         $response = array(
             "status"=>$status,
             "message"=>$message
+        );
+
+        return json_encode($response);
+    }
+
+
+    function delete_role_special_user(Request $request) {
+        $status = Setting_Role::find($request->role_id)->delete();
+
+        
+        $response = array(
+            "status"=>$status
+            //"message"=>$message
         );
 
         return json_encode($response);

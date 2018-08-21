@@ -13,6 +13,8 @@ use App\Http\Models\Pic_Role;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_List;
+use App\Http\Models\Setting_List;
+use App\Http\Models\Setting_Role;
 
 class AjaxController extends Controller
 {
@@ -34,6 +36,26 @@ class AjaxController extends Controller
     public function get_data_user(Request $request) {
     	$data = Users::GetDetailByUUID($request->uuid)->first();
     	return json_encode($data);
+    }
+
+    public function get_special_level(Request $request) {
+        $response = array();
+        $response['status'] = false;
+
+        $data = Users::GetDetailByUUID($request->uuid)->first();
+        if(count($data) < 1) {
+            $response['message'] = "User ID not found";
+        }
+
+        $response['data'] = Setting_Role::join('setting_list','setting_list.id','=','setting_role.setting_list_id')
+        ->where('setting_role.user_id',$data->id)
+        ->select('setting_list.setting_name','setting_role.id AS setting_role_id','setting_role.deleted_at AS setting_role_deleted')
+        ->withTrashed()
+        ->get();
+
+        $response['status'] = true;
+
+        return json_encode($response);
     }
 
     public function get_role_user(Request $request) {
@@ -133,4 +155,6 @@ class AjaxController extends Controller
 
         return json_encode($response);
     }
+
+
 }

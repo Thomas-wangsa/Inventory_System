@@ -32,13 +32,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 	Route::group(['middleware' => ['get_credentials']], function() { 
 		Route::get('/home', 'HomeController@index')->name('home');
-	});
-	
-
-
-	Route::group(['middleware' => ['get_credentials']], function() { 
-		Route::get('/old_home', 'HomeController@old_index')->name('old_home');
-		Route::get('/notify', 'HomeController@notify')->name('route_notify');
 		// Profile Features
 		Route::get('/profile', 'HomeController@profile')->name('profile');
 		Route::post('/ganti_foto', 'HomeController@ganti_foto')->name('ganti_foto');
@@ -46,6 +39,17 @@ Route::group(['middleware' => ['auth']], function() {
 		// Password Features
 		Route::get('/password', 'HomeController@password')->name('password');
 		Route::post('/password', 'HomeController@post_password')->name('post_password');
+
+
+
+	});
+	
+
+
+	Route::group(['middleware' => ['get_credentials']], function() { 
+		Route::get('/old_home', 'HomeController@old_index')->name('old_home');
+		Route::get('/notify', 'HomeController@notify')->name('route_notify');
+		
 
 
 		// Akses
@@ -82,13 +86,18 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 		Route::post('/admin/delete_role_user', 'AdminController@delete_role_user')->name('delete_role_user');
+		Route::post('/admin/delete_role_special_user', 'AdminController@delete_role_special_user')->name('delete_role_special_user');
+
 		Route::post('/admin/restore_role_user', 'AdminController@restore_role_user')->name('restore_role_user');
+		Route::post('/admin/restore_role_special_user', 'AdminController@restore_role_special_user')->name('restore_role_special_user');
 		Route::post('/admin/add_role_user', 'AdminController@add_role_user')->name('add_role_user');
+		Route::post('/admin/add_role_special_user', 'AdminController@add_role_special_user')->name('add_role_special_user');
 
 		
 		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
 		Route::post('/ajax/get_pic_level', 'AjaxController@get_pic_level')->name('get_pic_level');
+		Route::post('/ajax/get_special_level', 'AjaxController@get_special_level')->name('get_special_level');
 
 
 		// Setting 

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Inventory_List;
-use App\Http\Models\Setting_Data;
+use App\Http\Models\Setting_Role;
 use App\Http\Models\Design;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Inventory_Data;
