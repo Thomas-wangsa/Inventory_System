@@ -40,7 +40,9 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::get('/password', 'HomeController@password')->name('password');
 		Route::post('/password', 'HomeController@post_password')->name('post_password');
 
-
+		Route::get('/setting','SettingController@index')->name('route_setting');
+		Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
+		Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
 
 	});
 	
@@ -140,9 +142,7 @@ Route::group(['middleware' => ['auth']], function() {
 	
 	
 
-	Route::get('/setting','SettingController@index')->name('route_setting');
-	Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
-	Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
+	
 	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
 	
 

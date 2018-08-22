@@ -79,7 +79,7 @@
 				    				selected
 				    			@endif
 				    			> 
-				        		Nama 
+				        		Name 
 				        	</option>
 				        	<option value="email"
 				        		@if('email' == Request::get('search_order')) 
@@ -93,7 +93,7 @@
 				    				selected
 				    			@endif
 				        		> 
-				        		Handphone 
+				        		Mobile 
 				        	</option>
 				      	</select>
 				  	</div>

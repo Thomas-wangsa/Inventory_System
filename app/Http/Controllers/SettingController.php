@@ -16,7 +16,6 @@ use Carbon\Carbon;
 
 class SettingController extends Controller {
 
-    protected $restrict_divisi = 2;
     protected $restrict_admin = 1;
     public function __construct() {
         // $this->middleware(function ($request, $next) {
@@ -35,29 +34,34 @@ class SettingController extends Controller {
     }
 
     public function report(Request $request) {
+        $restrict_divisi = 2;
+        $restrict_setting = 5;
         $user_divisi = \Request::get('user_divisi');
+        $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->restrict_divisi,$user_divisi)
-            ||
             in_array($this->restrict_admin,$user_divisi)
+            ||
+            in_array($restrict_divisi,$user_divisi)
+            || 
+            in_array($restrict_setting,$user_setting)
             ) 
         {
             $allow = true;
         }
 
         if(!$allow) {
-            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur report');
+            $request->session()->flash('alert-danger', 'Sorry you dont have access to report features');
             return redirect('home');
         }
 
 
         // get the current time
-        $current = date('Y-m-d H:i:s');
+        $current = date('Y-m-d');
         // add 30 days to the current time
         $last_date = Carbon::now()->addDays(-7);
 
-        
+        dd($current);
 
         $data['pending_daftar'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',1)->count();
         $data['pending_cetak'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',2)->count();
@@ -71,58 +75,31 @@ class SettingController extends Controller {
     }
 
 
-    public function show_inventory(Request $request) {
-        $setting_list_id = 1;
-        if($this->credentials->divisi == 1) {
-            $access = true;
-        } else {
-            $check = Setting_Data::where('user_id',$this->credentials->id)
-            ->where('setting_list_id',$setting_list_id)
-            ->first();
-
-            if(count($check) > 0) {
-                $access = true;
-            } else {
-                $request->session()->flash('alert-danger', 'Maaf anda tidak memiliki akses untuk fitur ini');
-                return redirect('setting'); 
-            }
-        }
-
-        if($access) {
-            $data = array(
-            'credentials' => $this->credentials
-            );
-            return view('setting/setting_inventory',compact("data"));
-        } else {
-            $request->session()->flash('alert-danger', 'Please contact your administrator');
-            return redirect('setting');
-        }
-    }
-
-    public function add_inventory(Request $request) {
-    	Inventory_List::firstOrCreate([
-    		"inventory_name"=>strtolower($request->inventory),
-    		"updated_by"=>$request->updated_by
-    	]);
-        $request->session()->flash('alert-success', 'Inventory list telah di tambahkan');
-    	return redirect('inventory');
-    }
-
 
     public function show_background(Request $request) {
-        $request->session()->flash('alert-danger', 'Maaf fitur edit background akan ada di tanggal 10 Agustus');
+        $restrict_setting = 1;
+        $user_divisi = \Request::get('user_divisi');
+        $user_setting = \Request::get('user_setting');
+        $allow = false;
+        if(
+            in_array($this->restrict_admin,$user_divisi)
+            || 
+            in_array($restrict_setting,$user_setting)
+            ) 
+        {
+            $allow = true;
+        }
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Sorry you dont have access to report features');
             return redirect('home');
-        if($this->credentials->divisi == 4 || in_array('1',$this->setting)) {
-            $data = array(
-            'credentials'   => $this->credentials,
-            'background'    => Design::first(),
-            'setting'       => $this->setting
-            );
-            return view('setting/show_background',compact("data"));
-        } else {
-            $request->session()->flash('alert-danger', 'Maaf tidak ada akses untuk fitur setting');
-        return redirect('home');
-        }        
+        }
+
+        $data = array(
+            'background' => Design::first()
+        );
+
+        return view('setting/show_background',compact("data"));     
     }
 
     public function update_background(Request $request) {
