@@ -99,7 +99,7 @@
 
                 @if($data['insert_access_data'])
 				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_all">
-					Daftar Akses
+					Add New Access Card
 				</button>
 				@endif
 			</div>

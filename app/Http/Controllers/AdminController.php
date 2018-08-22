@@ -26,7 +26,7 @@ class AdminController extends Controller
 {	
 	protected $restrict = 1;
     protected $faker;
-    protected $env;
+    protected $env = "production";
 
 	public function __construct() {
         $this->faker    = Faker::create();
@@ -228,7 +228,7 @@ class AdminController extends Controller
             return redirect('admin');
         }
 
-		$new_users->notify(new New_User($generated_password));
+		$new_users->notify(new New_User($generated_password,$new_users->email));
 		$request->session()->flash('alert-success', 'new user has been created');
 		return redirect('admin');
     }

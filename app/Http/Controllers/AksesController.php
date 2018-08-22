@@ -104,6 +104,7 @@ class AksesController extends Controller
             'data'         => $akses_data->paginate(5),
             'status_akses'  => Status_Akses::all(),
             'pic_list'      => Pic_List::all(),
+            'faker'         => $this->faker,
             'insert_access_data'       => $insert_access_data
         );
 

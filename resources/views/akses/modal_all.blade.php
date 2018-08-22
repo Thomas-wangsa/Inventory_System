@@ -122,9 +122,9 @@
             </div>
 
             <div class="form-group">
-              <label for="staff_divisi"> No. ID Card :</label>
+              <label for="staff_divisi"> No. Access Card :</label>
               <input type="text" class="form-control" 
-              id="nama" name="no_card" value=""
+              id="nama" name="no_access_card" value=""
               placeholder="Optional" required="">
             </div>
 
@@ -160,11 +160,13 @@
             </div>
 
   				  <div class="form-group">
-  				    <label for="staff_nama"> Identitas Diri :</label>
+  				    <label for="staff_nama"> ID Card :</label>
   				    <input type="file" class="form-control" id="nama" name="foto" required="">
   				  </div>
 
-				  <button type="submit" class="btn btn-block btn-warning">Tambah Pengguna </button>
+				  <button type="submit" class="btn btn-block btn-warning">
+            Request Access Card 
+          </button>
 				</form>
         	</div>
         <div class="modal-footer">
