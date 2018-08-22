@@ -153,9 +153,8 @@
 			    			<td> {{ $val->email }} </td>
 			    			<td> {{ $val->mobile }} </td>
 			    			<td>
-			    				<a href="{{$val->foto}}" target="_blank" >
-			    					<img src="{{$val->foto}}"/ width="80px"> 
-			    				</a>
+			    				<img src="{{$val->foto}}"/ width="80px" 
+			    				onclick="show_foto('{{$val->foto}}')"> 
 			    			</td>
 			    			<td style="padding-top: 10px"> 
 			    				<?php 
@@ -237,13 +236,17 @@
 	</div>
 
 	@include('admin.modal')
+	@include('admin.modal_image')
 	@include('admin.modal_edit')
 	@include('admin.modal_role')
 	@include('admin.modal_special')
 
 <script type="text/javascript">
 
-	
+	function show_foto(location) {
+		$('#dinamic_image').attr("src",location);
+		$('#modal_image').modal('show');
+	}	
 
     function delete_akun(uuid) {
     	$(document).ready(function(){

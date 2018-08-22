@@ -18,6 +18,8 @@ class CreateAksesDataTable extends Migration
             $table->string('type');
             $table->string('name');
             $table->string('email');
+            $table->string('nik')->nullable();
+            $table->unsignedInteger('pic_list_id')->nullable();
             $table->unsignedInteger('status_data')->default(1);
             $table->unsignedInteger('status_akses');
             $table->unsignedInteger('created_by');
@@ -31,6 +33,7 @@ class CreateAksesDataTable extends Migration
             $table->string('po')->nullable();
             $table->string('foto')->nullable();
             $table->uuid('uuid'); 
+            $table->text('additional_note')->nullable();
             $table->text('comment')->nullable();
             $table->timestamps();
 

@@ -29,12 +29,14 @@
 		</div> <!-- end .flash-message -->
 
 		<div>
+			@if(in_array(1,$user_divisi) || in_array(3,$user_setting))
 			<div class="pull-left">
-				<div class="btn btn-primary">
+				<div class="btn btn-primary" data-toggle="modal" data-target="#modal_self">
 					Add New Vendor List 
 				</div>
 			</div>
 			<div class="clearfix" style="margin-bottom: 10px"> </div>
+			@endif
 			<div class="pull-left">
 			 	<form class="form-inline" action="{{route('akses')}}">
 				    
@@ -45,7 +47,7 @@
 				    		</i>
 				    	</span>
 				    	<input type="text" class="form-control" 
-				    	name="search_nama" placeholder="Cari Nama..."
+				    	name="search_nama" placeholder="Find Access..."
 				    	value="{{Request::get('search_nama')}}">
 				  	</div>
 					
@@ -72,7 +74,7 @@
 				    				selected
 				    			@endif
 				    			> 
-				        		Nama 
+				        		Name
 				        	</option>
 				        	<option value="email"
 				        		@if('email' == Request::get('search_order')) 
@@ -84,7 +86,7 @@
 				      	</select>
 				  	</div>
 				  
-				  	<button type="submit" class="btn btn-info"> Cari </button>
+				  	<button type="submit" class="btn btn-info"> Find </button>
 				  	<button type="reset" 
 				  	class="btn btn-danger"
 				  	onclick="reset_filter()"> 
@@ -94,20 +96,9 @@
 			</div>
 			<div class="pull-right">
 
-				@if(in_array(1,$data['jabatan']))
-				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_self">
-                    Daftar
-                </button>
-                @endif
-                
-                @if(in_array(1,$data['jabatan']))
-                <button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_vendor">
-                    Daftar Vendor
-                </button>
-                @endif 
 
-                @if(in_array(2,$data['jabatan']))
-				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_staff">
+                @if($data['insert_access_data'])
+				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_all">
 					Daftar Akses
 				</button>
 				@endif
@@ -266,12 +257,13 @@
 		</div>
 	</div>
   	
-  	@include('akses.modal_self')
-    @include('akses.modal_vendor')
-	@include('akses.modal_all');
+	@include('akses.modal_all')
+	@include('akses.modal_self')
+
 
 <script type="text/javascript">
 	
+
 	function approve(status,uuid) {
 		var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
 		var url_status = "&next_status=";

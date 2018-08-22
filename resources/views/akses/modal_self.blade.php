@@ -7,20 +7,29 @@
         <div class="modal-header" style="border-bottom:0px">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title text-center">
-          	Daftar Akses
+          	Add New Pic Category
           </h4>
         </div>
         <div class="modal-body">
-	  			<form method="POST" action="{{ route('post_pendaftaran_pic') }}">
+	  			<form method="POST" action="{{ route('new_pic_list') }}">
 				  {{ csrf_field() }}
 				  <input type="hidden" name="type_daftar" value="self">
 				  <div class="form-group">
-				    <label for="staff_nama"> Nomor Kartu :</label>
-				    <input type="text" class="form-control" id="nama" name="no_kartu" value="482-5j2onwrqt2">
+				    <label for="staff_nama"> Pic category :</label>
+				    <input type="text" class="form-control" id="nama" required="" 
+            name="vendor_name" value="" placeholder="ex : abc">
 				  </div>
+          <div class="form-group">
+            <label for="staff_nama"> Pic category detail name :</label>
+            <input type="text" class="form-control" id="nama" required="" 
+            name="vendor_detail_name" value="" placeholder="PT. ALFA BRAVO CHARLIE ">
+          </div>
+
 				  
 				 
-				  <button type="submit" class="btn btn-block btn-warning">Daftar Akses </button>
+				  <button type="submit" class="btn btn-block btn-warning">
+            REGISTER PIC CATEGORY 
+          </button>
 				</form>
         	</div>
         <div class="modal-footer">

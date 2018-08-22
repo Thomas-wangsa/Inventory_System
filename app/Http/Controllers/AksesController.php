@@ -9,6 +9,9 @@ use Illuminate\Routing\UrlGenerator;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Users_Detail;
+use App\Http\Models\Pic_List;
+use App\Http\Models\Pic_Role;
+use App\Http\Models\Pic_Level;
 use App\Http\Models\Status_Akses;
 
 use App\Http\Models\Divisi;
@@ -30,7 +33,7 @@ class AksesController extends Controller
     protected $url;
     protected $credentials;
     protected $faker;
-    protected $restrict = 2;
+    
     protected $admin    = 1;
     protected $send_email_control = true;
     protected $indosat_path;
@@ -50,57 +53,36 @@ class AksesController extends Controller
     }
 
     public function index(Request $request) {
-
+        $insert_access_data = false;
+        $restrict_divisi_pic = 2;
+        $restrict_divisi_access = 3;
         $user_divisi = \Request::get('user_divisi');
         $allow = false;
         if(
-            in_array($this->restrict,$user_divisi)
-            ||
             in_array($this->admin,$user_divisi)
+            ||
+            in_array($restrict_divisi_pic,$user_divisi)
+            || 
+            in_array($restrict_divisi_access,$user_divisi) 
             ) 
         {
             $allow = true;
         }
 
         if(!$allow) {
-            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur akses');
+            $request->session()->flash('alert-danger', 'Sorry you dont have authority to access page');
             return redirect('home');
         }
 
 
-        $jabatan = Users_Role::where('user_id',Auth::user()->id)
-                ->where('divisi',$this->restrict)->select('jabatan')->get()->pluck('jabatan');
-
-        $status_data = array();
-        foreach($jabatan as $key=>$val) {
-
-            switch($val) {
-                case 1 : 
-                    array_push($status_data,1);
-                break;
-                case 2 : 
-                    array_push($status_data,1,2);
-                break;
-                case 3 : 
-                    array_push($status_data,2,3);
-                break;
-                case 4 : 
-                    array_push($status_data,3,4);
-                break;
-                default :
-                    unset($status_data);
-                break;
-            }
-        } 
-
-        //array_push($status_data,4,5,6,7);
-        //$akses_data = Akses_Data::GetSpecific($status_data);
-        $akses_data   = Akses_Data::join('status_akses','akses_data.status_akses','=','status_akses.id')
-            ->join('users','users.id','=','akses_data.updated_by')
-            //->whereIn('akses_data.status_akses',$status_data)
-            ->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','users.name AS username');
+        // for add new acess 
+        if(in_array($this->admin,$user_divisi)) {
+            $insert_access_data = true;
+        }
 
 
+
+        $akses_data = Akses_Data::join('status_akses','status_akses.id','=','akses_data.status_akses');
         if($request->search == "on") {
             if($request->search_nama != null) {
                 $akses_data = $akses_data->where('akses_data.name','like',$request->search_nama."%");
@@ -121,13 +103,72 @@ class AksesController extends Controller
         $data = array(
             'data'         => $akses_data->paginate(5),
             'status_akses'  => Status_Akses::all(),
-            'user'          => Auth::user(),
-            'jabatan'       => $jabatan->toArray()
-            //'execute'       => $execute
+            'pic_list'      => Pic_List::all(),
+            'insert_access_data'       => $insert_access_data
         );
 
 
         return view('akses/index',compact('data'));
+        // dd($user_divisi);
+        // $jabatan = Users_Role::where('user_id',Auth::user()->id)
+        //         ->where('divisi',$this->restrict)->select('jabatan')->get()->pluck('jabatan');
+
+        // $status_data = array();
+        // foreach($jabatan as $key=>$val) {
+
+        //     switch($val) {
+        //         case 1 : 
+        //             array_push($status_data,1);
+        //         break;
+        //         case 2 : 
+        //             array_push($status_data,1,2);
+        //         break;
+        //         case 3 : 
+        //             array_push($status_data,2,3);
+        //         break;
+        //         case 4 : 
+        //             array_push($status_data,3,4);
+        //         break;
+        //         default :
+        //             unset($status_data);
+        //         break;
+        //     }
+        // } 
+
+        // //array_push($status_data,4,5,6,7);
+        // //$akses_data = Akses_Data::GetSpecific($status_data);
+        // $akses_data   = Akses_Data::join('status_akses','akses_data.status_akses','=','status_akses.id')
+        //     ->join('users','users.id','=','akses_data.updated_by')
+        //     //->whereIn('akses_data.status_akses',$status_data)
+        //     ->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','users.name AS username');
+
+
+        
+    }
+
+
+    public function new_pic_list(Request $request) {
+        $vendor_name = strtolower($request->vendor_name);
+        $vendor_detail_name = $request->vendor_detail_name;
+
+        $exist = Pic_List::where('vendor_name',$vendor_name)->count();
+
+        if($exist > 0) {
+            $request->session()->flash('alert-danger', 'Register Failed,Pic Category already exist');
+            return redirect($this->redirectTo);
+        } else {
+            $pic_list = new Pic_List;
+            $pic_list->vendor_name          = $vendor_name;
+            $pic_list->vendor_detail_name   = $vendor_detail_name;
+            $pic_list->updated_by           = Auth::user()->id;
+
+            if($pic_list->save()) {
+                $request->session()->flash('alert-success', 'Register Pic category success');
+            } else {
+                $request->session()->flash('alert-danger', 'Register Failed,Please contact your administrator');
+            }
+        }
+        return redirect($this->redirectTo);
     }
 
     public function pendaftaran_pic(Request $request) {

@@ -1,5 +1,21 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <script>
+  $( function() {
+    $("#start_card_new" ).datepicker({
+      dateFormat: 'yy-mm-dd' ,
+      showButtonPanel: true
+    });
+    $("#end_card_new" ).datepicker({
+      dateFormat: 'yy-mm-dd' ,
+      showButtonPanel: true
+    });
+  });
+  </script>
 <!-- Modal -->
-  <div class="modal fade" id="modal_staff" role="dialog">
+  <div class="modal fade" id="modal_all" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -69,47 +85,73 @@
 	  			<form method="POST" enctype="multipart/form-data"
 	  			action="{{ route('post_pendaftaran_akses') }}">
 	  			  {{ csrf_field() }}
-
-
 	  			  <input type="hidden" name="type_daftar" value="vendor">
+
 	  			  <div class="form-group">
-  				    <label for="staff_nama"> Nama Lengkap :</label>
+  				    <label for="staff_nama"> Full Name :</label>
   				    <input type="text" class="form-control" id="nama" 
-              			name="vendor_nama" value=""
-              		placeholder="isikan nama" required="">
+              			name="name" value=""
+              		placeholder="full name is required" required="">
 				    </div>
 				  
   				  <div class="form-group">
   				    <label for="email">Email :</label>
   				    <input type="email" class="form-control" 
-  				    id="email" name="vendor_email" value=""
-              		placeholder="isikan email" required="">
+  				        id="email" name="email" value=""
+              		placeholder="email is required" required="">
   				  </div>
 
+            <div class="form-group">
+              <label for="staff_nama"> NIK :</label>
+              <input type="text" class="form-control" id="nama" 
+                    name="nik" value=""
+                  placeholder="NIK is required" required="">
+            </div>
+
+            <div class="form-group">
+              <label for="staff_nama"> Pic Category :</label>
+              <select class="form-control" name="pic_list_id" required="">
+                  <option value=""> select pic category </option>
+                  @foreach($data['pic_list'] as $key=>$val)
+                    <option value="{{$val->id}}"> 
+                      {{$val->vendor_name}} ({{$val->vendor_detail_name}})
+                    </option>
+                  @endforeach
+
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="staff_divisi"> No. ID Card :</label>
+              <input type="text" class="form-control" 
+              id="nama" name="no_card" value=""
+              placeholder="Optional" required="">
+            </div>
+
   				  <div class="form-group">
-  				    <label for="staff_nama"> Aktifkan Kartu :</label>
+  				    <label for="staff_nama"> Start Active Card :</label>
   				    <input type="text" class="form-control" 
-  				    id="start_card_new" name="start_card" 
-              		placeholder="tanggal mulai kartu aktif" required="">
+  				    id="start_card_new" name="date_start" 
+              		placeholder="example : 2018-09-01" required="">
   				  </div>
 
 	            <div class="form-group">
-	              <label for="staff_nama"> Matikan Kartu :</label>
+	              <label for="staff_nama"> End Active Card :</label>
 	              <input type="text" class="form-control" 
-	              id="end_card_new" name="end_card"
-	              placeholder="tanggal berakhir kartu aktif" required="">
+	              id="end_card_new" name="date_end"
+	              placeholder="example : 2019-09-01" required="">
 	            </div>
 
   				  <div class="form-group">
-  				    <label for="staff_nama"> Akses Lantai </label>
+  				    <label for="staff_nama"> Floor Activities </label>
   				    <input type="text" class="form-control" id="nama" name="floor"
-              placeholder="input nomor lantai" required="">
+              placeholder="example : lantai 11,21" required="">
   				  </div>
 
   				  <div class="form-group">
-  				    <label for="staff_nama"> Pekerjaan </label>
-  				    <input type="text" class="form-control" id="nama" name="pekerjaan"
-              placeholder="pekerjaan yang dilakukan" required="">
+  				    <label for="staff_nama"> Additional Note : </label>
+  				    <input type="text" class="form-control" id="nama" name="additional_note"
+              placeholder="optional for add any information ">
   				  </div>
 
             <div class="form-group">
@@ -121,37 +163,7 @@
   				    <label for="staff_nama"> Identitas Diri :</label>
   				    <input type="file" class="form-control" id="nama" name="foto" required="">
   				  </div>
-	  			  <!-- <input type="hidden" name="type_daftar" value="vendor">
-	  			  <div class="form-group">
-				    <label for="staff_nama"> Nama Lengkap :</label>
-				    <input type="text" class="form-control" id="nama" name="vendor_nama" value="Vendor">
-				  </div>
-				  
-				  <div class="form-group">
-				    <label for="email">Email :</label>
-				    <input type="email" class="form-control" id="email" name="vendor_email" value="vendor@gmail.com">
-				  </div>
 
-				  <div class="form-group">
-				    <label for="staff_nama"> Masa Berlaku :</label>
-				    <input type="text" class="form-control" id="nama" name="expiry" placeholder="yyyy-mm-dd">
-				  </div>
-
-				  <div class="form-group">
-				    <label for="staff_nama"> Akses Lantai </label>
-				    <input type="text" class="form-control" id="nama" name="lantai">
-				  </div>
-
-				  <div class="form-group">
-				    <label for="staff_nama"> Pekerjaan </label>
-				    <input type="text" class="form-control" id="nama" name="pekerjaan">
-				  </div>
-
-				  <div class="form-group">
-				    <label for="staff_nama"> Foto :</label>
-				    <input type="file" class="form-control" id="nama" name="staff_foto">
-				  </div> -->
-				 
 				  <button type="submit" class="btn btn-block btn-warning">Tambah Pengguna </button>
 				</form>
         	</div>

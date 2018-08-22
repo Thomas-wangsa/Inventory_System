@@ -56,6 +56,10 @@ Route::group(['middleware' => ['auth']], function() {
 
 		// Akses
 		Route::get('/akses', 'AksesController@index')->name('akses');
+
+		Route::post('/akses/new_pic_list', 'AksesController@new_pic_list')->name('new_pic_list');
+
+
 		Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');
 		Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
 		Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');

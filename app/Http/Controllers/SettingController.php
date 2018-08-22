@@ -51,7 +51,7 @@ class SettingController extends Controller {
         }
 
         if(!$allow) {
-            $request->session()->flash('alert-danger', 'Sorry you dont have access to report features');
+            $request->session()->flash('alert-danger', 'Sorry you dont have authority to report features');
             return redirect('home');
         }
 
@@ -61,7 +61,6 @@ class SettingController extends Controller {
         // add 30 days to the current time
         $last_date = Carbon::now()->addDays(-7);
 
-        dd($current);
 
         $data['pending_daftar'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',1)->count();
         $data['pending_cetak'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',2)->count();
