@@ -390,7 +390,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $full_data = array();
-        for($i=0;$i<=200;$i++) {
+        for($i=0;$i<=400;$i++) {
 
             $type_daftar = "vendor";
 

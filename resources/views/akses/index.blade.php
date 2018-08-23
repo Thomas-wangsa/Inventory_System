@@ -5,6 +5,9 @@
 	th,td {text-align: center}
 	.table>tbody>tr>td,.table>thead>tr>th {vertical-align: middle}
 	.scrollme {overflow-y: auto;}
+	.conditional{
+		display: none
+	}
 </style>
 	<div style="padding: 0 30px;margin-top: 40px">
 		@if ($errors->any())
@@ -116,9 +119,10 @@
 			      <tr>
 			      	<th> No </th>
 			      	<th> Name </th>
-			        <th> Email </th>
-			        <th> NIK </th>
-			        <th> No <br/> Access Card </th>
+			        <th class="conditional"> Email </th>
+			        <th class="conditional"> NIK </th>
+			        <th > No  Access Card </th>
+			        <th> Additional Note </th>
 			        <th> PO/ID. Card </th>
 			        <th> Status </th>
 			        <th> Action </th>
@@ -137,28 +141,51 @@
 	                    		{{ ($data['data']->currentpage()-1) 
 			    				* $data['data']->perpage() + $key + 1 }}
 	                    	</td>
-	                    	<td> 
+	                    	<td class="conditional"> 
 	                    		{{$val->name}}
 	                    	</td>
-	                    	<td> 
+	                    	<td class="conditional"> 
 	                    		{{$val->email}}
 	                    	</td>
 	                    	<td> 
 	                    		{{$val->nik}}
 	                    	</td>
-	                    	<td> 
+	                    	<td style="min-width: 120px"> 
 	                    		@if($val->no_access_card == null)
 	                    			<div style="color:red">
 	                    				New Access Card
 	                    			</div> 
 	                    		@else 
 	                    			{{$val->no_access_card}}
-	                    		@endif	                    		
+	                    		@endif
+	                    		<br/> <br/>
+	                    		<span class="text-primary">
+	                    			Period : <br/>
+	                    			{{$val->date_start}} <br/>
+	                    			- <br/>
+	                    			{{$val->date_end}}
+
+	                    		</span>	                    		
+	                    	</td>
+	                    	<td style="min-width: 200px"> 
+	                    		created by : {{$val->created_by_name}}
+	                    		<br/>
+	                    		@if($val->type_daftar == "vendor") 
+	                    			category : {{$val->type_daftar}}
+	                    			<br/>
+	                    			{{$val->vendor_name}} ({{$val->vendor_detail_name}})
+	                    			<br/>
+	                    			floor : {{$val->floor}}
+	                    		@else ($val->type_daftar == "vendor")
+
+	                    		@endif
+	                    		<br/> </br>
+	                    		{{$val->additional_note}}
 	                    	</td>
 	                    	<td> 
-	                    		<img src="{{$val->po}}" /  width="100px">
+	                    		<img src="{{$val->po}}" /  width="150px">
 	                    		<br/> <br/>
-	                    		<img src="{{$val->foto}}" /  width="100px">
+	                    		<img src="{{$val->foto}}" /  width="150px">
 	                    	</td>
 	                    	<td> 
 	                    		<div style="color:{{$val->status_color}}"> 
@@ -296,7 +323,7 @@
 	                    		@case("11")
 	                    		@case("12")
 	                    		@case("13")
-	                    			Access card is rejected by : {{$val->updated_by}}
+	                    			Access card is rejected
 	                    			<br/> <br/>
 	                    			comment : {{$val->comment}}
 	                    			@break;

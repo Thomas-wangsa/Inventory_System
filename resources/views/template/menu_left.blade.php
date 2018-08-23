@@ -31,6 +31,11 @@
 		text-decoration: none;
 		color :black;
 	}
+
+    .left_menu_active {
+        font-weight: bold;
+        color:#337ab7!important;
+    }
 </style>
 
 <div class="wrapper_left">

@@ -143,7 +143,7 @@
 	            </div>
 
   				  <div class="form-group">
-  				    <label for="staff_nama"> Floor Activities </label>
+  				    <label for="staff_nama"> Floor Activities : </label>
   				    <input type="text" class="form-control" 
               id="nama" name="floor" value="Lantai 12" 
               placeholder="example : lantai 11,21" required="">
@@ -166,7 +166,7 @@
   				    <input type="file" class="form-control" id="nama" name="foto" required="">
   				  </div>
 
-				  <button type="submit" class="btn btn-block btn-warning">
+				  <button type="submit" class="btn btn-block btn-primary">
             Request Access Card 
           </button>
 				</form>

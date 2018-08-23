@@ -26,7 +26,7 @@
         /*background-color: tomato;*/
     }
 
-    .icon_block a {
+    .menu_block a {
         text-decoration: none;
         color:gray;
     }
@@ -57,50 +57,50 @@
             in_array(3,$user_divisi)
             )
         <div class="menu_block">
-            <div class="sub_menu_block">
-                <div class="icon_block">
-                    <a href="{{route('akses')}}">
+            <a href="{{route('akses')}}">
+                <div class="sub_menu_block">
+                    <div class="icon_block">
                         <img src="{{ asset('images/logo/id-card.png')}}" / >
                         <h4> Access Page </h4> 
-                    </a>
-                </div>                
-            </div>
+                    </div>                
+                </div>
+            </a>
         </div>
         @endif
         @if(in_array(1,$user_divisi))
         <div class="menu_block">
-            <div class="sub_menu_block">
-                <div class="icon_block">
-                    <a href="{{route('inventory')}}">
+            <a href="{{route('inventory')}}">
+                <div class="sub_menu_block">
+                    <div class="icon_block">
                         <img src="{{ asset('images/logo/checklist.png')}}" / >
                         <h4> Inventory Page </h4> 
-                    </a>
-                </div>                
-            </div>
+                    </div>                
+                </div>
+            </a>
         </div>
         @endif
         @if(in_array(1,$user_divisi))
         <div class="menu_block">
-            <div class="sub_menu_block">
-                <div class="icon_block">
-                    <a href="{{route('route_admin')}}">
+            <a href="{{route('route_admin')}}">
+                <div class="sub_menu_block">
+                    <div class="icon_block">
                         <img src="{{ asset('images/logo/user.png')}}" / >
                         <h4> Admin Page </h4> 
-                    </a>
-                </div>                
-            </div>
+                    </div>                
+                </div>
+            </a>
         </div>
         @endif
         @if(in_array(1,$user_divisi))
         <div class="menu_block">
-            <div class="sub_menu_block">
-                <div class="icon_block">
-                    <a href="{{route('route_setting')}}">
+            <a href="{{route('route_setting')}}">
+                <div class="sub_menu_block">
+                    <div class="icon_block">
                         <img src="{{ asset('images/logo/settings.png')}}" / >
                         <h4> Setting Page </h4> 
-                    </a>
-                </div>                
-            </div>
+                    </div>                
+                </div>
+            </a>
         </div>
         @endif
         @if(in_array(1,$user_divisi)
@@ -108,15 +108,15 @@
             in_array(2,$user_divisi)
             )
         <div class="menu_block">
-            <div class="sub_menu_block">
-                <div class="icon_block">
-                    <a href="{{route('route_report')}}">
+            <a href="{{route('route_report')}}">
+                <div class="sub_menu_block">
+                    <div class="icon_block">
                         <span class="glyphicon glyphicon-file">
                         </span> &nbsp;
                         <h4> Report Page </h4> 
-                    </a>
-                </div>                
-            </div>
+                    </div>                
+                </div>
+            </a>
         </div>
         @endif
         <div class="clearfix"> </div>   

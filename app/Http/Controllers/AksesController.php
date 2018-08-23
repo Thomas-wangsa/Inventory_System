@@ -107,6 +107,7 @@ class AksesController extends Controller
         {
             $akses_data = Akses_Data::join('status_akses'
                 ,'status_akses.id','=','akses_data.status_akses')
+            ->join('users','users.id','=','akses_data.created_by')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id');
 
             $pic_list_dropdown = Pic_List::all();
@@ -125,6 +126,7 @@ class AksesController extends Controller
             
             $akses_data = Akses_Data::join('status_akses'
                 ,'status_akses.id','=','akses_data.status_akses')
+            ->join('users','users.id','=','akses_data.created_by')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id')
             ->whereIn('akses_data.pic_list_id',$pic_list_id_data);
 
@@ -144,7 +146,7 @@ class AksesController extends Controller
             $akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6]);
         }   
 
-        $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name');
+        $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name','users.name AS created_by_name');
 
         if($request->search_order != null) {
             $akses_data =    $akses_data->orderBy($request->search_order,'asc');
