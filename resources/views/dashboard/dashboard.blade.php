@@ -50,7 +50,12 @@
     </div> <!-- end .flash-message -->
 
     <div class="menu_wrap_body">
-        @if(in_array(1,$user_divisi))
+        @if(in_array(1,$user_divisi)
+            ||
+            in_array(2,$user_divisi)
+            ||
+            in_array(3,$user_divisi)
+            )
         <div class="menu_block">
             <div class="sub_menu_block">
                 <div class="icon_block">
@@ -98,7 +103,10 @@
             </div>
         </div>
         @endif
-        @if(in_array(1,$user_divisi))
+        @if(in_array(1,$user_divisi)
+            ||
+            in_array(2,$user_divisi)
+            )
         <div class="menu_block">
             <div class="sub_menu_block">
                 <div class="icon_block">
