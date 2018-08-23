@@ -90,21 +90,21 @@
 	  			  <div class="form-group">
   				    <label for="staff_nama"> Full Name :</label>
   				    <input type="text" class="form-control" id="nama" 
-              			name="name" value=""
+              			name="name" value="{{$data['faker']->name}}"
               		placeholder="full name is required" required="">
 				    </div>
 				  
   				  <div class="form-group">
   				    <label for="email">Email :</label>
   				    <input type="email" class="form-control" 
-  				        id="email" name="email" value=""
+  				        id="email" name="email" value="{{$data['faker']->email}}"
               		placeholder="email is required" required="">
   				  </div>
 
             <div class="form-group">
               <label for="staff_nama"> NIK :</label>
               <input type="text" class="form-control" id="nama" 
-                    name="nik" value=""
+                    name="nik" value="1234456"
                   placeholder="NIK is required" required="">
             </div>
 
@@ -124,33 +124,35 @@
             <div class="form-group">
               <label for="staff_divisi"> No. Access Card :</label>
               <input type="text" class="form-control" 
-              id="nama" name="no_access_card" value=""
+              id="nama" name="no_access_card" value="757585858"
               placeholder="Optional" required="">
             </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Start Active Card :</label>
   				    <input type="text" class="form-control" 
-  				    id="start_card_new" name="date_start" 
+  				    id="start_card_new" name="date_start" value="2018-09-01" 
               		placeholder="example : 2018-09-01" required="">
   				  </div>
 
 	            <div class="form-group">
 	              <label for="staff_nama"> End Active Card :</label>
 	              <input type="text" class="form-control" 
-	              id="end_card_new" name="date_end"
+	              id="end_card_new" name="date_end" value="2019-09-01"
 	              placeholder="example : 2019-09-01" required="">
 	            </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Floor Activities </label>
-  				    <input type="text" class="form-control" id="nama" name="floor"
+  				    <input type="text" class="form-control" 
+              id="nama" name="floor" value="Lantai 12" 
               placeholder="example : lantai 11,21" required="">
   				  </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Additional Note : </label>
-  				    <input type="text" class="form-control" id="nama" name="additional_note"
+  				    <input type="text" class="form-control" 
+              id="nama" name="additional_note" value="Kerja di {{$data['faker']->company}}" 
               placeholder="optional for add any information ">
   				  </div>
 

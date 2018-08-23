@@ -9,6 +9,7 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Detail;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Akses_Role;
+use App\Http\Models\Akses_Data;
 use App\Http\Models\Pic_Level;
 use App\Http\Models\Pic_List;
 use App\Http\Models\Pic_Role;
@@ -134,6 +135,12 @@ class DatabaseSeeder extends Seeder
                 "password"=>bcrypt(123456),
                 "mobile"=>$faker->phoneNumber
             ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"dummy.data@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
         );
 
         $inventory_list_array = array(
@@ -150,12 +157,24 @@ class DatabaseSeeder extends Seeder
 
         $pic_list_array = array(
             "vendor_name"=>"abc",
-            "vendor_detail_name"=>"PT ABC INDONESIA",
+            "vendor_detail_name"=>"PT ABC THAILAND",
             "updated_by"=>1
         );
         $pic_list_array_2 = array(
             "vendor_name"=>"bulkan",
-            "vendor_detail_name"=>"PT BULKAN INDONESIA",
+            "vendor_detail_name"=>"PT BULKAN SINGAPORE",
+            "updated_by"=>1
+        );
+
+        $pic_list_array_3 = array(
+            "vendor_name"=>"tnk",
+            "vendor_detail_name"=>"PT TNK INDONESIA",
+            "updated_by"=>1
+        );
+
+        $pic_list_array_4 = array(
+            "vendor_name"=>"amr",
+            "vendor_detail_name"=>"PT AM AMSTERDAM",
             "updated_by"=>1
         );
 
@@ -166,6 +185,8 @@ class DatabaseSeeder extends Seeder
                 Inventory_List::firstOrCreate($inventory_list_array_2);
                 PIC_List::firstOrCreate($pic_list_array);
                 PIC_List::firstOrCreate($pic_list_array_2);
+                PIC_List::firstOrCreate($pic_list_array_3);
+                PIC_List::firstOrCreate($pic_list_array_4);
             }        
         }
 
@@ -264,6 +285,10 @@ class DatabaseSeeder extends Seeder
                 case 14:
                     $divisi     = 4;
                     $jabatan    = 3;
+                    break; 
+                case 15:
+                    $divisi     = 2;
+                    $jabatan    = 1;
                     break;    
                 default:
                     $divisi     = 1;
@@ -363,6 +388,39 @@ class DatabaseSeeder extends Seeder
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
         }
+
+        $full_data = array();
+        for($i=0;$i<=100;$i++) {
+
+            $type_daftar = "vendor";
+
+            $akses_data = array(
+                "type_daftar"   => $type_daftar,
+                "name"          => $faker->name,
+                "email"         => $faker->email,
+                "nik"           => $faker->phoneNumber,
+                "status_akses"  => $faker->numberBetween(1,13);
+                "created_by"    => 15,
+                "updated_by"    => 15,
+                "no_access_card"=> $faker->phoneNumber,
+                "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
+                "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
+                "po"            => "/images/akses/85f11a8a-06fc-31d7-a44f-dd581acf70bc.png ",
+                "foto"          => "/images/akses/ca1fc89a-5842-3a83-9c45-29fcb66fbe0e.png",
+                "additional_note"=> $faker->text,
+                "comment"=> $faker->text,
+                "uuid"          => $faker->uuid
+            );
+
+            if($type_daftar == "vendor") {
+                $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
+                $akses_data['floor']       = $faker->numberBetween(1,26);
+            }
+
+            array_push($full_data,$akses_data);
+        }
+
+        Akses_Data::insert($full_data);
         
     }
 

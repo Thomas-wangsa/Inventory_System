@@ -8,7 +8,7 @@ class Akses_Data extends Model
 {
     protected $table = "akses_data";
 
-    protected $fileable = array('type');
+    protected $fileable = array('type_dafta');
     public function scopeGetDetailAkses($query) {
     	return $query->join('status_akses','status_akses.id','=','akses_data.status_akses')
     	->join('users','users.id','=','akses_data.updated_by')

@@ -116,7 +116,7 @@
 			<div class="clearfix"> </div>
 		</div>
 
-		<div style="margin-top: 10px"  class=""> 
+		<div style="margin-top: 10px"  class="scrollme"> 
 			<table class="table table-bordered table-responsive">
 			    <thead>
 			      <tr>
@@ -219,7 +219,11 @@
 			    	@endif
 			    </tbody>
 			</table>
-			<div class="pull-right" style="margin-top: -30px!important"> 
+			
+			
+		</div> <!--scrollme-->
+		<div class="clearfix"> </div>
+		<div class="pull-right" style="margin-top: -15px!important"> 
 			{{ $data['users']->appends(
 				[
 				'search' => Request::get('search'),
@@ -229,10 +233,8 @@
 				])
 
 			->links() }}
-	
-			</div>
-			<div class="clearfix"> </div>
 		</div>
+		<div class="clearfix"> </div>
 	</div>
 
 	@include('admin.modal')

@@ -1,7 +1,11 @@
 @extends('layouts.template')
 
 @section('content')
-
+<style type="text/css">
+	th,td {text-align: center}
+	.table>tbody>tr>td,.table>thead>tr>th {vertical-align: middle}
+	.scrollme {overflow-y: auto;}
+</style>
 	<div style="padding: 0 30px;margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
@@ -106,17 +110,16 @@
 			<div class="clearfix"> </div>
 
 		</div>
-		<div style="margin-top: 10px"> 
+		<div style="margin-top: 10px" class="scrollme"> 
 			<table class="table table-bordered">
 			    <thead>
 			      <tr>
 			      	<th> No </th>
-			        <th> Nama </th>
+			      	<th> Name </th>
 			        <th> Email </th>
-			        <th> No /Period Card </th>
-			        <th> Ref </th>
-			        <th> Keterangan </th>
-			        <th> Updated By </th>
+			        <th> NIK </th>
+			        <th> No <br/> Access Card </th>
+			        <th> PO/ID. Card </th>
 			        <th> Status </th>
 			        <th> Action </th>
 			      </tr>
@@ -128,122 +131,188 @@
 	                    </tr>
 	                @else 
 	                    <?php $no = 1; ?>
-	                    @foreach($data['data'] as $key=>$val)
+	                    @foreach($data['data'] as $key=>$val) 
 	                    <tr>
-	                        <td> 
-
-	                        	{{ ($data['data']->currentpage()-1) 
+	                    	<td>
+	                    		{{ ($data['data']->currentpage()-1) 
 			    				* $data['data']->perpage() + $key + 1 }}
-	                        </td>
-	                        <td> {{$val->name}}</td>
-	                        <td> {{$val->email}}</td>
-	                        <td> 
-	                        	@if($val->type == 'self' || $val->type == 'staff')
-	                        		{{$val->no_card}}
-	                        	@else
-	                        		Expiry : {{$val->date_start}}
-	                        				- {{$val->date_end}}
-	                        	@endif
-	                        </td>
-	                        <td> 
-			    				<a href="{{$val->foto}}" target="_blank" >
-			    					<img src="{{$val->foto}}"/ width="80px"> 
-			    				</a>
-			    				@if($val->type == 'vendor')
-			    				<div style="margin-top: 5px"> </div>
-			    				<a href="{{$val->po}}" target="_blank" >
-			    					<img src="{{$val->po}}"/ width="80px"> 
-			    				</a>
-			    				@endif
-
-	                        </td>
-	                        <td> {{$val->comment}}</td>
-	                        <td> {{$val->username}}</td>
-	                        <td style="color:{{$val->status_color}}"> {{$val->status_name}}</td>
-	                        <td>
-	                        	@if($val->status_akses == 1) 
-	                        		<?php 
-	                        		if(count($data['jabatan']) == 1 && in_array(1, $data['jabatan'])) {
-	                        			echo "Pending For Staff Pendaftaran Action";
-	                        		} else if(in_array(2, $data['jabatan'])) { ?>
-	                        			<div class="btn-group-vertical">
-										  <button type="button" class="btn btn-primary"
-										  onclick="approve(2,'{{$val->uuid}}')">
-										  	Setuju Daftar
-										  </button>
-										  <button type="button" class="btn btn-info hidden" onclick="edit()">
-										  	Edit Daftar
-										  </button>
-										  <button type="button" class="btn btn-danger"
-										  onclick="remove(5,'{{$val->uuid}}')">
-										  	Tolak Daftar
-										  </button>
-										</div>
-	                        		<?php } ?>	
-	                        	@endif
-	                        	@if($val->status_akses == 2) 
-	                        		<?php 
-	                        		if(count($data['jabatan']) == 1 && in_array(2, $data['jabatan'])) {
-	                        			echo "Pending For Staff Pencetakan Action";
-	                        		} else if(in_array(3, $data['jabatan'])) { ?>
-	                        			<div class="btn-group-vertical">
-										  <button type="button" class="btn btn-primary"
-										  onclick="approve(3,'{{$val->uuid}}')">
-										  	Setuju Cetak
-										  </button>
-										  <button type="button" class="btn btn-info hidden" onclick="edit()">
-										  	Edit Cetak
-										  </button>
-										  <button type="button" class="btn btn-danger"
-										  onclick="remove(6,'{{$val->uuid}}')">
-										  	Tolak Cetak
-										  </button>
-										</div>
-	                        		<?php } ?>	
-	                        	@endif
-	                        	@if($val->status_akses == 3) 
-	                        		<?php 
-	                        		if(count($data['jabatan']) == 1 && in_array(3, $data['jabatan'])) {
-	                        			echo "Pending For Staff Pengaktifan Action";
-	                        		} else if(in_array(4, $data['jabatan'])) { ?>
-	                        			<div class="btn-group-vertical">
-										  <button type="button" class="btn btn-primary"
-										  onclick="approve(4,'{{$val->uuid}}')">
-										  	Setuju Aktif
-										  </button>
-										  <button type="button" class="btn btn-info hidden" onclick="edit()">
-										  	Edit Kartu
-										  </button>
-										  <button type="button" class="btn btn-danger"
-										  onclick="remove(7,'{{$val->uuid}}')">
-										  	Tolak Aktif
-										  </button>
-										</div>
-	                        		<?php } ?>	
-	                        	@endif
-	                        	@if($val->status_akses == 4) 
-	                        		Kartu Aktif	
-	                        	@endif
-     <!--                    		<span class="glyphicon glyphicon-check"
-                        		onclick="approve('{{$val->uuid}}')"
-                        		style="color:green">	
-                        		</span>
-                        		<span class="glyphicon glyphicon-edit" style="color:black">
-                        		</span>
-                        		<span class="glyphicon glyphicon-remove"
-                        		onclick="remove('{{$val->uuid}}')" 
-                        		style="color:red">
-                        		</span> -->
-
-	                        </td>
-
+	                    	</td>
+	                    	<td> 
+	                    		{{$val->name}}
+	                    	</td>
+	                    	<td> 
+	                    		{{$val->email}}
+	                    	</td>
+	                    	<td> 
+	                    		{{$val->nik}}
+	                    	</td>
+	                    	<td> 
+	                    		@if($val->no_access_card == null)
+	                    			<div style="color:red">
+	                    				New Access Card
+	                    			</div> 
+	                    		@else 
+	                    			{{$val->no_access_card}}
+	                    		@endif	                    		
+	                    	</td>
+	                    	<td> 
+	                    		<img src="{{$val->po}}" /  width="100px">
+	                    		<br/> <br/>
+	                    		<img src="{{$val->foto}}" /  width="100px">
+	                    	</td>
+	                    	<td> 
+	                    		<div style="color:{{$val->status_color}}"> 
+	                    			{{$val->status_name}}
+	                    		</div>
+	                    	</td>
+	                    	<td> 
+	                    		@switch($val->status_akses)
+	                    		@case("1")
+	                    			@if(in_array(1,$user_divisi))
+	                    			<div class="btn-group-vertical">
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve(2,'{{$val->uuid}}')"
+		                    			>
+		                    				Approve Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="remove(8,'{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Card
+		                    			</button>
+	                    			</div>
+	                    			@else
+	                    				-
+	                    			@endif
+	                    			@break
+	                    		@case("2")
+	                    			@if(in_array(1,$user_divisi))
+	                    			<div class="btn-group-vertical">
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve(3,'{{$val->uuid}}')"
+		                    			>
+		                    				Approve Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="remove(9,'{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Card
+		                    			</button>
+	                    			</div>
+	                    			@else
+	                    				-
+	                    			@endif
+	                    			@break
+	                    		@case("3")
+	                    			@if(in_array(1,$user_divisi))
+	                    			<div class="btn-group-vertical">
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve(4,'{{$val->uuid}}')"
+		                    			>
+		                    				Approve Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="remove(10,'{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Card
+		                    			</button>
+	                    			</div>
+	                    			@else
+	                    				-
+	                    			@endif
+	                    			@break
+	                    		@case("4")
+	                    			@if(in_array(1,$user_divisi))
+	                    			<div class="btn-group-vertical">
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve(5,'{{$val->uuid}}')"
+		                    			>
+		                    				Approve Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="remove(11,'{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Card
+		                    			</button>
+	                    			</div>
+	                    			@else
+	                    				-
+	                    			@endif
+	                    			@break
+	                    		@case("5")
+	                    			@if(in_array(1,$user_divisi))
+	                    			<div class="btn-group-vertical">
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve(6,'{{$val->uuid}}')"
+		                    			>
+		                    				Approve Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="remove(12,'{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Card
+		                    			</button>
+	                    			</div>
+	                    			@else
+	                    				-
+	                    			@endif
+	                    			@break
+	                    		@case("6")
+	                    			@if(in_array(1,$user_divisi))
+	                    			<div class="btn-group-vertical">
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve(7,'{{$val->uuid}}')"
+		                    			>
+		                    				Approve Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="remove(13,'{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Card
+		                    			</button>
+	                    			</div>
+	                    			@else
+	                    				-
+	                    			@endif
+	                    			@break
+	                    		@case("7")
+	                    			Access card active
+	                    			@break
+	                    		@case("8")
+	                    		@case("9")
+	                    		@case("10")
+	                    		@case("11")
+	                    		@case("12")
+	                    		@case("13")
+	                    			Access card is rejected by : {{$val->updated_by}}
+	                    			<br/> <br/>
+	                    			comment : {{$val->comment}}
+	                    			@break;
+	                    		@default
+	                    			Status Error
+	                    			@break
+	                    		@endswitch
+	                    	</td>
 	                    </tr>
-	                    <?php $no++;?>
 	                    @endforeach
+	                    
 	                @endif
 			    </tbody>
 			</table>
-			<div class="pull-right" style="margin-top: -30px!important"> 
+		</div> <!--scrolme-->
+		<div class="pull-right" style="margin-top: -20px!important"> 
 			{{ $data['data']->appends(
 				[
 				'search' => Request::get('search'),
@@ -252,9 +321,8 @@
 				'search_order' => Request::get('search_order')
 				])->links() }}
 	
-			</div>
-			<div class="clearfix"> </div>
 		</div>
+		<div class="clearfix"> </div>
 	</div>
   	
 	@include('akses.modal_all')
@@ -265,16 +333,20 @@
 	
 
 	function approve(status,uuid) {
-		var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
-		var url_status = "&next_status=";
-		window.location = url+uuid+url_status+status;
+		if (confirm('Approve this request ?')) { 
+			var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
+			var url_status = "&next_status=";
+			window.location = url+uuid+url_status+status;
+		}
 	}
 
 
 	function remove(status,uuid) {
-		var url = window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
-		var url_status = "&next_status=";
-		window.location = url+uuid+url_status+status;
+		if (confirm('Reject this request ?')) {
+			var url = window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
+			var url_status = "&next_status=";
+			window.location = url+uuid+url_status+status;
+		}
 	}
 
 	function edit() {

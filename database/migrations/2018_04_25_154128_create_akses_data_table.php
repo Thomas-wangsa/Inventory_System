@@ -15,7 +15,7 @@ class CreateAksesDataTable extends Migration
     {
         Schema::create('akses_data', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type');
+            $table->string('type_daftar');
             $table->string('name');
             $table->string('email');
             $table->string('nik')->nullable();

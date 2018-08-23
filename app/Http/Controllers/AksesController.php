@@ -29,27 +29,19 @@ use Faker\Factory as Faker;
 
 class AksesController extends Controller
 {	
-	protected $redirectTo      = '/akses';
+	protected $redirectTo      = '/access';
     protected $url;
     protected $credentials;
     protected $faker;
     
     protected $admin    = 1;
-    protected $send_email_control = true;
+    protected $env = "production";
     protected $indosat_path;
 
     public function __construct(UrlGenerator $url){
         // $this->url      = $url;
         $this->faker    = Faker::create();
-
-        // $this->middleware(function ($request, $next) {
-        //     $this->credentials = Users::GetRoleById(Auth::id())->first();
-        //     $this->setting     = Setting_Data::where('user_id',Auth::id())
-        //                             ->where('status',1)
-        //                             ->select('setting_list_id')
-        //                             ->pluck('setting_list_id')->all();
-        //     return $next($request);
-        // });
+        $this->env      = env("ENV_STATUS", "development");
     }
 
     public function index(Request $request) {
@@ -80,9 +72,8 @@ class AksesController extends Controller
             $insert_access_data = true;
         }
 
-
-
-        $akses_data = Akses_Data::join('status_akses','status_akses.id','=','akses_data.status_akses');
+        $akses_data = Akses_Data::join('status_akses','status_akses.id','=','akses_data.status_akses')
+            ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id');
         if($request->search == "on") {
             if($request->search_nama != null) {
                 $akses_data = $akses_data->where('akses_data.name','like',$request->search_nama."%");
@@ -93,12 +84,15 @@ class AksesController extends Controller
             } 
         }    
 
+        $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name');
+
         if($request->search_order != null) {
             $akses_data =    $akses_data->orderBy($request->search_order,'asc');
         } else {
             $akses_data =    $akses_data->orderBy('akses_data.id','DESC');
         }
         
+        //dd($akses_data->paginate(5));
         
         $data = array(
             'data'         => $akses_data->paginate(5),
@@ -142,8 +136,91 @@ class AksesController extends Controller
         //     ->join('users','users.id','=','akses_data.updated_by')
         //     //->whereIn('akses_data.status_akses',$status_data)
         //     ->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','users.name AS username');
+        
+    }
+
+    public function pendaftaran_akses(Request $request) {
+        $access_data = new Akses_Data;
+        $bool = false;
+        if($request->type_daftar == "vendor") {
+            $request->validate([
+                'po' => 'required|image|mimes:jpeg,png,jpg|max:550',
+                'foto' => 'required|image|mimes:jpeg,png,jpg|max:550',
+                'name' => 'required|max:50',
+                'email' => 'required|max:50',
+                'nik' => 'required|max:50',
+
+            ]);
+
+            $count_pic_list_id = Pic_List::where('id',$request->pic_list_id)
+                                ->count();
+            if($count_pic_list_id < 1) {
+                $request->session()->flash('alert-danger', 'Pic Category is not found');
+                 return redirect($this->redirectTo);
+            }
+
+            if($request->date_end <= $request->date_start) {
+                $request->session()->flash('alert-danger', 'End Active Access Card must after Start Active Access Card');
+                return redirect($this->redirectTo);
+            }
+
+            
+            if ($request->hasFile('po')) {
+                $image = $request->file('po');
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->po = $path.$file_name;
+            }
+
+            if ($request->hasFile('foto')) {
+                $image = $request->file('foto');
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->foto = $path.$file_name;
+            }
+
+            $access_data->type_daftar = $request->type_daftar;
+            $access_data->name = $request->name;
+            $access_data->email = strtolower($request->email);
+            $access_data->nik = $request->nik;
+            $access_data->pic_list_id = $request->pic_list_id;
+            $access_data->no_access_card = $request->no_access_card;
+            $access_data->date_start = $request->date_start;
+            $access_data->date_end = $request->date_end;
+            $access_data->floor = $request->floor;
+            $access_data->additional_note = $request->additional_note;
+            $access_data->created_by = Auth::user()->id;
+            $access_data->updated_by = Auth::user()->id;
+            $access_data->status_akses = 1;
+            $access_data->uuid = $this->faker->uuid;
+            $bool = $access_data->save();
+
+        } else if($request->type_daftar == "staff") {
+            $request->session()->flash('alert-danger', 'On Process, Please contact your administrator');
+            return redirect($this->redirectTo);
+        } else {
+            $request->session()->flash('alert-danger', 'Out of scope access card, Please contact your administrator');
+            return redirect($this->redirectTo);
+        }
+
+        if($bool) {
+            $request->session()->flash('alert-success', 'New access has been created');
+        } else {
+            $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');
+        }
 
 
+        if(!$this->env == "development") {
+            $new_akses = Akses_Data::where('uuid',$access_data->uuid)->first();
+            $this->send($new_akses);
+        }
+
+        return redirect($this->redirectTo);
+        
         
     }
 
@@ -172,91 +249,24 @@ class AksesController extends Controller
         return redirect($this->redirectTo);
     }
 
-    public function pendaftaran_pic(Request $request) {
-
-        $akses_data = new Akses_Data;
-        $akses_data->type = $request->type_daftar;
-        $akses_data->created_by = Auth::user()->id;
-        $akses_data->updated_by = Auth::user()->id;
-        $akses_data->uuid       = $this->faker->uuid;
-        $akses_data->status_akses = 1;
-        $recheck_data = $akses_data->uuid;
-
-        $user   = Users::find(Auth::user()->id);
-        $detail = Users_Detail::where('user_id',Auth::user()->id)->first();
-        if($request['type_daftar'] == "self") {
-            $akses_data->name = $user->name;
-            $akses_data->email = $user->email;
-            $akses_data->no_card = strtolower($request->no_kartu);
-            $akses_data->foto   = $detail->foto;
-            $akses_data->comment   = "Di Daftarkan oleh staff PIC";
-        } else if ($request['type_daftar'] == "vendor") {
-            $request->validate([
-                'po' => 'required|image|mimes:jpeg,png,jpg|max:550',
-                'foto' => 'required|image|mimes:jpeg,png,jpg|max:550',
-            ]);
-
-            $akses_data->name = strtolower($request->vendor_nama);
-            $akses_data->email = strtolower($request->vendor_email);
-            $akses_data->date_start = $request->start_card;
-            $akses_data->date_end = $request->end_card;
-            $akses_data->floor = strtolower($request->floor);
-            $akses_data->comment = $request->pekerjaan;
-
-            $path = "/images/akses/";
-            if ($request->hasFile('po')) {
-                $image = $request->file('po');
-                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
-                $destinationPath = public_path($path);
-                $image->move($destinationPath, $file_name);
-                $akses_data->po = $path.$file_name;
-            }
-
-            if ($request->hasFile('foto')) {
-                $image = $request->file('foto');
-                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
-                $destinationPath = public_path($path);
-                $image->move($destinationPath, $file_name);
-                $akses_data->foto = $path.$file_name;
-            }
-        }
-
-        
-        $bool = $akses_data->save();
-        if($bool) {
-            $request->session()->flash('alert-success', 'Akses telah di daftarkan');
-        } else {
-            $request->session()->flash('alert-danger', 'Data tidak masuk, Please contact your administrator');
-        }
-
-        if($this->send_email_control) {
-
-            $new_akses = Akses_Data::where('uuid',$recheck_data)->first();
-            $this->send($new_akses);
-        }
-        return redirect($this->redirectTo);       
-    }
 
 
 
     public function akses_approval(Request $request) {
-
-        
         $data = Akses_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
         if(count($data) < 1) {
-            $request->session()->flash('alert-danger', 'Data Kosong');
+            $request->session()->flash('alert-danger', 'there is no access card found');
             return redirect($this->redirectTo);
         } else {
 
             if($data->status_akses == 1) {
-
                 if($request->next_status == 2) {
                     $data->status_akses = $request->next_status;
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
-                    $request->session()->flash('alert-danger', 'Kartu Akses gagal daftarkan');
+                    $request->session()->flash('alert-danger', 'Error: approved by sponsor is error');
                     return redirect($this->redirectTo);
                 }
 
@@ -267,18 +277,45 @@ class AksesController extends Controller
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
-                    $request->session()->flash('alert-danger', 'Kartu Akses gagal cetak');
+                    $request->session()->flash('alert-danger', 'Kartu Akses gagal daftarkan');
                     return redirect($this->redirectTo);
                 }
             } else if ($data->status_akses == 3) {
 
                 if($request->next_status == 4) {
                     $data->status_akses = $request->next_status;
-                    $data->status_data  = 3;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Kartu Akses gagal cetak');
+                    return redirect($this->redirectTo);
+                }
+            } else if ($data->status_akses == 4) {
+                if($request->next_status == 5) {
+                    $data->status_akses = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Kartu Akses gagal di approve manager cetak');
+                    return redirect($this->redirectTo);
+                }
+            } else if ($data->status_akses == 5) {
+                if($request->next_status == 6) {
+                    $data->status_akses = $request->next_status;
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
                     $request->session()->flash('alert-danger', 'Kartu Akses gagal aktifkan');
+                    return redirect($this->redirectTo);
+                }
+            } else if ($data->status_akses == 6) {
+                if($request->next_status == 7) {
+                    $data->status_akses = $request->next_status;
+                    $data->status_data  = 3;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Kartu Akses gagal approve manager Pengaktifan');
                     return redirect($this->redirectTo);
                 }
             } else {
@@ -312,11 +349,15 @@ class AksesController extends Controller
             
         }
 
-        if($this->send_email_control) {
-            $new_akses = Akses_Data::where('uuid',$request->uuid)->first();
+        if(!$this->env == "development") {
+            $new_akses = Akses_Data::where('uuid',$access_data->uuid)->first();
             $this->send($new_akses);
+            $request->session()->flash('alert-success', 'Access card already approved');
+        } else {
+           $request->session()->flash('alert-warning', 'Development mode'); 
         }
-        return view('akses/approval');
+        return redirect($this->redirectTo);
+        //return view('akses/approval');
     }
 
 
@@ -340,17 +381,23 @@ class AksesController extends Controller
         if(count($data) < 1) {
             return redirect($this->redirectTo);
         } else {
-            if($data->status_akses <= 3) {
+            if($data->status_akses == 1 || $data->status_akses == 2) {
 
                 switch ($data->status_akses) {
                     case 1:
-                        $data->status_akses = 5;
+                        $data->status_akses = 8;
                         break;
                     case 2:
-                        $data->status_akses = 6;
+                        $data->status_akses = 9;
                         break;
                     case 3;
-                        $data->status_akses = 7;
+                        $data->status_akses = 10;
+                    case 4;
+                        $data->status_akses = 11;
+                    case 5;
+                        $data->status_akses = 12;
+                    case 6;
+                        $data->status_akses = 13;
                     default:
                         # code...
                         break;
@@ -371,7 +418,7 @@ class AksesController extends Controller
         return redirect($this->redirectTo);
     }
 
-    public function pendaftaran_akses(Request $request) {
+    public function pendaftaran_akses_bck(Request $request) {
         
 
             	
