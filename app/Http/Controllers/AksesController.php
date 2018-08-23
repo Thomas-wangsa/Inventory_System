@@ -72,16 +72,20 @@ class AksesController extends Controller
             $insert_access_data = true;
         }
 
-        $akses_data = Akses_Data::join('status_akses','status_akses.id','=','akses_data.status_akses')
+        if(in_array(1,$user_divisi) || in_array(3, $user_divisi)) {
+            $akses_data = Akses_Data::join('status_akses','status_akses.id','=','akses_data.status_akses')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id');
+        }
+        
         if($request->search == "on") {
             if($request->search_nama != null) {
                 $akses_data = $akses_data->where('akses_data.name','like',$request->search_nama."%");
             } 
             else if($request->search_filter != null) {
-                $akses_data = $akses_data->where('akses_data.status_akses',$request->search_filter);
-                
-            } 
+                $akses_data = $akses_data->where('akses_data.status_akses',$request->search_filter);            
+            } else if($request->search_uuid != null) {
+                $akses_data = $akses_data->where('akses_data.uuid',$request->search_uuid);
+            }
         }    
 
         $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name');
@@ -356,7 +360,7 @@ class AksesController extends Controller
         } else {
            $request->session()->flash('alert-warning', 'Development mode'); 
         }
-        return redirect($this->redirectTo);
+        return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         //return view('akses/approval');
     }
 
@@ -377,11 +381,10 @@ class AksesController extends Controller
     public function proses_reject(Request $request) {
         $data = Akses_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
-
         if(count($data) < 1) {
             return redirect($this->redirectTo);
         } else {
-            if($data->status_akses == 1 || $data->status_akses == 2) {
+            if($data->status_data == 1 || $data->status_data == 2) {
 
                 switch ($data->status_akses) {
                     case 1:
@@ -392,12 +395,16 @@ class AksesController extends Controller
                         break;
                     case 3;
                         $data->status_akses = 10;
+                        break;
                     case 4;
                         $data->status_akses = 11;
+                        break;
                     case 5;
                         $data->status_akses = 12;
+                        break;
                     case 6;
                         $data->status_akses = 13;
+                        break;
                     default:
                         # code...
                         break;
@@ -415,7 +422,7 @@ class AksesController extends Controller
         }
 
         $request->session()->flash('alert-success', 'Kartu Akses telah di tolak');
-        return redirect($this->redirectTo);
+        return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
     }
 
     public function pendaftaran_akses_bck(Request $request) {

@@ -35,7 +35,7 @@
 		<div>
 			@if(in_array(1,$user_divisi) || in_array(3,$user_setting))
 			<div class="pull-left">
-				<div class="btn btn-primary" data-toggle="modal" data-target="#modal_self">
+				<div class="btn btn-primary" data-toggle="modal" data-target="#modal_new_vendor">
 					Add New Vendor List 
 				</div>
 			</div>
@@ -325,8 +325,9 @@
 		<div class="clearfix"> </div>
 	</div>
   	
+  	@include('akses.modal_new_vendor')
 	@include('akses.modal_all')
-	@include('akses.modal_self')
+	
 
 
 <script type="text/javascript">

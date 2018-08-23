@@ -93,7 +93,7 @@ class AdminController extends Controller
             'setting_list'      => Setting_List::all(),
             'level_authorization'=> $level_authorization
     	);
-
+        
     	return view('admin/admin',compact('data'));
     }
 
