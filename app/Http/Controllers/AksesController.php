@@ -90,13 +90,24 @@ class AksesController extends Controller
                                     'pic_role.pic_list_id','pic_role.pic_level_id'
                                     )
                             ->get();
-            if(count($data_pic) < 1) {
-                $request->session()->flash('alert-danger', 'Sorry,you dont have authority in pic role anymore ');
-                return redirect('home');
-            } else {
+            if(count($data_pic) > 0) {
                 $insert_access_data = true;
             }
         }
+
+        // Sponsor
+        $sponsor_access_data = false;
+        $count_sponsor_access_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+                            ->where('users_role.user_id',Auth::user()->id)
+                            ->where('users_role.divisi',$restrict_divisi_pic)
+                            ->where('pic_role.user_id',Auth::user()->id)
+                            ->where('pic_role.pic_level_id',2)
+                            ->count();
+        if(count($count_sponsor_access_data) > 0) {
+            $sponsor_access_data = true;
+        }
+        
+
 
 
         // Data && pic list
@@ -129,7 +140,6 @@ class AksesController extends Controller
             ->join('users','users.id','=','akses_data.created_by')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id')
             ->whereIn('akses_data.pic_list_id',$pic_list_id_data);
-
             $pic_list_dropdown = Pic_List::whereIn('id',$pic_list_id_data)->get();
         }
         
@@ -143,7 +153,16 @@ class AksesController extends Controller
                 $akses_data = $akses_data->where('akses_data.uuid',$request->search_uuid);
             }
         } else {
-            $akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6]);
+
+            if(in_array($this->admin,$user_divisi) 
+                || 
+                in_array($restrict_divisi_access, $user_divisi)
+            ) {
+                $akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6]);    
+            } else if(in_array($restrict_divisi_pic,$user_divisi)) {
+                $akses_data = $akses_data->whereIn('akses_data.status_akses',[1]);
+            }
+            
         }   
 
         $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name','users.name AS created_by_name');
@@ -161,10 +180,11 @@ class AksesController extends Controller
             'status_akses'  => Status_Akses::all(),
             'pic_list'      => $pic_list_dropdown,
             'faker'         => $this->faker,
-            'insert_access_data'       => $insert_access_data
+            'insert_access_data'       => $insert_access_data,
+            'sponsor_access_data'      => $sponsor_access_data
         );
 
-
+        dd($data);
         return view('akses/index',compact('data'));
         // dd($user_divisi);
         // $jabatan = Users_Role::where('user_id',Auth::user()->id)

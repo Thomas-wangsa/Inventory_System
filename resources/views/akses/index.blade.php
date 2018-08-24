@@ -141,13 +141,13 @@
 	                    		{{ ($data['data']->currentpage()-1) 
 			    				* $data['data']->perpage() + $key + 1 }}
 	                    	</td>
-	                    	<td class="conditional"> 
+	                    	<td> 
 	                    		{{$val->name}}
 	                    	</td>
 	                    	<td class="conditional"> 
 	                    		{{$val->email}}
 	                    	</td>
-	                    	<td> 
+	                    	<td class="conditional"> 
 	                    		{{$val->nik}}
 	                    	</td>
 	                    	<td style="min-width: 120px"> 
@@ -195,7 +195,9 @@
 	                    	<td> 
 	                    		@switch($val->status_akses)
 	                    		@case("1")
-	                    			@if(in_array(1,$user_divisi))
+	                    			@if(in_array(1,$user_divisi)
+	                    				||
+	                    				$data['sponsor_access_data'] == true)
 	                    			<div class="btn-group-vertical">
 		                    			<button 
 		                    			class="btn btn-primary"
