@@ -102,7 +102,8 @@ class AksesController extends Controller
                             ->where('users_role.divisi',$restrict_divisi_pic)
                             ->where('pic_role.user_id',Auth::user()->id)
                             ->where('pic_role.pic_level_id',2)
-                            ->count();
+                            ->get();
+        //dd($count_sponsor_access_data);
         if(count($count_sponsor_access_data) > 0) {
             $sponsor_access_data = true;
         }
@@ -184,7 +185,6 @@ class AksesController extends Controller
             'sponsor_access_data'      => $sponsor_access_data
         );
 
-        dd($data);
         return view('akses/index',compact('data'));
         // dd($user_divisi);
         // $jabatan = Users_Role::where('user_id',Auth::user()->id)
