@@ -144,18 +144,7 @@
                   placeholder="NIK is required" required="">
             </div>
 
-            <div class="form-group">
-              <label for="staff_nama"> Pic Category :</label>
-              <select class="form-control" name="pic_list_id" required="">
-                  <option value=""> select pic category </option>
-                  @foreach($data['pic_list'] as $key=>$val)
-                    <option value="{{$val->id}}"> 
-                      {{$val->vendor_name}} ({{$val->vendor_detail_name}})
-                    </option>
-                  @endforeach
-
-              </select>
-            </div>
+            
 
             <div class="form-group">
               <label for="staff_divisi"> No. Access Card :</label>
@@ -177,6 +166,19 @@
 	              id="end_card_new" name="date_end" value="2019-09-01"
 	              placeholder="example : 2019-09-01" required="">
 	            </div>
+
+            <div class="form-group">
+              <label for="staff_nama"> Pic Category :</label>
+              <select class="form-control" name="pic_list_id" required="">
+                  <option value=""> select pic category </option>
+                  @foreach($data['pic_list'] as $key=>$val)
+                    <option value="{{$val->id}}"> 
+                      {{$val->vendor_name}} ({{$val->vendor_detail_name}})
+                    </option>
+                  @endforeach
+
+              </select>
+            </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Floor Activities : </label>

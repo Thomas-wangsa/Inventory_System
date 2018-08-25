@@ -137,5 +137,74 @@
 
 
 <script type="text/javascript">
+	function info(status,uuid) {
+		$('#head_modal_info_pic_list').hide();
+		$('#head_modal_info_floor').hide();
+		$('#head_modal_info_divisi').hide();
+		$('#head_modal_info_jabatan').hide();
+		$('#head_modal_info_comment').hide();
+		$('#head_modal_info_po').hide();
 
+		var data = {
+			"status":status,
+	        "uuid":uuid
+	        };
+
+	    $.ajaxSetup({
+		    headers: {
+		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		    }
+		});
+		$.ajax({
+			type : "POST",
+			url: " {{ route('akses_get_info') }}",
+			contentType: "application/json",
+			data : JSON.stringify(data),
+			success: function(result) {
+				response = JSON.parse(result);
+				if(response.status == true) {
+
+					$('#modal_info_name').html(response.data['name']);
+					$('#modal_info_email').html(response.data['email']);
+					$('#modal_info_nik').html(response.data['nik']);
+					$('#modal_info_no_access_card').html(response.data['no_access_card']);
+					$('#modal_info_date_start').html(response.data['date_start']);
+					$('#modal_info_date_end').html(response.data['date_end']);
+					$('#modal_info_type_daftar').html(response.data['type_daftar']);
+
+					if(response.data['type_daftar'] == "vendor") {
+						$('#head_modal_info_pic_list').show();
+						$('#head_modal_info_floor').show();
+						$('#head_modal_info_po').show();
+						pic_list_detail = response.data['pic_list_vendor_name'] +
+										   " ( " +
+										   response.data['pic_list_vendor_detail_name'] +
+										   " ) ";
+						$('#modal_info_pic_list').html(pic_list_detail);
+						$('#modal_info_floor').html(response.data['floor']);
+					} else if(response.data['type_daftar'] == "staff") {
+						$('#head_modal_info_divisi').show();
+						$('#head_modal_info_jabatan').show();
+						$('#modal_info_divisi').html(response.data['divisi']);
+						$('#modal_info_jabatan').html(response.data['jabatan']);
+					}
+
+					$('#modal_info_status_akses').html(response.data['status_name']);
+					$('#modal_info_created_by').html(response.data['created_by_username'] + " = " + response.data['created_at']);
+					$('#modal_info_updated_by').html(response.data['updated_by_username'] + " = " + response.data['updated_at']);
+					$('#modal_info_additional_note').html(response.data['additional_note']);
+
+					$('#modal_info_po').attr("src",response.data['po']);
+
+					$('#modal_info_foto').attr("src",response.data['foto']);
+					$('#modal_info').modal('show');
+				} else {
+					alert(response.message);
+				}
+			},
+			error: function( jqXhr, textStatus, errorThrown ){
+				console.log( errorThrown );
+			}
+		});
+	}
 </script>

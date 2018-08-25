@@ -847,4 +847,49 @@ class AksesController extends Controller
 
         return json_encode($response);
     }
+
+    public function update_access_card(Request $request) {
+        $request->validate([
+                'uuid' => 'required',
+                'type_daftar' => 'required',
+                'name'  => 'required',
+                'email' => 'required',
+                'nik'   => 'required',
+                'date_start'=> 'required',
+                'date_end'  => 'required',
+        ]);
+
+        $akses_data = Akses_Data::where('uuid',$request->uuid)->first();
+
+        if(count($akses_data) < 1) {
+            $request->session()->flash('alert-danger', 'credentials not found');
+            return redirect($this->redirectTo);
+        }
+
+        if($request->type_daftar == "vendor") {
+            $akses_data->floor    = $request->floor;
+        } else if($request->type_daftar == "staff") {
+            $akses_data->divisi  = $request->divisi;
+            $akses_data->jabatan = $request->jabatan; 
+        }
+        $akses_data->name           = $request->name;
+        $akses_data->email          = $request->email;
+        $akses_data->nik            = $request->nik;
+        $akses_data->no_access_card = $request->no_access_card;
+        $akses_data->date_start     = $request->date_start;
+        $akses_data->date_end       = $request->date_end;
+        $akses_data->additional_note       = $request->additional_note;
+        $akses_data->updated_by     = Auth::user()->id;
+
+
+        $bool = $akses_data->save();
+
+        if(!$bool) {
+            $request->session()->flash('alert-danger', 'Update Failed');
+        }
+
+        $request->session()->flash('alert-success', 'Update Success');
+        return redirect($this->redirectTo);
+
+    }
 }
