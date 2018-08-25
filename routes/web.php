@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
 		Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
 		Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
+		Route::post('/akses_get_info', 'AksesController@akses_get_info')->name('akses_get_info');
 
 
 

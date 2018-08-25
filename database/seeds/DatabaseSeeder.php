@@ -408,7 +408,9 @@ class DatabaseSeeder extends Seeder
                 "foto"          => "/images/akses/ca1fc89a-5842-3a83-9c45-29fcb66fbe0e.png",
                 "additional_note"=> $faker->text,
                 "comment"=> $faker->text,
-                "uuid"          => $faker->uuid
+                "uuid"          => $faker->uuid,
+                "created_at"    => $faker->dateTime($max = 'now'),
+                "updated_at"    => $faker->dateTime($max = 'now')
             );
 
             if($type_daftar == "vendor") {

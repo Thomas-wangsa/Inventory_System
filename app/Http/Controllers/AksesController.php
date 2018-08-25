@@ -815,4 +815,36 @@ class AksesController extends Controller
         } 
         
     }
+
+    public function akses_get_info(Request $request) {
+        $response['status'] = false;
+
+        $akses_data = Akses_Data::leftjoin('pic_list',
+                        'pic_list.id','=','akses_data.pic_list_id')
+                        ->join('status_akses',
+                        'status_akses.id','=','akses_data.status_akses')
+                        ->join('users as c_user',
+                        'c_user.id','=','akses_data.created_by')
+                        ->join('users as u_user',
+                        'u_user.id','=','akses_data.updated_by')
+                        ->where('akses_data.status_akses',$request->status)
+                        ->where('akses_data.uuid',$request->uuid)
+                        ->select('akses_data.*',
+                            'pic_list.vendor_name AS pic_list_vendor_name',
+                            'pic_list.vendor_detail_name AS pic_list_vendor_detail_name',
+                            'status_akses.name AS status_name',
+                            'status_akses.color AS status_color',
+                            'c_user.name AS created_by_username',
+                            'u_user.name AS updated_by_username')
+                        ->first();
+
+        if(count($akses_data) < 1) {
+            $response['message'] = "credentials not found";
+        } else {
+            $response['status'] = true;
+            $response['data'] = $akses_data;
+        }
+
+        return json_encode($response);
+    }
 }
