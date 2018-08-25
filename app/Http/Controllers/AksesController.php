@@ -42,6 +42,13 @@ class AksesController extends Controller
         // $this->url      = $url;
         $this->faker    = Faker::create();
         $this->env      = env("ENV_STATUS", "development");
+
+        if($this->env == "production") {
+            
+            sleep(5);
+            echo "AAA";die;
+
+        }
     }
 
     public function index(Request $request) {
@@ -97,18 +104,59 @@ class AksesController extends Controller
 
         // Sponsor
         $sponsor_access_data = false;
-        $count_sponsor_access_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+
+        if(in_array($restrict_divisi_pic,$user_divisi)) {
+            $count_sponsor_access_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
                             ->where('users_role.user_id',Auth::user()->id)
                             ->where('users_role.divisi',$restrict_divisi_pic)
                             ->where('pic_role.user_id',Auth::user()->id)
                             ->where('pic_role.pic_level_id',2)
                             ->get();
-        //dd($count_sponsor_access_data);
-        if(count($count_sponsor_access_data) > 0) {
-            $sponsor_access_data = true;
+            //dd($count_sponsor_access_data);
+            if(count($count_sponsor_access_data) > 0) {
+                $sponsor_access_data = true;
+            }
         }
         
 
+
+        $staff_pendaftaran_data     = false;
+        $staff_pencetakan_data      = false;
+        $manager_pencetakan_data    = false;
+        $staff_pengaktifan_data     = false;
+        $manager_pengaktifan_data   = false;
+
+        if(in_array($restrict_divisi_access,$user_divisi)) {
+
+            $access_role_array = Users_Role::where('user_id',Auth::user()->id)
+                            ->where('divisi',$restrict_divisi_access)
+                            ->pluck('jabatan')->toArray();
+
+            if(in_array(1,$access_role_array)) {
+                $staff_pendaftaran_data = true;
+            }
+
+            if(in_array(2,$access_role_array)) {
+                $staff_pencetakan_data = true;
+            } 
+
+            if(in_array(3,$access_role_array)) {
+                $manager_pencetakan_data = true;
+            } 
+
+            if(in_array(4,$access_role_array)) {
+                $staff_pengaktifan_data = true;
+            }
+
+            if(in_array(5,$access_role_array)) {
+                $manager_pengaktifan_data = true;
+            } 
+
+
+        }
+        // Staf Pendaftaran
+        
+    
 
 
         // Data && pic list
@@ -155,14 +203,13 @@ class AksesController extends Controller
             }
         } else {
 
-            if(in_array($this->admin,$user_divisi) 
-                || 
-                in_array($restrict_divisi_access, $user_divisi)
-            ) {
+            if(in_array($this->admin,$user_divisi)) {
                 $akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6]);    
+            } else if(in_array($restrict_divisi_access, $user_divisi)) {
+                $akses_data = $akses_data->whereIn('akses_data.status_akses',[2,3,4,5,6]);
             } else if(in_array($restrict_divisi_pic,$user_divisi)) {
                 $akses_data = $akses_data->whereIn('akses_data.status_akses',[1]);
-            }
+            } 
             
         }   
 
@@ -175,14 +222,20 @@ class AksesController extends Controller
         }
         
         //dd($akses_data->paginate(5));
-        
+
+
         $data = array(
             'data'         => $akses_data->paginate(5),
             'status_akses'  => Status_Akses::all(),
             'pic_list'      => $pic_list_dropdown,
             'faker'         => $this->faker,
             'insert_access_data'       => $insert_access_data,
-            'sponsor_access_data'      => $sponsor_access_data
+            'sponsor_access_data'      => $sponsor_access_data,
+            'staff_pendaftaran_data'   => $staff_pendaftaran_data,
+            'staff_pencetakan_data'   => $staff_pencetakan_data,
+            'manager_pencetakan_data'   => $manager_pencetakan_data,
+            'staff_pengaktifan_data'   => $staff_pengaktifan_data,
+            'manager_pengaktifan_data'   => $manager_pengaktifan_data
         );
 
         return view('akses/index',compact('data'));

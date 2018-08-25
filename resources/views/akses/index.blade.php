@@ -203,13 +203,19 @@
 		                    			class="btn btn-primary"
 		                    			onclick="approve(2,'{{$val->uuid}}')"
 		                    			>
-		                    				Approve Card
+		                    				Approve Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit(1,'{{$val->uuid}}')"
+		                    			>
+		                    				Edit Access Card
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(8,'{{$val->uuid}}')" 
 		                    			>
-		                    				Reject Card
+		                    				Reject Access Card
 		                    			</button>
 	                    			</div>
 	                    			@else
@@ -217,19 +223,27 @@
 	                    			@endif
 	                    			@break
 	                    		@case("2")
-	                    			@if(in_array(1,$user_divisi))
+	                    			@if(in_array(1,$user_divisi)
+	                    				||
+	                    				$data['staff_pendaftaran_data'] == true) 
 	                    			<div class="btn-group-vertical">
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(3,'{{$val->uuid}}')"
 		                    			>
-		                    				Approve Card
+		                    				Approve Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit(2,'{{$val->uuid}}')"
+		                    			>
+		                    				Edit Access Card
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(9,'{{$val->uuid}}')" 
 		                    			>
-		                    				Reject Card
+		                    				Reject Access Card
 		                    			</button>
 	                    			</div>
 	                    			@else
@@ -237,19 +251,27 @@
 	                    			@endif
 	                    			@break
 	                    		@case("3")
-	                    			@if(in_array(1,$user_divisi))
+	                    			@if(in_array(1,$user_divisi)
+	                    			||
+	                    			$data['staff_pencetakan_data'] == true)
 	                    			<div class="btn-group-vertical">
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(4,'{{$val->uuid}}')"
 		                    			>
-		                    				Approve Card
+		                    				Approve Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit(3,'{{$val->uuid}}')"
+		                    			>
+		                    				Edit Access Card
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(10,'{{$val->uuid}}')" 
 		                    			>
-		                    				Reject Card
+		                    				Reject Access Card
 		                    			</button>
 	                    			</div>
 	                    			@else
@@ -257,19 +279,27 @@
 	                    			@endif
 	                    			@break
 	                    		@case("4")
-	                    			@if(in_array(1,$user_divisi))
+	                    			@if(in_array(1,$user_divisi)
+	                    			||
+	                    			$data['manager_pencetakan_data'] == true)
 	                    			<div class="btn-group-vertical">
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(5,'{{$val->uuid}}')"
 		                    			>
-		                    				Approve Card
+		                    				Approve Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit(4,'{{$val->uuid}}')"
+		                    			>
+		                    				Edit Access Card
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(11,'{{$val->uuid}}')" 
 		                    			>
-		                    				Reject Card
+		                    				Reject Access Card
 		                    			</button>
 	                    			</div>
 	                    			@else
@@ -277,19 +307,27 @@
 	                    			@endif
 	                    			@break
 	                    		@case("5")
-	                    			@if(in_array(1,$user_divisi))
+	                    			@if(in_array(1,$user_divisi)
+	                    			||
+	                    			$data['staff_pengaktifan_data'] == true)
 	                    			<div class="btn-group-vertical">
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(6,'{{$val->uuid}}')"
 		                    			>
-		                    				Approve Card
+		                    				Approve Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit(5,'{{$val->uuid}}')"
+		                    			>
+		                    				Edit Access Card
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(12,'{{$val->uuid}}')" 
 		                    			>
-		                    				Reject Card
+		                    				Reject Access Card
 		                    			</button>
 	                    			</div>
 	                    			@else
@@ -297,19 +335,27 @@
 	                    			@endif
 	                    			@break
 	                    		@case("6")
-	                    			@if(in_array(1,$user_divisi))
+	                    			@if(in_array(1,$user_divisi)
+	                    			||
+	                    			$data['manager_pengaktifan_data'] == true)
 	                    			<div class="btn-group-vertical">
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(7,'{{$val->uuid}}')"
 		                    			>
-		                    				Approve Card
+		                    				Approve Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit(6,'{{$val->uuid}}')"
+		                    			>
+		                    				Edit Access Card
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(13,'{{$val->uuid}}')" 
 		                    			>
-		                    				Reject Card
+		                    				Reject Access Card
 		                    			</button>
 	                    			</div>
 	                    			@else
@@ -355,6 +401,7 @@
 	</div>
   	
   	@include('akses.modal_new_vendor')
+  	@include('akses.modal_edit_vendor')
 	@include('akses.modal_all')
 	
 
@@ -379,8 +426,11 @@
 		}
 	}
 
-	function edit() {
-		alert('on_progress');
+	function edit(status,uuid) {
+		$(document).ready(function(){ 
+			$('#modal_edit_vendor').modal('show');
+		});
+		
 	}
 
 	function reset_filter() {

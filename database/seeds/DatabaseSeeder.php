@@ -346,18 +346,18 @@ class DatabaseSeeder extends Seeder
 
         $status_akses_array = array(
             array("name"=>"Pending Sponsor","color"=>"#000000"),
-            array("name"=>"Pending Daftar","color"=>"#000000"),
-            array("name"=>"Pending Cetak","color"=>"#FFA500"),
-            array("name"=>"Pending Manager Cetak","color"=>"#FFA500"),
-            array("name"=>"Pending Aktif","color"=>"#00FF00"),
+            array("name"=>"Pending Staff Pendaftaran","color"=>"#000000"),
+            array("name"=>"Pending Staff Pencetakan","color"=>"#FFA500"),
+            array("name"=>"Pending Manager Pencetakan","color"=>"#FFA500"),
+            array("name"=>"Pending Staff Pengaktifan","color"=>"#00FF00"),
             array("name"=>"Pending Manager Pengaktifan","color"=>"#00FF00"),
-            array("name"=>"Kartu Aktif","color"=>"#0000FF"),
-            array("name"=>"Ditolak Sponsor","color"=>"#FF0000"),
-            array("name"=>"Ditolak Daftar","color"=>"#FF0000"),
-            array("name"=>"Ditolak Cetak","color"=>"#FF0000"),
-            array("name"=>"Ditolak Manager Cetak","color"=>"#FF0000"),
-            array("name"=>"Ditolak Aktif","color"=>"#FF0000"),
-            array("name"=>"Ditolak Manager Pengaktifan","color"=>"#FF0000")
+            array("name"=>"Access Card is Active","color"=>"#0000FF"),
+            array("name"=>"Rejected By Sponsor","color"=>"#FF0000"),
+            array("name"=>"Rejected By Staff Pendaftaran","color"=>"#FF0000"),
+            array("name"=>"Rejected By Staff Pencetakan","color"=>"#FF0000"),
+            array("name"=>"Rejected By Manager Pencetakan","color"=>"#FF0000"),
+            array("name"=>"Rejected By Staff Pengaktifan","color"=>"#FF0000"),
+            array("name"=>"Rejected By Manager Pengaktifan","color"=>"#FF0000")
         );
 
         foreach ($status_akses_array as $key => $value) {
