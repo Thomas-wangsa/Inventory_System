@@ -239,38 +239,6 @@ class AksesController extends Controller
         );
 
         return view('akses/index',compact('data'));
-        // dd($user_divisi);
-        // $jabatan = Users_Role::where('user_id',Auth::user()->id)
-        //         ->where('divisi',$this->restrict)->select('jabatan')->get()->pluck('jabatan');
-
-        // $status_data = array();
-        // foreach($jabatan as $key=>$val) {
-
-        //     switch($val) {
-        //         case 1 : 
-        //             array_push($status_data,1);
-        //         break;
-        //         case 2 : 
-        //             array_push($status_data,1,2);
-        //         break;
-        //         case 3 : 
-        //             array_push($status_data,2,3);
-        //         break;
-        //         case 4 : 
-        //             array_push($status_data,3,4);
-        //         break;
-        //         default :
-        //             unset($status_data);
-        //         break;
-        //     }
-        // } 
-
-        // //array_push($status_data,4,5,6,7);
-        // //$akses_data = Akses_Data::GetSpecific($status_data);
-        // $akses_data   = Akses_Data::join('status_akses','akses_data.status_akses','=','status_akses.id')
-        //     ->join('users','users.id','=','akses_data.updated_by')
-        //     //->whereIn('akses_data.status_akses',$status_data)
-        //     ->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','users.name AS username');
         
     }
 
@@ -335,8 +303,47 @@ class AksesController extends Controller
             $bool = $access_data->save();
 
         } else if($request->type_daftar == "staff") {
-            $request->session()->flash('alert-danger', 'On Process, Please contact your administrator');
-            return redirect($this->redirectTo);
+
+            $request->validate([
+                'foto' => 'required|image|mimes:jpeg,png,jpg|max:550',
+                'name' => 'required|max:50',
+                'email' => 'required|max:50',
+                'nik' => 'required|max:50',
+
+            ]);
+
+            if($request->date_end <= $request->date_start) {
+                $request->session()->flash('alert-danger', 'End Active Access Card must after Start Active Access Card');
+                return redirect($this->redirectTo);
+            }
+
+
+            if ($request->hasFile('foto')) {
+                $image = $request->file('foto');
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->foto = $path.$file_name;
+            }
+
+
+            $access_data->type_daftar = $request->type_daftar;
+            $access_data->name = $request->name;
+            $access_data->email = strtolower($request->email);
+            $access_data->nik = $request->nik;
+            $access_data->no_access_card = $request->no_access_card;
+            $access_data->date_start = $request->date_start;
+            $access_data->date_end = $request->date_end;
+            $access_data->divisi   = $request->divisi;
+            $access_data->jabatan  = $request->jabatan;
+            $access_data->additional_note = $request->additional_note;
+            $access_data->created_by = Auth::user()->id;
+            $access_data->updated_by = Auth::user()->id;
+            $access_data->status_akses = 1;
+            $access_data->uuid = $this->faker->uuid;
+            $bool = $access_data->save();
+
         } else {
             $request->session()->flash('alert-danger', 'Out of scope access card, Please contact your administrator');
             return redirect($this->redirectTo);

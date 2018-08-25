@@ -6,8 +6,8 @@
 	.table>tbody>tr>td,.table>thead>tr>th {vertical-align: middle}
 	.scrollme {overflow-y: auto;}
 	.conditional{
-		display: none
-	}
+/*		display: none
+*/	}
 </style>
 	<div style="padding: 0 30px;margin-top: 40px">
 		@if ($errors->any())
@@ -54,7 +54,7 @@
 				    		</i>
 				    	</span>
 				    	<input type="text" class="form-control" 
-				    	name="search_nama" placeholder="Find Access..."
+				    	name="search_nama" placeholder="Find Name..."
 				    	value="{{Request::get('search_nama')}}">
 				  	</div>
 					
@@ -119,11 +119,9 @@
 			      <tr>
 			      	<th> No </th>
 			      	<th> Name </th>
-			        <th class="conditional"> Email </th>
-			        <th class="conditional"> NIK </th>
-			        <th > No  Access Card </th>
-			        <th> Additional Note </th>
-			        <th> PO/ID. Card </th>
+			        <th > Email </th>
+			        <th > NIK </th>
+			        <th > No Access Card </th>
 			        <th> Status </th>
 			        <th> Action </th>
 			      </tr>
@@ -136,7 +134,7 @@
 	                @else 
 	                    <?php $no = 1; ?>
 	                    @foreach($data['data'] as $key=>$val) 
-	                    <tr>
+	                    <tr style="font-family: tahoma">
 	                    	<td>
 	                    		{{ ($data['data']->currentpage()-1) 
 			    				* $data['data']->perpage() + $key + 1 }}
@@ -150,67 +148,45 @@
 	                    	<td class="conditional"> 
 	                    		{{$val->nik}}
 	                    	</td>
-	                    	<td style="min-width: 120px"> 
+	                    	<td> 
 	                    		@if($val->no_access_card == null)
 	                    			<div style="color:red">
 	                    				New Access Card
 	                    			</div> 
 	                    		@else 
 	                    			{{$val->no_access_card}}
-	                    		@endif
-	                    		<br/> <br/>
-	                    		<span class="text-primary">
-	                    			Period : <br/>
-	                    			{{$val->date_start}} <br/>
-	                    			- <br/>
-	                    			{{$val->date_end}}
-
-	                    		</span>	                    		
-	                    	</td>
-	                    	<td style="min-width: 200px"> 
-	                    		created by : {{$val->created_by_name}}
-	                    		<br/>
-	                    		@if($val->type_daftar == "vendor") 
-	                    			category : {{$val->type_daftar}}
-	                    			<br/>
-	                    			{{$val->vendor_name}} ({{$val->vendor_detail_name}})
-	                    			<br/>
-	                    			floor : {{$val->floor}}
-	                    		@else ($val->type_daftar == "vendor")
-
-	                    		@endif
-	                    		<br/> </br>
-	                    		{{$val->additional_note}}
-	                    	</td>
-	                    	<td> 
-	                    		<img src="{{$val->po}}" /  width="150px">
-	                    		<br/> <br/>
-	                    		<img src="{{$val->foto}}" /  width="150px">
+	                    		@endif                    		
 	                    	</td>
 	                    	<td> 
 	                    		<div style="color:{{$val->status_color}}"> 
 	                    			{{$val->status_name}}
 	                    		</div>
 	                    	</td>
-	                    	<td> 
+	                    	<td style="font-family: verdana"> 
 	                    		@switch($val->status_akses)
 	                    		@case("1")
 	                    			@if(in_array(1,$user_divisi)
 	                    				||
 	                    				$data['sponsor_access_data'] == true)
 	                    			<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(2,'{{$val->uuid}}')"
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit(1,'{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(8,'{{$val->uuid}}')" 
@@ -233,12 +209,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit(2,'{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(9,'{{$val->uuid}}')" 
@@ -261,12 +237,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit(3,'{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(10,'{{$val->uuid}}')" 
@@ -289,12 +265,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit(4,'{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(11,'{{$val->uuid}}')" 
@@ -317,12 +293,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit(5,'{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(12,'{{$val->uuid}}')" 
@@ -345,12 +321,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit(6,'{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(13,'{{$val->uuid}}')" 
@@ -371,9 +347,7 @@
 	                    		@case("11")
 	                    		@case("12")
 	                    		@case("13")
-	                    			Access card is rejected
-	                    			<br/> <br/>
-	                    			comment : {{$val->comment}}
+	                    			{{$val->comment}}
 	                    			@break;
 	                    		@default
 	                    			Status Error
@@ -424,6 +398,11 @@
 			var url_status = "&next_status=";
 			window.location = url+uuid+url_status+status;
 		}
+	}
+
+
+	function info(status,uuid) {
+
 	}
 
 	function edit(status,uuid) {

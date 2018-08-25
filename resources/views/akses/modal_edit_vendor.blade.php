@@ -18,28 +18,29 @@
 
 	  			 <div class="form-group">
   				    <label for="staff_nama"> Full Name :</label>
-  				    <input type="text" class="form-control" id="nama" 
-              			name="name" value="{{$data['faker']->name}}"
+  				    <input type="text" class="form-control" id="edit_nama" 
+              			name="name" value=""
               		placeholder="full name is required" required="">
 				</div>
 				  
   				<div class="form-group">
   				    <label for="email">Email :</label>
   				    <input type="email" class="form-control" 
-  				        id="email" name="email" value="{{$data['faker']->email}}"
+  				        id="edit_email" name="email" value=""
               		placeholder="email is required" required="">
   				</div>
 
 	            <div class="form-group">
 	              <label for="staff_nama"> NIK :</label>
-	              <input type="text" class="form-control" id="nama" 
-	                    name="nik" value="1234456"
+	              <input type="text" class="form-control" id="edit_nik" 
+	                    name="nik" value=""
 	                  placeholder="NIK is required" required="">
 	            </div>
 
 	            <div class="form-group">
 	              <label for="staff_nama"> Pic Category :</label>
-	              <select class="form-control" name="pic_list_id" required="">
+	              <select class="form-control" id="edit_pic_list_id" 
+	              name="pic_list_id" required="">
 	                  <option value=""> select pic category </option>
 	                  @foreach($data['pic_list'] as $key=>$val)
 	                    <option value="{{$val->id}}"> 
@@ -53,35 +54,35 @@
 	            <div class="form-group">
 	              <label for="staff_divisi"> No. Access Card :</label>
 	              <input type="text" class="form-control" 
-	              id="nama" name="no_access_card" value="757585858"
+	              id="edit_no_access_card" name="no_access_card" value=""
 	              placeholder="Optional" required="">
 	            </div>
 
 				  <div class="form-group">
 				    <label for="staff_nama"> Start Active Card :</label>
 				    <input type="text" class="form-control" 
-				    id="start_card_new" name="date_start" value="2018-09-01" 
+				    id="edit_date_start" name="date_start" value="" 
 	      			placeholder="example : 2018-09-01" required="">
 				  </div>
 
 	            <div class="form-group">
 	              <label for="staff_nama"> End Active Card :</label>
 	              <input type="text" class="form-control" 
-	              id="end_card_new" name="date_end" value="2019-09-01"
+	              id="edit_date_end" name="date_end" value=""
 	              placeholder="example : 2019-09-01" required="">
 	            </div>
 
   				 <div class="form-group">
   				    <label for="staff_nama"> Floor Activities : </label>
   				    <input type="text" class="form-control" 
-              		id="nama" name="floor" value="Lantai 12" 
+              		id="nama" name="floor" value="" 
               		placeholder="example : lantai 11,21" required="">
   				 </div>
 
   				<div class="form-group">
   				    <label for="staff_nama"> Additional Note : </label>
   				    <input type="text" class="form-control" 
-              		id="nama" name="additional_note" value="Kerja di {{$data['faker']->company}}" 
+              		id="nama" name="additional_note" value="" 
               		placeholder="optional for add any information ">
   				</div>
 

@@ -4,11 +4,8 @@
 
   <script>
   $( function() {
-    $("#start_card_new" ).datepicker({
-      dateFormat: 'yy-mm-dd' ,
-      showButtonPanel: true
-    });
-    $("#end_card_new" ).datepicker({
+
+    $(".datepicker_class" ).datepicker({
       dateFormat: 'yy-mm-dd' ,
       showButtonPanel: true
     });
@@ -23,7 +20,7 @@
         <div class="modal-header" style="border-bottom:0px">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title text-center">
-          	Tambah Pengguna
+          	Add New Access Card
           	<div style="width: 100%">
           		<div class="col-sm-6" id="staff_main"  
           		style="cursor: pointer">
@@ -39,46 +36,85 @@
         </div>
         <div class="modal-body">
         	<div id="staff">
-	  			<form method="POST" enctype="multipart/form-data"
-	  			action="{{ route('post_pendaftaran_akses') }}">
-				  {{ csrf_field() }}
-				  <input type="hidden" name="type_daftar" value="staff">
-				  <div class="form-group">
-				    <label for="staff_nama"> Nama Lengkap :</label>
-				    <input type="text" class="form-control" 
-				    id="nama" name="staff_nama" value=""
-				    placeholder="Masukan nama staff" required="">
-				  </div>
-				  
-				  <div class="form-group">
-				    <label for="email"> Email :</label>
-				    <input type="email" class="form-control" 
-				    id="email" name="staff_email" 
-				    value=""
-				    placeholder="Masukan email staff" required="">
-				  </div>
+	  			  <form method="POST" enctype="multipart/form-data"
+              action="{{ route('post_pendaftaran_akses') }}">
+              {{ csrf_field() }}
+              <input type="hidden" name="type_daftar" value="staff">
 
-				  <div class="form-group">
-				    <label for="staff_divisi"> No Kartu Akses :</label>
-				    <input type="text" class="form-control" 
-				    id="nama" name="staff_no_card" value=""
-				    placeholder="Masukan nomor kartu akses" required="">
-				  </div>
+              <div class="form-group">
+                <label for="staff_nama"> Full Name :</label>
+                <input type="text" class="form-control" id="nama" 
+                      name="name" value="{{$data['faker']->name}}"
+                    placeholder="full name is required" required="">
+              </div>
+          
+              <div class="form-group">
+                <label for="email">Email :</label>
+                <input type="email" class="form-control" 
+                    id="email" name="email" value="{{$data['faker']->email}}"
+                    placeholder="email is required" required="">
+              </div>
 
-				  <div class="form-group">
-				    <label for="staff_divisi"> Catatan :</label>
-				    <input type="text" class="form-control" 
-				    id="nama" name="staff_note" value=""
-				    placeholder="Isi catatan bila perlu" >
-				  </div>
-				  
-				  <div class="form-group">
-				    <label for="staff_nama"> Identitas Diri :</label>
-				    <input type="file" class="form-control" id="nama" name="staff_foto" required="">
-				  </div>
-				  
-				  <button type="submit" class="btn btn-block btn-warning">Tambah Pengguna </button>
-				</form>
+              <div class="form-group">
+                <label for="staff_nama"> NIK :</label>
+                <input type="text" class="form-control" id="nama" 
+                      name="nik" value="{{$data['faker']->randomNumber}}"
+                    placeholder="NIK is required" required="">
+              </div>
+
+              <div class="form-group">
+                <label for="staff_divisi"> No. Access Card :</label>
+                <input type="text" class="form-control" 
+                id="nama" name="no_access_card" value="{{$data['faker']->phoneNumber}}"
+                placeholder="Optional" required="">
+              </div>
+
+              <div class="form-group">
+                <label for="staff_nama"> Start Active Card :</label>
+                <input type="text" class="form-control datepicker_class" 
+                id="" name="date_start" value="2018-09-01" 
+                    placeholder="example : 2018-09-01" required="">
+              </div>
+
+              <div class="form-group">
+                <label for="staff_nama"> End Active Card :</label>
+                <input type="text" class="form-control datepicker_class" 
+                id="" name="date_end" value="2019-09-01"
+                placeholder="example : 2019-09-01" required="">
+              </div>
+
+              <div class="form-group">
+                <label for="staff_divisi"> Division :</label>
+                <input type="text" class="form-control" 
+                id="nama" name="divisi" value="{{$data['faker']->company}}"
+                placeholder="Optional" required="">
+              </div>
+
+
+              <div class="form-group">
+                <label for="staff_divisi"> Position :</label>
+                <input type="text" class="form-control" 
+                id="nama" name="jabatan" value="{{$data['faker']->jobTitle}}"
+                placeholder="Positiion" required="">
+              </div>
+
+
+              <div class="form-group">
+                <label for="staff_nama"> Additional Note : </label>
+                <input type="text" class="form-control" 
+                id="nama" name="additional_note" value="Kerja di {{$data['faker']->company}}" 
+                placeholder="optional for add any information ">
+              </div>
+
+              <div class="form-group">
+                <label for="staff_nama"> ID Card :</label>
+                <input type="file" class="form-control" id="nama" name="foto" required="">
+              </div>
+
+              <button type="submit" class="btn btn-block btn-primary">
+                Request Access Card 
+              </button>
+            </form>
         	</div>
 
         	<div id="vendor">
@@ -130,14 +166,14 @@
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Start Active Card :</label>
-  				    <input type="text" class="form-control" 
+  				    <input type="text" class="form-control datepicker_class" 
   				    id="start_card_new" name="date_start" value="2018-09-01" 
               		placeholder="example : 2018-09-01" required="">
   				  </div>
 
 	            <div class="form-group">
 	              <label for="staff_nama"> End Active Card :</label>
-	              <input type="text" class="form-control" 
+	              <input type="text" class="form-control datepicker_class" 
 	              id="end_card_new" name="date_end" value="2019-09-01"
 	              placeholder="example : 2019-09-01" required="">
 	            </div>

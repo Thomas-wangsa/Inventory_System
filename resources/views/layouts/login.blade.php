@@ -14,6 +14,10 @@
 
     <!-- Styles -->
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/logo/indosat.png')}}" />
+
 </head>
 
 

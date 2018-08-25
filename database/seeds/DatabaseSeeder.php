@@ -405,7 +405,6 @@ class DatabaseSeeder extends Seeder
                 "no_access_card"=> $faker->phoneNumber,
                 "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
                 "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
-                "po"            => "/images/akses/85f11a8a-06fc-31d7-a44f-dd581acf70bc.png ",
                 "foto"          => "/images/akses/ca1fc89a-5842-3a83-9c45-29fcb66fbe0e.png",
                 "additional_note"=> $faker->text,
                 "comment"=> $faker->text,
@@ -413,6 +412,7 @@ class DatabaseSeeder extends Seeder
             );
 
             if($type_daftar == "vendor") {
+                $akses_data['po']          = "/images/akses/85f11a8a-06fc-31d7-a44f-dd581acf70bc.png ";
                 $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
                 $akses_data['floor']       = $faker->numberBetween(1,26);
             }
