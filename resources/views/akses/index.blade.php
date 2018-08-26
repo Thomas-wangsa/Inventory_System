@@ -195,7 +195,20 @@
 		                    			</button>
 	                    			</div>
 	                    			@else
-	                    				-
+                    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+	                    					Edit Access Card
+	                    				</button>
+                    				</div>
 	                    			@endif
 	                    			@break
 	                    		@case("2")
@@ -229,7 +242,20 @@
 		                    			</button>
 	                    			</div>
 	                    			@else
-	                    				-
+                    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+	                    					Edit Access Card
+	                    				</button>
+                    				</div>
 	                    			@endif
 	                    			@break
 	                    		@case("3")
@@ -263,7 +289,20 @@
 		                    			</button>
 	                    			</div>
 	                    			@else
-	                    				-
+                    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+	                    					Edit Access Card
+	                    				</button>
+                    				</div>
 	                    			@endif
 	                    			@break
 	                    		@case("4")
@@ -297,7 +336,20 @@
 		                    			</button>
 	                    			</div>
 	                    			@else
-	                    				-
+                    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+	                    					Edit Access Card
+	                    				</button>
+                    				</div>
 	                    			@endif
 	                    			@break
 	                    		@case("5")
@@ -331,7 +383,20 @@
 		                    			</button>
 	                    			</div>
 	                    			@else
-	                    				-
+                    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+	                    					Edit Access Card
+	                    				</button>
+                    				</div>
 	                    			@endif
 	                    			@break
 	                    		@case("6")
@@ -365,7 +430,20 @@
 		                    			</button>
 	                    			</div>
 	                    			@else
-	                    				-
+	                    			<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+	                    					Edit Access Card
+	                    				</button>
+	                				</div>
 	                    			@endif
 	                    			@break
 	                    		@case("7")

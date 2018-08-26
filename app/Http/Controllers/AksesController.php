@@ -52,6 +52,7 @@ class AksesController extends Controller
     }
 
     public function index(Request $request) {
+        $conditional_union = false;
         $insert_access_data = false;
         $restrict_divisi_pic = 2;
         $restrict_divisi_access = 3;
@@ -76,6 +77,11 @@ class AksesController extends Controller
 
         // for add new acess 
         if(in_array($this->admin,$user_divisi)) {
+            $level_authority_detail = array();
+
+            //$level_authority_detail['divisi'] = 
+
+
             $insert_access_data = true;
         } else if(in_array($restrict_divisi_access,$user_divisi)) {
             $exist_count = Users_Role::where('user_id',Auth::user()->id)
@@ -191,6 +197,19 @@ class AksesController extends Controller
             ->whereIn('akses_data.pic_list_id',$pic_list_id_data);
             $pic_list_dropdown = Pic_List::whereIn('id',$pic_list_id_data)->get();
         }
+
+
+        // if($conditional_union) {
+        //     $union = Akses_Data::join('status_akses'
+        //         ,'status_akses.id','=','akses_data.status_akses')
+        //     ->join('users','users.id','=','akses_data.created_by')
+        //     ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id')
+        //     ->where('created_by',Auth::user()->id);
+        //     dd($akses_data->get());
+        //     dd($union->get());
+        //     $akses_data = $akses_data->union($union);
+        //     dd($akses_data->get());
+        // }
         
         if($request->search == "on") {
             if($request->search_nama != null) {

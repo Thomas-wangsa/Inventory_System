@@ -66,7 +66,7 @@
                 <label for="staff_divisi"> No. Access Card :</label>
                 <input type="text" class="form-control" 
                 id="nama" name="no_access_card" value="{{$data['faker']->phoneNumber}}"
-                placeholder="Optional" required="">
+                placeholder="Optional" >
               </div>
 
               <div class="form-group">
@@ -150,7 +150,7 @@
               <label for="staff_divisi"> No. Access Card :</label>
               <input type="text" class="form-control" 
               id="nama" name="no_access_card" value="757585858"
-              placeholder="Optional" required="">
+              placeholder="Optional" >
             </div>
 
   				  <div class="form-group">

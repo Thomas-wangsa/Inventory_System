@@ -205,9 +205,9 @@ class DatabaseSeeder extends Seeder
 
 
         $inventory_level_array = array(
-            array("inventory_level_name"=>"staff"),
-            array("inventory_level_name"=>"head"),
-            array("inventory_level_name"=>"viewer")
+            array("inventory_level_name"=>"staff inventory"),
+            array("inventory_level_name"=>"head inventory"),
+            array("inventory_level_name"=>"viewer inventory")
         );
 
         foreach ($inventory_level_array as $key => $value) {
@@ -216,9 +216,9 @@ class DatabaseSeeder extends Seeder
 
 
         $pic_level_array = array(
-            array("pic_level_name"=>"staff"),
-            array("pic_level_name"=>"sponsor"),
-            array("pic_level_name"=>"viewer")
+            array("pic_level_name"=>"staff pic"),
+            array("pic_level_name"=>"sponsor pic"),
+            array("pic_level_name"=>"viewer pic")
         );
 
         foreach ($pic_level_array as $key => $value) {

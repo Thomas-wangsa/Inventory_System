@@ -45,7 +45,7 @@
 	              <label for="staff_divisi"> No. Access Card :</label>
 	              <input type="text" class="form-control" 
 	              id="edit_no_access_card" name="no_access_card" value=""
-	              placeholder="Optional" required="">
+	              placeholder="Optional">
 	            </div>
 
 				  <div class="form-group">
