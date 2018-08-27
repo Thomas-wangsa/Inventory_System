@@ -10,22 +10,17 @@ use App\Http\Models\Design;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Users;
+use App\Http\Models\Status_Akses;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 
 class SettingController extends Controller {
 
-    protected $restrict_admin = 1;
+    protected $admin_division = 1;
+
     public function __construct() {
-        // $this->middleware(function ($request, $next) {
-        //     $this->credentials = Users::GetRoleById(Auth::id())->first();
-        //     $this->setting     = Setting_Data::where('user_id',Auth::id())
-        //                             ->where('status',1)
-        //                             ->select('setting_list_id')
-        //                             ->pluck('setting_list_id')->all();
-        //     return $next($request);
-        // });
         
     }
 
@@ -34,17 +29,17 @@ class SettingController extends Controller {
     }
 
     public function report(Request $request) {
-        $restrict_divisi = 2;
-        $restrict_setting = 5;
+        $access_division = 2;
+        $setting_list = 5;
         $user_divisi = \Request::get('user_divisi');
         $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->restrict_admin,$user_divisi)
+            in_array($this->admin_division,$user_divisi)
             ||
-            in_array($restrict_divisi,$user_divisi)
+            in_array($access_division,$user_divisi)
             || 
-            in_array($restrict_setting,$user_setting)
+            in_array($setting_list,$user_setting)
             ) 
         {
             $allow = true;
@@ -56,21 +51,31 @@ class SettingController extends Controller {
         }
 
 
-        // get the current time
-        $current = date('Y-m-d');
-        // add 30 days to the current time
-        $last_date = Carbon::now()->addDays(-7);
+        $data = array();
+        // // get the current time
+        $current_date = date('Y-m-d');
+
+        $date = strtotime("-7 day");
+        $from_date =  date('M d, Y', $date);
+        // // add 30 days to the current time
+        // $last_date = Carbon::now()->addDays(-7);
+
+        $akses_data = Akses_Data::join('status_akses',
+                    'status_akses.id','=','akses_data.status_akses')
+                    ->whereBetween('akses_data.created_at',array($from_date,$current_date))
+                    ->select('status_akses.name AS status_name','akses_data.status_akses',DB::raw('count(akses_data.id) as total')
+                            )
+                    ->groupBy('status_akses')
+                    ->get();
+        
+        foreach ($akses_data as $key => $value) {
+            $data[$value->status_name] = $value->total;
+        }
 
 
-        $data['pending_daftar'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',1)->count();
-        $data['pending_cetak'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',2)->count();
-        $data['pending_aktif'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',3)->count();
-        $data['kartu_aktif'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',4)->count();
-        $data['tolak_daftar'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',5)->count();
-        $data['tolak_cetak'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',6)->count();
-        $data['tolak_aktif'] = Akses_Data::whereBetween('created_at',array($last_date,$current))->where('status_akses',7)->count();
-        $data['period']      = $current." to ".$last_date;
-        return view('setting/report',compact('data'));
+        $color = Status_Akses::all();
+        //dd($color);
+        return view('setting/report',compact('data','color'));
     }
 
 

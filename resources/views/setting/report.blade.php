@@ -1,9 +1,14 @@
 @extends('layouts.template')
 
 @section('content')
-<div class="col-sm-12" style="margin-top: 30px">
-	
-	<div id="piechart" style="width: 900px; height: 500px;"></div>
+<div class="col-sm-12" style="padding: 30px;background-color: red">
+	<div class="pull-right">
+    <button class="btn btn-primary"> 
+      Download Weekly Report
+    </button>
+  </div>
+  <div class="clearfix"> </div>
+	<div id="piechart" style="max-width: 900px; height: 600px;"></div>
 
 	
 </div>
@@ -14,28 +19,19 @@
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-
         var data = google.visualization.arrayToDataTable([
           ['Status', 'Pcs'],
-          ['Pending Daftar',{{$data['pending_daftar']}}],
-          ['Pending Cetak',{{$data['pending_cetak']}}],
-          ['Pending Aktif',{{$data['pending_aktif']}}],
-          ['Kartu Aktif',{{$data['kartu_aktif']}}],
-          ['Ditolak Daftar',{{$data['tolak_daftar']}}],
-          ['Ditolak Cetak',{{$data['tolak_cetak']}}],
-          ['Ditolak Aktif ',{{$data['tolak_aktif']}}]
+          @foreach($data as $key=>$val)
+          ["{{$key}}" , {{$val}}],
+          @endforeach
         ]);
 
         var options = {
-          title: 'Weekly Report ' +"{{$data['period']}}" ,
+          title: 'Weekly Report ' ,
            slices: {
-            0: { color: '#000000' },
-            1: { color: '#FFA500' },
-            2: { color: '#00FF00' },
-            3: { color: '#0000FF' },
-            4: { color: '#DC143C' },
-            5: { color: '#B22222' },
-            6: { color: '#8B0000' }
+            @foreach($color as $key=>$val)
+            {{$key}}: {color : "{{$val->color}}"},
+            @endforeach
           }
         };
 
@@ -43,5 +39,6 @@
 
         chart.draw(data, options);
       }
+
     </script>
 @endsection

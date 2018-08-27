@@ -345,12 +345,12 @@ class DatabaseSeeder extends Seeder
         }
 
         $status_akses_array = array(
-            array("name"=>"Pending Sponsor","color"=>"#000000"),
-            array("name"=>"Pending Staff Pendaftaran","color"=>"#000000"),
-            array("name"=>"Pending Staff Pencetakan","color"=>"#FFA500"),
-            array("name"=>"Pending Manager Pencetakan","color"=>"#FFA500"),
-            array("name"=>"Pending Staff Pengaktifan","color"=>"#00FF00"),
-            array("name"=>"Pending Manager Pengaktifan","color"=>"#00FF00"),
+            array("name"=>"Pending Sponsor","color"=>"#FC7206"),
+            array("name"=>"Pending Staff Pendaftaran","color"=>"#334703"),
+            array("name"=>"Pending Staff Pencetakan","color"=>"#057242"),
+            array("name"=>"Pending Manager Pencetakan","color"=>"#034657"),
+            array("name"=>"Pending Staff Pengaktifan","color"=>"#385EE1"),
+            array("name"=>"Pending Manager Pengaktifan","color"=>"#9618D1"),
             array("name"=>"Access Card is Active","color"=>"#0000FF"),
             array("name"=>"Rejected By Sponsor","color"=>"#FF0000"),
             array("name"=>"Rejected By Staff Pendaftaran","color"=>"#FF0000"),
@@ -369,8 +369,8 @@ class DatabaseSeeder extends Seeder
 
         $status_inventory_array = array(
             array("name"=>"Pending Head","color"=>"#FFA500"),
-            array("name"=>"Inventory Aktif","color"=>"#0000FF"),
-            array("name"=>"Ditolak Head","color"=>"#FF0000"),
+            array("name"=>"Inventory is Active","color"=>"#0000FF"),
+            array("name"=>"Rejected by Head","color"=>"#FF0000"),
         );
 
         foreach ($status_inventory_array as $key => $value) {
@@ -383,7 +383,7 @@ class DatabaseSeeder extends Seeder
             array('setting_name'  => 'upload excel'),
             array('setting_name'  => 'add new vendor'),
             array('setting_name'  => 'add new inventory'),
-            array('setting_name'  => 'report level'),
+            array('setting_name'  => 'access report '),
         );
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
