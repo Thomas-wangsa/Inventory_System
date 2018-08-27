@@ -44,7 +44,7 @@ class Users_Role extends Model
                     )
                 WHEN(users_role.divisi = 3)
                     THEN (
-                        select CONCAT(name," ","(Access)") 
+                        select CONCAT(name," ","(access)") 
                         from akses_role where id = jabatan
                     )
                 WHEN(users_role.divisi = 4)

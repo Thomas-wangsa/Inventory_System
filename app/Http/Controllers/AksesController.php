@@ -13,11 +13,14 @@ use App\Http\Models\Pic_List;
 use App\Http\Models\Pic_Role;
 use App\Http\Models\Pic_Level;
 use App\Http\Models\Status_Akses;
+use App\Http\Models\Akses_Role;
+
 
 use App\Http\Models\Divisi;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Setting_Data;
 
+use Illuminate\Support\Facades\DB;
 
 use App\Mail\AksesMail;
 use Illuminate\Support\Facades\Mail;
@@ -75,15 +78,61 @@ class AksesController extends Controller
         }
 
 
+        $level_authority     = array();
+        $level_authority['divisi'] = array();
+        $level_authority['access'] = array();
+        $level_authority['pic']    = array();
         // for add new acess 
         if(in_array($this->admin,$user_divisi)) {
-            $level_authority_detail = array();
-
-            //$level_authority_detail['divisi'] = 
-
+            //echo "only admin";
+            $level_authority['divisi'] = Divisi::whereIn('id',array(2,3))
+                        ->get();
+            $level_authority['access'] = Akses_Role::where('id',1)
+                        ->get();
+            $level_authority['pic']    = Pic_List::select('pic_list.id',
+                        'pic_list.vendor_name','pic_list.vendor_detail_name',
+                        DB::raw('
+                                (SELECT pic_level_name FROM pic_level WHERE id = 1 LIMIT 1) as pic_level_name'
+                            )
+                        )
+                        ->get(); 
 
             $insert_access_data = true;
-        } else if(in_array($restrict_divisi_access,$user_divisi)) {
+        } else if( in_array($restrict_divisi_access,$user_divisi) && in_array($restrict_divisi_pic,$user_divisi) ) {
+
+            //echo "pic & akses active";
+            $level_authority['divisi'] = Divisi::whereIn('id',array(2,3))
+                        ->get();
+            $level_authority['access'] = Akses_Role::where('id',1)
+                        ->get();
+            $level_authority['pic']    = Users_Role::join('pic_role',
+                                'pic_role.id','=','users_role.jabatan')
+                                ->join('pic_list',
+                                'pic_list.id','=','pic_role.pic_list_id')
+                                ->join('pic_level',
+                                'pic_level.id','=','pic_role.pic_level_id')
+                                ->where('users_role.divisi','=','2')
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('pic_role.user_id','=',Auth::user()->id)
+                                ->where('pic_role.pic_level_id','=','1')
+                                ->select('pic_list.id',
+                                'pic_list.vendor_name','pic_list.vendor_detail_name',
+                                    DB::raw('
+                                        (SELECT pic_level_name 
+                                        FROM pic_level 
+                                        WHERE id = 1 LIMIT 1
+                                        ) as pic_level_name'
+                                    )
+                                )
+                                ->get();
+            $insert_access_data = true;
+        } else if(in_array($restrict_divisi_access,$user_divisi) && !in_array($restrict_divisi_pic,$user_divisi)) {
+            //echo "only akses";
+            $level_authority['divisi'] = Divisi::whereIn('id',array(3))
+                        ->get();
+            $level_authority['access'] = Akses_Role::where('id',1)
+                        ->get();
+
             $exist_count = Users_Role::where('user_id',Auth::user()->id)
                             ->where('divisi',$restrict_divisi_access)
                             ->where('jabatan',1)
@@ -91,7 +140,31 @@ class AksesController extends Controller
             if($exist_count > 0) {
                 $insert_access_data = true;
             }
-        } else if(in_array($restrict_divisi_pic,$user_divisi)) {
+        } else if(!in_array($restrict_divisi_access,$user_divisi) && in_array($restrict_divisi_pic,$user_divisi)) {
+            //echo "only pic";
+            $level_authority['divisi'] = Divisi::whereIn('id',array(2))
+                        ->get();
+            $level_authority['pic']    = Users_Role::join('pic_role',
+                                'pic_role.id','=','users_role.jabatan')
+                                ->join('pic_list',
+                                'pic_list.id','=','pic_role.pic_list_id')
+                                ->join('pic_level',
+                                'pic_level.id','=','pic_role.pic_level_id')
+                                ->where('users_role.divisi','=','2')
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('pic_role.user_id','=',Auth::user()->id)
+                                ->where('pic_role.pic_level_id','=','1')
+                                ->select('pic_list.id',
+                                'pic_list.vendor_name','pic_list.vendor_detail_name',
+                                    DB::raw('
+                                        (SELECT pic_level_name 
+                                        FROM pic_level 
+                                        WHERE id = 1 LIMIT 1
+                                        ) as pic_level_name'
+                                    )
+                                )
+                                ->get();
+
             $data_pic = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
                             ->where('users_role.user_id',Auth::user()->id)
                             ->where('users_role.divisi',$restrict_divisi_pic)
@@ -248,6 +321,7 @@ class AksesController extends Controller
             'status_akses'  => Status_Akses::all(),
             'pic_list'      => $pic_list_dropdown,
             'faker'         => $this->faker,
+            'level_authority'          => $level_authority,
             'insert_access_data'       => $insert_access_data,
             'sponsor_access_data'      => $sponsor_access_data,
             'staff_pendaftaran_data'   => $staff_pendaftaran_data,

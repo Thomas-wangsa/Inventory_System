@@ -111,6 +111,41 @@
                 <input type="file" class="form-control" id="nama" name="foto" required="">
               </div>
 
+              <div class="form-group">
+                <label for="staff_nama"> Register By Level Authority :</label>
+                <select class="form-control" name="level_authority" 
+                required="" onchange="conditional_show()" id="select_level_authority">
+                    <option value=""> select level authority </option>
+                    @foreach($data['level_authority']['divisi'] as $key=>$val)
+                      <option value="{{$val->id}}"> 
+                        {{$val->name}}
+                      </option>
+                    @endforeach
+                </select>
+              </div>
+
+              <div class="form-group" id="head_pic_sub_level_authority">
+                <label for="staff_nama"> Register By Pic Sub Level Authority  :</label>
+                <select class="form-control" name="pic_level_authority">
+                    @foreach($data['level_authority']['pic'] as $key=>$val)
+                      <option value="{{$val->id}}"> 
+                        {{$val->pic_level_name}} {{$val->vendor_name}} ({{$val->vendor_detail_name}})
+                      </option>
+                    @endforeach
+                </select>
+              </div>
+
+              <div class="form-group" id="head_access_sub_level_authority">
+                <label for="staff_nama"> Register By Access Sub Level Authority  :</label>
+                <select class="form-control" name="access_level_authority">
+                    @foreach($data['level_authority']['access'] as $key=>$val)
+                      <option value="{{$val->id}}"> 
+                        {{$val->name}}
+                      </option>
+                    @endforeach
+                </select>
+              </div>
+
               <button type="submit" class="btn btn-block btn-primary">
                 Request Access Card 
               </button>
@@ -218,3 +253,39 @@
   </div>
 
  
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("#vendor").hide();
+      $("#staff_main").css("border-bottom","3px solid #e1a435");
+      $("#vendor_main").css("border-bottom","1px solid #979797")
+
+      $("#staff_main").click(function(){
+          $("#staff").show();
+          $("#vendor").hide();
+          $("#staff_main").css("border-bottom","3px solid #e1a435");
+          $("#vendor_main").css("border-bottom","1px solid #979797");
+      });
+
+      $("#vendor_main").click(function(){
+          $("#staff").hide();
+          $("#vendor").show();
+          $("#vendor_main").css("border-bottom","3px solid #e1a435");
+          $("#staff_main").css("border-bottom","1px solid #979797");
+      });
+
+    $('#head_access_sub_level_authority').hide();
+    $('#head_pic_sub_level_authority').hide();
+  });
+
+  function conditional_show() {
+      var select_value = $('#select_level_authority').val();
+
+      if(select_value == 2) {
+        $('#head_pic_sub_level_authority').show();
+        $('#head_access_sub_level_authority').hide();
+      } else if(select_value == 3) {
+        $('#head_pic_sub_level_authority').hide();
+        $('#head_access_sub_level_authority').show();
+      }
+  }
+</script>

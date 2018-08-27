@@ -105,7 +105,7 @@
 
 
                 @if($data['insert_access_data'])
-				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#modal_all">
+				<button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal_all">
 					Add New Access Card
 				</button>
 				@endif
@@ -524,27 +524,7 @@
 
 
 
-<script type="text/javascript">
-	$(document).ready(function(){
-		$("#vendor").hide();
-	    $("#staff_main").css("border-bottom","3px solid #e1a435");
-	    $("#vendor_main").css("border-bottom","1px solid #979797")
 
-	    $("#staff_main").click(function(){
-	        $("#staff").show();
-	        $("#vendor").hide();
-	        $("#staff_main").css("border-bottom","3px solid #e1a435");
-	        $("#vendor_main").css("border-bottom","1px solid #979797");
-	    });
-
-	    $("#vendor_main").click(function(){
-	        $("#staff").hide();
-	        $("#vendor").show();
-	        $("#vendor_main").css("border-bottom","3px solid #e1a435");
-	        $("#staff_main").css("border-bottom","1px solid #979797");
-	    });
-	});
-</script>
 
 
 @endsection
