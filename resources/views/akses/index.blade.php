@@ -202,12 +202,6 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
-		                    			<button 
-		                    			class="btn btn-warning"
-		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-	                    					Edit Access Card
-	                    				</button>
                     				</div>
 	                    			@endif
 	                    			@break
@@ -249,12 +243,6 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
-		                    			<button 
-		                    			class="btn btn-warning"
-		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-	                    					Edit Access Card
-	                    				</button>
                     				</div>
 	                    			@endif
 	                    			@break
@@ -296,12 +284,6 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
-		                    			<button 
-		                    			class="btn btn-warning"
-		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-	                    					Edit Access Card
-	                    				</button>
                     				</div>
 	                    			@endif
 	                    			@break
@@ -343,13 +325,6 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
-		                    			<button 
-		                    			class="btn btn-warning"
-		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-	                    					Edit Access Card
-	                    				</button>
-                    				</div>
 	                    			@endif
 	                    			@break
 	                    		@case("5")
@@ -390,12 +365,6 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
-		                    			<button 
-		                    			class="btn btn-warning"
-		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-	                    					Edit Access Card
-	                    				</button>
                     				</div>
 	                    			@endif
 	                    			@break
@@ -437,12 +406,6 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
-		                    			<button 
-		                    			class="btn btn-warning"
-		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-	                    					Edit Access Card
-	                    				</button>
 	                				</div>
 	                    			@endif
 	                    			@break
