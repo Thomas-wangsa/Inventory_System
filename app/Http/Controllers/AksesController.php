@@ -182,19 +182,15 @@ class AksesController extends Controller
         }
 
         // Sponsor
-        $sponsor_access_data = false;
+        $sponsor_access_data = array();
 
         if(in_array($restrict_divisi_pic,$user_divisi)) {
-            $count_sponsor_access_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+            $sponsor_access_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
                             ->where('users_role.user_id',Auth::user()->id)
                             ->where('users_role.divisi',$restrict_divisi_pic)
                             ->where('pic_role.user_id',Auth::user()->id)
                             ->where('pic_role.pic_level_id',2)
-                            ->get();
-            //dd($count_sponsor_access_data);
-            if(count($count_sponsor_access_data) > 0) {
-                $sponsor_access_data = true;
-            }
+                            ->pluck('pic_list_id')->toArray();
         }
         
 
@@ -313,17 +309,30 @@ class AksesController extends Controller
             $akses_data =    $akses_data->orderBy('akses_data.id','DESC');
         }
         
+        $final_akses_data = $akses_data->paginate(5);
+
+        $conditional_sponsor = array();
+        foreach($final_akses_data as $key=>$val) {
+            $is_data_sponsor = false;
+            if(in_array($val->pic_list_id,$sponsor_access_data)) {
+                $is_data_sponsor = true;
+            }
+            array_push($conditional_sponsor,$is_data_sponsor);
+            //echo $val->pic_list_id;
+        }
+
+        // dd($pic_list_dropdown);
         //dd($akses_data->paginate(5));
 
 
         $data = array(
-            'data'         => $akses_data->paginate(5),
+            'data'         => $final_akses_data,
             'status_akses'  => Status_Akses::all(),
             'pic_list'      => $pic_list_dropdown,
             'faker'         => $this->faker,
             'level_authority'          => $level_authority,
             'insert_access_data'       => $insert_access_data,
-            'sponsor_access_data'      => $sponsor_access_data,
+            'sponsor_access_data'      => $conditional_sponsor,
             'staff_pendaftaran_data'   => $staff_pendaftaran_data,
             'staff_pencetakan_data'   => $staff_pencetakan_data,
             'manager_pencetakan_data'   => $manager_pencetakan_data,
@@ -420,6 +429,16 @@ class AksesController extends Controller
                 $access_data->foto = $path.$file_name;
             }
 
+            $conditional_pic_list_id = null;
+            $conditional_status_akses            = 1;
+            if($request->level_authority == 3 
+                && 
+                $request->access_level_authority == 1
+            ) {
+                $conditional_status_akses = 3;
+            } else if ($request->level_authority == 2) {
+                $conditional_pic_list_id = $request->pic_level_authority;
+            }
 
             $access_data->type_daftar = $request->type_daftar;
             $access_data->name = $request->name;
@@ -433,8 +452,9 @@ class AksesController extends Controller
             $access_data->additional_note = $request->additional_note;
             $access_data->created_by = Auth::user()->id;
             $access_data->updated_by = Auth::user()->id;
-            $access_data->status_akses = 1;
+            $access_data->status_akses = $conditional_status_akses;
             $access_data->uuid = $this->faker->uuid;
+            $access_data->pic_list_id = $conditional_pic_list_id;
             $bool = $access_data->save();
 
         } else {

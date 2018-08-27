@@ -165,9 +165,6 @@
 	                    	<td style="font-family: verdana"> 
 	                    		@switch($val->status_akses)
 	                    		@case("1")
-	                    			@if(in_array(1,$user_divisi)
-	                    				||
-	                    				$data['sponsor_access_data'] == true)
 	                    			<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
@@ -175,6 +172,10 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
+		                    			@if(in_array(1,$user_divisi)
+		                    				||
+		                    				$data['sponsor_access_data'][$key]
+		                    				)
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(2,'{{$val->uuid}}')"
@@ -193,22 +194,10 @@
 		                    			>
 		                    				Reject Access Card
 		                    			</button>
-	                    			</div>
-	                    			@else
-                    				<div class="btn-group-vertical">
-	                    				<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-		                    				Info Access Card
-		                    			</button>
-                    				</div>
+		                    		</div>
 	                    			@endif
 	                    			@break
 	                    		@case("2")
-	                    			@if(in_array(1,$user_divisi)
-	                    				||
-	                    				$data['staff_pendaftaran_data'] == true) 
 	                    			<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
@@ -216,6 +205,9 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
+		                    			@if(in_array(1,$user_divisi)
+	                    				||
+	                    				$data['staff_pendaftaran_data'] == true)	                    			
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(3,'{{$val->uuid}}')"
@@ -234,22 +226,11 @@
 		                    			>
 		                    				Reject Access Card
 		                    			</button>
+		                    			@endif
 	                    			</div>
-	                    			@else
-                    				<div class="btn-group-vertical">
-	                    				<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-		                    				Info Access Card
-		                    			</button>
-                    				</div>
-	                    			@endif
+	                    			
 	                    			@break
 	                    		@case("3")
-	                    			@if(in_array(1,$user_divisi)
-	                    			||
-	                    			$data['staff_pencetakan_data'] == true)
 	                    			<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
@@ -257,6 +238,10 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
+		                    			@if(in_array(1,$user_divisi)
+		                    			||
+		                    			$data['staff_pencetakan_data'] == true)
+	                    			
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(4,'{{$val->uuid}}')"
@@ -275,22 +260,10 @@
 		                    			>
 		                    				Reject Access Card
 		                    			</button>
-	                    			</div>
-	                    			@else
-                    				<div class="btn-group-vertical">
-	                    				<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-		                    				Info Access Card
-		                    			</button>
-                    				</div>
-	                    			@endif
+		                    			@endif
+		                    		</div>
 	                    			@break
 	                    		@case("4")
-	                    			@if(in_array(1,$user_divisi)
-	                    			||
-	                    			$data['manager_pencetakan_data'] == true)
 	                    			<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
@@ -298,6 +271,9 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
+	                    			@if(in_array(1,$user_divisi)
+	                    			||
+	                    			$data['manager_pencetakan_data'] == true)
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(5,'{{$val->uuid}}')"
@@ -316,21 +292,10 @@
 		                    			>
 		                    				Reject Access Card
 		                    			</button>
+		                    		@endif
 	                    			</div>
-	                    			@else
-                    				<div class="btn-group-vertical">
-	                    				<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-		                    				Info Access Card
-		                    			</button>
-	                    			@endif
 	                    			@break
 	                    		@case("5")
-	                    			@if(in_array(1,$user_divisi)
-	                    			||
-	                    			$data['staff_pengaktifan_data'] == true)
 	                    			<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
@@ -338,6 +303,10 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
+		                    			@if(in_array(1,$user_divisi)
+		                    			||
+		                    			$data['staff_pengaktifan_data'] == true)
+	                    			
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(6,'{{$val->uuid}}')"
@@ -356,22 +325,10 @@
 		                    			>
 		                    				Reject Access Card
 		                    			</button>
+		                    			@endif
 	                    			</div>
-	                    			@else
-                    				<div class="btn-group-vertical">
-	                    				<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-		                    				Info Access Card
-		                    			</button>
-                    				</div>
-	                    			@endif
 	                    			@break
 	                    		@case("6")
-	                    			@if(in_array(1,$user_divisi)
-	                    			||
-	                    			$data['manager_pengaktifan_data'] == true)
 	                    			<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
@@ -379,6 +336,10 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
+		                    			@if(in_array(1,$user_divisi)
+		                    			||
+		                    			$data['manager_pengaktifan_data'] == true)
+	                    			
 		                    			<button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(7,'{{$val->uuid}}')"
@@ -397,17 +358,8 @@
 		                    			>
 		                    				Reject Access Card
 		                    			</button>
+		                    			@endif
 	                    			</div>
-	                    			@else
-	                    			<div class="btn-group-vertical">
-	                    				<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
-		                    			>
-		                    				Info Access Card
-		                    			</button>
-	                				</div>
-	                    			@endif
 	                    			@break
 	                    		@case("7")
 	                    			<div class="btn-group-vertical">
