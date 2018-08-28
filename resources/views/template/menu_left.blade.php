@@ -67,7 +67,12 @@
     			<a href="{{route('route_notify')}}"> 
 	    			<span class="glyphicon glyphicon-bell">
 	    			</span> &nbsp;
-	    			Notification
+	    			Notification 
+                    @if($count_user_notify > 0)
+                    <span class="badge" style="background-color: blue">
+                        {{$count_user_notify}}
+                    </span>
+                    @endif
     			</a>
     		</div>
             @if(in_array(1,$user_divisi)

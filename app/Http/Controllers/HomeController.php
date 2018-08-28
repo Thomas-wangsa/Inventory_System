@@ -56,20 +56,32 @@ class HomeController extends Controller
     }
 
     public function notify() {
-        $data['notify'] = notify::join('users',
-                'users.id','=','notification.user_id')
+        $data['notify'] = notify::join('users as u',
+                'u.id','=','notification.user_id')
             ->join('akses_data',
                 'akses_data.id','=','notification.akses_data_id')
             ->join('status_akses',
                 'status_akses.id','=','notification.status_akses_id')
+            ->join('users as c_user',
+                'c_user.id','=','akses_data.created_by')
             ->where('notification.user_id',Auth::user()->id)
-            ->select('users.name AS username','akses_data.name AS access_card_name',
+            ->select('u.name AS username','akses_data.name AS access_card_name',
                     'status_akses.name AS status_akses_name',
                     'status_akses.color AS status_akses_color',
                     'notification.read',
-                    'akses_data.uuid'
+                    'akses_data.uuid',
+                    'c_user.name AS request_name'
                     )
+            ->orderby('notification.created_at','desc')
             ->paginate(20);
+        
+        // Update 
+        notify::where('user_id',Auth::user()->id)
+        ->where('read',0)
+        ->update(['read'=>1]);
+       
+        
+
         return view('dashboard/notify',compact('data'));
     }
 

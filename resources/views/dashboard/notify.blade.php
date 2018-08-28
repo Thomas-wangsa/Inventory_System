@@ -30,7 +30,7 @@
                             * $data['notify']->perpage() + $key + 1 }}
                         </td>
                         <td>
-                            {{$val->username}} 
+                            {{$val->request_name}} 
                         </td>
                         <td>
                             {{$val->access_card_name}}
@@ -51,7 +51,7 @@
                         </td>
                         <td>
                             <a href="{{route('akses')}}?search=on&search_uuid={{$val->uuid}}">
-                                <button class="btn btn-primary">
+                                <button class="btn btn-warning">
                                     Cek Access Card
                                 </button>
                             </a>
@@ -62,5 +62,9 @@
                     
             </tbody>
         </table>
+        <div class="pull-right" style="margin-top: -15px!important"> 
+            {{ $data['notify']->links() }}
+        </div>
+        <div class="clearfix"> </div>
     </div>
 @endsection
