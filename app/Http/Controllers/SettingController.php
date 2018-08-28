@@ -10,6 +10,7 @@ use App\Http\Models\Design;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Users;
+use App\Http\Models\Users_Role;
 use App\Http\Models\Status_Akses;
 
 use Carbon\Carbon;
@@ -29,7 +30,7 @@ class SettingController extends Controller {
     }
 
     public function report(Request $request) {
-        $access_division = 2;
+        $pic_division = 2;
         $setting_list = 5;
         $user_divisi = \Request::get('user_divisi');
         $user_setting = \Request::get('user_setting');
@@ -37,7 +38,7 @@ class SettingController extends Controller {
         if(
             in_array($this->admin_division,$user_divisi)
             ||
-            in_array($access_division,$user_divisi)
+            in_array($pic_division,$user_divisi)
             || 
             in_array($setting_list,$user_setting)
             ) 
@@ -53,29 +54,50 @@ class SettingController extends Controller {
 
         $data = array();
         // // get the current time
-        $current_date = date('Y-m-d');
+        $data['current_date'] = date('Y-m-d');
 
         $date = strtotime("-7 day");
-        $from_date =  date('M d, Y', $date);
+        $data['from_date'] =  date('Y-m-d', $date);
+        //dd($data);
         // // add 30 days to the current time
         // $last_date = Carbon::now()->addDays(-7);
 
         $akses_data = Akses_Data::join('status_akses',
                     'status_akses.id','=','akses_data.status_akses')
-                    ->whereBetween('akses_data.created_at',array($from_date,$current_date))
-                    ->select('status_akses.name AS status_name','akses_data.status_akses',DB::raw('count(akses_data.id) as total')
-                            )
-                    ->groupBy('status_akses')
-                    ->get();
-        
-        foreach ($akses_data as $key => $value) {
-            $data[$value->status_name] = $value->total;
+                    ->whereDate('akses_data.created_at','>=',$data['from_date'])
+                    ->whereDate('akses_data.created_at','<=',$data['current_date']);
+
+        if( !in_array($this->admin_division,$user_divisi) 
+            &&
+            !in_array($setting_list,$user_setting)
+            &&
+            in_array($pic_division,$user_divisi)
+            ) {
+
+            $pic_list_id_array = Users_Role::join('pic_role',
+                        'pic_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi',2)
+                        ->where('users_role.user_id',Auth::user()->id)
+                        ->where('pic_role.user_id',Auth::user()->id)
+                        ->pluck('pic_list_id');
+            
+            $akses_data = $akses_data->whereIn('pic_list_id',$pic_list_id_array);
         }
 
+        $akses_data  = $akses_data->select('status_akses.name AS status_name',
+                        'akses_data.status_akses'
+                        ,DB::raw('count(akses_data.id) as total'))
+                    ->groupBy('status_akses')
+                    ->get();
+        $data['total'] = 0;
+        $data['report'] = array();
+        foreach ($akses_data as $key => $value) {
+            $data['report'][$value->status_name] = $value->total;
+            $data['total'] += $value->total;
+        }
 
-        $color = Status_Akses::all();
-        //dd($color);
-        return view('setting/report',compact('data','color'));
+        $data['color'] = Status_Akses::all();
+        return view('setting/report',compact('data'));
     }
 
 
@@ -86,7 +108,7 @@ class SettingController extends Controller {
         $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->restrict_admin,$user_divisi)
+            in_array($this->admin_division,$user_divisi)
             || 
             in_array($restrict_setting,$user_setting)
             ) 

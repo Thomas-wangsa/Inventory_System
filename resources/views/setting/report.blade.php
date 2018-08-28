@@ -4,7 +4,7 @@
 <div class="col-sm-12" style="padding: 30px;background-color: red">
 	<div class="pull-right">
     <button class="btn btn-primary"> 
-      Download Weekly Report
+      Download Weekly Report = {{$data['total']}} rows
     </button>
   </div>
   <div class="clearfix"> </div>
@@ -21,15 +21,15 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ['Status', 'Pcs'],
-          @foreach($data as $key=>$val)
+          @foreach($data['report'] as $key=>$val)
           ["{{$key}}" , {{$val}}],
           @endforeach
         ]);
 
         var options = {
-          title: 'Weekly Report ' ,
+          title: 'Weekly Report Period {{$data["from_date"]}} - {{$data["current_date"]}} ' ,
            slices: {
-            @foreach($color as $key=>$val)
+            @foreach($data['color'] as $key=>$val)
             {{$key}}: {color : "{{$val->color}}"},
             @endforeach
           }
