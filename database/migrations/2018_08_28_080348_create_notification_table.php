@@ -18,6 +18,7 @@ class CreateNotificationTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('akses_data_id');
             $table->unsignedInteger('status_akses_id');
+            $table->unsignedInteger('read')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id', 'notification_user_id_fkey')

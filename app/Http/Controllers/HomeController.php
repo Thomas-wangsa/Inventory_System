@@ -12,6 +12,7 @@ use App\Http\Models\Status_Akses;
 use App\Http\Models\Setting_Data;
 use App\Http\Models\Inventory_Data;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Models\Notification AS notify;
 
 
 class HomeController extends Controller
@@ -55,7 +56,21 @@ class HomeController extends Controller
     }
 
     public function notify() {
-        return view('dashboard/notify');
+        $data['notify'] = notify::join('users',
+                'users.id','=','notification.user_id')
+            ->join('akses_data',
+                'akses_data.id','=','notification.akses_data_id')
+            ->join('status_akses',
+                'status_akses.id','=','notification.status_akses_id')
+            ->where('notification.user_id',Auth::user()->id)
+            ->select('users.name AS username','akses_data.name AS access_card_name',
+                    'status_akses.name AS status_akses_name',
+                    'status_akses.color AS status_akses_color',
+                    'notification.read',
+                    'akses_data.uuid'
+                    )
+            ->paginate(20);
+        return view('dashboard/notify',compact('data'));
     }
 
     public function profile() {

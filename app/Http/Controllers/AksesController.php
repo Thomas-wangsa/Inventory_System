@@ -478,7 +478,7 @@ class AksesController extends Controller
         }
 
         $this->notify($conditional_status_akses,$uuid);
-        return redirect($this->redirectTo);   
+        return redirect($this->redirectTo."?search=on&search_uuid=".$uuid);   
     }
 
 
