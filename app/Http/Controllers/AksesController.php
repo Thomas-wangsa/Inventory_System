@@ -14,6 +14,7 @@ use App\Http\Models\Pic_Role;
 use App\Http\Models\Pic_Level;
 use App\Http\Models\Status_Akses;
 use App\Http\Models\Akses_Role;
+use App\Http\Models\Notification AS notify;
 
 
 use App\Http\Models\Divisi;
@@ -347,6 +348,8 @@ class AksesController extends Controller
     public function pendaftaran_akses(Request $request) {
         $access_data = new Akses_Data;
         $bool = false;
+        $conditional_status_akses  = 1;
+        $uuid = $this->faker->uuid;
         if($request->type_daftar == "vendor") {
             $request->validate([
                 'po' => 'required|image|mimes:jpeg,png,jpg|max:550',
@@ -372,7 +375,7 @@ class AksesController extends Controller
             
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
-                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -381,7 +384,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
-                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
@@ -400,8 +403,8 @@ class AksesController extends Controller
             $access_data->additional_note = $request->additional_note;
             $access_data->created_by = Auth::user()->id;
             $access_data->updated_by = Auth::user()->id;
-            $access_data->status_akses = 1;
-            $access_data->uuid = $this->faker->uuid;
+            $access_data->status_akses = $conditional_status_akses;
+            $access_data->uuid = $uuid;
             $bool = $access_data->save();
 
         } else if($request->type_daftar == "staff") {
@@ -430,7 +433,6 @@ class AksesController extends Controller
             }
 
             $conditional_pic_list_id = null;
-            $conditional_status_akses            = 1;
             if($request->level_authority == 3 
                 && 
                 $request->access_level_authority == 1
@@ -440,6 +442,7 @@ class AksesController extends Controller
                 $conditional_pic_list_id = $request->pic_level_authority;
             }
 
+            
             $access_data->type_daftar = $request->type_daftar;
             $access_data->name = $request->name;
             $access_data->email = strtolower($request->email);
@@ -453,7 +456,7 @@ class AksesController extends Controller
             $access_data->created_by = Auth::user()->id;
             $access_data->updated_by = Auth::user()->id;
             $access_data->status_akses = $conditional_status_akses;
-            $access_data->uuid = $this->faker->uuid;
+            $access_data->uuid = $uuid;
             $access_data->pic_list_id = $conditional_pic_list_id;
             $bool = $access_data->save();
 
@@ -474,9 +477,81 @@ class AksesController extends Controller
             $this->send($new_akses);
         }
 
-        return redirect($this->redirectTo);
-        
-        
+        $this->notify($conditional_status_akses,$uuid);
+        return redirect($this->redirectTo);   
+    }
+
+
+    public function notify($status_akses,$uuid) {
+        // Could be improve
+        $akses_data = Akses_Data::where('status_akses',$status_akses)
+                    ->where('uuid',$uuid)->first();
+        if(count($akses_data) < 1) {
+            $request->session()->flash('alert-danger', 'Failed create Notification card, Please contact your administrator');
+            return redirect($this->redirectTo);
+        } else {
+            $notify = array();
+
+            $user_updated     = Auth::user()->id;
+            array_push($notify,$user_updated);
+
+            $user_created = $akses_data->created_by;
+            if(!in_array($user_created,$notify)) {
+                array_push($notify,$user_created);
+            }
+
+            $next_user   = array();
+            switch($status_akses) {
+                case "1" :
+                    $next_user = Pic_Role::where('pic_list_id',$akses_data->pic_list_id)
+                        ->where('pic_level_id',2)
+                        ->pluck('user_id');
+                    break;
+                case "2" :
+                    $next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',1)
+                    ->pluck('user_id');
+                    break;
+                case "3" :
+                    $next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',2)
+                    ->pluck('user_id');
+                    break;
+                case "4" :
+                    $next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+                    break;
+                case "5":
+                    $next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',4)
+                    ->pluck('user_id');
+                    break;
+                case "6" :
+                    $next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',5)
+                    ->pluck('user_id');
+                    break;
+                default :
+                    break;
+            } 
+
+            foreach($next_user as $key=>$val) {
+                if(!in_array($val,$notify)) {
+                    array_push($notify,$val);
+                }
+            }
+
+            foreach($notify as $key=>$val) {
+                $data_notify = array(
+                'user_id'           => $val,
+                'akses_data_id'     => $akses_data->id,
+                'status_akses_id'   => $status_akses
+                );
+
+                notify::firstOrCreate($data_notify);
+            }
+        }
     }
 
 
@@ -611,6 +686,8 @@ class AksesController extends Controller
         } else {
            $request->session()->flash('alert-warning', 'Development mode'); 
         }
+
+        $this->notify($data->status_akses,$request->uuid);
         return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         //return view('akses/approval');
     }
@@ -671,7 +748,7 @@ class AksesController extends Controller
             }
             
         }
-
+        $this->notify($data->status_akses,$request->uuid);
         $request->session()->flash('alert-success', 'Kartu Akses telah di tolak');
         return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
     }
