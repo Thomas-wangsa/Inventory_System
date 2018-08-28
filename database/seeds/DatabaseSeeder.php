@@ -20,7 +20,7 @@ use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Setting_List;
 use App\Http\Models\Setting_Data;
-
+use App\Http\Models\Notification_Status;
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
@@ -191,6 +191,16 @@ class DatabaseSeeder extends Seeder
         }
 
 
+        $notification_status = array(
+            array("name"=>"new access card requested"),
+            array("name"=>"access card processed"),
+            array("name"=>"access card expiry notify")
+        );
+
+        foreach($notification_status as $key=>$val) {
+            Notification_Status::firstOrCreate($val);
+        }
+
         $akses_role_array = array(
             array("name"=>"staff pendaftaran"),
             array("name"=>"staff pencetakan"),
@@ -357,7 +367,8 @@ class DatabaseSeeder extends Seeder
             array("name"=>"Rejected By Staff Pencetakan","color"=>"#FF0000"),
             array("name"=>"Rejected By Manager Pencetakan","color"=>"#FF0000"),
             array("name"=>"Rejected By Staff Pengaktifan","color"=>"#FF0000"),
-            array("name"=>"Rejected By Manager Pengaktifan","color"=>"#FF0000")
+            array("name"=>"Rejected By Manager Pengaktifan","color"=>"#FF0000"),
+            array("name"=>"Access Card is Expired","color"=>"#FF0000"),
         );
 
         foreach ($status_akses_array as $key => $value) {

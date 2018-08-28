@@ -18,7 +18,8 @@ class CreateNotificationTable extends Migration
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('akses_data_id');
             $table->unsignedInteger('status_akses_id');
-            $table->unsignedInteger('read')->default(0);
+            $table->unsignedInteger('status_notify');
+            $table->unsignedInteger('is_read')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id', 'notification_user_id_fkey')
@@ -29,6 +30,9 @@ class CreateNotificationTable extends Migration
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
             $table->foreign('status_akses_id', 'notification_status_akses_fkey')
                 ->references('id')->on('status_akses')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+            $table->foreign('status_notify', 'notification_status_notify_fkey')
+                ->references('id')->on('notification_status')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
 
         });

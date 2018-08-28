@@ -64,21 +64,24 @@ class HomeController extends Controller
                 'status_akses.id','=','notification.status_akses_id')
             ->join('users as c_user',
                 'c_user.id','=','akses_data.created_by')
+            ->join('notification_status',
+                'notification_status.id','=','notification.status_notify')
             ->where('notification.user_id',Auth::user()->id)
             ->select('u.name AS username','akses_data.name AS access_card_name',
                     'status_akses.name AS status_akses_name',
                     'status_akses.color AS status_akses_color',
-                    'notification.read',
+                    'notification.is_read',
                     'akses_data.uuid',
-                    'c_user.name AS request_name'
+                    'c_user.name AS request_name',
+                    'notification_status.name AS status_notify_name'
                     )
             ->orderby('notification.created_at','desc')
             ->paginate(20);
         
         // Update 
         notify::where('user_id',Auth::user()->id)
-        ->where('read',0)
-        ->update(['read'=>1]);
+        ->where('is_read',0)
+        ->update(['is_read'=>1]);
        
         
 

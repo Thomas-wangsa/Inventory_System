@@ -39,15 +39,7 @@
                             {{$val->status_akses_name}} 
                         </td>
                         <td>
-                            @if($val->read == 0)
-                                <div class="text-danger">  
-                                    UNREAD
-                                </div>
-                            @else
-                                <div class="text-success">
-                                    READ
-                                </div>
-                            @endif 
+                            {{$val->status_notify_name}} 
                         </td>
                         <td>
                             <a href="{{route('akses')}}?search=on&search_uuid={{$val->uuid}}">

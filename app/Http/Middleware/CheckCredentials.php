@@ -35,7 +35,7 @@ class CheckCredentials
 
 
         $this->count_user_notify    = notify::where('user_id',Auth::user()->id)
-                                ->where('read',0)
+                                ->where('is_read',0)
                                 ->count();
 
 

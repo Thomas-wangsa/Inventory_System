@@ -541,12 +541,18 @@ class AksesController extends Controller
                     array_push($notify,$val);
                 }
             }
+            
+            $notify_status = 2;
+            if($status_akses == 1) {
+                $notify_status = 1;
+            }
 
             foreach($notify as $key=>$val) {
                 $data_notify = array(
                 'user_id'           => $val,
                 'akses_data_id'     => $akses_data->id,
-                'status_akses_id'   => $status_akses
+                'status_akses_id'   => $status_akses,
+                'status_notify'     => $notify_status,
                 );
 
                 notify::firstOrCreate($data_notify);
