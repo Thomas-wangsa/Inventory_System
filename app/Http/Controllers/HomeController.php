@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
+use App\Http\Models\Pic_Role;
+
 use App\Http\Models\Users_Detail;
 use App\Http\Models\Akses_Data;
+use App\Http\Models\Akses_Expiry;
 use App\Http\Models\Status_Akses;
 use App\Http\Models\Setting_Data;
 use App\Http\Models\Inventory_Data;
@@ -48,6 +51,73 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
+        $current_date = date('Y-m-d');
+        $count_cron_today = Akses_Expiry::where('date_execution',$current_date)
+                            ->count();
+        if($count_cron_today < 1) {
+            $date = strtotime("+40 day");
+            $to_date =  date('Y-m-d', $date);
+
+
+            Akses_Data::whereDate('date_end','<',$current_date)
+                    ->where('status_akses',7)
+                    ->where('status_data',3)
+                    ->update(['status_akses'=>14]);
+
+
+            $akses_data_expiry = Akses_Data::whereDate('date_end','>=',$current_date)
+                    ->whereDate('date_end','<=',$to_date)
+                    ->where('status_akses',7)
+                    ->where('status_data',3)
+                    ->get();
+
+            dd($akses_data_expiry);
+            if(count($akses_data_expiry) > 0) {
+                $full_notification = array();
+                foreach($akses_data_expiry as $key=>$val) {
+
+                    if($val->pic_list_id == null) {
+                        $list_user_id = Users_Role::where('divisi',3)
+                        ->where('jabatan',1)
+                        ->pluck('user_id');
+
+
+                        if(count($list_user_id) > 0) {
+                            foreach($list_user_id as $key_user=>$val_user) {
+                                $data_notify = array(
+                                'user_id'           => $val_user,
+                                'akses_data_id'     => $val->id,
+                                'status_akses_id'   => $val->status_akses,
+                                'status_notify'     => 3,
+                                );
+
+                                array_push($full_notification,$data_notify);
+                            }
+                        }
+                        
+                    } elseif($val->pic_list_id != null) {
+                        $list_user_id = Users_Role::join('pic_role',
+                                'pic_role.id','=','users_role.jabatan')
+                                ->where('users_role.divisi',2)
+                                ->where('pic_role.pic_list_id',$val->pic_list_id)
+                                ->get();
+
+
+                        //dd($val);
+                    }
+                }
+
+                notify::insert($full_notification);
+            }
+
+
+            //dd($full_notification);
+            //dd($akses_data_expiry);
+            
+            //Akses_Expiry::firstOrCreate(['date_execution'=>$current_date]);
+        }
+
+
         return view('dashboard/dashboard');        
     }
 

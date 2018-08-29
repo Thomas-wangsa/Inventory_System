@@ -189,12 +189,17 @@
 						$('#modal_info_jabatan').html(response.data['jabatan']);
 					}
 
-					status_akses_bundle = response.data['status_name']+
+					status_akses_bundle = response.data['status_name'];
+								
+
+					if(response.data['status_akses'] == 1) {
+						status_akses_bundle = status_akses_bundle+
 								" "+
 								response.data['pic_list_vendor_name']+
 								" ( " +
 							   response.data['pic_list_vendor_detail_name'] +
 							   " ) ";
+					}
 
 					$('#modal_info_status_akses').html(status_akses_bundle);
 					$('#modal_info_created_by').html(response.data['created_by_username'] + " = " + response.data['created_at']);

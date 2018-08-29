@@ -10,7 +10,7 @@
             <thead>
               <tr>
                 <th> No </th>
-                <th> username </th>
+                <th> created by </th>
                 <th> access card name </th>
                 <th> access card status </th>
                 <th> status </th>

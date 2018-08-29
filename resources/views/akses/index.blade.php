@@ -379,6 +379,16 @@
 	                    		@case("13")
 	                    			{{$val->comment}}
 	                    			@break;
+	                    		@case("14")
+	                    			<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+	                    			</div>
+	                    			@break;
 	                    		@default
 	                    			Status Error
 	                    			@break

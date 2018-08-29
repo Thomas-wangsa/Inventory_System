@@ -15,6 +15,7 @@ class CreateAccessExpiryTable extends Migration
     {
         Schema::create('akses_expiry', function (Blueprint $table) {
             $table->increments('id');
+            $table->string("date_execution");
             $table->timestamps();
         });
     }
