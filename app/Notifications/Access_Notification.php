@@ -7,21 +7,18 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class New_User extends Notification
+class Access_Notification extends Notification
 {
     use Queueable;
-
-    protected $password;
-    protected $user_email;
+    protected $param;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($password,$user_email)
+    public function __construct($param)
     {
-        $this->password = $password;
-        $this->user_email = $user_email;
+        $this->param = $param;
     }
 
     /**
@@ -42,14 +39,13 @@ class New_User extends Notification
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail($notifiable)
-    {   
+    {
         return (new MailMessage)
-                    ->from("no_reply@gmail.com")
-                    ->replyTo("no_reply@gmail.com")
-                    ->subject('Welcome to Indosat System')
-                    ->greeting("Hello ".$this->user_email)
-                    ->line("Your account has been registered of our system with password : $this->password")
-                    ->action("Log in", url('/'))
+                    ->from($this->param['from'])
+                    ->replyTo($this->param['replyTo'])
+                    ->subject($this->param['subject'])
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
                     ->line('Thank you for using our application!');
     }
 

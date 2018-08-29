@@ -69,8 +69,7 @@ class HomeController extends Controller
                     ->whereDate('date_end','<=',$to_date)
                     ->where('status_akses',7)
                     ->where('status_data',3)
-                    ->get();
-
+                    ->get(); 
             if(count($akses_data_expiry) > 0) {
                 $full_notification = array();
                 foreach($akses_data_expiry as $key=>$val) {

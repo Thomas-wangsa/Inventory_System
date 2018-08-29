@@ -41,22 +41,22 @@ class Akses_Notifications extends Notification
      */
     public function toMail($notifiable)
     {   
-        $data = array(
-            "to"            => $this->param['head'],
-            "from"          => $this->param['staff'],
-            "desc"          => $this->param['desc'],
-            "url"           => config('app.url'),
-            "url1"          => config('app.url')."/akses_approval?uuid=".$this->param['uuid'],
-            "url2"          => config('app.url')."/akses_reject?uuid=".$this->param['uuid'],
-            "nama_user"     => $this->param['nama_user'],
-            "email"   => $this->param['email'],
-            "comment"           => $this->param['comment'],
-            "attachment"        => $this->param['attachment']
-        );
+        // $data = array(
+        //     "to"            => $this->param['head'],
+        //     "from"          => $this->param['staff'],
+        //     "desc"          => $this->param['desc'],
+        //     "url"           => config('app.url'),
+        //     "url1"          => config('app.url')."/akses_approval?uuid=".$this->param['uuid'],
+        //     "url2"          => config('app.url')."/akses_reject?uuid=".$this->param['uuid'],
+        //     "nama_user"     => $this->param['nama_user'],
+        //     "email"   => $this->param['email'],
+        //     "comment"           => $this->param['comment'],
+        //     "attachment"        => $this->param['attachment']
+        // );
         return (new MailMessage)
-                    ->subject($this->param['subject'])
-                    ->markdown('vendor.notifications.akses_notification', ['data' => $data])
-                    ->cc($this->param['cc_email']);
+                    ->subject($this->param['subject']);
+                    // ->markdown('vendor.notifications.akses_notification', ['data' => $data])
+                    // ->cc($this->param['cc_email']);
     }
 
     /**

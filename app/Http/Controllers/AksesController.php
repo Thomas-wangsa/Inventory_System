@@ -27,6 +27,7 @@ use App\Mail\AksesMail;
 use Illuminate\Support\Facades\Mail;
 
 use App\Notifications\Akses_Notifications;
+//use App\Notifications\Access_Notification;
 use Illuminate\Support\Facades\Notification;
 
 use Faker\Factory as Faker;
@@ -49,8 +50,8 @@ class AksesController extends Controller
 
         if($this->env == "production") {
             
-            sleep(5);
-            echo "AAA";die;
+            // sleep(5);
+            // echo "AAA";die;
 
         }
     }
@@ -471,12 +472,6 @@ class AksesController extends Controller
             $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');
         }
 
-
-        if(!$this->env == "development") {
-            $new_akses = Akses_Data::where('uuid',$access_data->uuid)->first();
-            $this->send($new_akses);
-        }
-
         $this->notify($conditional_status_akses,$uuid);
         return redirect($this->redirectTo."?search=on&search_uuid=".$uuid);   
     }
@@ -541,6 +536,8 @@ class AksesController extends Controller
                     array_push($notify,$val);
                 }
             }
+
+            
             
             $notify_status = 2;
             if($status_akses == 1) {
@@ -556,6 +553,12 @@ class AksesController extends Controller
                 );
 
                 notify::firstOrCreate($data_notify);
+            }
+
+            if($this->env != "development") {
+                $data['notify_user']        = $notify;
+                $data['access_card_data']   = $akses_data;
+                $this->send($data);
             }
         }
     }
@@ -685,15 +688,9 @@ class AksesController extends Controller
             
         }
 
-        if(!$this->env == "development") {
-            $new_akses = Akses_Data::where('uuid',$access_data->uuid)->first();
-            $this->send($new_akses);
-            $request->session()->flash('alert-success', 'Access card already approved');
-        } else {
-           $request->session()->flash('alert-warning', 'Development mode'); 
-        }
 
         $this->notify($data->status_akses,$request->uuid);
+        $request->session()->flash('alert-success', 'Access card already approved');
         return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         //return view('akses/approval');
     }
@@ -907,11 +904,47 @@ class AksesController extends Controller
         return redirect($this->redirectTo);
     }
 
-    public function send($new_akses){
+    public function send($data){
+        // $updated_by = null;
+        // $cc_list    = array();
+        // $updated_by = Users::find($data['notify_user'][0]);
+        // foreach($data['notify_user'] as $key=>$val) {
+        //     $user_data = Users::find($val);
+        //     if($key == 0) {
+                
+        //     } else {
+        //         array_push($cc_list,$user_data->email);
+        //     }
+        // }
 
-        $indosat_path = \Request::get('indosat_path');
+        // $notification               = array();
+        // $notification['from']       = array(
+        //         "no_reply@gmail.com"
+        //         ,"Admin Inventory System"
+        //         );
+        // $notification['replyTo']    = "no_reply@gmail.com";
+        // $notification['subject']    = "Access Card For "+
+        //                     $data['access_card_data']->name;
+        // $notification['greeting']   = "access card has been updated from ";
+        // $notification['cc']         = $cc_list;
 
+
+        // $user = Users_Role::where('user_id',$data['notify_user'][0])->first();
+        // $user->notify(new Akses_Notifications($notification));
+        //dd($notification);
         $cc_email = array();
+        // $user     = array();
+
+        $new_akses  = $data['access_card_data'];
+        $subject    = "Access Card For ".$data['access_card_data']->name;
+        $user  = Users::find($data['notify_user'][0]);
+        foreach($data['notify_user'] as $key=>$val) {
+            if($key != 0) {
+                $user_email = Users::find($val)->email;
+                array_push($cc_email,$user_email);
+            }
+        }
+
         $target_divisi = 2;
 
         $error = false;
@@ -919,7 +952,7 @@ class AksesController extends Controller
             case 1 :
                 $target_jabatan = 2;
                 $next = 2;
-                $user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+                //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
                 
                 $list_email = Users_Role::join('users',
                                 'users.id','=','users_role.user_id')
@@ -928,14 +961,13 @@ class AksesController extends Controller
                                 ->select('users.email')
                                 ->distinct()
                                 ->get()->pluck('email');
-                $cc_email = $list_email->toArray();
-                $subject = "Pendaftaran Kartu atas nama ".$new_akses->name ;
+                //$cc_email = $list_email->toArray();
                 $desc    = "baru saja mendaftarkan pengguna kartu";
                 break;
             case 2 :
                 $target_jabatan = 3;
                 $next = 3;
-                $user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+                //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
             
 
                 $list_email = Users_Role::join('users',
@@ -945,15 +977,14 @@ class AksesController extends Controller
                                 ->select('users.email')
                                 ->distinct()
                                 ->get()->pluck('email');
-                $cc_email = $list_email->toArray();
+                //$cc_email = $list_email->toArray();
 
-                $subject = "Pencetakan Kartu atas nama ".$new_akses->name ;
                 $desc    = "telah mendaftarkan kartu untuk di cetak";
                 break;
             case 3 : 
                 $target_jabatan = 4;
                 $next = 4;
-                $user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+                //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
                 
                 $list_email = Users_Role::join('users',
                                 'users.id','=','users_role.user_id')
@@ -962,9 +993,8 @@ class AksesController extends Controller
                                 ->select('users.email')
                                 ->distinct()
                                 ->get()->pluck('email');
-                $cc_email = $list_email->toArray();
+                //$cc_email = $list_email->toArray();
 
-                $subject = "Pengaktifan Kartu atas nama ".$new_akses->name ;
                 $desc    = "baru saja mencetakan kartu untuk di aktifkan";
                 break;
             default : 
@@ -1006,7 +1036,7 @@ class AksesController extends Controller
                 "attachment" => $attachment      
             );
 
-            //dd($data);
+            dd($data);
             $user->notify(new Akses_Notifications($data));
         } 
         
