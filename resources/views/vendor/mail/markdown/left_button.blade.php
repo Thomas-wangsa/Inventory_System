@@ -1,1 +1,1 @@
-{{ $slot }}: {{ $url }} : {{ $url1}} : {{ $url2}}
+{{ $slot }}: {{ $url }} : {{ $url_data}} : {{ $url_reject}}

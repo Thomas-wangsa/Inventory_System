@@ -47,7 +47,7 @@
                         </td>
                         <td>
                             <a href="{{route('akses')}}?search=on&search_uuid={{$val->uuid}}">
-                                <button class="btn btn-warning">
+                                <button class="btn btn-info">
                                     Cek Access Card
                                 </button>
                             </a>

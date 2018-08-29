@@ -44,7 +44,7 @@ class New_User extends Notification
     public function toMail($notifiable)
     {   
         return (new MailMessage)
-                    ->from("no_reply@gmail.com")
+                    ->from("no_reply@gmail.com","Indosat-System")
                     ->replyTo("no_reply@gmail.com")
                     ->subject('Welcome to Indosat System')
                     ->greeting("Hello ".$this->user_email)

@@ -410,7 +410,7 @@ class DatabaseSeeder extends Seeder
                 "name"          => $faker->name,
                 "email"         => $faker->email,
                 "nik"           => $faker->phoneNumber,
-                "status_akses"  => $faker->numberBetween(2,13),
+                "status_akses"  => $faker->numberBetween(1,13),
                 "created_by"    => 15,
                 "updated_by"    => 15,
                 "no_access_card"=> $faker->phoneNumber,

@@ -41,22 +41,29 @@ class Akses_Notifications extends Notification
      */
     public function toMail($notifiable)
     {   
-        // $data = array(
-        //     "to"            => $this->param['head'],
-        //     "from"          => $this->param['staff'],
-        //     "desc"          => $this->param['desc'],
-        //     "url"           => config('app.url'),
-        //     "url1"          => config('app.url')."/akses_approval?uuid=".$this->param['uuid'],
-        //     "url2"          => config('app.url')."/akses_reject?uuid=".$this->param['uuid'],
-        //     "nama_user"     => $this->param['nama_user'],
-        //     "email"   => $this->param['email'],
-        //     "comment"           => $this->param['comment'],
-        //     "attachment"        => $this->param['attachment']
-        // );
+        $data = array(
+            "desc_1"            => $this->param['desc_1'],
+            "desc_name"         => $this->param['desc_name'],
+            "desc_2"            => $this->param['desc_2'],
+            "access_card_name"  => $this->param['access_card_name'],
+            "access_card_no"    => $this->param['access_card_no'],
+            "status_akses"      => $this->param['status_akses'],
+            "status_color"      => $this->param['status_color'],
+            "url"               => config('app.url'),
+            "url_data"          => config('app.url').
+                                "/access?search=on&search_uuid=".$this->param['uuid'],
+            "url_reject"        => config('app.url').
+                                "/akses_reject?uuid=".$this->param['uuid'],
+            
+            
+            
+        );
         return (new MailMessage)
-                    ->subject($this->param['subject']);
-                    // ->markdown('vendor.notifications.akses_notification', ['data' => $data])
-                    // ->cc($this->param['cc_email']);
+                    ->from("no_reply@gmail.com","Indosat-System")
+                    ->replyTo("no_reply@gmail.com")
+                    ->subject($this->param['subject'])
+                    ->markdown('vendor.notifications.akses_notification', ['data' => $data])
+                    ->cc($this->param['cc_email']);
     }
 
     /**

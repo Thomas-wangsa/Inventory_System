@@ -905,38 +905,12 @@ class AksesController extends Controller
     }
 
     public function send($data){
-        // $updated_by = null;
-        // $cc_list    = array();
-        // $updated_by = Users::find($data['notify_user'][0]);
-        // foreach($data['notify_user'] as $key=>$val) {
-        //     $user_data = Users::find($val);
-        //     if($key == 0) {
-                
-        //     } else {
-        //         array_push($cc_list,$user_data->email);
-        //     }
-        // }
-
-        // $notification               = array();
-        // $notification['from']       = array(
-        //         "no_reply@gmail.com"
-        //         ,"Admin Inventory System"
-        //         );
-        // $notification['replyTo']    = "no_reply@gmail.com";
-        // $notification['subject']    = "Access Card For "+
-        //                     $data['access_card_data']->name;
-        // $notification['greeting']   = "access card has been updated from ";
-        // $notification['cc']         = $cc_list;
-
-
-        // $user = Users_Role::where('user_id',$data['notify_user'][0])->first();
-        // $user->notify(new Akses_Notifications($notification));
-        //dd($notification);
         $cc_email = array();
-        // $user     = array();
-
         $new_akses  = $data['access_card_data'];
-        $subject    = "Access Card For ".$data['access_card_data']->name;
+
+        $status_akses = Status_Akses::find($new_akses->status_akses);
+
+        $subject    = "(".$status_akses->name.")"." Access Card For ".$data['access_card_data']->name;
         $user  = Users::find($data['notify_user'][0]);
         foreach($data['notify_user'] as $key=>$val) {
             if($key != 0) {
@@ -945,77 +919,81 @@ class AksesController extends Controller
             }
         }
 
-        $target_divisi = 2;
+
+        $desc_1    = "Access card has been updated by ";
+        $desc_name = $user->name;
+        $desc_2    = " with the following information : ";
+        // $target_divisi = 2;
 
         $error = false;
-        switch($new_akses->status_akses) {
-            case 1 :
-                $target_jabatan = 2;
-                $next = 2;
-                //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+        // switch($new_akses->status_akses) {
+        //     case 1 :
+        //         $target_jabatan = 2;
+        //         $next = 2;
+        //         //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
                 
-                $list_email = Users_Role::join('users',
-                                'users.id','=','users_role.user_id')
-                                ->where('divisi',$target_divisi)
-                                ->where('jabatan',$target_jabatan)
-                                ->select('users.email')
-                                ->distinct()
-                                ->get()->pluck('email');
-                //$cc_email = $list_email->toArray();
-                $desc    = "baru saja mendaftarkan pengguna kartu";
-                break;
-            case 2 :
-                $target_jabatan = 3;
-                $next = 3;
-                //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+        //         $list_email = Users_Role::join('users',
+        //                         'users.id','=','users_role.user_id')
+        //                         ->where('divisi',$target_divisi)
+        //                         ->where('jabatan',$target_jabatan)
+        //                         ->select('users.email')
+        //                         ->distinct()
+        //                         ->get()->pluck('email');
+        //         //$cc_email = $list_email->toArray();
+        //         //$desc    = "baru saja mendaftarkan pengguna kartu";
+        //         break;
+        //     case 2 :
+        //         $target_jabatan = 3;
+        //         $next = 3;
+        //         //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
             
 
-                $list_email = Users_Role::join('users',
-                                'users.id','=','users_role.user_id')
-                                ->where('divisi',$target_divisi)
-                                ->where('jabatan',$target_jabatan)
-                                ->select('users.email')
-                                ->distinct()
-                                ->get()->pluck('email');
-                //$cc_email = $list_email->toArray();
+        //         $list_email = Users_Role::join('users',
+        //                         'users.id','=','users_role.user_id')
+        //                         ->where('divisi',$target_divisi)
+        //                         ->where('jabatan',$target_jabatan)
+        //                         ->select('users.email')
+        //                         ->distinct()
+        //                         ->get()->pluck('email');
+        //         //$cc_email = $list_email->toArray();
 
-                $desc    = "telah mendaftarkan kartu untuk di cetak";
-                break;
-            case 3 : 
-                $target_jabatan = 4;
-                $next = 4;
-                //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
+        //         //$desc    = "telah mendaftarkan kartu untuk di cetak";
+        //         break;
+        //     case 3 : 
+        //         $target_jabatan = 4;
+        //         $next = 4;
+        //         //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
                 
-                $list_email = Users_Role::join('users',
-                                'users.id','=','users_role.user_id')
-                                ->where('divisi',$target_divisi)
-                                ->where('jabatan',$target_jabatan)
-                                ->select('users.email')
-                                ->distinct()
-                                ->get()->pluck('email');
-                //$cc_email = $list_email->toArray();
+        //         $list_email = Users_Role::join('users',
+        //                         'users.id','=','users_role.user_id')
+        //                         ->where('divisi',$target_divisi)
+        //                         ->where('jabatan',$target_jabatan)
+        //                         ->select('users.email')
+        //                         ->distinct()
+        //                         ->get()->pluck('email');
+        //         //$cc_email = $list_email->toArray();
 
-                $desc    = "baru saja mencetakan kartu untuk di aktifkan";
-                break;
-            default : 
-                $error = true;
-                break;
-        }
+        //         //$desc    = "baru saja mencetakan kartu untuk di aktifkan";
+        //         break;
+        //     default : 
+        //         $error = true;
+        //         break;
+        // }
 
-        $created_by = Users::where('id','=',$new_akses->created_by)
-                    ->select('email')
-                    ->first();
+        // $created_by = Users::where('id','=',$new_akses->created_by)
+        //             ->select('email')
+        //             ->first();
 
-        if(!in_array($created_by->email,$cc_email)) {
-            array_push($cc_email,$created_by->email);
-        }
+        // if(!in_array($created_by->email,$cc_email)) {
+        //     array_push($cc_email,$created_by->email);
+        // }
         
-        $attachment =  "";
-        if($new_akses->type == 'self' || $new_akses->type == 'staff') {
-            $attachment = $new_akses->foto;
-        } else if ($new_akses->type == 'vendor') {
-            $attachment = $new_akses->po;
-        } 
+        // $attachment =  "";
+        // if($new_akses->type == 'self' || $new_akses->type == 'staff') {
+        //     $attachment = $new_akses->foto;
+        // } else if ($new_akses->type == 'vendor') {
+        //     $attachment = $new_akses->po;
+        // } 
 
 
         if(count($user) < 1) {
@@ -1024,19 +1002,20 @@ class AksesController extends Controller
 
         if(!$error) {
             $data = array(
-                "subject"   => $subject,
-                "head"      => $user->name,
-                "staff"     => Users::find($new_akses->updated_by)->name,
-                "desc"      => $desc,
-                "nama_user" => $new_akses->name,
-                "email"     => $new_akses->email,
-                "comment"    => $new_akses->comment,
-                "uuid"      =>  $new_akses->uuid.'&next_status='.$next,
-                "cc_email" => $cc_email,
-                "attachment" => $attachment      
+                "subject"           => $subject,
+                "cc_email"          => $cc_email,
+                "desc_1"            => $desc_1,
+                "desc_name"         => $desc_name,
+                "desc_2"            => $desc_2,
+                "access_card_name"  => $new_akses->name,
+                "access_card_no"    => $new_akses->no_access_card,
+                "status_akses"      => $status_akses->name,
+                "status_color"      => $status_akses->color,
+                "uuid"              =>  $new_akses->uuid,
+                     
             );
 
-            dd($data);
+            // dd($data);
             $user->notify(new Akses_Notifications($data));
         } 
         
