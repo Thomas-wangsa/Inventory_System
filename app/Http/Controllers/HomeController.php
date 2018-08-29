@@ -74,12 +74,9 @@ class HomeController extends Controller
             if(count($akses_data_expiry) > 0) {
                 $full_notification = array();
                 foreach($akses_data_expiry as $key=>$val) {
-
-                    if($val->pic_list_id == null) {
                         $list_user_id = Users_Role::where('divisi',3)
                         ->where('jabatan',1)
                         ->pluck('user_id');
-
 
                         if(count($list_user_id) > 0) {
                             foreach($list_user_id as $key_user=>$val_user) {
@@ -95,21 +92,7 @@ class HomeController extends Controller
                                 array_push($full_notification,$data_notify);
                             }
                         }
-                        
-                    } elseif($val->pic_list_id != null) {
-                        $list_user_id = Users_Role::join('pic_role',
-                                'pic_role.id','=','users_role.jabatan')
-                                ->where('users_role.divisi',2)
-                                ->where('pic_role.pic_list_id',$val->pic_list_id)
-                                ->whereIn('pic_role.pic_level_id',array(1,2))
-                                ->select('pic_role.user_id')
-                                ->get();
-
-
-                        dd($list_user_id);
-                    }
-                }
-
+                } // Foreach
                 notify::insert($full_notification);
             }
 
