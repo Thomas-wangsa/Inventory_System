@@ -69,7 +69,8 @@ class HomeController extends Controller
                     ->whereDate('date_end','<=',$to_date)
                     ->where('status_akses',7)
                     ->where('status_data',3)
-                    ->get(); 
+                    ->get();
+
             if(count($akses_data_expiry) > 0) {
                 $full_notification = array();
                 foreach($akses_data_expiry as $key=>$val) {
@@ -99,7 +100,7 @@ class HomeController extends Controller
             //dd($full_notification);
             //dd($akses_data_expiry);
             
-            //Akses_Expiry::firstOrCreate(['date_execution'=>$current_date]);
+            Akses_Expiry::firstOrCreate(['date_execution'=>$current_date]);
         }
 
 

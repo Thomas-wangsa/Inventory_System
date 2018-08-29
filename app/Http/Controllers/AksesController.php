@@ -1094,7 +1094,7 @@ class AksesController extends Controller
         }
 
         $request->session()->flash('alert-success', 'Update Success');
-        return redirect($this->redirectTo);
+        return redirect($this->redirectTo."?search=on&search_uuid=".$akses_data->uuid);
 
     }
 }
