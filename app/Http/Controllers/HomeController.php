@@ -88,6 +88,8 @@ class HomeController extends Controller
                                 'akses_data_id'     => $val->id,
                                 'status_akses_id'   => $val->status_akses,
                                 'status_notify'     => 3,
+                                'created_at'        => date('Y-m-d H:i:s')
+
                                 );
 
                                 array_push($full_notification,$data_notify);
@@ -99,10 +101,12 @@ class HomeController extends Controller
                                 'pic_role.id','=','users_role.jabatan')
                                 ->where('users_role.divisi',2)
                                 ->where('pic_role.pic_list_id',$val->pic_list_id)
+                                ->whereIn('pic_role.pic_level_id',array(1,2))
+                                ->select('pic_role.user_id')
                                 ->get();
 
 
-                        //dd($val);
+                        dd($list_user_id);
                     }
                 }
 
