@@ -15,6 +15,7 @@ use App\Http\Models\Status_Akses;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Excel;
 
 
 class SettingController extends Controller {
@@ -64,8 +65,8 @@ class SettingController extends Controller {
 
         $akses_data = Akses_Data::join('status_akses',
                     'status_akses.id','=','akses_data.status_akses')
-                    ->whereDate('akses_data.created_at','>=',$data['from_date'])
-                    ->whereDate('akses_data.created_at','<=',$data['current_date']);
+                    ->whereDate('akses_data.updated_at','>=',$data['from_date'])
+                    ->whereDate('akses_data.updated_at','<=',$data['current_date']);
 
         if( !in_array($this->admin_division,$user_divisi) 
             &&
@@ -101,7 +102,87 @@ class SettingController extends Controller {
     }
 
     public function report_download() {
-        dd("REPORT");
+        $pic_division = 2;
+        $setting_list = 5;
+        $user_divisi = \Request::get('user_divisi');
+        $user_setting = \Request::get('user_setting');
+        $allow = false;
+        if(
+            in_array($this->admin_division,$user_divisi)
+            ||
+            in_array($pic_division,$user_divisi)
+            || 
+            in_array($setting_list,$user_setting)
+            ) 
+        {
+            $allow = true;
+        }
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Sorry you dont have authority to report features');
+            return redirect('home');
+        }
+
+
+        $data = array();
+        // // get the current time
+        $data['current_date'] = date('Y-m-d');
+
+        $date = strtotime("-7 day");
+        $data['from_date'] =  date('Y-m-d', $date);
+
+        
+        $akses_data = Akses_Data::leftjoin('pic_list',
+                        'pic_list.id','=','akses_data.pic_list_id')
+                        ->join('status_akses',
+                        'status_akses.id','=','akses_data.status_akses')
+                        ->join('users as c_user',
+                        'c_user.id','=','akses_data.created_by')
+                        ->join('users as u_user',
+                        'u_user.id','=','akses_data.updated_by')
+                        ->whereDate('akses_data.updated_at','>=',$data['from_date'])
+                        ->whereDate('akses_data.updated_at','<=',$data['current_date']);                        
+
+                        // ->select('akses_data.*',
+                        //     'pic_list.vendor_name AS pic_list_vendor_name',
+                        //     'pic_list.vendor_detail_name AS pic_list_vendor_detail_name',
+                        //     'status_akses.name AS status_name',
+                        //     'status_akses.color AS status_color',
+                        //     'c_user.name AS created_by_username',
+                        //     'u_user.name AS updated_by_username',)
+                        // ->first();
+
+        $data  = $akses_data->select('akses_data.name',
+                'akses_data.email',
+                'akses_data.nik',
+                'akses_data.no_access_card AS no access card',
+                'akses_data.date_start AS start access card active',
+                'akses_data.date_end AS end access card active',
+                'akses_data.type_daftar AS type',
+                DB::raw('CONCAT(pic_list.vendor_name, " (", pic_list.vendor_detail_name,")") AS pic_category'),
+                'akses_data.floor',
+                'akses_data.divisi AS division',
+                'akses_data.jabatan AS position',
+                'status_akses.name AS status',
+                DB::raw('CONCAT(c_user.name, " =", akses_data.created_at) AS created_by'),
+                DB::raw('CONCAT(u_user.name, " =", akses_data.updated_at) AS updated_by'),
+                'akses_data.additional_note AS note',
+                'akses_data.comment AS comment'
+                )
+                ->orderBy('akses_data.updated_at','desc')
+                ->get()
+                ->toArray();
+
+        //dd($akses_data);
+
+        $type = "xls";
+        //$data = Akses_Data::get()->toArray();
+        return Excel::create('itsolutionstuff_example', function($excel) use ($data) {
+            $excel->sheet('mySheet', function($sheet) use ($data)
+            {
+                $sheet->fromArray($data);
+            });
+        })->download($type);
     }
 
     public function show_background(Request $request) {
