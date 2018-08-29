@@ -1,11 +1,13 @@
 @extends('layouts.template')
 
 @section('content')
-<div class="col-sm-12" style="padding: 30px;background-color: red">
+<div class="col-sm-12" style="padding: 30px">
 	<div class="pull-right">
-    <button class="btn btn-primary"> 
-      Download Weekly Report = {{$data['total']}} rows
-    </button>
+    <a href="{{route('report_download')}}">
+      <button class="btn btn-primary"> 
+        Download Weekly Report = {{$data['total']}} rows
+      </button>
+    </a>
   </div>
   <div class="clearfix"> </div>
 	<div id="piechart" style="max-width: 900px; height: 600px;"></div>

@@ -100,7 +100,9 @@ class SettingController extends Controller {
         return view('setting/report',compact('data'));
     }
 
-
+    public function report_download() {
+        dd("REPORT");
+    }
 
     public function show_background(Request $request) {
         $restrict_setting = 1;
