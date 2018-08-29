@@ -79,7 +79,7 @@
               <div class="form-group">
                 <label for="staff_nama"> End Active Card :</label>
                 <input type="text" class="form-control datepicker_class" 
-                id="" name="date_end" value="2019-09-01"
+                id="" name="date_end" value="2018-09-15"
                 placeholder="example : 2018-09-15" required="">
               </div>
 
@@ -198,7 +198,7 @@
 	            <div class="form-group">
 	              <label for="staff_nama"> End Active Card :</label>
 	              <input type="text" class="form-control datepicker_class" 
-	              id="end_card_new" name="date_end" value="2019-09-01"
+	              id="end_card_new" name="date_end" value="2019-09-15"
 	              placeholder="example : 2019-09-15" required="">
 	            </div>
 

@@ -71,7 +71,6 @@ class HomeController extends Controller
                     ->where('status_data',3)
                     ->get();
 
-            dd($akses_data_expiry);
             if(count($akses_data_expiry) > 0) {
                 $full_notification = array();
                 foreach($akses_data_expiry as $key=>$val) {
@@ -143,7 +142,8 @@ class HomeController extends Controller
                     'notification.is_read',
                     'akses_data.uuid',
                     'c_user.name AS request_name',
-                    'notification_status.name AS status_notify_name'
+                    'notification_status.name AS status_notify_name',
+                    'notification.created_at'
                     )
             ->orderby('notification.created_at','desc')
             ->paginate(20);

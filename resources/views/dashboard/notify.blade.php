@@ -14,6 +14,7 @@
                 <th> access card name </th>
                 <th> access card status </th>
                 <th> status </th>
+                <th> created at </th>
                 <th> check data </th>
               </tr>
             </thead>
@@ -40,6 +41,9 @@
                         </td>
                         <td>
                             {{$val->status_notify_name}} 
+                        </td>
+                        <td>
+                            {{$val->created_at}}
                         </td>
                         <td>
                             <a href="{{route('akses')}}?search=on&search_uuid={{$val->uuid}}">
