@@ -9,6 +9,6 @@ class Notification extends Model
     protected $table = "notification";
 
     protected $fillable = [
-        'user_id','category','notification_data_id', 'status_data_id','status_notify'
+        'user_id','category','data_id', 'status_data_id','notification_status_id'
     ];
 }

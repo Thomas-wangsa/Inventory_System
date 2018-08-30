@@ -20,7 +20,7 @@ use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Setting_List;
 use App\Http\Models\Setting_Data;
-use App\Http\Models\Notification_Status;
+use App\Http\Models\Sub_Notify;
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder

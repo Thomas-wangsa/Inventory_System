@@ -118,13 +118,17 @@ class HomeController extends Controller
                 'u.id','=','notification.user_id')
             ->join('divisi','divisi.id','=','notification.category')
             ->join('notification_status',
-                'notification_status.id','=','notification.status_notify')
+                'notification_status.id','=','notification.notification_status_id')
             ->where('notification.user_id',Auth::user()->id)
             ->select('u.name AS username',
+                    'divisi.name AS category',
+                    'notification.data_id',
+                    'notification.status_data_id',
+                    'notification.notification_status_id',
                     'notification.is_read',
-                    'notification_status.name AS status_notify_name',
                     'notification.created_at',
-                    'divisi.name AS divisi_name',
+                    'notification_status.name AS notification_status_name',
+                    // request name
                     DB::raw('case 
                         WHEN(divisi.id = 2 OR divisi.id = 3)
                             THEN (
@@ -133,56 +137,78 @@ class HomeController extends Controller
                                 INNER JOIN akses_data 
                                 ON akses_data.created_by = users.id
                                 INNER JOIN notification
-                                ON notification.notification_data_id = akses_data.id
+                                ON notification.data_id = akses_data.id
+                                WHERE akses_data.id = data_id
+                                AND notification.user_id = '.Auth::user()->id.'
                                 LIMIT 1
                             )
                         ELSE "NULL"
                         END AS request_name'
                         ),
+                    // data name
                     DB::raw('case 
                         WHEN(divisi.id = 2 OR divisi.id = 3)
                             THEN (
-                                SELECT name
+                                SELECT akses_data.name
                                 FROM akses_data 
                                 INNER JOIN notification
-                                ON notification.notification_data_id = akses_data.id
+                                ON notification.data_id = akses_data.id
+                                WHERE akses_data.id = data_id
+                                AND notification.user_id = '.Auth::user()->id.'
                                 LIMIT 1
                             )
                         ELSE "NULL"
                         END AS notification_data_name'
                         ),
+                    // status data name
                     DB::raw('case 
                         WHEN(divisi.id = 2 OR divisi.id = 3)
                             THEN (
-                                SELECT status_akses.name
+                                SELECT name 
                                 FROM status_akses
-                                INNER JOIN akses_data 
-                                ON akses_data.status_akses = status_akses.id
                                 INNER JOIN notification
-                                ON notification.notification_data_id = akses_data.id
-                                LIMIT 1
+                                ON notification.status_data_id = status_akses.id
+                                WHERE status_akses.id = notification_status_id
+                                AND notification.user_id = '.Auth::user()->id.'
+                                LIMIT 1 
                             )
                         ELSE "NULL"
-                        END AS status_data_id'
+                        END AS notification_status_data_name'
                         ),
+                    // status data color
                     DB::raw('case 
                         WHEN(divisi.id = 2 OR divisi.id = 3)
                             THEN (
-                                SELECT status_akses.color
+                                SELECT color 
                                 FROM status_akses
-                                INNER JOIN akses_data 
-                                ON akses_data.status_akses = status_akses.id
                                 INNER JOIN notification
-                                ON notification.notification_data_id = akses_data.id
+                                ON notification.notification_status_id = status_akses.id
+                                WHERE status_akses.id = notification_status_id
+                                AND notification.user_id = '.Auth::user()->id.'
+                                LIMIT 1 
+                            )
+                        ELSE "NULL"
+                        END AS notification_status_data_color'
+                        ),
+                    // uuid
+                    DB::raw('case 
+                        WHEN(divisi.id = 2 OR divisi.id = 3)
+                            THEN (
+                                SELECT akses_data.uuid
+                                FROM akses_data 
+                                INNER JOIN notification
+                                ON notification.data_id = akses_data.id
+                                WHERE akses_data.id = data_id
+                                AND notification.user_id = '.Auth::user()->id.'
                                 LIMIT 1
                             )
                         ELSE "NULL"
-                        END AS status_data_id_color'
+                        END AS notification_data_uuid'
                         )
                     )
             ->orderby('notification.created_at','desc')
             ->paginate(20);
-        //dd($data);
+        dd($data);
         // Update 
         notify::where('user_id',Auth::user()->id)
         ->where('is_read',0)
