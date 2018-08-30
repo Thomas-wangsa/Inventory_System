@@ -72,6 +72,7 @@ class HomeController extends Controller
                     ->where('status_data',3)
                     ->get();
 
+            //dd($akses_data_expiry);
             if(count($akses_data_expiry) > 0) {
                 $full_notification = array();
                 foreach($akses_data_expiry as $key=>$val) {
@@ -84,9 +85,9 @@ class HomeController extends Controller
                                 $data_notify = array(
                                 'user_id'           => $val_user,
                                 'category'          => 3,
-                                'notification_data_id'     => $val->id,
+                                'data_id'     => $val->id,
                                 'status_data_id'   => $val->status_akses,
-                                'status_notify'     => 3,
+                                'sub_notify_id'     => 3,
                                 'created_at'        => date('Y-m-d H:i:s')
 
                                 );

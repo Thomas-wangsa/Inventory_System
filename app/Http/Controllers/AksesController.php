@@ -552,7 +552,7 @@ class AksesController extends Controller
                 'category'          => $notify_category,
                 'data_id'     => $akses_data->id,
                 'status_data_id'   => $status_akses,
-                'notification_status_id'     => $notify_status,
+                'sub_notify_id'     => $notify_status,
                 );
 
                 notify::firstOrCreate($data_notify);

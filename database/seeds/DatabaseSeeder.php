@@ -198,7 +198,7 @@ class DatabaseSeeder extends Seeder
         );
 
         foreach($notification_status as $key=>$val) {
-            Notification_Status::firstOrCreate($val);
+            Sub_Notify::firstOrCreate($val);
         }
 
         $akses_role_array = array(
