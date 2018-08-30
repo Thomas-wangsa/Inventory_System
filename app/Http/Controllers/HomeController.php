@@ -82,8 +82,9 @@ class HomeController extends Controller
                             foreach($list_user_id as $key_user=>$val_user) {
                                 $data_notify = array(
                                 'user_id'           => $val_user,
-                                'akses_data_id'     => $val->id,
-                                'status_akses_id'   => $val->status_akses,
+                                'category'          => 3,
+                                'notification_data_id'     => $val->id,
+                                'status_data_id'   => $val->status_akses,
                                 'status_notify'     => 3,
                                 'created_at'        => date('Y-m-d H:i:s')
 
@@ -114,23 +115,15 @@ class HomeController extends Controller
     public function notify() {
         $data['notify'] = notify::join('users as u',
                 'u.id','=','notification.user_id')
-            ->join('akses_data',
-                'akses_data.id','=','notification.akses_data_id')
-            ->join('status_akses',
-                'status_akses.id','=','notification.status_akses_id')
-            ->join('users as c_user',
-                'c_user.id','=','akses_data.created_by')
+            ->join('divisi','divisi.id','=','notification.category')
             ->join('notification_status',
                 'notification_status.id','=','notification.status_notify')
             ->where('notification.user_id',Auth::user()->id)
-            ->select('u.name AS username','akses_data.name AS access_card_name',
-                    'status_akses.name AS status_akses_name',
-                    'status_akses.color AS status_akses_color',
+            ->select('u.name AS username',
                     'notification.is_read',
-                    'akses_data.uuid',
-                    'c_user.name AS request_name',
                     'notification_status.name AS status_notify_name',
-                    'notification.created_at'
+                    'notification.created_at',
+                    'divisi.name AS divisi_name'
                     )
             ->orderby('notification.created_at','desc')
             ->paginate(20);

@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
     	$divisi_array = array(
     		array("name"=>"administrator"),
             array("name"=>"pic"),
-            array("name"=>"akses"),
+            array("name"=>"access"),
     		array("name"=>"inventory")
     	);
 

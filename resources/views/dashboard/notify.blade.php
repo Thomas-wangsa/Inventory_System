@@ -11,9 +11,10 @@
               <tr>
                 <th> No </th>
                 <th> created by </th>
-                <th> access card name </th>
-                <th> access card status </th>
-                <th> status </th>
+                <th> category </th>
+                <th> notification data name </th>
+                <th>  status data id </th>
+                <th> status notification </th>
                 <th> created at </th>
                 <th> check data </th>
               </tr>
@@ -34,10 +35,11 @@
                             {{$val->request_name}} 
                         </td>
                         <td>
-                            {{$val->access_card_name}}
+                            {{$val->divisi_name}}
                         </td>
-                        <td style="color:{{$val->status_akses_color}}">
-                            {{$val->status_akses_name}} 
+                        <td style="">
+                        </td>
+                        <td>
                         </td>
                         <td>
                             {{$val->status_notify_name}} 
@@ -46,7 +48,7 @@
                             {{$val->created_at}}
                         </td>
                         <td>
-                            <a href="{{route('akses')}}?search=on&search_uuid={{$val->uuid}}">
+                            <a href="{{route('akses')}}?search=on&search_uuid=">
                                 <button class="btn btn-info">
                                     Cek Access Card
                                 </button>
