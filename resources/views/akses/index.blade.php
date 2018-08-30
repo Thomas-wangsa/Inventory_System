@@ -39,7 +39,7 @@
 			@if(in_array(1,$user_divisi) || in_array(3,$user_setting))
 			<div class="pull-left">
 				<div class="btn btn-primary" data-toggle="modal" data-target="#modal_new_vendor">
-					Add New Vendor List 
+					Add Vendor Category 
 				</div>
 			</div>
 			<div class="clearfix" style="margin-bottom: 10px"> </div>

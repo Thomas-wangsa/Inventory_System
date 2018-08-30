@@ -42,39 +42,8 @@ class InventoryController extends Controller
 
 
     public function index(Request $request) {
-        $request->session()->flash('alert-warning', 'Maaf fitur Inventory sedang di update');
-        return redirect('home');
-
-        $allow =array(3,4);
-
-        if(!in_array($this->credentials->divisi, $allow)) {
-            $request->session()->flash('alert-danger', 'Maaf anda tidak ada akses untuk fitur inventory');
-            return redirect('home');
-        }
-
-        switch($this->credentials->id_jabatan) {
-            case 1 : $execute = 0;break;
-            case 2 : $execute=1;break;
-            default : $execute=0;break;
-        }
-
-        $role = Inventory_Role::where('users_id',$this->credentials['id'])->first();
-
-
-        if($this->credentials['divisi'] == 4 ) {
-            $all_role = inventory_list::get();
-        } else {
-            $all_role = array($role->inventory_list_id);
-        }
         
-
-    	$data['inventory']      = Inventory_List::all();
-    	$data['data']           = Inventory_Data::GetDetailInventory($all_role)->paginate(5);
-        $data['credentials']    = $this->credentials;
-        $data['role']           = $role;
-        $data['status_inventory'] = Status_Inventory::all();
-        $data['setting']        = $this->setting;
-    	return view('inventory/index',compact('data'));
+    	return view('inventory/index');
     }
 
 
