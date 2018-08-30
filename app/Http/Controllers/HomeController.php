@@ -16,6 +16,7 @@ use App\Http\Models\Setting_Data;
 use App\Http\Models\Inventory_Data;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Models\Notification AS notify;
+use Illuminate\Support\Facades\DB;
 
 
 class HomeController extends Controller
@@ -123,11 +124,65 @@ class HomeController extends Controller
                     'notification.is_read',
                     'notification_status.name AS status_notify_name',
                     'notification.created_at',
-                    'divisi.name AS divisi_name'
+                    'divisi.name AS divisi_name',
+                    DB::raw('case 
+                        WHEN(divisi.id = 2 OR divisi.id = 3)
+                            THEN (
+                                SELECT users.name
+                                FROM users
+                                INNER JOIN akses_data 
+                                ON akses_data.created_by = users.id
+                                INNER JOIN notification
+                                ON notification.notification_data_id = akses_data.id
+                                LIMIT 1
+                            )
+                        ELSE "NULL"
+                        END AS request_name'
+                        ),
+                    DB::raw('case 
+                        WHEN(divisi.id = 2 OR divisi.id = 3)
+                            THEN (
+                                SELECT name
+                                FROM akses_data 
+                                INNER JOIN notification
+                                ON notification.notification_data_id = akses_data.id
+                                LIMIT 1
+                            )
+                        ELSE "NULL"
+                        END AS notification_data_name'
+                        ),
+                    DB::raw('case 
+                        WHEN(divisi.id = 2 OR divisi.id = 3)
+                            THEN (
+                                SELECT status_akses.name
+                                FROM status_akses
+                                INNER JOIN akses_data 
+                                ON akses_data.status_akses = status_akses.id
+                                INNER JOIN notification
+                                ON notification.notification_data_id = akses_data.id
+                                LIMIT 1
+                            )
+                        ELSE "NULL"
+                        END AS status_data_id'
+                        ),
+                    DB::raw('case 
+                        WHEN(divisi.id = 2 OR divisi.id = 3)
+                            THEN (
+                                SELECT status_akses.color
+                                FROM status_akses
+                                INNER JOIN akses_data 
+                                ON akses_data.status_akses = status_akses.id
+                                INNER JOIN notification
+                                ON notification.notification_data_id = akses_data.id
+                                LIMIT 1
+                            )
+                        ELSE "NULL"
+                        END AS status_data_id_color'
+                        )
                     )
             ->orderby('notification.created_at','desc')
             ->paginate(20);
-        
+        //dd($data);
         // Update 
         notify::where('user_id',Auth::user()->id)
         ->where('is_read',0)

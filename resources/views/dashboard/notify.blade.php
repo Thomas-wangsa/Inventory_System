@@ -37,9 +37,11 @@
                         <td>
                             {{$val->divisi_name}}
                         </td>
-                        <td style="">
-                        </td>
                         <td>
+                            {{$val->notification_data_name}}
+                        </td>
+                        <td style="color:{{$val->status_data_id_color}}">
+                            {{$val->status_data_id}}
                         </td>
                         <td>
                             {{$val->status_notify_name}} 
