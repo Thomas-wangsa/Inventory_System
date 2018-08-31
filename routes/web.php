@@ -72,7 +72,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 		// Akses
 		Route::get('/inventory','InventoryController@index')->name('inventory');
-
+		Route::post('/setting/add-inventory', 'InventoryController@add_inventory')->name('add_inventory');
 
 
 		// Admin
@@ -151,7 +151,6 @@ Route::group(['middleware' => ['auth']], function() {
 	
 
 	
-	Route::post('/setting/add-inventory', 'SettingController@add_inventory')->name('post_setting_add_inventory');
 	
 
 	// END

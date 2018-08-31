@@ -10,6 +10,6 @@ class Inventory_List extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'inventory_name', 'updated_by',
+        'inventory_name', 'updated_by','inventory_detail_name',
     ];
 }

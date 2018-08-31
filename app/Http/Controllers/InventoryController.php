@@ -28,21 +28,10 @@ class InventoryController extends Controller
 
     public function __construct() {
         $this->faker    = Faker::create();
-
-        // $this->middleware(function ($request, $next) {
-        //     $this->credentials = Users::GetRoleById(Auth::id())->first();
-        //     $this->setting     = Setting_Data::where('user_id',Auth::id())
-        //                             ->where('status',1)
-        //                             ->select('setting_list_id')
-        //                             ->pluck('setting_list_id')->all();
-        //     return $next($request);
-        // });
-        
     }
 
 
     public function index(Request $request) {
-        
     	return view('inventory/index');
     }
 
@@ -50,6 +39,31 @@ class InventoryController extends Controller
     public function map_location() {
         $data['credentials']    = $this->credentials;
         return view('inventory/map',compact('data'));
+    }
+
+    public function add_inventory(Request $request) {
+        $request->validate([
+            'inventory_name'  => 'required|max:30',
+            'inventory_detail_name' => 'max:50',
+        ]);
+
+        $data = array(
+        'inventory_name' => trim(strtolower($request->inventory_name)),
+        'inventory_detail_name'=>trim(strtolower($request->inventory_detail_name)),
+        'updated_by'=>Auth::user()->id
+        );
+
+        $count_exist = Inventory_List::where('inventory_name',$data['inventory_name'])->count();
+
+        if($count_exist > 0) {
+            $request->session()->flash('alert-danger', 'category already exists in system');
+            return redirect('inventory');
+        }
+
+
+        Inventory_List::firstOrCreate($data);
+        $request->session()->flash('alert-success', 'inventory category has been registered');
+        return redirect('inventory');
     }
 
     public function inventory_approval(Request $request) {

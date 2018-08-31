@@ -1,5 +1,5 @@
 <!-- Modal -->
-  <div class="modal fade" id="myModal1" role="dialog">
+  <div class="modal fade" id="modal_new_inventory" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->
@@ -11,22 +11,28 @@
           </h4>
         </div>
         <div class="modal-body">
-	  			<form method="POST" action="{{ route('post_setting_add_inventory') }}">
+	  			<form method="POST" action="{{ route('add_inventory') }}">
 				  {{ csrf_field() }}
-				  <input type="hidden" name="updated_by" value="{{$data['credentials']->id}}">
 				  <div class="form-group">
-				    <label for="staff_nama"> Nama List Inventory :</label>
-				    <input type="text" class="form-control" id="nama" name="inventory" required="">
-				  </div>
-				  
-				 
+            <label for="staff_nama"> Inventory Category :</label>
+            <input type="text" class="form-control" id="nama" required="" 
+            name="inventory_name" value="" placeholder="ex : cctv management">
+          </div>
+          <div class="form-group">
+            <label for="staff_nama"> Additional information :</label>
+            <input type="text" class="form-control" id="nama" required="" 
+            name="inventory_detail_name" value="" 
+            placeholder="Optional">
+          </div>
 				  <button type="submit" class="btn btn-block btn-warning"> 
-            Daftarkan Inventory 
+            Register Inventory Category 
           </button>
 				</form>
-        	</div>
+        </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">
+            Close
+          </button>
         </div>
       </div>
       

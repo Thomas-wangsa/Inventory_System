@@ -138,7 +138,7 @@
 		</div> <!--scrolme-->
 		
 	</div>
-  	
+  	@include('inventory.modal_add')
 	
 
 
