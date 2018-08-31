@@ -30,7 +30,10 @@ class SettingController extends Controller {
         return redirect('setting/show-background');    
     }
 
-    public function report(Request $request) {
+    public function inventory_report(Request $request) {
+        echo "invntory report";
+    }
+    public function access_report(Request $request) {
         $pic_division = 2;
         $setting_list = 5;
         $user_divisi = \Request::get('user_divisi');

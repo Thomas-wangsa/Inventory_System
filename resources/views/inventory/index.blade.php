@@ -44,9 +44,16 @@
 			</div>
 			@endif
 			@if(in_array(1,$user_divisi) || in_array(2,$user_setting))
-			<div class="pull-left">
+			<div class="pull-left" style="margin-right: 5px">
 				<div class="btn btn-primary">
 					Upload Excel
+				</div>
+			</div>
+			@endif
+			@if(in_array(1,$user_divisi) || in_array(7,$user_setting))
+			<div class="pull-left">
+				<div class="btn btn-primary">
+					Add Floor Location
 				</div>
 			</div>
 			@endif

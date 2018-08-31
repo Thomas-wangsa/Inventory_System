@@ -67,7 +67,7 @@
             </a>
         </div>
         @endif
-        @if(in_array(1,$user_divisi))
+        @if(in_array(1,$user_divisi) || in_array(4,$user_divisi))
         <div class="menu_block">
             <a href="{{route('inventory')}}">
                 <div class="sub_menu_block">
@@ -91,7 +91,7 @@
             </a>
         </div>
         @endif
-        @if(in_array(1,$user_divisi))
+        @if(in_array(1,$user_divisi) || in_array(1,$user_setting))
         <div class="menu_block">
             <a href="{{route('route_setting')}}">
                 <div class="sub_menu_block">
@@ -106,14 +106,32 @@
         @if(in_array(1,$user_divisi)
             ||
             in_array(2,$user_divisi)
+            ||
+            in_array(5,$user_setting)
             )
         <div class="menu_block">
-            <a href="{{route('route_report')}}">
+            <a href="{{route('access_report')}}">
                 <div class="sub_menu_block">
                     <div class="icon_block">
                         <span class="glyphicon glyphicon-file">
                         </span> &nbsp;
-                        <h4> Report Page </h4> 
+                        <h4> Access Report Page </h4> 
+                    </div>                
+                </div>
+            </a>
+        </div>
+        @endif
+        @if(in_array(1,$user_divisi)
+            ||
+            in_array(4,$user_divisi)
+            )
+        <div class="menu_block">
+            <a href="{{route('inventory_report')}}">
+                <div class="sub_menu_block">
+                    <div class="icon_block">
+                        <span class="glyphicon glyphicon-file">
+                        </span> &nbsp;
+                        <h4> Inventory Report Page </h4> 
                     </div>                
                 </div>
             </a>

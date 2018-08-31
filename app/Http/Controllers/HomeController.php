@@ -114,102 +114,55 @@ class HomeController extends Controller
         return view('dashboard/dashboard_bck');        
     }
 
-    public function notify() {
+    public function notify(Request $request) {
         $data['notify'] = notify::join('users as u',
                 'u.id','=','notification.user_id')
             ->join('divisi','divisi.id','=','notification.category')
-            ->join('notification_status',
-                'notification_status.id','=','notification.notification_status_id')
+            ->join('sub_notify',
+                'sub_notify.id','=','notification.sub_notify_id')
             ->where('notification.user_id',Auth::user()->id)
-            ->select('u.name AS username',
-                    'divisi.name AS category',
-                    'notification.data_id',
-                    'notification.status_data_id',
-                    'notification.notification_status_id',
-                    'notification.is_read',
-                    'notification.created_at',
-                    'notification_status.name AS notification_status_name',
-                    // request name
-                    DB::raw('case 
-                        WHEN(divisi.id = 2 OR divisi.id = 3)
-                            THEN (
-                                SELECT users.name
-                                FROM users
-                                INNER JOIN akses_data 
-                                ON akses_data.created_by = users.id
-                                INNER JOIN notification
-                                ON notification.data_id = akses_data.id
-                                WHERE akses_data.id = data_id
-                                AND notification.user_id = '.Auth::user()->id.'
-                                LIMIT 1
-                            )
-                        ELSE "NULL"
-                        END AS request_name'
-                        ),
-                    // data name
-                    DB::raw('case 
-                        WHEN(divisi.id = 2 OR divisi.id = 3)
-                            THEN (
-                                SELECT akses_data.name
-                                FROM akses_data 
-                                INNER JOIN notification
-                                ON notification.data_id = akses_data.id
-                                WHERE akses_data.id = data_id
-                                AND notification.user_id = '.Auth::user()->id.'
-                                LIMIT 1
-                            )
-                        ELSE "NULL"
-                        END AS notification_data_name'
-                        ),
-                    // status data name
-                    DB::raw('case 
-                        WHEN(divisi.id = 2 OR divisi.id = 3)
-                            THEN (
-                                SELECT name 
-                                FROM status_akses
-                                INNER JOIN notification
-                                ON notification.status_data_id = status_akses.id
-                                WHERE status_akses.id = notification_status_id
-                                AND notification.user_id = '.Auth::user()->id.'
-                                LIMIT 1 
-                            )
-                        ELSE "NULL"
-                        END AS notification_status_data_name'
-                        ),
-                    // status data color
-                    DB::raw('case 
-                        WHEN(divisi.id = 2 OR divisi.id = 3)
-                            THEN (
-                                SELECT color 
-                                FROM status_akses
-                                INNER JOIN notification
-                                ON notification.notification_status_id = status_akses.id
-                                WHERE status_akses.id = notification_status_id
-                                AND notification.user_id = '.Auth::user()->id.'
-                                LIMIT 1 
-                            )
-                        ELSE "NULL"
-                        END AS notification_status_data_color'
-                        ),
-                    // uuid
-                    DB::raw('case 
-                        WHEN(divisi.id = 2 OR divisi.id = 3)
-                            THEN (
-                                SELECT akses_data.uuid
-                                FROM akses_data 
-                                INNER JOIN notification
-                                ON notification.data_id = akses_data.id
-                                WHERE akses_data.id = data_id
-                                AND notification.user_id = '.Auth::user()->id.'
-                                LIMIT 1
-                            )
-                        ELSE "NULL"
-                        END AS notification_data_uuid'
-                        )
+            ->select(
+                    'notification.*',
+                    'u.name AS username',
+                    'divisi.name AS divisi_name',
+                    'sub_notify.name AS sub_notify_name'
                     )
             ->orderby('notification.created_at','desc')
             ->paginate(20);
-        dd($data);
+
+        $data['info'] = array();
+
+
+        foreach($data['notify'] as $key=>$val) {
+            if($val->category == 2 || $val->category == 3) {
+                $data['info'][$key] = notify::join('akses_data',
+                'akses_data.id','=','notification.data_id')
+                ->join('status_akses',
+                'status_akses.id','=','notification.status_data_id')
+                ->join('users',
+                'users.id','=','akses_data.created_by')
+                ->where('notification.data_id',$val->data_id)
+                ->where('notification.user_id',Auth::user()->id)
+                ->where('notification.status_data_id',$val->status_data_id)
+                ->select(
+                    'users.name AS request_name',
+                    'akses_data.name AS notification_data_name',
+                    'status_akses.name AS notification_status_data_name',
+                    'status_akses.color AS notification_status_data_color',
+                    'akses_data.uuid AS notification_data_uuid'
+                )
+                ->first();
+
+
+            } else if ($val->category == 4) {
+                $data['info'][$key] = array();
+            } else {
+                $request->session()->flash('alert-danger', 'Category not found');
+                return redirect('home');
+            }
+        }
+        
+        //dd($data);
         // Update 
         notify::where('user_id',Auth::user()->id)
         ->where('is_read',0)

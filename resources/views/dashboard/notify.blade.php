@@ -32,25 +32,25 @@
                             * $data['notify']->perpage() + $key + 1 }}
                         </td>
                         <td>
-                            {{$val->request_name}}
+                            {{$data['info'][$key]->request_name}}
                         </td>
                         <td>
-                            {{$val->category}}
+                            {{$val->divisi_name}}
                         </td>
                         <td>
-                            {{$val->notification_data_name}}
+                            {{$data['info'][$key]->notification_data_name}}
                         </td>
-                        <td style="color:{{$val->notification_status_data_color}}">
-                            {{$val->notification_status_data_name}}
+                        <td style="color:{{$data['info'][$key]->notification_status_data_color}}">
+                            {{$data['info'][$key]->notification_status_data_name}}
                         </td>
                         <td >
-                            {{$val->notification_status_name}}
+                            {{$val->sub_notify_name}}
                         </td>
                         <td>
                             {{$val->created_at}}
                         </td>
                         <td>
-                            <a href="{{route('akses')}}?search=on&search_uuid={{$val->notification_data_uuid}}">
+                            <a href="{{route('akses')}}?search=on&search_uuid={{$data['info'][$key]->notification_data_uuid}}">
                                 <button class="btn btn-info">
                                     Cek Access Card
                                 </button>

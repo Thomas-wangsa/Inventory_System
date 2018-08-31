@@ -26,8 +26,10 @@
       MAP LOCATION
     @elseif(Route::current()->getName() == 'route_setting')
       SETTING
-    @elseif(Route::current()->getName() == 'route_report')
-      REPORT
+    @elseif(Route::current()->getName() == 'access_report')
+      ACCESS REPORT
+    @elseif(Route::current()->getName() == 'inventory_report')
+      INVENTORY REPORT
     @else 
       ERROR
     @endif

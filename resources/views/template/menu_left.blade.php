@@ -89,7 +89,7 @@
     			</a>
     		</div>
             @endif
-            @if(in_array(1,$user_divisi))
+            @if(in_array(1,$user_divisi) || in_array(4,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('inventory')}}"> 
 	    			<span class="glyphicon glyphicon-th-large">
@@ -107,7 +107,10 @@
     			</a>
     		</div>
             @endif
-            @if(in_array(1,$user_divisi))
+            @if(in_array(1,$user_divisi)
+                ||
+                in_array(1,$user_setting)
+                )
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('route_setting')}}"> 
 	    			<span class="glyphicon glyphicon-cog">
@@ -119,14 +122,28 @@
             @if(in_array(1,$user_divisi)
                 || 
                 in_array(2,$user_divisi)
+                ||
+                in_array(5,$user_setting)
                 )
     		<div class="sub_menu_options_icon_left">
-    			<a href="{{route('route_report')}}"> 
+    			<a href="{{route('access_report')}}"> 
 	    			<span class="glyphicon glyphicon-file">
 	    			</span> &nbsp;
-	    			Report
+	    			Access Report
     			</a>
     		</div>
+            @endif
+            @if(in_array(1,$user_divisi)
+                || 
+                in_array(4,$user_divisi)
+                )
+            <div class="sub_menu_options_icon_left">
+                <a href="{{route('inventory_report')}}"> 
+                    <span class="glyphicon glyphicon-file">
+                    </span> &nbsp;
+                    Inventory Report
+                </a>
+            </div>
             @endif
     	</div>
     </div> <!--menu_icon_left-->
