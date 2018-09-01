@@ -9,6 +9,16 @@
 /*		display: none
 */	}
 </style>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $(".datepicker_class" ).datepicker({
+      dateFormat: 'yy-mm-dd' ,
+      showButtonPanel: true
+    });
+  });
+</script>
 	<div style="padding: 0 30px;margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
@@ -120,7 +130,7 @@
 			</div>
 			<div class="pull-right">
 				@if(in_array(1,$user_divisi) || $data['insert_inventory_data'])
-				<button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal_all">
+				<button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal_new">
 					Add New Inventory
 				</button>
 				@endif
@@ -200,7 +210,7 @@
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-warning"
-		                    			onclick="edit('{{$val->uuid}}')" 
+		                    			onclick='edit("{{$val->uuid}}")' 
 		                    			>
 		                    				Edit Inventory
 		                    			</button>
@@ -298,6 +308,8 @@
 	</div>
   	@include('inventory.modal_add')
   	@include('inventory.modal_upload')
+  	@include('inventory.modal_new')
+  	@include('inventory.modal_edit')
 	
 
 
@@ -319,6 +331,8 @@
 			window.location = url+uuid+url_status+status;
 		}
 	}
+
+
 
 
 	function reset_filter() {

@@ -45,6 +45,7 @@ class AjaxController extends Controller
         $data = Users::GetDetailByUUID($request->uuid)->first();
         if(count($data) < 1) {
             $response['message'] = "User ID not found";
+            return json_encode($response);
         }
 
         $response['data'] = Setting_Role::join('setting_list','setting_list.id','=','setting_role.setting_list_id')

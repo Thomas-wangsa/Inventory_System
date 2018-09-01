@@ -76,6 +76,12 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/inventory/upload-excel', 'InventoryController@upload_excel')->name('upload_excel');
 		Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
 		Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
+		Route::post('/inventory/inventory_insert_data', 'InventoryController@inventory_insert_data')->name('inventory_insert_data');
+		Route::post('/inventory/inventory_get_info_by_uuid', 'InventoryController@inventory_get_info_by_uuid')->name('inventory_get_info_by_uuid');
+		Route::post('/inventory/inventory_update_data', 'InventoryController@inventory_update_data')->name('inventory_update_data');
+
+
+
 		// Admin
 		Route::get('/admin','AdminController@index')->name('route_admin');
 		Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');

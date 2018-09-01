@@ -17,6 +17,7 @@ use App\Http\Models\Divisi;
 use App\Notifications\Inventory_Notification;
 use Illuminate\Support\Facades\Input;
 use Excel;
+use Illuminate\Support\Facades\DB;
 
 
 use Faker\Factory as Faker;
@@ -164,9 +165,136 @@ class InventoryController extends Controller
 
         $data['inventory_data']     = $inventory_data;
         $data['conditional_head']   = $conditional_head;
+        $data['faker']              = $this->faker;
     	return view('inventory/index',compact('data'));
     }
 
+    public function inventory_insert_data(Request $request) {
+        $request->validate([
+            'inventory_list_id'=>'required'
+        ]);
+
+        $data = array(
+            'inventory_list_id' => $request->inventory_list_id,
+            'status_inventory'=>1,
+            'created_by'=>Auth::user()->id,
+            'updated_by'=>Auth::user()->id,
+
+
+            'tanggal_update_data' => $request->tanggal_update_data,
+            'kategori' => $request->kategori,
+            'kode_gambar' => $request->kode_gambar,
+            'dvr' => $request->dvr,
+            'lokasi_site' => $request->lokasi_site,
+
+            'kode_lokasi' => $request->kode_lokasi,
+            'jenis_barang' => $request->jenis_barang,
+            'merk' => $request->merk,
+            'tipe' => $request->tipe,
+            'model' => $request->model,
+
+            'serial_number' => $request->serial_number,
+            'psu_adaptor' => $request->psu_adaptor,
+            'tahun_pembuatan' => $request->tahun_pembuatan,
+            'tahun_pengadaan' => $request->tahun_pengadaan,
+            'kondisi' => $request->kondisi,
+
+
+            'deskripsi' => $request->deskripsi,
+            'asuransi' => $request->asuransi,
+            'lampiran' => $request->lampiran,
+            'tanggal_retired' => $request->tanggal_retired,
+            'po' => $request->po,
+
+            'qty' => $request->qty,
+            'keterangan' => $request->keterangan,
+
+            'uuid'  => $this->faker->uuid,
+            'created_at'=> date('Y-m-d H:i:s'),
+            'updated_at'=> date('Y-m-d H:i:s')
+        );
+
+        DB::table('inventory_data')->insert($data);
+        
+        $request->session()->flash('alert-success', 'new inventory already registered');
+        return redirect($this->redirectTo."?search=on&search_uuid=".$data['uuid']);
+    }
+
+
+
+    public function inventory_get_info_by_uuid(Request $request) {
+        $response = array();
+        $response['status'] = false;
+
+        $data = Inventory_Data::join('inventory_list',
+                'inventory_list.id','=','inventory_data.inventory_list_id')
+                ->where('uuid',$request->uuid)
+                ->select('inventory_data.*','inventory_list.inventory_name AS inventory_list_name')
+                ->first();
+        if(count($data) < 1) {
+            $response['message'] = "Inventory data ID not found";
+            return json_encode($response);
+        }
+
+        $response['status'] = true;
+        $response['data'] = $data; 
+        return json_encode($response);
+    }
+
+    public function inventory_update_data(Request $request) {
+        $request->validate([
+                'uuid' => 'required',
+        ]);
+
+        $inventory_data = Inventory_Data::where('status_data',1)
+                ->where('uuid',$request->uuid)
+                ->first();
+
+        if(count($inventory_data) < 1 ) {
+            $request->session()->flash('alert-danger', 'credentials not found');
+            return redirect($this->redirectTo);
+        }
+
+        $inventory_data->tanggal_update_data = $request->tanggal_update_data;
+        $inventory_data->kategori = $request->kategori;
+        $inventory_data->kode_gambar = $request->kode_gambar;
+        $inventory_data->dvr = $request->dvr;
+        $inventory_data->lokasi_site = $request->lokasi_site;
+
+        $inventory_data->kode_lokasi = $request->kode_lokasi;
+        $inventory_data->jenis_barang = $request->jenis_barang;
+        $inventory_data->merk = $request->merk;
+        $inventory_data->tipe = $request->tipe;
+        $inventory_data->model = $request->model;
+
+
+        $inventory_data->serial_number = $request->serial_number;
+        $inventory_data->psu_adaptor = $request->psu_adaptor;
+        $inventory_data->tahun_pembuatan = $request->tahun_pembuatan;
+        $inventory_data->tahun_pengadaan = $request->tahun_pengadaan;
+        $inventory_data->kondisi = $request->kondisi;
+
+
+        $inventory_data->deskripsi = $request->deskripsi;
+        $inventory_data->asuransi = $request->asuransi;
+        $inventory_data->lampiran = $request->lampiran;
+        $inventory_data->tanggal_retired = $request->tanggal_retired;
+        $inventory_data->po = $request->po;
+
+        $inventory_data->qty = $request->qty;
+        $inventory_data->keterangan = $request->keterangan;
+        $inventory_data->updated_by     = Auth::user()->id;
+
+        $bool = $inventory_data->save();
+
+        if(!$bool) {
+            $request->session()->flash('alert-danger', 'Update Failed');
+        } else {
+            $request->session()->flash('alert-success', 'Update Success');
+        }
+
+        return redirect($this->redirectTo."?search=on&search_uuid=".$inventory_data->uuid);
+    }
 
     public function map_location() {
         $data['credentials']    = $this->credentials;
