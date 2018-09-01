@@ -137,7 +137,7 @@
 			      		Inventory
 			      		Category 
 			      	</th>
-			        <th> DVR </th>
+			        <th> Lokasi Site </th>
 			        <th> Qty </th>
 			        <th> Created By </th>
 			        <th> Status </th>
@@ -162,7 +162,7 @@
 				    			{{$val->inventory_list_name}}
 				    		</td>
 				    		<td>
-				    			{{$val->inventory_data_dvr}}
+				    			{{$val->lokasi_site}}
 				    		</td>
 				    		<td>
 				    			{{$val->inventory_data_qty}}

@@ -145,6 +145,7 @@ class InventoryController extends Controller
                 'c_users.name AS users_created_by',
                 'inventory_data.inventory_list_id',
                 'inventory_data.dvr AS inventory_data_dvr',
+                'inventory_data.lokasi_site',
                 'inventory_data.qty AS inventory_data_qty',
                 'inventory_data.status_inventory AS inventory_data_status',
                 'inventory_data.comment',
