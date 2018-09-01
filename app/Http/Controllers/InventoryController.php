@@ -27,6 +27,7 @@ class InventoryController extends Controller
 	protected $redirectTo = 'inventory';
     protected $credentials;
     protected $faker;
+    protected $admin = 1;
 
     public function __construct() {
         $this->faker    = Faker::create();
@@ -34,7 +35,48 @@ class InventoryController extends Controller
 
 
     public function index(Request $request) {
-    	return view('inventory/index');
+        $user_divisi = \Request::get('user_divisi');
+        $restrict_divisi_inventory = 4;
+        $allow = false;
+        if(
+            in_array($this->admin,$user_divisi)
+            ||
+            in_array($restrict_divisi_inventory,$user_divisi)
+            ) 
+        {
+            $allow = true;
+        }
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Sorry you dont have authority to inventory page');
+            return redirect('home');
+        }
+
+        $data = array();
+
+        if(in_array($this->admin,$user_divisi)) {
+            $data['inventory_list_id'] = Inventory_List::all();
+        } else {
+            $roles = Users_Role::join('inventory_role',
+                    'inventory_role.id','=','users_role.jabatan')
+                    ->where('users_role.divisi','=',4)
+                    ->where('users_role.user_id','=',Auth::user()->id)
+                    ->where('inventory_role.user_id','=',Auth::user()->id)
+                    ->pluck('inventory_list_id')
+                    ->toArray();
+            //dd(count($roles));
+            if(count($roles) < 1) {
+                $request->session()->flash('alert-danger', 'Sorry you dont have roles to inventory page');
+                return redirect('home');
+            }
+
+            $data['inventory_list_id'] = Inventory_List::whereIn('id',$roles)
+                                    ->get();
+        }
+
+
+        // dd($data);
+    	return view('inventory/index',compact('data'));
     }
 
 
@@ -48,8 +90,10 @@ class InventoryController extends Controller
         $allow = false;
         $request->validate([
             'excel_file' => 'required|max:10000',
+            'inventory_list_id'=>'required'
         ]);
 
+        $file_name = $request->excel_file->getClientOriginalName();
         if(
             $request->excel_file->getClientOriginalExtension() == 'xls' 
             ||

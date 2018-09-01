@@ -179,7 +179,6 @@ class HomeController extends Controller
 
 
     public function ganti_foto(Request $request) {
-        dd($request);
         $request->validate([
         'background' => 'required|image|mimes:jpeg,png,jpg|max:550',
         ]);
