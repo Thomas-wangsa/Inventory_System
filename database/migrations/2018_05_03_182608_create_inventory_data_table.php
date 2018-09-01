@@ -22,7 +22,6 @@ class CreateInventoryDataTable extends Migration
             $table->unsignedInteger('updated_by');
             
             $table->string('file_name_upload');
-            $table->string('title_upload');
 
             $table->string('tanggal_update_data')->nullable();
             $table->string('kategori')->nullable();

@@ -93,7 +93,7 @@ class InventoryController extends Controller
             'inventory_list_id'=>'required'
         ]);
 
-        $file_name = $request->excel_file->getClientOriginalName();
+        
         if(
             $request->excel_file->getClientOriginalExtension() == 'xls' 
             ||
@@ -114,9 +114,11 @@ class InventoryController extends Controller
             $data = Excel::load($path, function($reader) {
             })->get();
             if(!empty($data) && $data->count()){
-                dd($data);
+                $file_name = $request->excel_file->getClientOriginalName();
                 foreach ($data as $key => $value) {
-                    $insert[] = ['title' => $value->title, 'description' => $value->description];
+                    echo $value['tanggal_update_data'];
+                    dd($value);
+                    // $insert[] = ['title' => $value->title, 'description' => $value->description];
                 }
                 if(!empty($insert)){
                     DB::table('items')->insert($insert);
