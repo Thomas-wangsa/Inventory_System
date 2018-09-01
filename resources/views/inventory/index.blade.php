@@ -113,11 +113,11 @@
 			  	</form>
 			</div>
 			<div class="pull-right">
-
-
+				@if(in_array(1,$user_divisi) || $data['insert_inventory_data'])
 				<button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal_all">
 					Add New Inventory
 				</button>
+				@endif
 			</div>
 			<div class="clearfix"> </div>
 
@@ -132,6 +132,7 @@
 			      		Category 
 			      	</th>
 			        <th> DVR </th>
+			        <th> Qty </th>
 			        <th> Created By </th>
 			        <th> Status </th>
 			        <th> Action </th>
@@ -158,12 +159,59 @@
 				    			{{$val->inventory_data_dvr}}
 				    		</td>
 				    		<td>
+				    			{{$val->inventory_data_qty}}
+				    		</td>
+				    		<td>
 				    			{{$val->users_created_by}}
 				    		</td>
 				    		<td style="color:{{$val->status_inventory_color}}">
 				    			{{$val->status_inventory_name}}
 				    		</td>
 				    		<td>
+				    			@switch($val->inventory_data_status)
+				    			@case("1")
+				    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info()" 
+		                    			>
+		                    				Info Inventory
+		                    			</button>
+		                    			<button
+		                    			class="btn btn-success"
+		                    			onclick="set_location()"
+		                    			>
+		                    				Set Location
+		                    			</button>
+		                    			@if(in_array(1,$user_divisi)
+		                    			|| $data['conditional_head'][$key]
+		                    			)
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve()" 
+		                    			>
+		                    				Approve Inventory
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit()" 
+		                    			>
+		                    				Edit Inventory
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="reject()" 
+		                    			>
+		                    				Reject Inventory
+		                    			</button>
+		                    			@endif
+		                    		</div>
+				    				@break
+				    			@default
+				    				-
+				    				@break
+
+				    			@endswitch
 				    		</td>
 				    	</tr>
 				    	@endforeach

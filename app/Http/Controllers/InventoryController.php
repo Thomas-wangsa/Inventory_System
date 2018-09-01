@@ -53,9 +53,25 @@ class InventoryController extends Controller
         }
 
         $data = array();
+        $data['insert_inventory_data'] = false;
 
+        //Check Inventory Data
+        $count_level_staff = Users_Role::join('inventory_role',
+                'inventory_role.id','=','users_role.jabatan')
+                ->where('users_role.divisi',$restrict_divisi_inventory)
+                ->where('users_role.user_id',Auth::user()->id)
+                ->where('inventory_role.user_id',Auth::user()->id)
+                ->where('inventory_role.inventory_level_id',1)
+                ->count();
+        //dd($count_level_staff);
+        if($count_level_staff > 0) {
+            $data['insert_inventory_data'] = true;
+        }
+
+        // for search status inventory
         $data['search_status'] = Status_Inventory::all();
 
+        // inventory list auth
         if(in_array($this->admin,$user_divisi)) {
             $data['inventory_list_id'] = Inventory_List::all();
         } else {
@@ -76,7 +92,7 @@ class InventoryController extends Controller
                                     ->get();
         }
 
-
+        // For the data
         $inventory_data = Inventory_Data::join('inventory_list',
                     'inventory_list.id','=','inventory_data.inventory_list_id')
                     ->join('status_inventory',
@@ -86,12 +102,23 @@ class InventoryController extends Controller
                     ->join('users AS u_users',
                     'u_users.id','=','inventory_data.updated_by');
 
-        if(!in_array($this->admin,$user_divisi)) {      
+        if(!in_array($this->admin,$user_divisi)) {
+
+            $head_role_inventory = Users_Role::join('inventory_role',
+                'inventory_role.id','=','users_role.jabatan')
+                ->where('users_role.divisi',$restrict_divisi_inventory)
+                ->where('users_role.user_id',Auth::user()->id)
+                ->where('inventory_role.user_id',Auth::user()->id)
+                ->where('inventory_role.inventory_level_id',2)
+                ->pluck('inventory_role.inventory_list_id')
+                ->toArray();
+
+
             $inventory_list_users = Users_Role::join('inventory_role',
                         'inventory_role.id','=','users_role.jabatan')
                         ->join('inventory_list',
                         'inventory_list.id','=','inventory_role.inventory_list_id')
-                        ->where('users_role.divisi','=','4')
+                        ->where('users_role.divisi',$restrict_divisi_inventory)
                         ->where('users_role.user_id','=',Auth::user()->id)
                         ->where('inventory_role.user_id','=',Auth::user()->id)
                         ->pluck('inventory_list.id')->toArray();
@@ -101,19 +128,29 @@ class InventoryController extends Controller
 
 
         $inventory_data = $inventory_data->select(
-                        'inventory_list.inventory_name AS inventory_list_name',
-                        'status_inventory.name AS status_inventory_name',
-                        'status_inventory.color AS status_inventory_color',
-                        'inventory_data.dvr AS inventory_data_dvr',
-                        'c_users.name AS users_created_by'
-                    )
-                    ->orderBy('inventory_data.created_at','desc')
-                    ->paginate(10);
+                'inventory_list.inventory_name AS inventory_list_name',
+                'status_inventory.name AS status_inventory_name',
+                'status_inventory.color AS status_inventory_color',
+                'c_users.name AS users_created_by',
+                'inventory_data.inventory_list_id',
+                'inventory_data.dvr AS inventory_data_dvr',
+                'inventory_data.qty AS inventory_data_qty',
+                'inventory_data.status_inventory AS inventory_data_status',
+                'inventory_data.uuid'
+            )
+            ->orderBy('inventory_data.created_at','desc')
+            ->paginate(10);
 
+        $conditional_head = array();
+        foreach($inventory_data as $key=>$val) {
+            $conditional_head[$key] = false;
+            if(in_array($val->inventory_list_id,$head_role_inventory)) {
+                $conditional_head[$key] = true;
+            }
+        }
 
-        $data['inventory_data'] = $inventory_data;
-
-        // dd($data);
+        $data['inventory_data']     = $inventory_data;
+        $data['conditional_head']   = $conditional_head;
     	return view('inventory/index',compact('data'));
     }
 

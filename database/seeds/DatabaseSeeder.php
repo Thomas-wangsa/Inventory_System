@@ -355,20 +355,20 @@ class DatabaseSeeder extends Seeder
         }
 
         $status_akses_array = array(
-            array("name"=>"Pending Sponsor","color"=>"#FC7206"),
-            array("name"=>"Pending Staff Pendaftaran","color"=>"#334703"),
-            array("name"=>"Pending Staff Pencetakan","color"=>"#057242"),
-            array("name"=>"Pending Manager Pencetakan","color"=>"#034657"),
-            array("name"=>"Pending Staff Pengaktifan","color"=>"#385EE1"),
-            array("name"=>"Pending Manager Pengaktifan","color"=>"#9618D1"),
-            array("name"=>"Access Card is Active","color"=>"#0000FF"),
-            array("name"=>"Rejected By Sponsor","color"=>"#FF0000"),
-            array("name"=>"Rejected By Staff Pendaftaran","color"=>"#FF0000"),
-            array("name"=>"Rejected By Staff Pencetakan","color"=>"#FF0000"),
-            array("name"=>"Rejected By Manager Pencetakan","color"=>"#FF0000"),
-            array("name"=>"Rejected By Staff Pengaktifan","color"=>"#FF0000"),
-            array("name"=>"Rejected By Manager Pengaktifan","color"=>"#FF0000"),
-            array("name"=>"Access Card is Expired","color"=>"#FF0000"),
+            array("name"=>"pending sponsor","color"=>"#FC7206"),
+            array("name"=>"pending staff pendaftaran","color"=>"#334703"),
+            array("name"=>"pending staff pencetakan","color"=>"#057242"),
+            array("name"=>"pending manager pencetakan","color"=>"#034657"),
+            array("name"=>"pending staff pengaktifan","color"=>"#385EE1"),
+            array("name"=>"pending manager pengaktifan","color"=>"#9618D1"),
+            array("name"=>"access card is active","color"=>"#0000FF"),
+            array("name"=>"rejected by sponsor","color"=>"#FF0000"),
+            array("name"=>"rejected by staff pendaftaran","color"=>"#FF0000"),
+            array("name"=>"rejected by staff pencetakan","color"=>"#FF0000"),
+            array("name"=>"rejected by manager pencetakan","color"=>"#FF0000"),
+            array("name"=>"rejected by staff pengaktifan","color"=>"#FF0000"),
+            array("name"=>"rejected by manager pengaktifan","color"=>"#FF0000"),
+            array("name"=>"access card is expired","color"=>"#FF0000"),
         );
 
         foreach ($status_akses_array as $key => $value) {
@@ -376,12 +376,12 @@ class DatabaseSeeder extends Seeder
         }
 
         
-
-
         $status_inventory_array = array(
-            array("name"=>"Pending Head","color"=>"#FFA500"),
-            array("name"=>"Inventory is Active","color"=>"#0000FF"),
-            array("name"=>"Rejected by Head","color"=>"#FF0000"),
+            array("name"=>"pending head inventory","color"=>"#FFA500"),
+            array("name"=>"pending administrator","color"=>"#9618D1"),
+            array("name"=>"inventory is active","color"=>"#0000FF"),
+            array("name"=>"rejected by head inventory","color"=>"#FF0000"),
+            array("name"=>"rejected by administrator","color"=>"#FF0000"),
         );
 
         foreach ($status_inventory_array as $key => $value) {
