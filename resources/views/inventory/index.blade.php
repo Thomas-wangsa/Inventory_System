@@ -78,7 +78,9 @@
 					<div class="form-group">
 				      	<select class="form-control" name="search_filter">
 				      		<option value=""> Filter  </option>
-				 
+				 			@foreach($data['search_status'] as $val)
+				 			<option value="{{$val->id}}"> {{$val->name}}</option>
+				 			@endforeach
 				      	</select>
 				  	</div>
 
@@ -125,20 +127,61 @@
 			    <thead>
 			      <tr>
 			      	<th> No </th>
-			      	<th> Name </th>
-			        <th > Email </th>
-			        <th > NIK </th>
-			        <th > No Access Card </th>
+			      	<th> 
+			      		Inventory
+			      		Category 
+			      	</th>
+			        <th> DVR </th>
+			        <th> Created By </th>
 			        <th> Status </th>
 			        <th> Action </th>
 			      </tr>
 			    </thead>
 			    <tbody>
-				    
+				    @if(count($data['inventory_data']) < 1)
+				    <tr>
+				    	<td colspan="10" class="text-center"> 
+	                        No Data Found 
+	                    </td>
+				    </tr>
+				    @else
+				    	@foreach($data['inventory_data'] as $key=>$val)
+				    	<tr>
+				    		<td>
+				    			{{ ($data['inventory_data']->currentpage()-1) 
+			    				* $data['inventory_data']->perpage() + $key + 1 }} 
+				    		</td>
+				    		<td>
+				    			{{$val->inventory_list_name}}
+				    		</td>
+				    		<td>
+				    			{{$val->inventory_data_dvr}}
+				    		</td>
+				    		<td>
+				    			{{$val->users_created_by}}
+				    		</td>
+				    		<td style="color:{{$val->status_inventory_color}}">
+				    			{{$val->status_inventory_name}}
+				    		</td>
+				    		<td>
+				    		</td>
+				    	</tr>
+				    	@endforeach
+				    @endif
 			    </tbody>
 			</table>
 		</div> <!--scrolme-->
-		
+		<div class="pull-right" style="margin-top: -20px!important"> 
+			{{ $data['inventory_data']->appends(
+				[
+				'search' => Request::get('search'),
+				'search_nama' => Request::get('search_nama'),
+				'search_filter' => Request::get('search_filter'),
+				'search_order' => Request::get('search_order')
+				])->links() }}
+	
+		</div>
+		<div class="clearfix"> </div>
 	</div>
   	@include('inventory.modal_add')
   	@include('inventory.modal_upload')

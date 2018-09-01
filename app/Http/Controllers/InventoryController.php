@@ -54,6 +54,8 @@ class InventoryController extends Controller
 
         $data = array();
 
+        $data['search_status'] = Status_Inventory::all();
+
         if(in_array($this->admin,$user_divisi)) {
             $data['inventory_list_id'] = Inventory_List::all();
         } else {
@@ -74,6 +76,42 @@ class InventoryController extends Controller
                                     ->get();
         }
 
+
+        $inventory_data = Inventory_Data::join('inventory_list',
+                    'inventory_list.id','=','inventory_data.inventory_list_id')
+                    ->join('status_inventory',
+                    'status_inventory.id','=','inventory_data.status_inventory')
+                    ->join('users AS c_users',
+                    'c_users.id','=','inventory_data.created_by')
+                    ->join('users AS u_users',
+                    'u_users.id','=','inventory_data.updated_by');
+
+        if(!in_array($this->admin,$user_divisi)) {      
+            $inventory_list_users = Users_Role::join('inventory_role',
+                        'inventory_role.id','=','users_role.jabatan')
+                        ->join('inventory_list',
+                        'inventory_list.id','=','inventory_role.inventory_list_id')
+                        ->where('users_role.divisi','=','4')
+                        ->where('users_role.user_id','=',Auth::user()->id)
+                        ->where('inventory_role.user_id','=',Auth::user()->id)
+                        ->pluck('inventory_list.id')->toArray();
+            
+            $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_users);            
+        }
+
+
+        $inventory_data = $inventory_data->select(
+                        'inventory_list.inventory_name AS inventory_list_name',
+                        'status_inventory.name AS status_inventory_name',
+                        'status_inventory.color AS status_inventory_color',
+                        'inventory_data.dvr AS inventory_data_dvr',
+                        'c_users.name AS users_created_by'
+                    )
+                    ->orderBy('inventory_data.created_at','desc')
+                    ->paginate(10);
+
+
+        $data['inventory_data'] = $inventory_data;
 
         // dd($data);
     	return view('inventory/index',compact('data'));
@@ -115,18 +153,71 @@ class InventoryController extends Controller
             })->get();
             if(!empty($data) && $data->count()){
                 $file_name = $request->excel_file->getClientOriginalName();
+                $uuid = $this->faker->uuid;
                 foreach ($data as $key => $value) {
-                    echo $value['tanggal_update_data'];
-                    dd($value);
+                    $insert[] = array(
+                        'inventory_list_id'=>$request->inventory_list_id,
+                        'status_inventory'=>1,
+                        'created_by'=>Auth::user()->id,
+                        'updated_by'=>Auth::user()->id,
+
+                        'file_name_upload'=>$file_name,
+
+                        'tanggal_update_data'=>$value->tanggal_update_data,
+                        'kategori'=>$value->kategori,
+                        'kode_gambar'=>$value->kode_gambar,
+                        'dvr'=>$value->dvr,
+                        'lokasi_site'=>$value->lokasi_site,
+
+                        'kode_lokasi'=>$value->kode_lokasi,
+                        'jenis_barang'=>$value->jenis_barang,
+                        'merk'=>$value->merk,
+                        'tipe'=>$value->tipe,
+                        'model'=>$value->model,
+
+                        'serial_number'=>$value->serial_number,
+                        'psu_adaptor'=>$value->psu_adaptor,
+                        'tahun_pembuatan'=>$value->tahun_pembuatan,
+                        'tahun_pengadaan'=>$value->tahun_pengadaan,
+                        'kondisi'=>$value->kondisi,
+
+                        'deskripsi'=>$value->deskripsi,
+                        'asuransi'=>(int)$value->asuransi,
+                        'lampiran'=>$value->lampiran,
+                        'tanggal_retired'=>$value->tanggal_retired,
+                        'po'=>$value->po,
+
+                        'qty'=>(int) $value->qty,
+                        'keterangan'=>$value->keterangan,
+
+                        'uuid'=>$uuid,
+                        'created_at'=>date('Y-m-d H:i:s'),
+                        'updated_at'=>date('Y-m-d H:i:s')
+                    );
+                    //dd($value);
                     // $insert[] = ['title' => $value->title, 'description' => $value->description];
                 }
                 if(!empty($insert)){
-                    DB::table('items')->insert($insert);
-                    dd('Insert Record successfully.');
+                    $check = Inventory_Data::insert($insert);
+                    if($check) {
+                        $request->session()->flash('alert-success', 'Upload Successed!');
+                        return redirect('inventory');
+                    } else {
+                        $request->session()->flash('alert-danger', 'Insert Failed!');
+                        return redirect('inventory');
+                    }
+                } else {
+                    $request->session()->flash('alert-danger', 'no rows found!');
+                    return redirect('inventory');
                 }
+            } else {
+              $request->session()->flash('alert-danger', 'no data excel found!');
+                return redirect('inventory');  
             }
+        } else {
+            $request->session()->flash('alert-danger', 'Excel file not found!');
+            return redirect('inventory');
         }
-        return back();
         
     }
     public function add_inventory(Request $request) {

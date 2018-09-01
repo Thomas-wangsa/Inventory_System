@@ -47,7 +47,7 @@ class CreateInventoryDataTable extends Migration
             $table->string('tanggal_retired')->nullable();
             $table->string('po')->nullable();
 
-            $table->string('qty')->nullable();
+            $table->unsignedInteger('qty')->nullable();
             $table->string('keterangan')->nullable();
 
             
@@ -57,6 +57,10 @@ class CreateInventoryDataTable extends Migration
 
             $table->foreign('inventory_list_id', 'inventory_list_id_fkey')
                 ->references('id')->on('inventory_list')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
+            $table->foreign('created_by', 'inventory_data_created_fkey')
+                ->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
 
             $table->foreign('updated_by', 'inventory_data_updated_fkey')
