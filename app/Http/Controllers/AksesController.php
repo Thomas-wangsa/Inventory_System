@@ -749,13 +749,13 @@ class AksesController extends Controller
                 $data->comment      = $request->desc;
                 $data->save();
             } else {
-                $request->session()->flash('alert-danger', 'Kartu Akses gagal di Tolak');
+                $request->session()->flash('alert-danger', 'Failed to reject access card!');
                 return redirect($this->redirectTo);
             }
             
         }
         $this->notify($data->status_akses,$request->uuid);
-        $request->session()->flash('alert-success', 'Kartu Akses telah di tolak');
+        $request->session()->flash('alert-success', 'access card has been rejected');
         return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
     }
 

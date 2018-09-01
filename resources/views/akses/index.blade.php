@@ -377,6 +377,15 @@
 	                    		@case("11")
 	                    		@case("12")
 	                    		@case("13")
+	                    			<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+	                    			</div>
+	                    			<br/> <br/>
 	                    			{{$val->comment}}
 	                    			@break;
 	                    		@case("14")

@@ -62,7 +62,7 @@
 			<div class="clearfix" style="margin-bottom: 10px"> </div>
 			
 			<div class="pull-left">
-			 	<form class="form-inline" action="{{route('akses')}}">
+			 	<form class="form-inline" action="{{route('inventory')}}">
 				    
 				    <input type="hidden" name="search" value="on"> </input>
 				    <div class="input-group">
@@ -79,7 +79,13 @@
 				      	<select class="form-control" name="search_filter">
 				      		<option value=""> Filter  </option>
 				 			@foreach($data['search_status'] as $val)
-				 			<option value="{{$val->id}}"> {{$val->name}}</option>
+				 			<option value="{{$val->id}}"
+				 				@if($val->id == Request::get('search_filter')) 
+				    				selected
+				    			@endif
+				    			> 
+				 				{{$val->name}}
+				 			</option>
 				 			@endforeach
 				      	</select>
 				  	</div>
@@ -173,13 +179,13 @@
 				    				<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
-		                    			onclick="info()" 
+		                    			onclick="info('{{$val->uuid}}')" 
 		                    			>
 		                    				Info Inventory
 		                    			</button>
 		                    			<button
 		                    			class="btn btn-success"
-		                    			onclick="set_location()"
+		                    			onclick="set_location('{{$val->uuid}}')"
 		                    			>
 		                    				Set Location
 		                    			</button>
@@ -194,18 +200,77 @@
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-warning"
-		                    			onclick="edit()" 
+		                    			onclick="edit('{{$val->uuid}}')" 
 		                    			>
 		                    				Edit Inventory
 		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
-		                    			onclick="reject()" 
+		                    			onclick="remove('{{$val->status_inventory}}','{{$val->uuid}}')" 
 		                    			>
 		                    				Reject Inventory
 		                    			</button>
 		                    			@endif
 		                    		</div>
+				    				@break
+				    			@case("2")
+				    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->uuid}}')" 
+		                    			>
+		                    				Info Inventory
+		                    			</button>
+		                    			<button
+		                    			class="btn btn-success"
+		                    			onclick="set_location('{{$val->uuid}}')"
+		                    			>
+		                    				Set Location
+		                    			</button>
+		                    			@if(in_array(1,$user_divisi))
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve(3,'{{$val->uuid}}')" 
+		                    			>
+		                    				Approve Inventory
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit('{{$val->uuid}}')" 
+		                    			>
+		                    				Edit Inventory
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="remove('{{$val->status_inventory}}','{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Inventory
+		                    			</button>
+		                    			@endif
+		                    		</div>
+				    				@break
+				    			@case("3")
+				    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+	                    			</div>
+				    				@break
+				    			@case("4")
+				    			@case("5")
+				    				<div class="btn-group-vertical">
+	                    				<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->uuid}}')"
+		                    			>
+		                    				Info Access Card
+		                    			</button>
+	                    			</div>
+	                    			<br/> <br/>
+	                    			{{$val->comment}}
 				    				@break
 				    			@default
 				    				-
@@ -246,6 +311,19 @@
 			window.location = url+uuid+url_status+next_status;
 		}
 	}
+
+	function remove(status,uuid) {
+		if (confirm('Reject this request ?')) {
+			var url = window.location.protocol+"//"+window.location.host+'/inventory_reject?uuid=';
+			var url_status = "&next_status=";
+			window.location = url+uuid+url_status+status;
+		}
+	}
+
+
+	function reset_filter() {
+    	window.location = "{{route('inventory')}}";
+    }
 	
 </script>
 

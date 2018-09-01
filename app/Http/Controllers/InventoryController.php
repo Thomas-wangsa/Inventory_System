@@ -127,6 +127,16 @@ class InventoryController extends Controller
             $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_users);            
         }
 
+        if($request->search == "on") {
+            if($request->search_nama != null) {
+
+            } 
+            else if($request->search_filter != null) {
+                $inventory_data = $inventory_data->where('inventory_data.status_inventory',$request->search_filter);            
+            } else if($request->search_uuid != null) {
+                $inventory_data = $inventory_data->where('inventory_data.uuid',$request->search_uuid);
+            }
+        }
 
         $inventory_data = $inventory_data->select(
                 'inventory_list.inventory_name AS inventory_list_name',
@@ -137,6 +147,7 @@ class InventoryController extends Controller
                 'inventory_data.dvr AS inventory_data_dvr',
                 'inventory_data.qty AS inventory_data_qty',
                 'inventory_data.status_inventory AS inventory_data_status',
+                'inventory_data.comment',
                 'inventory_data.uuid'
             )
             ->orderBy('inventory_data.created_at','desc')
@@ -228,7 +239,7 @@ class InventoryController extends Controller
                         'qty'=>(int) $value->qty,
                         'keterangan'=>$value->keterangan,
 
-                        'uuid'=>$uuid,
+                        'uuid'=>$this->faker->uuid,
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s')
                     );
@@ -284,36 +295,38 @@ class InventoryController extends Controller
     }
 
     public function inventory_approval(Request $request) {
-        dd($request);
         $data = Inventory_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
+        //dd($data);
         if(count($data) < 1) {
             return redirect($this->redirectTo);
         } else {
-            if($data->status_inventory == 1 || $data->status_inventory == 2) {
-
-                switch ($data->status_inventory) {
-                    case 1:
-                        $data->status_inventory = 2;
-                        break;
-                    case 2:
-                        $data->status_inventory = 3;
-                        $data->status_data      = 3;
-                        break;
-                    default:
-                        # code...
-                        break;
+            
+            if($data->status_inventory == 1) {
+                if($request->next_status == 2) {
+                    $data->status_inventory = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Error: approved by head inventory is error');
+                    return redirect($this->redirectTo);
                 }
-                
-                $data->updated_by   = $this->credentials->id;
-                $data->save();
-                //$this->send($data);
-            } else {
-                return redirect($this->redirectTo);
-            }
+            } else if($data->status_inventory == 2) {
+                if($request->next_status == 3) {
+                    $data->status_inventory = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'Error: approved by administrator is error');
+                    return redirect($this->redirectTo);
+                }
+            } 
             
         }
-        return view('inventory/approval');
+
+        $request->session()->flash('alert-success', 'inventory has been updated');
+        return redirect($this->redirectTo."?search=on&search_uuid=".$data->uuid);
+        // return view('inventory/approval');
     }
 
     public function inventory_reject(Request $request) {
@@ -327,13 +340,14 @@ class InventoryController extends Controller
     }
 
     public function proses_reject(Request $request) {
+        //dd($request);
         $data = Inventory_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
 
         if(count($data) < 1) {
             return redirect($this->redirectTo);
         } else {
-            if($data->status_inventory == 1 || $data->status_inventory == 2 ) {
+            if($data->status_data == 1) {
 
                 switch ($data->status_inventory) {
                     case 1:
@@ -348,7 +362,7 @@ class InventoryController extends Controller
                 }
                 
                 $data->status_data  = 2;
-                $data->updated_by   = $this->credentials->id;
+                $data->updated_by   = Auth::user()->id;
                 $data->comment      = $request->desc;
                 $data->save();
             } else {
@@ -356,7 +370,8 @@ class InventoryController extends Controller
             }
             
         }
-        return redirect($this->redirectTo);
+        $request->session()->flash('alert-danger', 'inventory has been rejected');
+        return redirect($this->redirectTo."?search=on&search_uuid=".$data->uuid);
     }
 
     public function create_new_inventory(Request $request) {
