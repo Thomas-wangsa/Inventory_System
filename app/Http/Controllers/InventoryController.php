@@ -102,6 +102,7 @@ class InventoryController extends Controller
                     ->join('users AS u_users',
                     'u_users.id','=','inventory_data.updated_by');
 
+        $head_role_inventory = array();
         if(!in_array($this->admin,$user_divisi)) {
 
             $head_role_inventory = Users_Role::join('inventory_role',
@@ -283,6 +284,7 @@ class InventoryController extends Controller
     }
 
     public function inventory_approval(Request $request) {
+        dd($request);
         $data = Inventory_Data::where('status_data',1)
         ->where('uuid',$request->uuid)->first();
         if(count($data) < 1) {

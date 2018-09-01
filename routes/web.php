@@ -70,12 +70,12 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 
-		// Akses
+		// Inventory
 		Route::get('/inventory','InventoryController@index')->name('inventory');
 		Route::post('/inventory/add-inventory', 'InventoryController@add_inventory')->name('add_inventory');
 		Route::post('/inventory/upload-excel', 'InventoryController@upload_excel')->name('upload_excel');
-
-
+		Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
+		Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
 		// Admin
 		Route::get('/admin','AdminController@index')->name('route_admin');
 		Route::post('/admin/create_new_users', 'AdminController@create_new_users')->name('create_new_users');
@@ -135,8 +135,7 @@ Route::group(['middleware' => ['auth']], function() {
 	// Inventory Features
 	Route::get('/map_location','InventoryController@map_location')->name('map');
 	Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
-	Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
-	Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
+	
 	Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
 
 	
@@ -156,8 +155,6 @@ Route::group(['middleware' => ['auth']], function() {
 
 	// END
 
-	// Route::post('/inventory/approve_by_head', 'InventoryController@approve_by_head')->name('post_approve_by_head');
-	// Route::post('/inventory/approve_by_admin', 'InventoryController@approve_by_admin')->name('post_approve_by_admin');
 
 
 

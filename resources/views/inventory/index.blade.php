@@ -188,7 +188,7 @@
 		                    			)
 		                    			<button 
 		                    			class="btn btn-primary"
-		                    			onclick="approve()" 
+		                    			onclick="approve(2,'{{$val->uuid}}')" 
 		                    			>
 		                    				Approve Inventory
 		                    			</button>
@@ -239,6 +239,13 @@
 <script type="text/javascript">
 	
 
+	function approve(next_status,uuid) {
+		if (confirm('Approve this request ?')) { 
+			var url = window.location.protocol+"//"+window.location.host+'/inventory_approval?uuid=';
+			var url_status = "&next_status=";
+			window.location = url+uuid+url_status+next_status;
+		}
+	}
 	
 </script>
 
