@@ -70,7 +70,7 @@
 
 		<div class="col-sm-6 mid_wrapper" >
 
-			<div style="" >
+			<div style="margin-top: 25px" >
                 <a href="{{ route('login')}}">
 				    <img class="img-responsive center"  
 				    src="{{ asset('images/logo/indosat.png')}}"

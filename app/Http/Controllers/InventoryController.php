@@ -15,6 +15,8 @@ use App\Http\Models\Users_Role;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Divisi;
 use App\Notifications\Inventory_Notification;
+use Illuminate\Support\Facades\Input;
+use Excel;
 
 
 use Faker\Factory as Faker;
@@ -41,6 +43,46 @@ class InventoryController extends Controller
         return view('inventory/map',compact('data'));
     }
 
+
+    public function upload_excel(Request $request) {
+        $allow = false;
+        $request->validate([
+            'excel_file' => 'required|max:10000',
+        ]);
+
+        if(
+            $request->excel_file->getClientOriginalExtension() == 'xls' 
+            ||
+            $request->excel_file->getClientOriginalExtension() == 'xlsx'
+          ) 
+        {
+            $allow = true;
+        } 
+
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Extension file must in xls or xlsx');
+            return redirect('inventory');
+        }
+        
+        if(Input::hasFile('excel_file')){
+            $path = Input::file('excel_file')->getRealPath();
+            $data = Excel::load($path, function($reader) {
+            })->get();
+            if(!empty($data) && $data->count()){
+                dd($data);
+                foreach ($data as $key => $value) {
+                    $insert[] = ['title' => $value->title, 'description' => $value->description];
+                }
+                if(!empty($insert)){
+                    DB::table('items')->insert($insert);
+                    dd('Insert Record successfully.');
+                }
+            }
+        }
+        return back();
+        
+    }
     public function add_inventory(Request $request) {
         $request->validate([
             'inventory_name'  => 'required|max:30',

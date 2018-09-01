@@ -72,7 +72,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 		// Akses
 		Route::get('/inventory','InventoryController@index')->name('inventory');
-		Route::post('/setting/add-inventory', 'InventoryController@add_inventory')->name('add_inventory');
+		Route::post('/inventory/add-inventory', 'InventoryController@add_inventory')->name('add_inventory');
+		Route::post('/inventory/upload-excel', 'InventoryController@upload_excel')->name('upload_excel');
 
 
 		// Admin

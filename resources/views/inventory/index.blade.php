@@ -38,14 +38,16 @@
 		<div>
 			@if(in_array(1,$user_divisi) || in_array(4,$user_setting))
 			<div class="pull-left" style="margin-right: 5px">
-				<div class="btn btn-primary" data-toggle="modal" data-target="#modal_new_inventory">
+				<div class="btn btn-primary" 
+				data-toggle="modal" data-target="#modal_new_inventory">
 					Add Inventory Category 
 				</div>
 			</div>
 			@endif
 			@if(in_array(1,$user_divisi) || in_array(2,$user_setting))
 			<div class="pull-left" style="margin-right: 5px">
-				<div class="btn btn-primary">
+				<div class="btn btn-primary"
+				data-toggle="modal" data-target="#modal_upload">
 					Upload Excel
 				</div>
 			</div>
@@ -112,7 +114,7 @@
 
 
 				<button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal_all">
-					Add New Access Card
+					Add New Inventory
 				</button>
 			</div>
 			<div class="clearfix"> </div>
@@ -139,6 +141,7 @@
 		
 	</div>
   	@include('inventory.modal_add')
+  	@include('inventory.modal_upload')
 	
 
 
