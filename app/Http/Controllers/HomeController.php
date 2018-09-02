@@ -158,6 +158,8 @@ class HomeController extends Controller
             } else if ($val->category == 4) {
                 $data['info'][$key] = notify::join('inventory_data',
                     'inventory_data.id','=','notification.data_id')
+                    ->join('inventory_list',
+                    'inventory_list.id','=','inventory_data.inventory_list_id')
                     ->join('status_inventory',
                     'status_inventory.id','=','notification.status_data_id')
                     ->join('users',
@@ -168,7 +170,7 @@ class HomeController extends Controller
                     ->select(
                         'notification.category AS notification_category',
                         'users.name AS request_name',
-                        'inventory_data.inventory_list_id AS notification_data_name',
+                        'inventory_list.inventory_name AS notification_data_name',
                         'status_inventory.name AS notification_status_data_name',
                         'status_inventory.color AS notification_status_data_color',
                         'inventory_data.uuid AS notification_data_uuid'

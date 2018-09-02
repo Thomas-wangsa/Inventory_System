@@ -932,74 +932,7 @@ class AksesController extends Controller
         // $target_divisi = 2;
 
         $error = false;
-        // switch($new_akses->status_akses) {
-        //     case 1 :
-        //         $target_jabatan = 2;
-        //         $next = 2;
-        //         //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
-                
-        //         $list_email = Users_Role::join('users',
-        //                         'users.id','=','users_role.user_id')
-        //                         ->where('divisi',$target_divisi)
-        //                         ->where('jabatan',$target_jabatan)
-        //                         ->select('users.email')
-        //                         ->distinct()
-        //                         ->get()->pluck('email');
-        //         //$cc_email = $list_email->toArray();
-        //         //$desc    = "baru saja mendaftarkan pengguna kartu";
-        //         break;
-        //     case 2 :
-        //         $target_jabatan = 3;
-        //         $next = 3;
-        //         //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
-            
 
-        //         $list_email = Users_Role::join('users',
-        //                         'users.id','=','users_role.user_id')
-        //                         ->where('divisi',$target_divisi)
-        //                         ->where('jabatan',$target_jabatan)
-        //                         ->select('users.email')
-        //                         ->distinct()
-        //                         ->get()->pluck('email');
-        //         //$cc_email = $list_email->toArray();
-
-        //         //$desc    = "telah mendaftarkan kartu untuk di cetak";
-        //         break;
-        //     case 3 : 
-        //         $target_jabatan = 4;
-        //         $next = 4;
-        //         //$user = Users_Role::GetAksesDecisionMaker($target_jabatan)->first();
-                
-        //         $list_email = Users_Role::join('users',
-        //                         'users.id','=','users_role.user_id')
-        //                         ->where('divisi',$target_divisi)
-        //                         ->where('jabatan',$target_jabatan)
-        //                         ->select('users.email')
-        //                         ->distinct()
-        //                         ->get()->pluck('email');
-        //         //$cc_email = $list_email->toArray();
-
-        //         //$desc    = "baru saja mencetakan kartu untuk di aktifkan";
-        //         break;
-        //     default : 
-        //         $error = true;
-        //         break;
-        // }
-
-        // $created_by = Users::where('id','=',$new_akses->created_by)
-        //             ->select('email')
-        //             ->first();
-
-        // if(!in_array($created_by->email,$cc_email)) {
-        //     array_push($cc_email,$created_by->email);
-        // }
-        
-        // $attachment =  "";
-        // if($new_akses->type == 'self' || $new_akses->type == 'staff') {
-        //     $attachment = $new_akses->foto;
-        // } else if ($new_akses->type == 'vendor') {
-        //     $attachment = $new_akses->po;
-        // } 
 
 
         if(count($user) < 1) {
