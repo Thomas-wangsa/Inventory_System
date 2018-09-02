@@ -12,11 +12,12 @@
         </div>
         <div class="modal-body">
 	  			<form class="form-horizontal"  
-          method="POST" action="{{ route('add_inventory') }}">
+          method="POST" enctype="multipart/form-data"
+          action="{{ route('add_map') }}">
 				  {{ csrf_field() }}
           <div class="form-group">
             <label class="control-label col-xs-3" for="email">
-              Add New Map AS :
+              Add Map AS :
             </label>
             <div class="col-xs-9">
               <select class="form-control" 
@@ -47,7 +48,7 @@
             </label>
             <div class="col-xs-9">
               <input type="text" class="form-control" id="nama" 
-              name="notes" value="" placeholder="optional">
+              name="map_notes" value="" placeholder="optional">
             </div>
           </div>
 
@@ -57,7 +58,7 @@
             </label>
             <div class="col-sm-9"> 
               <input type="file" class="form-control" 
-              name="excel_file" required>
+              name="map_images" required>
             </div>
           </div>
 

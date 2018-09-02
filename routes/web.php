@@ -44,6 +44,11 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::get('/setting/show-background', 'SettingController@show_background')->name('show_background');
 		Route::post('/setting/update-background', 'SettingController@update_background')->name('update_background');
 
+
+		// MAP
+		Route::post('/map/add_map', 'MapController@add_map')->name('add_map');
+
+
 	});
 	
 
@@ -76,6 +81,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/inventory/upload-excel', 'InventoryController@upload_excel')->name('upload_excel');
 		Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');
 		Route::get('/inventory_reject', 'InventoryController@inventory_reject')->name('inventory_reject');
+		Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
 		Route::post('/inventory/inventory_insert_data', 'InventoryController@inventory_insert_data')->name('inventory_insert_data');
 		Route::post('/inventory/inventory_get_info_by_uuid', 'InventoryController@inventory_get_info_by_uuid')->name('inventory_get_info_by_uuid');
 		Route::post('/inventory/inventory_update_data', 'InventoryController@inventory_update_data')->name('inventory_update_data');
@@ -141,9 +147,9 @@ Route::group(['middleware' => ['auth']], function() {
 
 	// Inventory Features
 	Route::get('/map_location','InventoryController@map_location')->name('map');
-	Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
+	// Route::post('/inventory/create_new_inventory', 'InventoryController@create_new_inventory')->name('create_new_inventory');
 	
-	Route::post('/inventory_reject', 'InventoryController@proses_reject')->name('proses_reject_inventory');
+	
 
 	
 

@@ -18,7 +18,7 @@ class CreateMapTable extends Migration
             $table->unsignedInteger('inventory_list_id');
             $table->string('map_name');
             $table->string('map_images');
-            $table->string('map_notes');
+            $table->string('map_notes')->nullable();
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');
             $table->timestamps();

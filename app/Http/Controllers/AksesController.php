@@ -376,7 +376,7 @@ class AksesController extends Controller
             
             if ($request->hasFile('po')) {
                 $image = $request->file('po');
-                $file_name = $uuid.".".$image->getClientOriginalExtension();
+                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
