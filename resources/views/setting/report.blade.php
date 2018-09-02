@@ -3,7 +3,14 @@
 @section('content')
 <div class="col-sm-12" style="padding: 30px">
 	<div class="pull-right">
-    <a href="{{route('report_download')}}">
+    <a 
+    @if($data['report_for'] == "access")
+    href="{{route('report_download')}}"
+    @elseif($data['report_for'] == "inventory")
+    href="{{route('inventory_report_download')}}"
+    @endif
+    
+    >
       <button class="btn btn-primary"> 
         Download Weekly Report = {{$data['total']}} rows
       </button>

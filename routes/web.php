@@ -119,6 +119,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::get('/access_report','SettingController@access_report')->name('access_report');
 		Route::get('/inventory_report','SettingController@inventory_report')->name('inventory_report');
 		Route::get('/report/download','SettingController@report_download')->name('report_download');
+		Route::get('/report/download/inventory','SettingController@inventory_report_download')->name('inventory_report_download');
 
 		// Disabled since crud role/position using full ajax
 		// Route::get('/admin/delete_role_notif', 'AdminController@delete_role_notif')->name('delete_role_notif');

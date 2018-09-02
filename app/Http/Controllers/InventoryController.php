@@ -298,7 +298,7 @@ class InventoryController extends Controller
         if($this->env != "development") {
             $data['notify_user']        = $notify;
             $data['data']               = $inventory_data;
-            $this->send($data);
+            //$this->send($data);
         }
         
     }

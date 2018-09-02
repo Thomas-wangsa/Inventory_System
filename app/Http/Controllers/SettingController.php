@@ -12,7 +12,7 @@ use App\Http\Models\Inventory_Data;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Status_Akses;
-
+use App\Http\Models\Status_Inventory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Excel;
@@ -31,7 +31,73 @@ class SettingController extends Controller {
     }
 
     public function inventory_report(Request $request) {
-        echo "invntory report";
+        $inventory_division = 4;
+        $setting_list = 6;
+        $user_divisi = \Request::get('user_divisi');
+        $user_setting = \Request::get('user_setting');
+        $allow = false;
+        if(
+            in_array($this->admin_division,$user_divisi)
+            ||
+            in_array($inventory_division,$user_divisi)
+            || 
+            in_array($setting_list,$user_setting)
+            ) 
+        {
+            $allow = true;
+        }
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Sorry you dont have authority to report features');
+            return redirect('home');
+        }
+
+        $data = array();
+        $data['report_for'] = "inventory";
+        // // get the current time
+        $data['current_date'] = date('Y-m-d');
+
+        $date = strtotime("-7 day");
+        $data['from_date'] =  date('Y-m-d', $date);
+
+        $inventory_data = Inventory_Data::join('status_inventory',
+                    'status_inventory.id','=','inventory_data.status_inventory')
+                    ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
+                    ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
+
+        // if( !in_array($this->admin_division,$user_divisi) 
+        //     &&
+        //     !in_array($setting_list,$user_setting)
+        //     &&
+        //     in_array($pic_division,$user_divisi)
+        //     ) {
+
+        //     $pic_list_id_array = Users_Role::join('pic_role',
+        //                 'pic_role.id','=','users_role.jabatan')
+        //                 ->where('users_role.divisi',2)
+        //                 ->where('users_role.user_id',Auth::user()->id)
+        //                 ->where('pic_role.user_id',Auth::user()->id)
+        //                 ->pluck('pic_list_id');
+            
+        //     $akses_data = $akses_data->whereIn('pic_list_id',$pic_list_id_array);
+        // }
+
+        $inventory_data  = $inventory_data->select('status_inventory.name AS status_name',
+                        'inventory_data.status_inventory'
+                        ,DB::raw('count(inventory_data.id) as total'))
+                    ->groupBy('status_inventory')
+                    ->get();
+        $data['total'] = 0;
+        $data['report'] = array();
+        foreach ($inventory_data as $key => $value) {
+            $data['report'][$value->status_name] = $value->total;
+            $data['total'] += $value->total;
+        }
+
+        $data['color'] = Status_Inventory::all();
+        //dd($data);
+        return view('setting/report',compact('data'));
+
     }
     public function access_report(Request $request) {
         $pic_division = 2;
@@ -57,6 +123,7 @@ class SettingController extends Controller {
 
 
         $data = array();
+        $data['report_for'] = "access";
         // // get the current time
         $data['current_date'] = date('Y-m-d');
 
@@ -104,6 +171,10 @@ class SettingController extends Controller {
         return view('setting/report',compact('data'));
     }
 
+    public function inventory_report_download() {
+        echo "AAA";die;
+    }
+
     public function report_download() {
         $pic_division = 2;
         $setting_list = 5;
@@ -128,6 +199,7 @@ class SettingController extends Controller {
 
 
         $data = array();
+
         // // get the current time
         $data['current_date'] = date('Y-m-d');
 
@@ -180,7 +252,7 @@ class SettingController extends Controller {
 
         $type = "xls";
         //$data = Akses_Data::get()->toArray();
-        return Excel::create('itsolutionstuff_example', function($excel) use ($data) {
+        return Excel::create('access_card_report', function($excel) use ($data) {
             $excel->sheet('mySheet', function($sheet) use ($data)
             {
                 $sheet->fromArray($data);
