@@ -17,7 +17,7 @@ textarea {
 
 			<div style="width: 100%" style="background-color: blue">
 				<form method="POST" action="{{route('proses_reject')}}">
-					{{ csrf_field() }}{{ csrf_field() }}
+					{{ csrf_field() }}
 					<input type="hidden" name="uuid" value="{{$data['uuid']}}">
 					
 					<div class="form-group">

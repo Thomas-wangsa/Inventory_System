@@ -174,9 +174,11 @@ class InventoryController extends Controller
             'inventory_list_id'=>'required'
         ]);
 
+        $uuid = $this->faker->uuid;
+        $status_inventory = 1;
         $data = array(
             'inventory_list_id' => $request->inventory_list_id,
-            'status_inventory'=>1,
+            'status_inventory'=>$status_inventory,
             'created_by'=>Auth::user()->id,
             'updated_by'=>Auth::user()->id,
 
@@ -209,18 +211,23 @@ class InventoryController extends Controller
             'qty' => $request->qty,
             'keterangan' => $request->keterangan,
 
-            'uuid'  => $this->faker->uuid,
+            'uuid'  => $uuid,
             'created_at'=> date('Y-m-d H:i:s'),
             'updated_at'=> date('Y-m-d H:i:s')
         );
 
         DB::table('inventory_data')->insert($data);
         
+        $this->notify($status_inventory,$uuid);
         $request->session()->flash('alert-success', 'new inventory already registered');
         return redirect($this->redirectTo."?search=on&search_uuid=".$data['uuid']);
     }
 
 
+    public function notify($status,$uuid) {
+        echo $status;
+        echo $uuid;die;
+    }
 
     public function inventory_get_info_by_uuid(Request $request) {
         $response = array();
@@ -453,6 +460,7 @@ class InventoryController extends Controller
             
         }
 
+        $this->notify($data->status_inventory,$data->uuid);
         $request->session()->flash('alert-success', 'inventory has been updated');
         return redirect($this->redirectTo."?search=on&search_uuid=".$data->uuid);
         // return view('inventory/approval');
@@ -499,6 +507,8 @@ class InventoryController extends Controller
             }
             
         }
+
+        $this->notify($data->status_inventory,$data->uuid);
         $request->session()->flash('alert-danger', 'inventory has been rejected');
         return redirect($this->redirectTo."?search=on&search_uuid=".$data->uuid);
     }
