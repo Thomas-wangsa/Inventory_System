@@ -12,6 +12,7 @@ use App\Http\Models\Setting_Data;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
+use App\Http\Models\Map;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Models\Divisi;
 use App\Notifications\Inventory_Notification;
@@ -112,6 +113,8 @@ class InventoryController extends Controller
                     ->join('users AS u_users',
                     'u_users.id','=','inventory_data.updated_by');
 
+        $data['map']        = Map::all();
+
         $head_role_inventory = array();
         if(!in_array($this->admin,$user_divisi)) {
 
@@ -134,7 +137,9 @@ class InventoryController extends Controller
                         ->where('inventory_role.user_id','=',Auth::user()->id)
                         ->pluck('inventory_list.id')->toArray();
             
-            $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_users);            
+            $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_users);
+
+            $data['map']        = Map::whereIn('inventory_list_id',$inventory_list_users)->get();           
         }
 
         if($request->search == "on") {
@@ -175,6 +180,8 @@ class InventoryController extends Controller
         $data['inventory_data']     = $inventory_data;
         $data['conditional_head']   = $conditional_head;
         $data['faker']              = $this->faker;
+
+        //dd($data);
     	return view('inventory/index',compact('data'));
     }
 
@@ -183,7 +190,7 @@ class InventoryController extends Controller
             'inventory_list_id'=>'required'
         ]);
 
-        $uuid = $this->faker->uuid;
+        $uuid = time().$this->faker->uuid;
         $status_inventory = 1;
         $data = array(
             'inventory_list_id' => $request->inventory_list_id,
@@ -449,7 +456,7 @@ class InventoryController extends Controller
                         'qty'=>(int) $value->qty,
                         'keterangan'=>$value->keterangan,
 
-                        'uuid'=>$this->faker->uuid,
+                        'uuid'=>time().$this->faker->uuid,
                         'created_at'=>date('Y-m-d H:i:s'),
                         'updated_at'=>date('Y-m-d H:i:s')
                     );
@@ -604,7 +611,7 @@ class InventoryController extends Controller
     		'serial_number'				=> $request->SN,
     		'location'					=> $request->tempat,
     		'status_inventory'			=> 1,
-            'uuid'                      => $this->faker->uuid,
+            'uuid'                      => time().$this->faker->uuid,
             'created_by'                => Auth::id(),
     		'updated_by'				=> Auth::id()
     	]);

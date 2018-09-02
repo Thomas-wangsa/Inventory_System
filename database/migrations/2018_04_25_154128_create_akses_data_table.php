@@ -32,7 +32,7 @@ class CreateAksesDataTable extends Migration
             $table->string('date_end')->nullable();
             $table->string('po')->nullable();
             $table->string('foto')->nullable();
-            $table->uuid('uuid'); 
+            $table->string('uuid'); 
             $table->text('additional_note')->nullable();
             $table->text('comment')->nullable();
             $table->timestamps();

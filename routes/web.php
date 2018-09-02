@@ -47,6 +47,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 		// MAP
 		Route::post('/map/add_map', 'MapController@add_map')->name('add_map');
+		Route::post('/map/set_map_location', 'MapController@set_map_location')->name('set_map_location');
 
 
 	});

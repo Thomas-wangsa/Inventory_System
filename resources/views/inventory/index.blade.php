@@ -311,6 +311,7 @@
   	@include('inventory.modal_upload')
   	@include('inventory.modal_floor')
   	@include('inventory.modal_new')
+  	@include('inventory.modal_new_location')
   	@include('inventory.modal_edit')
 	
 

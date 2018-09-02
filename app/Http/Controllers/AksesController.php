@@ -350,7 +350,7 @@ class AksesController extends Controller
         $access_data = new Akses_Data;
         $bool = false;
         $conditional_status_akses  = 1;
-        $uuid = $this->faker->uuid;
+        $uuid = time().$this->faker->uuid;
         if($request->type_daftar == "vendor") {
             $request->validate([
                 'po' => 'required|image|mimes:jpeg,png,jpg|max:550',
@@ -426,7 +426,7 @@ class AksesController extends Controller
 
             if ($request->hasFile('foto')) {
                 $image = $request->file('foto');
-                $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
+                $file_name = $uuid.".".$image->getClientOriginalExtension();
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);

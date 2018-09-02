@@ -51,7 +51,7 @@ class CreateInventoryDataTable extends Migration
             $table->string('keterangan')->nullable();
 
             
-            $table->uuid('uuid');
+            $table->string('uuid');
             $table->text('comment')->nullable(); 
             $table->timestamps();
 

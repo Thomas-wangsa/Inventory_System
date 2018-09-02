@@ -154,7 +154,7 @@ class AdminController extends Controller
             $user_detail->user_id     = $new_users->id;
             $user_detail->nik         = $request->nik;
             $user_detail->email_2     = strtolower($request->email_second);
-            $user_detail->uuid        = $this->faker->uuid();
+            $user_detail->uuid        = time().$this->faker->uuid();
             $user_detail->foto        = $img_path.$img_name;
             $user_detail->company     = $request->company;
         

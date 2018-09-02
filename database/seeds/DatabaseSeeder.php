@@ -338,7 +338,7 @@ class DatabaseSeeder extends Seeder
 
             $data_user_detail = array(
                 "user_id"   => $value->id,
-                "uuid"      => $faker->uuid,
+                "uuid"      => time().$faker->uuid,
                 "foto"      => "images/template/default.png",
                 "nik"       => $faker->phoneNumber,
                 "company"   => $faker->company
