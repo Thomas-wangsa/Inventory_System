@@ -12,3 +12,5 @@ yarn-error.log
 .env
 /public/images/akses
 /public/images/user
+/public/images/map
+/public/images/imagelocation
