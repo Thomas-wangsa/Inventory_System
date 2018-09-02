@@ -38,44 +38,74 @@ class MapController extends Controller
         } 
 
 
+        
+        $uuid = $this->faker->uuid;
+        if ($request->hasFile('image_location')) {
+            $image = $request->file('image_location');
+            $file_name = $uuid.".".$image->getClientOriginalExtension();
+            $path = "/images/imagelocation/";
+            $destinationPath = public_path($path);
+            $image->move($destinationPath, $file_name);
+            $new_image_location = $path.$file_name;
+            
+        } else {
+            $request->session()->flash('alert-danger', 'image_location is not found!');
+            return redirect("/inventory");
+        }
+
         $check_map = Map_Location::where('inventory_data_id',$inventory_data->id)
-                ->get();
+                ->first();
+
+        //dd($check_map);
+        $data = array();
         if(count($check_map) < 1) {
             $map_location = new Map_Location;
-            $uuid = $this->faker->uuid;
+            
 
-            if ($request->hasFile('image_location')) {
-                $image = $request->file('image_location');
-                $file_name = $uuid.".".$image->getClientOriginalExtension();
-                $path = "/images/imagelocation/";
-                $destinationPath = public_path($path);
-                $image->move($destinationPath, $file_name);
-                $map_location->image_location = $path.$file_name;
-            } else {
-                $request->session()->flash('alert-danger', 'image_location is not found!');
-                return redirect("/inventory");
-            }
-
-
-            $map_location->map_id = $request->map_id;
             $map_location->inventory_data_id =$inventory_data->id;
-            $map_location->uuid = time().$uuid;
+            $map_location->map_location_uuid = time().$uuid;
             $map_location->created_by = Auth::user()->id;
+            
+            $map_location->map_id = $request->map_id;
             $map_location->updated_by = Auth::user()->id;
-
+            $map_location->image_location = $new_image_location;
             $bool = $map_location->save();
 
             if(!$bool) {
                 $request->session()->flash('alert-danger', 'insert map location is failed!');
                 return redirect("/inventory");
             }
+            // echo "NEW";
+            $map_location_data = $map_location;
         } else {
+            $check_map->map_id = $request->map_id;
+            $check_map->image_location = $new_image_location;
+            $check_map->updated_by = Auth::user()->id;
+            $bool = $check_map->save();
 
+            if(!$bool) {
+                $request->session()->flash('alert-danger', 'updated map location is failed!');
+                return redirect("/inventory");
+            }
+            // echo "UPDATEs";
+            $map_location_data = $check_map;
         }
 
-        dd($request);
-        $data = array();
-        return view('inventory/map',compact('data'));
+        $data['map_location'] = Map_Location::join('map',
+                    'map.id','=','map_location.map_id')
+                    ->join('inventory_data',
+                    'inventory_data.id','=','map_location.inventory_data_id')
+                    ->where('map_location.inventory_data_id',$map_location_data->inventory_data_id)
+                    ->where('map_location.map_id',$map_location_data->map_id)
+                    ->select(
+                        'inventory_data.uuid AS inventory_data_uuid',
+                        'map.map_images AS map_images',
+                        'map_location.image_location AS image_location'
+                    )
+                    ->first();
+
+        //dd($data);
+        return view('map/set_map',compact('data'));
     }
     public function add_map(Request $request) {
     	$request->validate([
