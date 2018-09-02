@@ -65,22 +65,22 @@ class SettingController extends Controller {
                     ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
                     ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
 
-        // if( !in_array($this->admin_division,$user_divisi) 
-        //     &&
-        //     !in_array($setting_list,$user_setting)
-        //     &&
-        //     in_array($pic_division,$user_divisi)
-        //     ) {
+        if( !in_array($this->admin_division,$user_divisi) 
+            &&
+            !in_array($setting_list,$user_setting)
+            &&
+            in_array($inventory_division,$user_divisi)
+            ) {
 
-        //     $pic_list_id_array = Users_Role::join('pic_role',
-        //                 'pic_role.id','=','users_role.jabatan')
-        //                 ->where('users_role.divisi',2)
-        //                 ->where('users_role.user_id',Auth::user()->id)
-        //                 ->where('pic_role.user_id',Auth::user()->id)
-        //                 ->pluck('pic_list_id');
+            $inventory_list_id_array = Users_Role::join('inventory_role',
+                        'inventory_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi',4)
+                        ->where('users_role.user_id',Auth::user()->id)
+                        ->where('inventory_role.user_id',Auth::user()->id)
+                        ->pluck('inventory_list_id');
             
-        //     $akses_data = $akses_data->whereIn('pic_list_id',$pic_list_id_array);
-        // }
+            $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_id_array);
+        }
 
         $inventory_data  = $inventory_data->select('status_inventory.name AS status_name',
                         'inventory_data.status_inventory'
@@ -168,11 +168,103 @@ class SettingController extends Controller {
         }
 
         $data['color'] = Status_Akses::all();
+        //dd($data);
         return view('setting/report',compact('data'));
     }
 
     public function inventory_report_download() {
-        echo "AAA";die;
+        $inventory_division = 4;
+        $setting_list = 5;
+        $user_divisi = \Request::get('user_divisi');
+        $user_setting = \Request::get('user_setting');
+        $allow = false;
+        if(
+            in_array($this->admin_division,$user_divisi)
+            ||
+            in_array($inventory_division,$user_divisi)
+            || 
+            in_array($setting_list,$user_setting)
+            ) 
+        {
+            $allow = true;
+        }
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Sorry you dont have authority to report features');
+            return redirect('home');
+        }
+
+        $data = array();
+
+        // // get the current time
+        $data['current_date'] = date('Y-m-d');
+
+        $date = strtotime("-7 day");
+        $data['from_date'] =  date('Y-m-d', $date);
+
+        $inventory_data = Inventory_Data::join('status_inventory',
+                    'status_inventory.id','=','inventory_data.status_inventory')
+                    ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
+                    ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
+
+        if( !in_array($this->admin_division,$user_divisi) 
+            &&
+            !in_array($setting_list,$user_setting)
+            &&
+            in_array($inventory_division,$user_divisi)
+            ) {
+
+            $inventory_list_id_array = Users_Role::join('inventory_role',
+                        'inventory_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi',4)
+                        ->where('users_role.user_id',Auth::user()->id)
+                        ->where('inventory_role.user_id',Auth::user()->id)
+                        ->pluck('inventory_list_id');
+            
+            $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_id_array);
+        }
+
+
+        $data  = $inventory_data->select(
+            'inventory_data.tanggal_update_data',
+            'inventory_data.kategori',
+            'inventory_data.kode_gambar',
+            'inventory_data.dvr',
+            'inventory_data.lokasi_site',
+
+            'inventory_data.kode_lokasi',
+            'inventory_data.jenis_barang',
+            'inventory_data.merk',
+            'inventory_data.tipe',
+            'inventory_data.model',
+
+            'inventory_data.serial_number',
+            'inventory_data.psu_adaptor',
+            'inventory_data.tahun_pembuatan',
+            'inventory_data.tahun_pengadaan',
+            'inventory_data.kondisi',
+
+            'inventory_data.deskripsi',
+            'inventory_data.asuransi',
+            'inventory_data.lampiran',
+            'inventory_data.tanggal_retired',
+            'inventory_data.po',
+
+            'inventory_data.qty',
+            'inventory_data.keterangan'
+            )
+            ->orderBy('inventory_data.updated_at','desc')
+            ->get()
+            ->toArray();
+        //dd($data);
+        $type = "xls";
+        //$data = Akses_Data::get()->toArray();
+        return Excel::create('inventory_report', function($excel) use ($data) {
+            $excel->sheet('mySheet', function($sheet) use ($data)
+            {
+                $sheet->fromArray($data);
+            });
+        })->download($type);
     }
 
     public function report_download() {
@@ -217,7 +309,22 @@ class SettingController extends Controller {
                         'u_user.id','=','akses_data.updated_by')
                         ->whereDate('akses_data.updated_at','>=',$data['from_date'])
                         ->whereDate('akses_data.updated_at','<=',$data['current_date']);                        
+        if( !in_array($this->admin_division,$user_divisi) 
+            &&
+            !in_array($setting_list,$user_setting)
+            &&
+            in_array($pic_division,$user_divisi)
+            ) {
 
+            $pic_list_id_array = Users_Role::join('pic_role',
+                        'pic_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi',2)
+                        ->where('users_role.user_id',Auth::user()->id)
+                        ->where('pic_role.user_id',Auth::user()->id)
+                        ->pluck('pic_list_id');
+            
+            $akses_data = $akses_data->whereIn('pic_list_id',$pic_list_id_array);
+        }
                         // ->select('akses_data.*',
                         //     'pic_list.vendor_name AS pic_list_vendor_name',
                         //     'pic_list.vendor_detail_name AS pic_list_vendor_detail_name',

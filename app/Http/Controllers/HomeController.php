@@ -134,8 +134,9 @@ class HomeController extends Controller
 
 
         foreach($data['notify'] as $key=>$val) {
+            DB::connection()->enableQueryLog();
             if($val->category == 2 || $val->category == 3) {
-                $data['info'][$key] = notify::join('akses_data',
+                $info = notify::join('akses_data',
                     'akses_data.id','=','notification.data_id')
                     ->join('status_akses',
                     'status_akses.id','=','notification.status_data_id')
@@ -154,9 +155,19 @@ class HomeController extends Controller
                     )
                     ->first();
 
+                if(count($info) > 0) {
+                    $data['info'][$key] = $info;
+                } else {
+                    echo "ERROR in division 2 or 3, Please contact your administrator";
+                    echo "<br/>";
+                    echo DB::getQueryLog()[$key]['query'];
+                    //dd(DB::getQueryLog()[$key]);
+                    dd(DB::getQueryLog()[$key]['bindings']);
+                    die;
+                }
 
             } else if ($val->category == 4) {
-                $data['info'][$key] = notify::join('inventory_data',
+                $info = notify::join('inventory_data',
                     'inventory_data.id','=','notification.data_id')
                     ->join('inventory_list',
                     'inventory_list.id','=','inventory_data.inventory_list_id')
@@ -176,6 +187,17 @@ class HomeController extends Controller
                         'inventory_data.uuid AS notification_data_uuid'
                     )
                     ->first();
+                if(count($info) > 0) {
+                    $data['info'][$key] = $info;
+                } else {
+                    echo "ERROR in division 4, Please contact your administrator";
+                    echo "<br/>";
+                    echo DB::getQueryLog()[$key]['query'];
+                    //dd(DB::getQueryLog()[$key]);
+                    dd(DB::getQueryLog()[$key]['bindings']);
+                    die;
+                }
+
             } else {
                 $request->session()->flash('alert-danger', 'Category not found');
                 return redirect('home');

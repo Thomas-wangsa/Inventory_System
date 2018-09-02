@@ -583,7 +583,7 @@ class InventoryController extends Controller
         }
 
         $this->notify($data->status_inventory,$data->uuid);
-        $request->session()->flash('alert-danger', 'inventory has been rejected');
+        $request->session()->flash('alert-success', 'inventory has been rejected');
         return redirect($this->redirectTo."?search=on&search_uuid=".$data->uuid);
     }
 
