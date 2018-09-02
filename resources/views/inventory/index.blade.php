@@ -64,7 +64,8 @@
 			@endif
 			@if(in_array(1,$user_divisi) || in_array(7,$user_setting))
 			<div class="pull-left">
-				<div class="btn btn-primary">
+				<div class="btn btn-primary"
+				data-toggle="modal" data-target="#modal_new_floor">
 					Add Floor Location
 				</div>
 			</div>
@@ -308,6 +309,7 @@
 	</div>
   	@include('inventory.modal_add')
   	@include('inventory.modal_upload')
+  	@include('inventory.modal_floor')
   	@include('inventory.modal_new')
   	@include('inventory.modal_edit')
 	
@@ -330,6 +332,10 @@
 			var url_status = "&next_status=";
 			window.location = url+uuid+url_status+status;
 		}
+	}
+
+	function info(uuid) {
+		alert('on progress');
 	}
 
 
