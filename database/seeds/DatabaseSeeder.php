@@ -194,7 +194,9 @@ class DatabaseSeeder extends Seeder
         $notification_status = array(
             array("name"=>"new access card requested"),
             array("name"=>"access card processed"),
-            array("name"=>"access card expiry notify")
+            array("name"=>"access card expiry notify"),
+            array("name"=>"new inventory requested"),
+            array("name"=>"inventory processed")
         );
 
         foreach($notification_status as $key=>$val) {

@@ -225,8 +225,49 @@ class InventoryController extends Controller
 
 
     public function notify($status,$uuid) {
-        echo $status;
-        echo $uuid;die;
+        $inventory_data = Inventory_Data::where('status_inventory',$status)
+                    ->where('uuid',$uuid)->first();
+
+        if(count($inventory_data) < 1) {
+            echo "Inventory Data not found";die;
+            //return redirect($this->redirectTo);
+        } 
+        
+        $notify = array();
+
+        $user_updated     = Auth::user()->id;
+        array_push($notify,$user_updated);
+
+        $user_created = $inventory_data->created_by;
+        if(!in_array($user_created,$notify)) {
+            array_push($notify,$user_created);
+        }
+
+        $next_user   = array();
+        switch($status) {
+            case "1" :
+                $next_user = Users_Role::join('inventory_role',
+                    'inventory_role.id','=','users_role.jabatan')
+                    ->where('users_role.divisi','=',4)
+                    ->where('inventory_list_id',$inventory_data->inventory_list_id)
+                    ->where('inventory_level_id',2)
+                    ->pluck('inventory_role.user_id');
+                break;
+            case "2" :
+                $next_user = Users_Role::where('divisi',1)
+                ->pluck('user_id');
+                break;
+            default :
+                break;
+        }
+
+        foreach ($next_user as $key => $val) {
+            if(!in_array($val,$notify)) {
+                    array_push($notify,$val);
+                }
+        }
+        
+        dd($notify);
     }
 
     public function inventory_get_info_by_uuid(Request $request) {

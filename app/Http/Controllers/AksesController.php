@@ -498,9 +498,12 @@ class AksesController extends Controller
             $next_user   = array();
             switch($status_akses) {
                 case "1" :
-                    $next_user = Pic_Role::where('pic_list_id',$akses_data->pic_list_id)
+                    $next_user = Users_Role::join('pic_role',
+                        'pic_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi','=',2)
+                        ->where('pic_list_id',$akses_data->pic_list_id)
                         ->where('pic_level_id',2)
-                        ->pluck('user_id');
+                        ->pluck('pic_role.user_id');
                     break;
                 case "2" :
                     $next_user = Users_Role::where('divisi',3)
