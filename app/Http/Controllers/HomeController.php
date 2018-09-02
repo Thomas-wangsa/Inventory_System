@@ -136,26 +136,44 @@ class HomeController extends Controller
         foreach($data['notify'] as $key=>$val) {
             if($val->category == 2 || $val->category == 3) {
                 $data['info'][$key] = notify::join('akses_data',
-                'akses_data.id','=','notification.data_id')
-                ->join('status_akses',
-                'status_akses.id','=','notification.status_data_id')
-                ->join('users',
-                'users.id','=','akses_data.created_by')
-                ->where('notification.data_id',$val->data_id)
-                ->where('notification.user_id',Auth::user()->id)
-                ->where('notification.status_data_id',$val->status_data_id)
-                ->select(
-                    'users.name AS request_name',
-                    'akses_data.name AS notification_data_name',
-                    'status_akses.name AS notification_status_data_name',
-                    'status_akses.color AS notification_status_data_color',
-                    'akses_data.uuid AS notification_data_uuid'
-                )
-                ->first();
+                    'akses_data.id','=','notification.data_id')
+                    ->join('status_akses',
+                    'status_akses.id','=','notification.status_data_id')
+                    ->join('users',
+                    'users.id','=','akses_data.created_by')
+                    ->where('notification.data_id',$val->data_id)
+                    ->where('notification.user_id',Auth::user()->id)
+                    ->where('notification.status_data_id',$val->status_data_id)
+                    ->select(
+                        'notification.category AS notification_category',
+                        'users.name AS request_name',
+                        'akses_data.name AS notification_data_name',
+                        'status_akses.name AS notification_status_data_name',
+                        'status_akses.color AS notification_status_data_color',
+                        'akses_data.uuid AS notification_data_uuid'
+                    )
+                    ->first();
 
 
             } else if ($val->category == 4) {
-                $data['info'][$key] = array();
+                $data['info'][$key] = notify::join('inventory_data',
+                    'inventory_data.id','=','notification.data_id')
+                    ->join('status_inventory',
+                    'status_inventory.id','=','notification.status_data_id')
+                    ->join('users',
+                    'users.id','=','inventory_data.created_by')
+                    ->where('notification.data_id',$val->data_id)
+                    ->where('notification.user_id',Auth::user()->id)
+                    ->where('notification.status_data_id',$val->status_data_id)
+                    ->select(
+                        'notification.category AS notification_category',
+                        'users.name AS request_name',
+                        'inventory_data.inventory_list_id AS notification_data_name',
+                        'status_inventory.name AS notification_status_data_name',
+                        'status_inventory.color AS notification_status_data_color',
+                        'inventory_data.uuid AS notification_data_uuid'
+                    )
+                    ->first();
             } else {
                 $request->session()->flash('alert-danger', 'Category not found');
                 return redirect('home');

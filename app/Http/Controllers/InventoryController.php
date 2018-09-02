@@ -18,7 +18,9 @@ use App\Notifications\Inventory_Notification;
 use Illuminate\Support\Facades\Input;
 use Excel;
 use Illuminate\Support\Facades\DB;
+use App\Http\Models\Notification AS notify;
 
+use Illuminate\Support\Facades\Notification;
 
 use Faker\Factory as Faker;
 
@@ -29,9 +31,16 @@ class InventoryController extends Controller
     protected $credentials;
     protected $faker;
     protected $admin = 1;
-
+    protected $env = "production";
     public function __construct() {
         $this->faker    = Faker::create();
+        $this->env      = env("ENV_STATUS", "development");
+        if($this->env == "production") {
+            
+            // sleep(5);
+            // echo "AAA";die;
+
+        }
     }
 
 
@@ -266,8 +275,32 @@ class InventoryController extends Controller
                     array_push($notify,$val);
                 }
         }
+
+
+        $notify_status = 5;
+        $notify_category = 4;
+        if($status == 1) {
+            $notify_status = 4;
+        }
+
+        foreach($notify as $key=>$val) {
+            $data_notify = array(
+            'user_id'           => $val,
+            'category'          => $notify_category,
+            'data_id'           => $inventory_data->id,
+            'status_data_id'    => $status,
+            'sub_notify_id'     => $notify_status,
+            );
+
+            notify::firstOrCreate($data_notify);
+        }
+
+        if($this->env != "development") {
+            $data['notify_user']        = $notify;
+            $data['data']               = $inventory_data;
+            $this->send($data);
+        }
         
-        dd($notify);
     }
 
     public function inventory_get_info_by_uuid(Request $request) {
@@ -601,7 +634,8 @@ class InventoryController extends Controller
         return redirect($this->redirectTo);
     }
 
-    public function send($inventory_data){
+    public function send($data){
+        dd($data);
         $error = false;
         switch($inventory_data->status_inventory) {
             case 1 :

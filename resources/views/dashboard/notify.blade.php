@@ -50,11 +50,21 @@
                             {{$val->created_at}}
                         </td>
                         <td>
+                            @if($data['info'][$key]->notification_category == 2 
+                                ||
+                                $data['info'][$key]->notification_category == 3)
                             <a href="{{route('akses')}}?search=on&search_uuid={{$data['info'][$key]->notification_data_uuid}}">
                                 <button class="btn btn-info">
                                     Cek Access Card
                                 </button>
                             </a>
+                            @elseif($data['info'][$key]->notification_category == 4)
+                            <a href="{{route('inventory')}}?search=on&search_uuid={{$data['info'][$key]->notification_data_uuid}}">
+                                <button class="btn btn-info">
+                                    Cek Inventory Data
+                                </button>
+                            </a>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
