@@ -86,7 +86,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/inventory/inventory_insert_data', 'InventoryController@inventory_insert_data')->name('inventory_insert_data');
 		Route::post('/inventory/inventory_get_info_by_uuid', 'InventoryController@inventory_get_info_by_uuid')->name('inventory_get_info_by_uuid');
 		Route::post('/inventory/inventory_update_data', 'InventoryController@inventory_update_data')->name('inventory_update_data');
-
+		Route::post('/inventory/get_inventory_data_ajax', 'InventoryController@get_inventory_data_ajax')->name('get_inventory_data_ajax');
 
 
 		// Admin

@@ -185,6 +185,32 @@ class InventoryController extends Controller
     	return view('inventory/index',compact('data'));
     }
 
+    public function get_inventory_data_ajax(Request $request) {
+        $response['status'] = false;
+
+        $data = Inventory_Data::join('status_inventory',
+                'status_inventory.id','=','inventory_data.status_inventory')
+                ->join('users AS c_users',
+                'c_users.id','=','inventory_data.created_by')
+                ->join('users AS u_users',
+                'u_users.id','=','inventory_data.updated_by')
+                ->where('uuid',$request->uuid)
+                ->select(
+                    'inventory_data.*',
+                    'status_inventory.name AS status_name',
+                    'status_inventory.color AS status_color',
+                    'c_users.name AS c_username',
+                    'u_users.name AS u_username'
+                )
+                ->first();
+        if(count($data) < 1 ) {
+            $response['message'] = "Inventory Data is not found!";
+            return json_encode($response);
+        }
+        $response['status'] = true;
+        $response['data']   = $data;
+        return json_encode($response);
+    }
     public function inventory_insert_data(Request $request) {
         $request->validate([
             'inventory_list_id'=>'required'

@@ -40,7 +40,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control datepicker_class" 
-                id="" name="tanggal_update_data" value="2018-09-15"
+                id="" name="tanggal_update_data" value=""
                 placeholder="example : 2018-09-15" >
               </div>
             </div>
@@ -50,7 +50,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="kategori" value="{{$data['faker']->name}}"
+                id="" name="kategori" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -60,7 +60,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="kode_gambar" value="{{$data['faker']->name}}"
+                id="" name="kode_gambar" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -70,7 +70,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="dvr" value="{{$data['faker']->name}}"
+                id="" name="dvr" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -80,7 +80,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="lokasi_site" value="{{$data['faker']->city}}"
+                id="" name="lokasi_site" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -93,7 +93,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="kode_lokasi" value="{{$data['faker']->name}}"
+                id="" name="kode_lokasi" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -103,7 +103,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="jenis_barang" value="{{$data['faker']->name}}"
+                id="" name="jenis_barang" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -113,7 +113,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="merk" value="{{$data['faker']->name}}"
+                id="" name="merk" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -123,7 +123,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="tipe" value="{{$data['faker']->name}}"
+                id="" name="tipe" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -133,7 +133,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="model" value="{{$data['faker']->name}}"
+                id="" name="model" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -145,7 +145,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="serial_number" value="{{$data['faker']->name}}"
+                id="" name="serial_number" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -155,7 +155,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="psu_adaptor" value="{{$data['faker']->name}}"
+                id="" name="psu_adaptor" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -165,7 +165,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="tahun_pembuatan" value="{{$data['faker']->name}}"
+                id="" name="tahun_pembuatan" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -175,7 +175,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="tahun_pengadaan" value="{{$data['faker']->name}}"
+                id="" name="tahun_pengadaan" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -185,7 +185,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="kondisi" value="{{$data['faker']->name}}"
+                id="" name="kondisi" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -198,7 +198,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="deskripsi" value="{{$data['faker']->name}}"
+                id="" name="deskripsi" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -208,7 +208,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="asuransi" value="{{$data['faker']->name}}"
+                id="" name="asuransi" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -218,7 +218,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="lampiran" value="{{$data['faker']->name}}"
+                id="" name="lampiran" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -228,7 +228,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="tanggal_retired" value="{{$data['faker']->name}}"
+                id="" name="tanggal_retired" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -238,7 +238,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="po" value="{{$data['faker']->name}}"
+                id="" name="po" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -251,7 +251,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="qty" value="{{$data['faker']->randomDigitNotNull}}"
+                id="" name="qty" value=""
                 placeholder="Optional..." >
               </div>
             </div>
@@ -261,7 +261,7 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="keterangan" value="{{$data['faker']->name}}"
+                id="" name="keterangan" value=""
                 placeholder="Optional..." >
               </div>
             </div>

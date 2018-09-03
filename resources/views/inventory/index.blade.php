@@ -313,6 +313,7 @@
   	@include('inventory.modal_new')
   	@include('inventory.modal_new_location')
   	@include('inventory.modal_edit')
+  	@include('inventory.modal_info')
 	
 
 
@@ -333,10 +334,6 @@
 			var url_status = "&next_status=";
 			window.location = url+uuid+url_status+status;
 		}
-	}
-
-	function info(uuid) {
-		alert('on progress');
 	}
 
 

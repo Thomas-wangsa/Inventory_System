@@ -44,49 +44,49 @@
               <div class="form-group">
                 <label for="staff_nama"> Full Name :</label>
                 <input type="text" class="form-control" id="nama" 
-                      name="name" value="{{$data['faker']->name}}"
+                      name="name" value=""
                     placeholder="full name is required" required="">
               </div>
           
               <div class="form-group">
                 <label for="email">Email :</label>
                 <input type="email" class="form-control" 
-                    id="email" name="email" value="{{$data['faker']->email}}"
+                    id="email" name="email" value=""
                     placeholder="email is required" required="">
               </div>
 
               <div class="form-group">
                 <label for="staff_nama"> NIK :</label>
                 <input type="text" class="form-control" id="nama" 
-                      name="nik" value="{{$data['faker']->randomNumber}}"
+                      name="nik" value=""
                     placeholder="NIK is required" required="">
               </div>
 
               <div class="form-group">
                 <label for="staff_divisi"> No. Access Card :</label>
                 <input type="text" class="form-control" 
-                id="nama" name="no_access_card" value="{{$data['faker']->phoneNumber}}"
+                id="nama" name="no_access_card" value=""
                 placeholder="Optional" >
               </div>
 
               <div class="form-group">
                 <label for="staff_nama"> Start Active Card :</label>
                 <input type="text" class="form-control datepicker_class" 
-                id="" name="date_start" value="2018-09-01" 
+                id="" name="date_start" value="" 
                     placeholder="example : 2018-09-01" required="">
               </div>
 
               <div class="form-group">
                 <label for="staff_nama"> End Active Card :</label>
                 <input type="text" class="form-control datepicker_class" 
-                id="" name="date_end" value="2018-09-15"
+                id="" name="date_end" value=""
                 placeholder="example : 2018-09-15" required="">
               </div>
 
               <div class="form-group">
                 <label for="staff_divisi"> Division :</label>
                 <input type="text" class="form-control" 
-                id="nama" name="divisi" value="{{$data['faker']->company}}"
+                id="nama" name="divisi" value=""
                 placeholder="Optional" required="">
               </div>
 
@@ -94,7 +94,7 @@
               <div class="form-group">
                 <label for="staff_divisi"> Position :</label>
                 <input type="text" class="form-control" 
-                id="nama" name="jabatan" value="{{$data['faker']->jobTitle}}"
+                id="nama" name="jabatan" value=""
                 placeholder="Positiion" required="">
               </div>
 
@@ -102,7 +102,7 @@
               <div class="form-group">
                 <label for="staff_nama"> Additional Note : </label>
                 <input type="text" class="form-control" 
-                id="nama" name="additional_note" value="Kerja di {{$data['faker']->company}}" 
+                id="nama" name="additional_note" value="" 
                 placeholder="optional for add any information ">
               </div>
 
@@ -161,21 +161,21 @@
 	  			  <div class="form-group">
   				    <label for="staff_nama"> Full Name :</label>
   				    <input type="text" class="form-control" id="nama" 
-              			name="name" value="{{$data['faker']->name}}"
+              			name="name" value=""
               		placeholder="full name is required" required="">
 				    </div>
 				  
   				  <div class="form-group">
   				    <label for="email">Email :</label>
   				    <input type="email" class="form-control" 
-  				        id="email" name="email" value="{{$data['faker']->email}}"
+  				        id="email" name="email" value=""
               		placeholder="email is required" required="">
   				  </div>
 
             <div class="form-group">
               <label for="staff_nama"> NIK :</label>
               <input type="text" class="form-control" id="nama" 
-                    name="nik" value="1234456"
+                    name="nik" value=""
                   placeholder="NIK is required" required="">
             </div>
 
@@ -184,21 +184,21 @@
             <div class="form-group">
               <label for="staff_divisi"> No. Access Card :</label>
               <input type="text" class="form-control" 
-              id="nama" name="no_access_card" value="757585858"
+              id="nama" name="no_access_card" value=""
               placeholder="Optional" >
             </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Start Active Card :</label>
   				    <input type="text" class="form-control datepicker_class" 
-  				    id="start_card_new" name="date_start" value="2018-09-01" 
+  				    id="start_card_new" name="date_start" value="" 
               		placeholder="example : 2018-09-01" required="">
   				  </div>
 
 	            <div class="form-group">
 	              <label for="staff_nama"> End Active Card :</label>
 	              <input type="text" class="form-control datepicker_class" 
-	              id="end_card_new" name="date_end" value="2018-09-15"
+	              id="end_card_new" name="date_end" value=""
 	              placeholder="example : 2018-09-15" required="">
 	            </div>
 
@@ -218,14 +218,14 @@
   				  <div class="form-group">
   				    <label for="staff_nama"> Floor Activities : </label>
   				    <input type="text" class="form-control" 
-              id="nama" name="floor" value="Lantai 12" 
+              id="nama" name="floor" value="" 
               placeholder="example : lantai 11,21" required="">
   				  </div>
 
   				  <div class="form-group">
   				    <label for="staff_nama"> Additional Note : </label>
   				    <input type="text" class="form-control" 
-              id="nama" name="additional_note" value="Kerja di {{$data['faker']->company}}" 
+              id="nama" name="additional_note" value="" 
               placeholder="optional for add any information ">
   				  </div>
 
