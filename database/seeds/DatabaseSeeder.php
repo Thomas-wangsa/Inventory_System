@@ -52,8 +52,8 @@ class DatabaseSeeder extends Seeder
 
         $users_array = array(
             array(
-                "name"=>"superman",
-                "email"=>"admin@gmail.com",
+                "name"=>"sir kat",
+                "email"=>"katimin@indosatooredo.com",
                 "password"=>bcrypt(123456),
                 "mobile"=>$faker->phoneNumber,
             )
