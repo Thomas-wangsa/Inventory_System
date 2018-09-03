@@ -322,7 +322,7 @@
 
 	function approve(next_status,uuid) {
 		if (confirm('Approve this request ?')) { 
-			var url = window.location.protocol+"//"+window.location.host+'/inventory_approval?uuid=';
+			var url = "{{URL::to('/')}}"+'/inventory_approval?uuid=';
 			var url_status = "&next_status=";
 			window.location = url+uuid+url_status+next_status;
 		}
@@ -330,7 +330,7 @@
 
 	function remove(status,uuid) {
 		if (confirm('Reject this request ?')) {
-			var url = window.location.protocol+"//"+window.location.host+'/inventory_reject?uuid=';
+			var url = "{{URL::to('/')}}"+'/inventory_reject?uuid=';
 			var url_status = "&next_status=";
 			window.location = url+uuid+url_status+status;
 		}
