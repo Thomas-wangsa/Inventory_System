@@ -206,9 +206,9 @@
 					$('#modal_info_updated_by').html(response.data['updated_by_username'] + " = " + response.data['updated_at']);
 					$('#modal_info_additional_note').html(response.data['additional_note']);
 
-					$('#modal_info_po').attr("src",response.data['po']);
+					$('#modal_info_po').attr("src","{{URL::to('/')}}"+response.data['po']);
 
-					$('#modal_info_foto').attr("src",response.data['foto']);
+					$('#modal_info_foto').attr("src","{{URL::to('/')}}"+response.data['foto']);
 					$('#modal_info').modal('show');
 				} else {
 					alert(response.message);
