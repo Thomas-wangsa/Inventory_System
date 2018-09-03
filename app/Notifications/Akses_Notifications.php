@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-
+use Illuminate\Support\Facades\URL;
 class Akses_Notifications extends Notification
 {
     use Queueable;
@@ -49,10 +49,10 @@ class Akses_Notifications extends Notification
             "access_card_no"    => $this->param['access_card_no'],
             "status_akses"      => $this->param['status_akses'],
             "status_color"      => $this->param['status_color'],
-            "url"               => config('app.url'),
-            "url_data"          => config('app.url').
+            "url"               => URL::to('/'),
+            "url_data"          => URL::to('/').
                                 "/access?search=on&search_uuid=".$this->param['uuid'],
-            "url_reject"        => config('app.url').
+            "url_reject"        => URL::to('/').
                                 "/akses_reject?uuid=".$this->param['uuid'],
             
             
