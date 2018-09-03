@@ -154,7 +154,9 @@
 			    			<td> {{ $val->mobile }} </td>
 			    			<td>
 			    				<img src="{{URL::to('/')}}{{$val->foto}}"/ width="80px" 
-			    				onclick='show_foto("{{URL::to(/)}}{{$val->foto}}")'> 
+			    				onclick="show_foto('<?php 
+			    					echo URL::to('/').$val->foto;
+			    				?>')"> 
 			    			</td>
 			    			<td style="padding-top: 10px"> 
 			    				<?php 
