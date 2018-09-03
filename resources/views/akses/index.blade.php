@@ -435,7 +435,7 @@
 
 	function approve(status,uuid) {
 		if (confirm('Approve this request ?')) { 
-			var url = window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
+			var url = "{URL::to('/')}}"+window.location.protocol+"//"+window.location.host+'/akses_approval?uuid=';
 			var url_status = "&next_status=";
 			window.location = url+uuid+url_status+status;
 		}
@@ -444,7 +444,7 @@
 
 	function remove(status,uuid) {
 		if (confirm('Reject this request ?')) {
-			var url = window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
+			var url = "{URL::to('/')}}"+window.location.protocol+"//"+window.location.host+'/akses_reject?uuid=';
 			var url_status = "&next_status=";
 			window.location = url+uuid+url_status+status;
 		}
