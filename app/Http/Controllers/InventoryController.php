@@ -194,13 +194,20 @@ class InventoryController extends Controller
                 'c_users.id','=','inventory_data.created_by')
                 ->join('users AS u_users',
                 'u_users.id','=','inventory_data.updated_by')
+                ->leftjoin('map_location',
+                'map_location.inventory_data_id','=','inventory_data.id')
+                ->leftjoin('map',
+                'map.id','=','map_location.map_id')
                 ->where('uuid',$request->uuid)
                 ->select(
                     'inventory_data.*',
                     'status_inventory.name AS status_name',
                     'status_inventory.color AS status_color',
                     'c_users.name AS c_username',
-                    'u_users.name AS u_username'
+                    'u_users.name AS u_username',
+                    'map_location.id AS map_location_id',
+                    'map_location.image_location',
+                    'map.map_images'
                 )
                 ->first();
         if(count($data) < 1 ) {

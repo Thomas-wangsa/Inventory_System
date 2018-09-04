@@ -143,13 +143,27 @@
 		      	</div> <!--panel body-->
 		    </div> <!--panel-->
 
-		    <div class="panel panel-primary" id="head_modal_info_po">
+		    <div class="panel panel-primary" id="head_modal_info_map_location">
 		      <div class="panel-heading text-center">
 		      	Map Location
 		      </div>
 		      	<div class="panel-body">
 			      	<img class="img-responsive"
-			      	id="modal_info_po" 
+			      	id="modal_info_map_location" 
+			      	src="" 
+			      	alt="Chania">
+
+		      	</div> <!--panel body-->
+		      	<div class="panel-footer"></div>
+		    </div> <!--panel-->
+
+		    <div class="panel panel-primary" id="head_modal_info_images_location">
+		      <div class="panel-heading text-center">
+		      	Images Location
+		      </div>
+		      	<div class="panel-body">
+			      	<img class="img-responsive"
+			      	id="modal_info_images_location" 
 			      	src="" 
 			      	alt="Chania">
 
@@ -173,6 +187,8 @@
 
 <script type="text/javascript">
 	function info(uuid) {
+		$('#head_modal_info_map_location').hide();
+		$('#head_modal_info_images_location').hide();
 		var data = {
 	        "uuid":uuid
 	        };
@@ -228,6 +244,15 @@
 
 
 					$('#modal_info_status_inventory').html(response.data.status_name);
+
+					if(response.data.map_location_id != null) {
+						$('#head_modal_info_map_location').show();
+						$('#head_modal_info_images_location').show();
+
+						$('#modal_info_map_location').attr("src","{{URL::to('/')}}"+response.data.map_images);
+						$('#modal_info_images_location').attr("src","{{URL::to('/')}}"+response.data.image_location);
+					}
+
 					$('#modal_inventory_info').modal('show');
 				}else {
 					alert(response.message);
