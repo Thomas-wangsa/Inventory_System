@@ -125,7 +125,9 @@ class AdminController extends Controller
             return redirect('admin');            
         }
 
-        $check_user_exist = Users::where('email',strtolower($request->email))->first();
+        $check_user_exist = Users::where('email',strtolower($request->email))
+                    ->withTrashed()
+                    ->first();
         if(count($check_user_exist) > 0) {
             $request->session()->flash('alert-danger', 'failed,email already registerred in our system'); 
             return redirect('admin');
