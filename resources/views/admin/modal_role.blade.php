@@ -6,7 +6,7 @@
 </style>
 <!-- Modal -->
   <div class="modal fade" id="modal_role" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
     
       <!-- Modal content-->
       <div class="modal-content">
@@ -160,6 +160,33 @@
                   @endforeach
                 '</select>'+
               '</div>'+
+              '<div class="btn btn-primary"'+
+              'id="btn_inventory'+no_id_unique+'"'+
+              'onclick="shortcut_inventory('+no_id_unique+')"'+
+              '>'+
+                'add new inventory' +
+              '</div>'+
+              '<div id="shortcut_inventory'+no_id_unique+'">' +
+                '<input '+
+                  'type="text "'+
+                  'class="form-control "'+
+                  'id="inv_list'+no_id_unique+'"'+
+                  'placeholder="ex: cctv"'+
+                '>' +
+                '<br/>'+ 
+                '<input '+
+                  'type="text "'+
+                  'class="form-control "'+
+                  'id="inv_detail'+no_id_unique+'"'+
+                  'placeholder="ex: cctv management"'+
+                '>' +
+                '<br/>'+
+                '<button '+
+                  'class="btn btn-primary" '+
+                '>'+
+                  'register inventory' +
+                '</button>'+
+              '</div>'+
               '<div class="form-group" id="pic_list_html'+no_id_unique+'">' +
                 '<select '+ 
                 'class="form-control" '+
@@ -184,6 +211,8 @@
     $('#tbody_edit').append(data);
     $('#inventory_head_edit'+no_id_unique).hide();
     $('#pic_list_html'+no_id_unique).hide();
+    $('#btn_inventory'+no_id_unique).hide();
+    $('#shortcut_inventory'+no_id_unique).hide();
     no_id_unique++;
     $('#add_role_btn').prop('disabled',true);
   }
@@ -192,6 +221,8 @@
     $('#select_posisi_edit'+no_id_unique_param).prop('disabled',false);
     $('#inventory_head_edit'+no_id_unique_param).hide();
     $('#pic_list_html'+no_id_unique_param).hide();
+    $('#btn_inventory'+no_id_unique_param).hide();
+    $('#shortcut_inventory'+no_id_unique).hide();
     var divisi_id = $('#select_divisi_edit'+no_id_unique_param).val();
     $('#select_posisi_edit'+no_id_unique_param)
           .find('option')
@@ -237,6 +268,7 @@
         });
       break;
       case "4" :
+        $('#btn_inventory'+no_id_unique_param).show();
         $('#inventory_head_edit'+no_id_unique_param).show(); 
         $.ajax({
           url:  "{{route('get_inventory_level')}}",
@@ -257,6 +289,7 @@
   }
 
   function add_role(no_id_unique_param) {
+    $('#btn_inventory'+no_id_unique_param).hide();
     var uuid          = $('#uuid_edit').text();
     var divisi_role   = $('#select_divisi_edit'+no_id_unique_param).val();
     var jabatan_role  = $('#select_posisi_edit'+no_id_unique_param).val();
@@ -389,5 +422,12 @@
         }
       });
     }     
+  }
+
+  function shortcut_inventory(no_id_unique_param) {
+    //alert(no_id_unique_param);
+    $('#inventory_head_edit'+no_id_unique_param).hide();
+    $('#btn_inventory'+no_id_unique_param).hide();
+    $('#shortcut_inventory'+no_id_unique_param).show();
   }
 </script>

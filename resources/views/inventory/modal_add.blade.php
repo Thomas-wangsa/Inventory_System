@@ -16,13 +16,13 @@
 				  <div class="form-group">
             <label for="staff_nama"> Inventory Category :</label>
             <input type="text" class="form-control" id="nama" required="" 
-            name="inventory_name" value="" placeholder="ex : cctv management">
+            name="inventory_name" value="" placeholder="ex : cctv">
           </div>
           <div class="form-group">
             <label for="staff_nama"> Additional information :</label>
             <input type="text" class="form-control" id="nama" required="" 
             name="inventory_detail_name" value="" 
-            placeholder="Optional">
+            placeholder="ex : cctv management">
           </div>
 				  <button type="submit" class="btn btn-block btn-warning"> 
             Register Inventory Category 
