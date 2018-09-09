@@ -160,7 +160,7 @@
                   @endforeach
                 '</select>'+
               '</div>'+
-              '<div class="btn btn-primary"'+
+              '<div class="btn btn-primary btn-block"'+
               'id="btn_inventory'+no_id_unique+'"'+
               'onclick="shortcut_inventory('+no_id_unique+')"'+
               '>'+
@@ -182,9 +182,16 @@
                 '>' +
                 '<br/>'+
                 '<button '+
-                  'class="btn btn-primary" '+
+                  'class="btn btn-primary btn-block" '+
                 '>'+
                   'register inventory' +
+                '</button>'+
+                '<br/>'+
+                '<button '+
+                  'class="btn btn-danger btn-block" '+
+                  'onclick="hide_shortcut_inventory('+no_id_unique+')"'+
+                '>'+
+                  'cancel register inventory' +
                 '</button>'+
               '</div>'+
               '<div class="form-group" id="pic_list_html'+no_id_unique+'">' +
@@ -289,12 +296,25 @@
   }
 
   function add_role(no_id_unique_param) {
-    $('#btn_inventory'+no_id_unique_param).hide();
+    
     var uuid          = $('#uuid_edit').text();
     var divisi_role   = $('#select_divisi_edit'+no_id_unique_param).val();
     var jabatan_role  = $('#select_posisi_edit'+no_id_unique_param).val();
     var inv_role      = $('#inventory_role'+no_id_unique_param).val();
     var pic_role      = $('#pic_role'+no_id_unique_param).val();
+
+
+    if(divisi_role == "2") {
+      if(pic_role == null) {
+        alert('please select pic role');
+        return false;
+      }
+    } else if(divisi_role == "4") {
+      if(inv_role == null) {
+        alert('please select inventory role');
+        return false;
+      }
+    }
 
     var data = {
       "uuid":uuid,
@@ -304,6 +324,8 @@
       "pic_role":pic_role
     };
 
+    $('#btn_inventory'+no_id_unique_param).hide();
+    
     $.ajaxSetup({
       headers: {
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -429,5 +451,11 @@
     $('#inventory_head_edit'+no_id_unique_param).hide();
     $('#btn_inventory'+no_id_unique_param).hide();
     $('#shortcut_inventory'+no_id_unique_param).show();
+  }
+
+  function hide_shortcut_inventory(no_id_unique_param) {
+    $('#inventory_head_edit'+no_id_unique_param).show();
+    $('#btn_inventory'+no_id_unique_param).show();
+    $('#shortcut_inventory'+no_id_unique_param).hide();
   }
 </script>
