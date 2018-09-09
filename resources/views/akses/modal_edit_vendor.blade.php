@@ -7,7 +7,7 @@
         <div class="modal-header" style="border-bottom:0px">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">
-          	Update Users
+          	Update Access Card
           </h4>
         </div>
         <div class="modal-body">

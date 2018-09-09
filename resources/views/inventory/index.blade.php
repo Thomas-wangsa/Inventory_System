@@ -66,7 +66,7 @@
 			<div class="pull-left">
 				<div class="btn btn-primary"
 				data-toggle="modal" data-target="#modal_new_floor">
-					Add Floor Location
+					Add Map Location
 				</div>
 			</div>
 			@endif

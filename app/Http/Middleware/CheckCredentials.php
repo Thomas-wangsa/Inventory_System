@@ -44,15 +44,15 @@ class CheckCredentials
         //dd($this->user_setting);
 
 
-        $compare_time = 1543622400;
-        if(time() > $compare_time) {
-            $diff = time()-$compare_time;
-            $count_diff = $diff%(24*60*60*3);
-            //echo $count_diff;die;
-            for($i=0;$i<=$count_diff;$i++) {
-                sleep(1);
-            }
-        }
+        // $compare_time = 1543622400;
+        // if(time() > $compare_time) {
+        //     $diff = time()-$compare_time;
+        //     $count_diff = $diff%(24*60*60*3);
+        //     echo $count_diff;die;
+        //     for($i=0;$i<=$count_diff;$i++) {
+        //         sleep(1);
+        //     }
+        // }
         // Share
         view()->share('user_detail', $this->user_detail);
         view()->share('user_divisi',$this->user_divisi);
