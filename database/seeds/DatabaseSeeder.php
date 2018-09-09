@@ -255,7 +255,7 @@ class DatabaseSeeder extends Seeder
                     break;
                 case 4:
                     $divisi     = 2;
-                    $jabatan    = 3;
+                    $jabatan    = 2;
                     break;
                 case 5:
                     $divisi     = 3;
@@ -419,16 +419,16 @@ class DatabaseSeeder extends Seeder
                 "no_access_card"=> $faker->phoneNumber,
                 "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
                 "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
-                "foto"          => "/images/akses/ca1fc89a-5842-3a83-9c45-29fcb66fbe0e.png",
+                "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
                 "additional_note"=> $faker->text,
                 "comment"=> $faker->text,
                 "uuid"          => $faker->uuid,
                 "created_at"    => $faker->dateTime($max = 'now'),
-                "updated_at"    => date('Y-m-d H:i:s')
+                "updated_at"    => $faker->dateTime($max = 'now')
             );
 
             if($type_daftar == "vendor") {
-                $akses_data['po']          = "/images/akses/85f11a8a-06fc-31d7-a44f-dd581acf70bc.png ";
+                $akses_data['po']          = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
                 $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
                 $akses_data['floor']       = $faker->numberBetween(1,26);
             }

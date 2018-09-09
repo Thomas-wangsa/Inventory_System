@@ -156,18 +156,24 @@ class SettingController extends Controller {
         }
 
         $akses_data  = $akses_data->select('status_akses.name AS status_name',
-                        'akses_data.status_akses'
-                        ,DB::raw('count(akses_data.id) as total'))
+                        'akses_data.status_akses',
+                        'status_akses.color AS status_color',
+                        DB::raw('count(akses_data.id) as total'))
                     ->groupBy('status_akses')
+                    ->orderBy('status_akses.id','ASC')
                     ->get();
         $data['total'] = 0;
         $data['report'] = array();
+        $color_report = array();
         foreach ($akses_data as $key => $value) {
             $data['report'][$value->status_name] = $value->total;
             $data['total'] += $value->total;
+            array_push($color_report, $value->status_color);
+
         }
 
-        $data['color'] = Status_Akses::all();
+        //$data['color'] = Status_Akses::all();
+        $data['color']  = $color_report;
         //dd($data);
         return view('setting/report',compact('data'));
     }

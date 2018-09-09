@@ -39,7 +39,7 @@
           title: 'Weekly Report Period {{$data["from_date"]}} - {{$data["current_date"]}} ' ,
            slices: {
             @foreach($data['color'] as $key=>$val)
-            {{$key}}: {color : "{{$val->color}}"},
+            {{$key}}: {color : "{{$val}}"},
             @endforeach
           }
         };
