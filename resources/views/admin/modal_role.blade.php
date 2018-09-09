@@ -29,8 +29,8 @@
   			    <thead>
   			      <tr>
   			        <th class="text-center"> Level Authority </th>
-                <th class="text-center"> Sub Level Authority </th>
                 <th class="text-center"> Position </th>
+                <th class="text-center"> Sub Level Authority </th>
   			        <th class="text-center"> Action </th>
   			      </tr>
   			    </thead>
@@ -87,10 +87,10 @@
                       val.divisi_name +
                     '</td>' +
                     '<td class="text-center">' +
-                      val.sub_level +
+                      val.jabatan_name +
                     '</td>' +
                     '<td class="text-center">' +
-                      val.jabatan_name +
+                      val.sub_level +
                     '</td>';
           data += '<td id="td_button_no'+no_id_unique+'" '+
                   'class="text-center ';
@@ -138,6 +138,15 @@
                 '</select>'+
               '</div>'+
           '</td>' +
+          '<td>' +
+            '<div class="form-group">' +
+              '<select '+ 
+              'class="form-control" '+
+              'id="select_posisi_edit'+no_id_unique+'" '+
+              'required="">' +
+              '</select>'+
+              '</div>'+
+          '</td>' +
           '<td id="edit_inventory_role">' +
             '<div class="form-group" id="inventory_head_edit'+no_id_unique+'">' +
                 '<select '+ 
@@ -164,15 +173,7 @@
                 '</select>'+
               '</div>'+
           '</td>' +
-          '<td>' +
-            '<div class="form-group">' +
-              '<select '+ 
-              'class="form-control" '+
-              'id="select_posisi_edit'+no_id_unique+'" '+
-              'required="">' +
-              '</select>'+
-              '</div>'+
-          '</td>' +
+          
           '<td id="td_button_no'+no_id_unique+'" >' +
             '<button class="btn btn-success text-center"'+
             'onclick="add_role('+no_id_unique+')">'+

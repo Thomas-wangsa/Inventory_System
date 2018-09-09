@@ -19,7 +19,7 @@
     });
   });
 </script>
-	<div style="padding: 0 30px;margin-top: 40px">
+	<div style="margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
 	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -123,9 +123,9 @@
 				  
 				  	<button type="submit" class="btn btn-info"> Find </button>
 				  	<button type="reset" 
-				  	class="btn btn-danger"
+				  	class="btn"
 				  	onclick="reset_filter()"> 
-				  		Reset 
+				  		Clear Filter 
 				  	</button>
 			  	</form>
 			</div>

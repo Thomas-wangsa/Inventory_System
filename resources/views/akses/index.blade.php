@@ -9,7 +9,7 @@
 /*		display: none
 */	}
 </style>
-	<div style="padding: 0 30px;margin-top: 40px">
+	<div style="margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
 	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -39,7 +39,7 @@
 			@if(in_array(1,$user_divisi) || in_array(3,$user_setting))
 			<div class="pull-left">
 				<div class="btn btn-primary" data-toggle="modal" data-target="#modal_new_vendor">
-					Add Vendor Category 
+					Add Pic Category 
 				</div>
 			</div>
 			<div class="clearfix" style="margin-bottom: 10px"> </div>
@@ -95,9 +95,9 @@
 				  
 				  	<button type="submit" class="btn btn-info"> Find </button>
 				  	<button type="reset" 
-				  	class="btn btn-danger"
+				  	class="btn"
 				  	onclick="reset_filter()"> 
-				  		Reset 
+				  		Clear Filter 
 				  	</button>
 			  	</form>
 			</div>
@@ -313,12 +313,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(12,'{{$val->uuid}}')" 
@@ -346,12 +346,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button>
+		                    			</button> -->
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(13,'{{$val->uuid}}')" 
