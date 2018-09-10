@@ -123,7 +123,9 @@ Route::group(['middleware' => ['auth']], function() {
 
 		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
+		Route::post('/ajax/get_inventory_list', 'AjaxController@get_inventory_list')->name('get_inventory_list');
 		Route::post('/ajax/get_pic_level', 'AjaxController@get_pic_level')->name('get_pic_level');
+		Route::post('/ajax/get_pic_list', 'AjaxController@get_pic_list')->name('get_pic_list');
 		Route::post('/ajax/get_special_level', 'AjaxController@get_special_level')->name('get_special_level');
 
 

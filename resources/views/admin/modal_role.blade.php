@@ -122,6 +122,7 @@
 
 
   function append_table() {
+    no_id_keep = no_id_unique;
     data = '<tr id="tr_no'+no_id_unique+'" >' +
           '<td>' +
             '<div class="form-group">' +
@@ -153,11 +154,7 @@
                 'class="form-control" '+
                 'id="inventory_role'+no_id_unique+'" '+
                 '>' +
-                  @foreach($data['inventory_list'] as $key=>$val)
-                  '<option value="{{$val->id}}">'+
-                    '{{$val->inventory_name}}'+
-                  '</option>' +
-                  @endforeach
+                  
                 '</select>'+
               '</div>'+
               '<div class="btn btn-primary btn-block"'+
@@ -202,11 +199,11 @@
                 'class="form-control" '+
                 'id="pic_role'+no_id_unique+'" '+
                 '>' +
-                  @foreach($data['pic_list'] as $key=>$val)
-                  '<option value="{{$val->id}}">'+
-                    '{{$val->vendor_name}}'+
-                  '</option>' +
-                  @endforeach
+                  // @foreach($data['pic_list'] as $key=>$val)
+                  // '<option value="{{$val->id}}">'+
+                  //   '{{$val->vendor_name}}'+
+                  // '</option>' +
+                  // @endforeach
                 '</select>'+
               '</div>'+
           '</td>' +
@@ -223,6 +220,54 @@
     $('#pic_list_html'+no_id_unique).hide();
     $('#btn_inventory'+no_id_unique).hide();
     $('#shortcut_inventory'+no_id_unique).hide();
+
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({ 
+      type : "POST",
+      url: " {{ route('get_inventory_list') }}",
+      contentType: "application/json",
+      success: function(result) {
+        var response = JSON.parse(result);
+        var data_select = "";
+        $.each(response, function (key,val) {
+          data_select += '<option value='+val.id+'>' +
+                val.inventory_name +
+                '</option>';
+        });
+        $('#inventory_role'+no_id_keep).append(data_select);
+
+      },
+      error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+      }
+    });
+
+    $.ajax({ 
+      type : "POST",
+      url: " {{ route('get_pic_list') }}",
+      contentType: "application/json",
+      success: function(result) {
+        var response = JSON.parse(result);
+        var data_select = "";
+        $.each(response, function (key,val) {
+          data_select += '<option value='+val.id+'>' +
+                val.vendor_name +
+                '</option>';
+        });
+        $('#pic_role'+no_id_keep).append(data_select);
+
+      },
+      error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+      }
+    });
+
+
     no_id_unique++;
     $('#add_role_btn').prop('disabled',true);
   }

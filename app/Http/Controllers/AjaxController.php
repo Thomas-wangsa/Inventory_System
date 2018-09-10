@@ -28,9 +28,19 @@ class AjaxController extends Controller
         return json_encode($inventory_level);
     }
 
+    public function get_pic_list(Request $request) {
+        $pic_list = Pic_List::all();
+        return json_encode($pic_list);
+    }
+
     public function get_inventory_level(Request $request) {
     	$inventory_level = Inventory_Level::all();
     	return json_encode($inventory_level);
+    }
+
+    public function get_inventory_list(Request $request) {
+        $inventory_list = Inventory_List::all();
+        return json_encode($inventory_list);
     }
 
     public function get_data_user(Request $request) {
