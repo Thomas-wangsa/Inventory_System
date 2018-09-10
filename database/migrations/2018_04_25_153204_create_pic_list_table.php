@@ -16,7 +16,7 @@ class CreatePicListTable extends Migration
         Schema::create('pic_list', function (Blueprint $table) {
             $table->increments('id');
             $table->string('vendor_name')->unique();
-            $table->string('vendor_detail_name')->unique();
+            $table->string('vendor_detail_name');
             $table->unsignedInteger('updated_by');
             $table->timestamps();
             $table->softDeletes();

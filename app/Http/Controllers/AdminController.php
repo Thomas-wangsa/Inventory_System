@@ -594,4 +594,39 @@ class AdminController extends Controller
         $response['data']   = $inventory_list_data;        
         return json_encode($response);
     }
+
+    public function shorcut_insert_pic(Request $request) {
+
+        $pic_list   = strtolower($request->pic_list);
+        $pic_detail = strtolower($request->pic_detail);
+
+        $response['status'] = false;
+
+        if($pic_list == null || $pic_list == "") {
+            $response['message'] = "Pic List is not found";
+            return json_encode($response);
+        } else if($pic_detail == null || $pic_detail == "") {
+            $response['message'] = "Pic Detail is not found";
+            return json_encode($response);
+        }
+
+        $check_exist = Pic_List::where('vendor_name',$pic_list)
+                        ->first();
+        if(count($check_exist) > 0) {
+            $response['message'] = "Failed, pic list already registerred!";
+            return json_encode($response);
+        }
+
+
+        $pic_list_data = new Pic_List;
+        $pic_list_data->vendor_name    = $pic_list;
+        $pic_list_data->vendor_detail_name = $pic_detail;
+        $pic_list_data->updated_by = Auth::user()->id;
+        $pic_list_data->save();
+        
+
+        $response['status'] = true;
+        $response['data']   = $pic_list_data;        
+        return json_encode($response);
+    }
 }

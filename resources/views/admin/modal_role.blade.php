@@ -194,17 +194,53 @@
                   'cancel register inventory' +
                 '</button>'+
               '</div>'+
+
+              
+
               '<div class="form-group" id="pic_list_html'+no_id_unique+'">' +
                 '<select '+ 
                 'class="form-control" '+
                 'id="pic_role'+no_id_unique+'" '+
                 '>' +
-                  // @foreach($data['pic_list'] as $key=>$val)
-                  // '<option value="{{$val->id}}">'+
-                  //   '{{$val->vendor_name}}'+
-                  // '</option>' +
-                  // @endforeach
+             
                 '</select>'+
+              '</div>'+
+              '<div class="btn btn-primary btn-block"'+
+              'id="btn_pic'+no_id_unique+'"'+
+              'onclick="shortcut_pic('+no_id_unique+')"'+
+              '>'+
+                'add new pic' +
+              '</div>'+
+              '<div id="shortcut_pic'+no_id_unique+'">' +
+                '<input '+
+                  'type="text "'+
+                  'class="form-control "'+
+                  'value="" '+
+                  'id="pic_list'+no_id_unique+'"'+
+                  'placeholder="ex: vendor A"'+
+                '>' +
+                '<br/>'+ 
+                '<input '+
+                  'type="text "'+
+                  'class="form-control" '+
+                  'value="" '+
+                  'id="pic_detail'+no_id_unique+'" '+
+                  'placeholder="ex: ALF"'+
+                '>' +
+                '<br/>'+
+                '<button '+
+                  'class="btn btn-primary btn-block" '+
+                  'onclick="register_pic_action('+no_id_unique+')"'+
+                '>'+
+                  'register pic' +
+                '</button>'+
+                '<br/>'+
+                '<button '+
+                  'class="btn btn-danger btn-block" '+
+                  'onclick="hide_shortcut_pic('+no_id_unique+')"'+
+                '>'+
+                  'cancel register pic' +
+                '</button>'+
               '</div>'+
           '</td>' +
           
@@ -220,6 +256,8 @@
     $('#pic_list_html'+no_id_unique).hide();
     $('#btn_inventory'+no_id_unique).hide();
     $('#shortcut_inventory'+no_id_unique).hide();
+    $('#btn_pic'+no_id_unique).hide();
+    $('#shortcut_pic'+no_id_unique).hide();
 
 
     $.ajaxSetup({
@@ -277,7 +315,9 @@
     $('#inventory_head_edit'+no_id_unique_param).hide();
     $('#pic_list_html'+no_id_unique_param).hide();
     $('#btn_inventory'+no_id_unique_param).hide();
+    $('#btn_pic'+no_id_unique_param).hide();
     $('#shortcut_inventory'+no_id_unique).hide();
+    $('#shortcut_pic'+no_id_unique).hide();
     var divisi_id = $('#select_divisi_edit'+no_id_unique_param).val();
     $('#select_posisi_edit'+no_id_unique_param)
           .find('option')
@@ -290,7 +330,8 @@
         $('#select_posisi_edit'+no_id_unique_param).val("0");
       break;
       case "2" :
-        $('#pic_list_html'+no_id_unique_param).show(); 
+        $('#pic_list_html'+no_id_unique_param).show();
+        $('#btn_pic'+no_id_unique_param).show(); 
         $.ajax({
           url:  "{{route('get_pic_level')}}",
           method: "POST", 
@@ -372,7 +413,6 @@
       "pic_role":pic_role
     };
 
-    $('#btn_inventory'+no_id_unique_param).hide();
     
     $.ajaxSetup({
       headers: {
@@ -402,6 +442,9 @@
             $('#select_posisi_edit'+no_id_unique_param).prop('disabled',true);
             $('#inventory_role'+no_id_unique_param).prop('disabled',true);
             $('#pic_role'+no_id_unique_param).prop('disabled',true);
+
+            $('#btn_pic'+no_id_unique_param).hide();
+            $('#btn_inventory'+no_id_unique_param).hide();
         } else {
           alert(response.message);
         }
@@ -507,6 +550,19 @@
     $('#shortcut_inventory'+no_id_unique_param).hide();
   }
 
+  function shortcut_pic(no_id_unique_param) {
+    //alert(no_id_unique_param);
+    $('#pic_list_html'+no_id_unique_param).hide();
+    $('#btn_pic'+no_id_unique_param).hide();
+    $('#shortcut_pic'+no_id_unique_param).show();
+  }
+
+  function hide_shortcut_pic(no_id_unique_param) {
+    $('#pic_list_html'+no_id_unique_param).show();
+    $('#btn_pic'+no_id_unique_param).show();
+    $('#shortcut_pic'+no_id_unique_param).hide();
+  }
+
   function register_inventory_action(no_id_unique_param) {
     var inv_list = $('#inv_list'+no_id_unique_param).val();
     var inv_detail = $('#inv_detail'+no_id_unique_param).val();
@@ -564,24 +620,65 @@
         }
       });
     }
-    // $.ajax({
-    //     type : "POST",
-    //     url: " {{ route('shorcut_insert_inventory') }}",
-    //     contentType: "application/json",
-    //     data : JSON.stringify(data),
-    //     success: function(result) {
-    //       response = JSON.parse(result);
-    //       if(response.status == true) { 
+  }
 
-    //       } else {
-    //         alert(response.message);
-    //       }
-    //     },
-    //     error: function( jqXhr, textStatus, errorThrown ){
-    //       console.log( errorThrown );
-    //     }
-    // });
 
-    //alert(no_id_unique_param);
+  function register_pic_action(no_id_unique_param) {
+    var pic_list = $('#pic_list'+no_id_unique_param).val();
+    var pic_detail = $('#pic_detail'+no_id_unique_param).val();
+
+    if(pic_list == "") {
+      alert('Please input the inventory list');
+      return false;
+    }
+
+    if(pic_detail == "") {
+      alert('Please input the inventory detail');
+      return false;
+    }
+
+    var data = {
+      "pic_list":pic_list,
+      "pic_detail":pic_detail
+    };
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    if (confirm('are you sure to add this pic ?')) {
+      $.ajax({
+        type : "POST",
+        url: " {{ route('shorcut_insert_pic') }}",
+        contentType: "application/json",
+        data : JSON.stringify(data),
+        success: function(result) {
+          response = JSON.parse(result);
+            if(response.status == true) {
+              $('#pic_list_html'+no_id_unique_param).show();
+              $('#btn_pic'+no_id_unique_param).show();
+              $('#shortcut_pic'+no_id_unique_param).hide();
+
+
+              data_in_select = '<option '+
+                                  'value="'+response.data.id+'" '+
+                                  'selected ' +
+                                '>' +
+                                  response.data.vendor_name +
+                               '</option>';
+              $('#pic_role'+no_id_unique_param).append(data_in_select);
+              $('#pic_role'+no_id_unique_param).prop('disabled',true);
+              
+            } else {
+              alert(response.message);
+            }
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+        }
+      });
+    }
   }
 </script>

@@ -117,6 +117,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 		Route::post('/admin/shorcut_insert_inventory', 'AdminController@shorcut_insert_inventory')->name('shorcut_insert_inventory');
 
+		Route::post('/admin/shorcut_insert_pic', 'AdminController@shorcut_insert_pic')->name('shorcut_insert_pic');
+
 		
 
 
