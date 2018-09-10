@@ -559,4 +559,39 @@ class AdminController extends Controller
         $request->session()->flash('alert-success', 'level authority has been added');
         return redirect('admin');
     }
+
+    public function shorcut_insert_inventory(Request $request) {
+
+        $inv_list   = strtolower($request->inv_list);
+        $inv_detail = strtolower($request->inv_detail);
+
+        $response['status'] = false;
+
+        if($inv_list == null || $inv_list == "") {
+            $response['message'] = "Inventory List is not found";
+            return json_encode($response);
+        } else if($inv_detail == null || $inv_detail == "") {
+            $response['message'] = "Inventory Detail is not found";
+            return json_encode($response);
+        }
+
+        $check_exist = Inventory_List::where('inventory_name',$inv_list)
+                        ->first();
+        if(count($check_exist) > 0) {
+            $response['message'] = "Failed, inventory list already registerred!";
+            return json_encode($response);
+        }
+
+
+        $inventory_list_data = new Inventory_List;
+        $inventory_list_data->inventory_name = $inv_list;
+        $inventory_list_data->inventory_detail_name = $inv_detail;
+        $inventory_list_data->updated_by = Auth::user()->id;
+        $inventory_list_data->save();
+        
+
+        $response['status'] = true;
+        $response['data']   = $inventory_list_data;        
+        return json_encode($response);
+    }
 }

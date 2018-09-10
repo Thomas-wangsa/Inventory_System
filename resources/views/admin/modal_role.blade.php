@@ -170,19 +170,22 @@
                 '<input '+
                   'type="text "'+
                   'class="form-control "'+
+                  'value="" '+
                   'id="inv_list'+no_id_unique+'"'+
                   'placeholder="ex: cctv"'+
                 '>' +
                 '<br/>'+ 
                 '<input '+
                   'type="text "'+
-                  'class="form-control "'+
-                  'id="inv_detail'+no_id_unique+'"'+
+                  'class="form-control" '+
+                  'value="" '+
+                  'id="inv_detail'+no_id_unique+'" '+
                   'placeholder="ex: cctv management"'+
                 '>' +
                 '<br/>'+
                 '<button '+
                   'class="btn btn-primary btn-block" '+
+                  'onclick="register_inventory_action('+no_id_unique+')"'+
                 '>'+
                   'register inventory' +
                 '</button>'+
@@ -457,5 +460,83 @@
     $('#inventory_head_edit'+no_id_unique_param).show();
     $('#btn_inventory'+no_id_unique_param).show();
     $('#shortcut_inventory'+no_id_unique_param).hide();
+  }
+
+  function register_inventory_action(no_id_unique_param) {
+    var inv_list = $('#inv_list'+no_id_unique_param).val();
+    var inv_detail = $('#inv_detail'+no_id_unique_param).val();
+
+    if(inv_list == "") {
+      alert('Please input the inventory list');
+      return false;
+    }
+
+    if(inv_detail == "") {
+      alert('Please input the inventory detail');
+      return false;
+    }
+
+    var data = {
+      "inv_list":inv_list,
+      "inv_detail":inv_detail
+    };
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    if (confirm('are you sure to add this inventory ?')) {
+      $.ajax({
+        type : "POST",
+        url: " {{ route('shorcut_insert_inventory') }}",
+        contentType: "application/json",
+        data : JSON.stringify(data),
+        success: function(result) {
+          response = JSON.parse(result);
+            if(response.status == true) {
+              $('#inventory_head_edit'+no_id_unique_param).show();
+              $('#btn_inventory'+no_id_unique_param).show();
+              $('#shortcut_inventory'+no_id_unique_param).hide();
+
+
+              data_in_select = '<option '+
+                                  'value="'+response.data.id+'" '+
+                                  'selected ' +
+                                '>' +
+                                  response.data.inventory_name +
+                               '</option>';
+              $('#inventory_role'+no_id_unique_param).append(data_in_select);
+              $('#inventory_role'+no_id_unique_param).prop('disabled',true);
+              
+            } else {
+              alert(response.message);
+            }
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+        }
+      });
+    }
+    // $.ajax({
+    //     type : "POST",
+    //     url: " {{ route('shorcut_insert_inventory') }}",
+    //     contentType: "application/json",
+    //     data : JSON.stringify(data),
+    //     success: function(result) {
+    //       response = JSON.parse(result);
+    //       if(response.status == true) { 
+
+    //       } else {
+    //         alert(response.message);
+    //       }
+    //     },
+    //     error: function( jqXhr, textStatus, errorThrown ){
+    //       console.log( errorThrown );
+    //     }
+    // });
+
+    //alert(no_id_unique_param);
   }
 </script>

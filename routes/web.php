@@ -115,7 +115,12 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/admin/add_role_user', 'AdminController@add_role_user')->name('add_role_user');
 		Route::post('/admin/add_role_special_user', 'AdminController@add_role_special_user')->name('add_role_special_user');
 
+		Route::post('/admin/shorcut_insert_inventory', 'AdminController@shorcut_insert_inventory')->name('shorcut_insert_inventory');
+
 		
+
+
+
 		Route::post('/ajax/get_akses_role', 'AjaxController@get_akses_role')->name('get_akses_role');
 		Route::post('/ajax/get_inventory_level', 'AjaxController@get_inventory_level')->name('get_inventory_level');
 		Route::post('/ajax/get_pic_level', 'AjaxController@get_pic_level')->name('get_pic_level');
