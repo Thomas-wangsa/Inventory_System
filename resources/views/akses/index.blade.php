@@ -93,7 +93,7 @@
 				      	</select>
 				  	</div>
 				  
-				  	<button type="submit" class="btn btn-info"> Find </button>
+				  	<button type="submit" class="btn btn-info"> Filter </button>
 				  	<button type="reset" 
 				  	class="btn"
 				  	onclick="reset_filter()"> 

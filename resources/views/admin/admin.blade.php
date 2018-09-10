@@ -99,12 +99,12 @@
 				  	</div>
 				  
 				  	<button type="submit" class="btn btn-info"> 
-				  		Find 
+				  		Filter
 				  	</button>
 				  	<button type="reset" 
-				  	class="btn btn-danger"
+				  	class="btn"
 				  	onclick="reset_filter()"> 
-				  		Reset 
+				  		Clear Filter 
 				  	</button>
 			  	</form>
 			</div>
