@@ -11,8 +11,15 @@
 
 <script type="text/javascript">
 
+var limit = "{{$data['map_location']->inventory_data_qty}}";
 var adjust_left = 0;
 function point_it(event){
+
+	if(adjust_left >= limit) {
+		alert("Quantity is limited");
+		return false;
+	}
+
 	adjust_id = "img_"+adjust_left;
 	var clientWidth = document.getElementById('pointer_div').clientWidth;
 	var clientHeight = document.getElementById('pointer_div').clientHeight;
@@ -55,10 +62,28 @@ function point_it(event){
 
 
 	$('#'+adjust_id).fadeIn(800);
-	start_animate(adjust_id);
+	//start_animate(adjust_id);
 	adjust_left++;
+
+	$('#map_reset').show();
+	$('#map_cancel').hide();
+	$("#map_submit").prop('disabled', false);
 }
 
+
+function clear_map() {
+
+	if (confirm('are you sure to clear and reset the map ?')) {
+		$('#pointer_div')
+		    .find('img')
+		    .remove()
+		    .end();
+		adjust_left = 0;
+		$('#map_reset').hide();
+		$('#map_cancel').show();
+		$("#map_submit").prop('disabled', true);
+	}
+}
 
 function start_animate(id) {
 	$("#"+id).fadeIn(1000, function () {
@@ -93,6 +118,7 @@ function get() {
 		background-color: red;
 		width: 100%;
 		height: 12%;
+		padding-top: 20px
 	}
 
 	.wrapper_map {
@@ -101,7 +127,7 @@ function get() {
 	}
 
 	.body_map {
-		background-color: orange;
+		/*background-color: orange;*/
 		height: 100%;
 		border: 5px solid gray;
 	}
@@ -126,7 +152,32 @@ function get() {
 	<div class="full_wrapper" id="full_wrapper">
 
 		<div class="wrapper_top">
-			
+			<div class="col-xs-6" style="background-color: yellow">
+				<div class="pull-right">
+					<div >
+						<button id="map_submit" class="btn btn-primary">
+							Submit Map
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="pull-left">
+					<div id="map_cancel">
+						<a href="{{route('inventory')}}">
+							<button class="btn btn-danger">
+								Cancel
+							</button>
+						</a>
+					</div>
+					<div id="map_reset">
+						<button class="btn btn-warning" onclick="clear_map()">
+							Clear Map
+						</button>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix"></div>
 		</div>
 
 		<div class="wrapper_map">
@@ -143,5 +194,10 @@ function get() {
 		</div> 
 	</div>
 
+<script type="text/javascript">
+	$('#map_reset').hide();
+	$("#map_submit").prop('disabled', true);
+
+</script>
 </body>
 </html>

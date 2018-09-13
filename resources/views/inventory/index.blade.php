@@ -148,7 +148,6 @@
 			      		Inventory
 			      		Category 
 			      	</th>
-			        <th> Lokasi Site </th>
 			        <th> Qty </th>
 			        <th> Created By </th>
 			        <th> Status </th>
@@ -171,9 +170,6 @@
 				    		</td>
 				    		<td>
 				    			{{$val->inventory_list_name}}
-				    		</td>
-				    		<td>
-				    			{{$val->lokasi_site}}
 				    		</td>
 				    		<td>
 				    			{{$val->inventory_data_qty}}
