@@ -24,6 +24,8 @@ class MapController extends Controller
     } 
 
     public function set_map_location(Request $request) {
+
+        // return view('map/set_map');
         $request->validate([
             'image_location' => 'required|image|mimes:jpeg,png,jpg|max:550',
             'map_location_uuid' => 'required|max:50',
@@ -100,7 +102,8 @@ class MapController extends Controller
                     ->select(
                         'inventory_data.uuid AS inventory_data_uuid',
                         'map.map_images AS map_images',
-                        'map_location.image_location AS image_location'
+                        'map_location.image_location AS image_location',
+                        'inventory_data.qty AS inventory_data_qty'
                     )
                     ->first();
 

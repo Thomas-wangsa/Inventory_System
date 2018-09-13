@@ -181,8 +181,8 @@ class DatabaseSeeder extends Seeder
         foreach ($users_array as $key => $value) {
             Users::firstOrCreate($value); 
             if($key == 0) {
-                // Inventory_List::firstOrCreate($inventory_list_array);
-                // Inventory_List::firstOrCreate($inventory_list_array_2);
+                Inventory_List::firstOrCreate($inventory_list_array);
+                Inventory_List::firstOrCreate($inventory_list_array_2);
                 PIC_List::firstOrCreate($pic_list_array);
                 PIC_List::firstOrCreate($pic_list_array_2);
                 PIC_List::firstOrCreate($pic_list_array_3);
@@ -277,26 +277,26 @@ class DatabaseSeeder extends Seeder
                     $divisi     = 3;
                     $jabatan    = 5;
                     break;
-                // case 10:
-                //     $divisi     = 4;
-                //     $jabatan    = 1;
-                //     break;
-                // case 11:
-                //     $divisi     = 4;
-                //     $jabatan    = 2;
-                //     break;
-                // case 12:
-                //     $divisi     = 4;
-                //     $jabatan    = 3;
-                //     break;
+                case 10:
+                    $divisi     = 4;
+                    $jabatan    = 1;
+                    break;
+                case 11:
+                    $divisi     = 4;
+                    $jabatan    = 2;
+                    break;
+                case 12:
+                    $divisi     = 4;
+                    $jabatan    = 3;
+                    break;
                 case 13:
                     $divisi     = 2;
                     $jabatan    = 1;
                     break;
-                // case 14:
-                //     $divisi     = 4;
-                //     $jabatan    = 3;
-                //     break; 
+                case 14:
+                    $divisi     = 4;
+                    $jabatan    = 3;
+                    break; 
                 case 15:
                     $divisi     = 2;
                     $jabatan    = 1;
@@ -403,40 +403,40 @@ class DatabaseSeeder extends Seeder
             Setting_List::firstOrCreate($value);
         }
 
-        // $full_data = array();
-        // for($i=0;$i<=100;$i++) {
+        $full_data = array();
+        for($i=0;$i<=100;$i++) {
 
-        //     $type_daftar = "vendor";
+            $type_daftar = "vendor";
 
-        //     $akses_data = array(
-        //         "type_daftar"   => $type_daftar,
-        //         "name"          => $faker->name,
-        //         "email"         => $faker->email,
-        //         "nik"           => $faker->phoneNumber,
-        //         "status_akses"  => $faker->numberBetween(1,13),
-        //         "created_by"    => 15,
-        //         "updated_by"    => 15,
-        //         "no_access_card"=> $faker->phoneNumber,
-        //         "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
-        //         "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
-        //         "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
-        //         "additional_note"=> $faker->text,
-        //         "comment"=> $faker->text,
-        //         "uuid"          => $faker->uuid,
-        //         "created_at"    => $faker->dateTime($max = 'now'),
-        //         "updated_at"    => $faker->dateTime($max = 'now')
-        //     );
+            $akses_data = array(
+                "type_daftar"   => $type_daftar,
+                "name"          => $faker->name,
+                "email"         => $faker->email,
+                "nik"           => $faker->phoneNumber,
+                "status_akses"  => $faker->numberBetween(1,13),
+                "created_by"    => 15,
+                "updated_by"    => 15,
+                "no_access_card"=> $faker->phoneNumber,
+                "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
+                "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
+                "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
+                "additional_note"=> $faker->text,
+                "comment"=> $faker->text,
+                "uuid"          => $faker->uuid,
+                "created_at"    => $faker->dateTime($max = 'now'),
+                "updated_at"    => $faker->dateTime($max = 'now')
+            );
 
-        //     if($type_daftar == "vendor") {
-        //         $akses_data['po']          = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
-        //         $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
-        //         $akses_data['floor']       = $faker->numberBetween(1,26);
-        //     }
+            if($type_daftar == "vendor") {
+                $akses_data['po']          = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
+                $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
+                $akses_data['floor']       = $faker->numberBetween(1,26);
+            }
 
-        //     array_push($full_data,$akses_data);
-        // }
+            array_push($full_data,$akses_data);
+        }
 
-        // Akses_Data::insert($full_data);
+        Akses_Data::insert($full_data);
         
     }
 

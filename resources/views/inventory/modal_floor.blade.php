@@ -12,7 +12,8 @@
         </div>
         <div class="modal-body">
 	  			<form class="form-horizontal"  
-          method="POST" enctype="multipart/form-data"
+          method="GET"
+          enctype="multipart/form-data"
           action="{{ route('add_map') }}">
 				  {{ csrf_field() }}
           <div class="form-group">

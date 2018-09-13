@@ -10,53 +10,137 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+
+var adjust_left = 0;
 function point_it(event){
+	adjust_id = "img_"+adjust_left;
+	var clientWidth = document.getElementById('pointer_div').clientWidth;
+	var clientHeight = document.getElementById('pointer_div').clientHeight;
+	
+	
 	pos_x = event.offsetX?(event.offsetX):event.pageX-document.getElementById("pointer_div").offsetLeft;
 	pos_y = event.offsetY?(event.offsetY):event.pageY-document.getElementById("pointer_div").offsetTop;
-	document.getElementById("cross").style.left = (pos_x-1) ;
-	document.getElementById("cross").style.top = (pos_y-15) ;
-	document.getElementById("cross").style.visibility = "visible" ;
-	document.pointform.form_x.value = pos_x;
-	document.pointform.form_y.value = pos_y;
+
+	calculate_pos_x = (pos_x-3)/clientWidth*100-(adjust_left*2.5)+"%";
+	calculate_pos_y = (pos_y-15)/clientHeight*100+"%" ;
+
+	// document.getElementById("cross").style.left = calculate_pos_x;
+	// document.getElementById("cross").style.top = calculate_pos_y;
+	// document.getElementById("cross").style.visibility = "visible" ;
+
+	// var new_images = '<img src="{{URL::to("/")}}/images/imagelocation/0529ba75-4c69-3a19-9a03-2eda95c8c7a5.jpeg" width="40px" style="position:relative;z-index:1;">';
+
+	var new_images = '<img '+
+			'id="'+adjust_id+'" '+
+			'src='+
+				'"'+
+					'{{URL::to("/")}}'+
+					'{{$data["map_location"]->image_location}}'+
+				'"'+
+			' width="30px" '+
+			'style='+
+				'"'+
+					'position:relative;'+
+					'z-index:2;'+
+				
+				'"'+
+				'/>';
+
+
+	$('#pointer_div').append(new_images);
+	$('#'+adjust_id).hide();
+	document.getElementById(adjust_id).style.left = calculate_pos_x;
+	document.getElementById(adjust_id).style.top = calculate_pos_y;
+
+
+
+	$('#'+adjust_id).fadeIn(800);
+	start_animate(adjust_id);
+	adjust_left++;
+}
+
+
+function start_animate(id) {
+	$("#"+id).fadeIn(1000, function () {
+        $("#"+id).fadeOut(300, function () {
+            start_animate(id);
+        });
+    });
+}
+
+function get() {
+	// $('#aaa').html(event.offsetX);
 }
 </script>
 
 <style type="text/css">
 	body, html {
-    height: 100%;
-}
+	    background-color:black;
+	    height: 100%;
+	    min-width: 1200px;
+		max-width: 1700px;
+		margin : 0 auto;
+	}
 
-.bg { 
-    /* The image used */
-    background-image: url("{{URL::to('/')}}{{$data['map_location']->map_images}}");
+	.full_wrapper {
+		width: 96%;
+		margin : 0 auto;
+		/*background-color: blue;*/
+	    height: 100%!important;
+	}
 
-    /* Full height */
-    height: 100%; 
+	.wrapper_top {
+		background-color: red;
+		width: 100%;
+		height: 12%;
+	}
 
-    /* Center and scale the image nicely */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
+	.wrapper_map {
+		/*background-color: yellow;*/
+		height: 88%;
+	}
+
+	.body_map {
+		background-color: orange;
+		height: 100%;
+		border: 5px solid gray;
+	}
+	.bg { 
+	    /* The image used */
+	    background-image: url("{{URL::to('/')}}{{$data['map_location']->map_images}}");
+
+	    /* Full height */
+	    height: 100%; 
+
+	    /* Center and scale the image nicely */
+	    background-position: center;
+	    background-repeat: no-repeat;
+	    background-size: 100% 100%;
+	    cursor: cell;
+
+	}
 </style>
 </head>
 <body>
 
+	<div class="full_wrapper" id="full_wrapper">
 
-
-	<div class="container">
-		<div style="margin: 10px">
-		<form name="pointform" method="post">
-
-
-
-		<div id="pointer_div" onclick="point_it(event)" class="bg">
-		<img src="{{URL::to('/')}}{{$data['map_location']->image_location}}" width="40px" id="cross" style="position:relative;visibility:hidden;z-index:2;">
+		<div class="wrapper_top">
+			
 		</div>
 
-		You pointed on x = <input type="text" name="form_x" size="4" /> - y = <input type="text" name="form_y" size="4" />
-		</form> 
-		</div>
+		<div class="wrapper_map">
+			<div class="body_map">
+				<div id="pointer_div" 
+				onclick="point_it(event)"
+				onmousemove="get()" 
+				class="bg">
+					
+
+
+				</div>
+			</div>
+		</div> 
 	</div>
 
 </body>
