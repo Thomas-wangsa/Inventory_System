@@ -149,7 +149,6 @@
 			      		Category 
 			      	</th>
 			        <th> Qty </th>
-			        <th> Created By </th>
 			        <th> Status </th>
 			        <th> Action </th>
 			      </tr>
@@ -174,9 +173,6 @@
 				    		<td>
 				    			{{$val->inventory_data_qty}}
 				    		</td>
-				    		<td>
-				    			{{$val->users_created_by}}
-				    		</td>
 				    		<td style="color:{{$val->status_inventory_color}}">
 				    			{{$val->status_inventory_name}}
 				    		</td>
@@ -184,18 +180,38 @@
 				    			@switch($val->inventory_data_status)
 				    			@case("1")
 				    				<div class="btn-group-vertical">
-	                    				<button 
+	                    				
+
+		                    			@if($val->map_location_id == null)
+		                    			<button
+		                    			class="btn btn-success"
+		                    			onclick="set_location('{{$val->uuid}}')"
+		                    			>
+		                    				Set Map Location
+		                    			</button>
+		                    			@else
+		                    			<button
+		                    			class="btn btn-success"
+		                    			onclick="check_location('{{$val->uuid}}','$val->map_location_id')"
+		                    			>
+		                    				Check Map Location
+		                    			</button>
+		                    			<button
+		                    			class="btn btn-default"
+		                    			onclick="edit_map_location('{{$val->uuid}}','$val->map_location_id')"
+		                    			>
+		                    				Edit Map Location
+		                    			</button>
+		                    			@endif
+
+		                    			<button 
 		                    			class="btn btn-info"
 		                    			onclick="info('{{$val->uuid}}')" 
 		                    			>
 		                    				Info Inventory
 		                    			</button>
-		                    			<button
-		                    			class="btn btn-success"
-		                    			onclick="set_location('{{$val->uuid}}')"
-		                    			>
-		                    				Set Location
-		                    			</button>
+
+
 		                    			@if(in_array(1,$user_divisi)
 		                    			|| $data['conditional_head'][$key]
 		                    			)
@@ -222,18 +238,37 @@
 				    				@break
 				    			@case("2")
 				    				<div class="btn-group-vertical">
-	                    				<button 
+	                    				
+		                    			@if($val->map_location_id == null)
+		                    			<button
+		                    			class="btn btn-success"
+		                    			onclick="set_location('{{$val->uuid}}')"
+		                    			>
+		                    				Set Map Location
+		                    			</button>
+		                    			@else
+		                    			<button
+		                    			class="btn btn-success"
+		                    			onclick="check_location('{{$val->uuid}}','$val->map_location_id')"
+		                    			>
+		                    				Check Map Location
+		                    			</button>
+		                    			<button
+		                    			class="btn btn-default"
+		                    			onclick="edit_map_location('{{$val->uuid}}','$val->map_location_id')"
+		                    			>
+		                    				Edit Map Location
+		                    			</button>
+		                    			@endif
+
+		                    			<button 
 		                    			class="btn btn-info"
 		                    			onclick="info('{{$val->uuid}}')" 
 		                    			>
 		                    				Info Inventory
 		                    			</button>
-		                    			<button
-		                    			class="btn btn-success"
-		                    			onclick="set_location('{{$val->uuid}}')"
-		                    			>
-		                    				Set Location
-		                    			</button>
+
+
 		                    			@if(in_array(1,$user_divisi))
 		                    			<button 
 		                    			class="btn btn-primary"
@@ -262,7 +297,7 @@
 		                    			class="btn btn-info"
 		                    			onclick="info('{{$val->uuid}}')"
 		                    			>
-		                    				Info Access Card
+		                    				Info Inventory
 		                    			</button>
 	                    			</div>
 				    				@break
@@ -273,7 +308,7 @@
 		                    			class="btn btn-info"
 		                    			onclick="info('{{$val->uuid}}')"
 		                    			>
-		                    				Info Access Card
+		                    				Info Inventory
 		                    			</button>
 	                    			</div>
 	                    			<br/> <br/>

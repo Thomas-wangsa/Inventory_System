@@ -145,7 +145,7 @@
 
 		    <div class="panel panel-primary" id="head_modal_info_map_location">
 		      <div class="panel-heading text-center">
-		      	Map Location
+		      	Map 
 		      </div>
 		      	<div class="panel-body">
 			      	<img class="img-responsive"
@@ -159,7 +159,7 @@
 
 		    <div class="panel panel-primary" id="head_modal_info_images_location">
 		      <div class="panel-heading text-center">
-		      	Images Location
+		      	Images 
 		      </div>
 		      	<div class="panel-body">
 			      	<img class="img-responsive"

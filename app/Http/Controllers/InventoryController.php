@@ -111,7 +111,9 @@ class InventoryController extends Controller
                     ->join('users AS c_users',
                     'c_users.id','=','inventory_data.created_by')
                     ->join('users AS u_users',
-                    'u_users.id','=','inventory_data.updated_by');
+                    'u_users.id','=','inventory_data.updated_by')
+                    ->leftjoin('map_location',
+                    'map_location.inventory_data_id','=','inventory_data.id');
 
         $data['map']        = Map::all();
 
@@ -164,7 +166,8 @@ class InventoryController extends Controller
                 'inventory_data.qty AS inventory_data_qty',
                 'inventory_data.status_inventory AS inventory_data_status',
                 'inventory_data.comment',
-                'inventory_data.uuid'
+                'inventory_data.uuid',
+                'map_location.id AS map_location_id'
             )
             ->orderBy('inventory_data.created_at','desc')
             ->paginate(10);

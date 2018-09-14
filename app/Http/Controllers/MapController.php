@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Http\Models\Map;
 use App\Http\Models\Map_Location;
+use App\Http\Models\Map_Detail;
 use App\Http\Models\Inventory_Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -97,17 +98,26 @@ class MapController extends Controller
                     'map.id','=','map_location.map_id')
                     ->join('inventory_data',
                     'inventory_data.id','=','map_location.inventory_data_id')
+                    ->leftjoin('map_detail',
+                    'map_detail.map_location_uuid','=','map_location.map_location_uuid')
                     ->where('map_location.inventory_data_id',$map_location_data->inventory_data_id)
                     ->where('map_location.map_id',$map_location_data->map_id)
                     ->select(
                         'inventory_data.uuid AS inventory_data_uuid',
                         'map.map_images AS map_images',
                         'map_location.image_location AS image_location',
-                        'inventory_data.qty AS inventory_data_qty'
+                        'map_location.map_location_uuid AS map_location_uuid',
+                        'inventory_data.qty AS inventory_data_qty',
+                        'map_detail.map_location_uuid AS map_detail_uuid'
                     )
                     ->first();
 
-        //dd($data);
+
+        if($data['map_location']->map_detail_uuid != null) {
+            Map_Detail::where('map_location_uuid', $data['map_location']->map_detail_uuid)
+                ->where('status_map_detail', 1)
+                ->update(['status_map_detail' => 0]);
+        }
         return view('map/set_map',compact('data'));
     }
     public function add_map(Request $request) {
@@ -142,4 +152,31 @@ class MapController extends Controller
 
         return redirect("/inventory");
     }
+
+
+    public function approve_map_location(Request $request) {
+        $response = array();
+        $response['status'] = false;
+
+        $check = Map_Location::where('map_location_uuid',$request->map_location_uuid)
+                    ->first();
+        if(count($check) < 1) {
+            $response['message'] = "Map Data is not found!";
+            return json_encode($response);
+        }
+
+        foreach($request->full_data as $key=>$val) {
+            $map_detail = new Map_Detail;
+            $map_detail->map_location_uuid = $request->map_location_uuid;
+            $map_detail->x_point = $val['data_x'];
+            $map_detail->y_point = $val['data_y'];
+            $map_detail->status_map_detail = 1;
+            $map_detail->save();
+        }
+
+        $response['status'] = true;
+        return json_encode($response);
+    }
+
+
 }
