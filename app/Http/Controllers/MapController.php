@@ -24,6 +24,10 @@ class MapController extends Controller
 
     } 
 
+    public function view_map(Request $request) {
+        dd($request);
+        return view('map/view_map');
+    }
     public function set_map_location(Request $request) {
 
         // return view('map/set_map');
@@ -173,6 +177,11 @@ class MapController extends Controller
             $map_detail->status_map_detail = 1;
             $map_detail->save();
         }
+
+
+        Map_Location::where('map_location_uuid',$request->map_location_uuid)
+            ->where('status_data',1)
+            ->update(['status_data'=>2]);
 
         $response['status'] = true;
         return json_encode($response);

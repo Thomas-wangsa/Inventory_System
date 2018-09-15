@@ -167,7 +167,9 @@ class InventoryController extends Controller
                 'inventory_data.status_inventory AS inventory_data_status',
                 'inventory_data.comment',
                 'inventory_data.uuid',
-                'map_location.id AS map_location_id'
+                'map_location.id AS map_location_id',
+                'map_location.map_location_uuid AS map_location_uuid',
+                'map_location.status_data AS map_location_status'
             )
             ->orderBy('inventory_data.created_at','desc')
             ->paginate(10);

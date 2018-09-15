@@ -149,6 +149,7 @@
 			      		Category 
 			      	</th>
 			        <th> Qty </th>
+			        <th> Map Location </th>
 			        <th> Status </th>
 			        <th> Action </th>
 			      </tr>
@@ -173,6 +174,18 @@
 				    		<td>
 				    			{{$val->inventory_data_qty}}
 				    		</td>
+				    		<td>
+				    			@if(
+				    			$val->map_location_id != null
+				    			&&
+				    			$val->map_location_status == 2
+				    			)
+				    				<h5 class="text-success"> Yes </h5>
+				    				
+				    			@else
+				    				<h5 class="text-danger"> No </h5>
+				    			@endif
+				    		</td>
 				    		<td style="color:{{$val->status_inventory_color}}">
 				    			{{$val->status_inventory_name}}
 				    		</td>
@@ -181,28 +194,28 @@
 				    			@case("1")
 				    				<div class="btn-group-vertical">
 	                    				
-
-		                    			@if($val->map_location_id == null)
+	                    				@if(
+	                    				$val->map_location_id != null 
+		                    			&&
+		                    			$val->map_location_status == 2
+		                    			)
+		                    			<button
+		                    			class="btn btn-default"
+		                    			onclick="check_location('{{$val->uuid}}','{{$val->map_location_uuid}}')"
+		                    			>
+		                    				Check Map Location
+		                    			</button>
+		                    			@else
 		                    			<button
 		                    			class="btn btn-success"
 		                    			onclick="set_location('{{$val->uuid}}')"
 		                    			>
 		                    				Set Map Location
 		                    			</button>
-		                    			@else
-		                    			<button
-		                    			class="btn btn-success"
-		                    			onclick="check_location('{{$val->uuid}}','$val->map_location_id')"
-		                    			>
-		                    				Check Map Location
-		                    			</button>
-		                    			<button
-		                    			class="btn btn-default"
-		                    			onclick="edit_map_location('{{$val->uuid}}','$val->map_location_id')"
-		                    			>
-		                    				Edit Map Location
-		                    			</button>
 		                    			@endif
+
+
+		                    	
 
 		                    			<button 
 		                    			class="btn btn-info"
@@ -239,27 +252,26 @@
 				    			@case("2")
 				    				<div class="btn-group-vertical">
 	                    				
-		                    			@if($val->map_location_id == null)
+		                    			@if(
+	                    				$val->map_location_id != null 
+		                    			&&
+		                    			$val->map_location_status == 2
+		                    			)
+		                    			<button
+		                    			class="btn btn-default"
+		                    			onclick="check_location('{{$val->uuid}}','{{$val->map_location_uuid}}')"
+		                    			>
+		                    				Check Map Location
+		                    			</button>
+		                    			@else
 		                    			<button
 		                    			class="btn btn-success"
 		                    			onclick="set_location('{{$val->uuid}}')"
 		                    			>
 		                    				Set Map Location
 		                    			</button>
-		                    			@else
-		                    			<button
-		                    			class="btn btn-success"
-		                    			onclick="check_location('{{$val->uuid}}','$val->map_location_id')"
-		                    			>
-		                    				Check Map Location
-		                    			</button>
-		                    			<button
-		                    			class="btn btn-default"
-		                    			onclick="edit_map_location('{{$val->uuid}}','$val->map_location_id')"
-		                    			>
-		                    				Edit Map Location
-		                    			</button>
 		                    			@endif
+
 
 		                    			<button 
 		                    			class="btn btn-info"
@@ -291,8 +303,20 @@
 		                    			@endif
 		                    		</div>
 				    				@break
-				    			@case("3")
+				    			@case("3")				    				
 				    				<div class="btn-group-vertical">
+				    					@if(
+	                    				$val->map_location_id != null 
+		                    			&&
+		                    			$val->map_location_status == 2
+		                    			)
+		                    			<button
+		                    			class="btn btn-default"
+		                    			onclick="check_location('{{$val->uuid}}','{{$val->map_location_uuid}}')"
+		                    			>
+		                    				Check Map Location
+		                    			</button>
+		                    			@endif
 	                    				<button 
 		                    			class="btn btn-info"
 		                    			onclick="info('{{$val->uuid}}')"
@@ -304,6 +328,18 @@
 				    			@case("4")
 				    			@case("5")
 				    				<div class="btn-group-vertical">
+				    					@if(
+	                    				$val->map_location_id != null 
+		                    			&&
+		                    			$val->map_location_status == 2
+		                    			)
+		                    			<button
+		                    			class="btn btn-default"
+		                    			onclick="check_location('{{$val->uuid}}','{{$val->map_location_uuid}}')"
+		                    			>
+		                    				Check Map Location
+		                    			</button>
+		                    			@endif
 	                    				<button 
 		                    			class="btn btn-info"
 		                    			onclick="info('{{$val->uuid}}')"
@@ -374,6 +410,14 @@
     	window.location = "{{route('inventory')}}";
     }
 	
+	function check_location(uuid,map_location_uuid) {
+
+		var url = "{{URL::to('/')}}"+'/map/view_map';
+		url += '?uuid='+uuid;
+		url += '&map_location_uuid='+map_location_uuid;
+		window.location = url;
+
+	}
 </script>
 
 

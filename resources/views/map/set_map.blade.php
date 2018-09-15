@@ -14,7 +14,7 @@
 
 	.wrapper_map {
 		/*background-color: yellow;*/
-		height: 90%;
+		height: 89%;
 	}
 
 	.body_map {
