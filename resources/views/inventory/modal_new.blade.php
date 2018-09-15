@@ -114,7 +114,8 @@
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
                 id="" name="merk" value=""
-                placeholder="Optional..." >
+                required="" 
+                placeholder="Required Field" >
               </div>
             </div>
             <div class="form-group">
@@ -252,7 +253,8 @@
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
                 id="" name="qty" value=""
-                placeholder="Optional..." >
+                required="" 
+                placeholder="Required Field">
               </div>
             </div>
             <div class="form-group">

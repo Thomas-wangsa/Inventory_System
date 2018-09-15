@@ -343,7 +343,7 @@ class InventoryController extends Controller
         if($this->env != "development") {
             $data['notify_user']        = $notify;
             $data['data']               = $inventory_data;
-            //$this->send($data);
+            $this->send($data);
         }
         
     }
@@ -680,34 +680,53 @@ class InventoryController extends Controller
     }
 
     public function send($data){
-        dd($data);
-        $error = false;
-        switch($inventory_data->status_inventory) {
-            case 1 :
-                $user    = Users_Role::GetInventoryDecisionMaker(2)->first();
-                $subject = "Pendaftaran Inventory";
-                $desc    = "baru saja mendaftarkan inventory";
-                break;
-            case 2 :
-                $user    = Users_Role::GetInventoryDecisionMaker(3)->first();
-                $subject = "Setuju Inventory";
-                $desc    = "membutuhkan approval inventory";
-                break;
-            default : 
-                $error = true;
-                break;
+        //dd($data);
+        $cc_email = array();
+
+        $user  = Users::find($data['notify_user'][0]);
+        foreach($data['notify_user'] as $key=>$val) {
+            if($key != 0) {
+                $user_email = Users::find($val)->email;
+                array_push($cc_email,$user_email);
+            }
         }
+
+        $status_inventory = Status_Inventory::find($data['data']->status_inventory);
+
+        $description = $data['data']->qty." Pcs ".
+                    $data['data']->merk;
+        $subject    = "(".$status_inventory->name.")".
+                    " Inventory for ".$description;
+
+        $desc_1    = "Inventory data has been updated by ";
+        $desc_name = $user->name;
+        $desc_2    = " with the following information : ";
+
+
+        $check_map = Inventory_Data::join('map_location',
+                    'inventory_data.id','=','map_location.inventory_data_id')
+                    ->where('inventory_data.uuid',$data['data']->uuid)
+                    ->where('map_location.status_data',2)
+                    ->select('inventory_data.uuid','map_location.map_location_uuid')
+                    ->first();
+
+        
+
+        count($user) < 1 ? $error = true : $error = false;
+
 
         if(!$error) {
             $data = array(
-                "subject"   => $subject,
-                "head"      => $user->username,
-                "staff"     => Users::find($inventory_data->updated_by)->name,
-                "desc"      => $desc,
-                "nama_barang" => Inventory_Sub_List::find($inventory_data->inventory_sub_list_id)->inventory_sub_list_name,
-                "kategori"    => Inventory_List::find(Inventory_Sub_List::find($inventory_data->inventory_sub_list_id)->inventory_list_id)->inventory_name,
-                "count"       => $inventory_data->count,
-                "uuid"      => $inventory_data->uuid    
+                "subject" => $subject,
+                "cc_email"=> $cc_email,
+                "desc_1"            => $desc_1,
+                "desc_name"         => $desc_name,
+                "desc_2"            => $desc_2,
+                "description"       => $description,
+                "status_inventory"  => $status_inventory->name,
+                "status_color"      => $status_inventory->color,
+                "map_location"      => $check_map,
+                "uuid"      => $data['data']->uuid
             );
             $user->notify(new Inventory_Notification($data));
         } 

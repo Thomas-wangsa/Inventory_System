@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\URL;
 
 class Inventory_Notification extends Notification
 {
@@ -42,22 +43,36 @@ class Inventory_Notification extends Notification
      */
     public function toMail($notifiable)
     {   
-        //dd($this->param);
+
         $data = array(
-            "to"            => $this->param['head'],
-            "from"          => $this->param['staff'],
-            "desc"          => $this->param['desc'],
-            "url"           => config('app.url'),
-            "url1"          => config('app.url')."/inventory_approval?uuid=".$this->param['uuid'],
-            "url2"          => config('app.url')."/inventory_reject?uuid=".$this->param['uuid'],
-            "nama_barang"     => $this->param['nama_barang'],
-            "kategori"   => $this->param['kategori'],
-            "count"           => $this->param['count'] != null ? $this->param['count'] : null
+            "desc_1"            => $this->param['desc_1'],
+            "desc_name"         => $this->param['desc_name'],
+            "desc_2"            => $this->param['desc_2'],
+            "description"       => $this->param['description'],
+            "status_inventory"  => $this->param['status_inventory'],
+            "status_color"      => $this->param['status_color'],
+            "url"               => URL::to('/'),
+            "url_data"          => URL::to('/').
+                                "/inventory?search=on&search_uuid=".$this->param['uuid'],
+            "url_reject"        => URL::to('/').
+                                "/inventory_reject?uuid=".$this->param['uuid']              
         );
-        //echo "email masuk";
-        //dd($data);
+
+
+        if(count($this->param['map_location']) < 1) {
+            $data['map_location'] = null;
+        } else {
+            $data['map_location'] = URL::to('/')."/map/view_map".
+                        "?uuid=".$this->param['uuid'].
+                        "&map_location_uuid=".$this->param['map_location']->map_location_uuid;
+        }
+
+        // dd($data);
         return (new MailMessage)
+                    ->from("no_reply@gmail.com","Indosat-System")
+                    ->replyTo("no_reply@gmail.com")
                     ->subject($this->param['subject'])
+                    ->cc($this->param['cc_email'])
                     ->markdown('vendor.notifications.inventory_notification', ['data' => $data]);
     }
 
