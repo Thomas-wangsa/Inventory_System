@@ -25,8 +25,41 @@ class MapController extends Controller
     } 
 
     public function view_map(Request $request) {
-        dd($request);
-        return view('map/view_map');
+        $request->validate([
+            'uuid' => 'required|max:100',
+            'map_location_uuid' => 'required|max:100',
+        ]);
+
+
+        $data_map = Map_Location::join('inventory_data',
+            'inventory_data.id','=','map_location.inventory_data_id')
+            ->join('map',
+            'map.id','=','map_location.map_id')
+            ->where('inventory_data.uuid',$request->uuid)
+            ->where('map_location.map_location_uuid',$request->map_location_uuid)
+            ->select(
+                'inventory_data.uuid AS inventory_data_uuid',
+                'map_location.map_location_uuid',
+                'map.map_images AS map_position',
+                'map_location.image_location AS image_position'
+            )
+            ->first();
+
+        if(count($data_map) < 1) {
+            $request->session()->flash('alert-danger', 'map is not found!');
+            return redirect("/inventory?search=on&search_uuid=".$request->uuid);
+        }
+
+        $data_position = Map_Detail::where('map_location_uuid',$data_map->map_location_uuid)
+            ->where('status_map_detail',1)
+            ->get();
+
+        $data['data_map']       = $data_map;
+        $data['data_position']  = $data_position;
+        // dd($data_position);
+
+        // dd($request);
+        return view('map/view_map',compact('data'));
     }
     public function set_map_location(Request $request) {
 
