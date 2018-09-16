@@ -35,7 +35,7 @@
                             '</h5>'+
                           '</div>'+
                           '<div class="pull-right">'+
-                            '<a href="">' +
+                            '<a href="{{route("inventory_report_download")}}?category={{$val["inventory_list_id"]}}">' +
                               '<button class="btn btn-primary">'+
                                 'Download'+" {{$val['inventory_list_name']}} "+"Report "+
                                 '='+" {{$val['count_data']}} "+"rows"+

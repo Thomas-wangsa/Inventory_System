@@ -204,7 +204,8 @@ class SettingController extends Controller {
         return view('setting/report',compact('data'));
     }
 
-    public function inventory_report_download() {
+    public function inventory_report_download(Request $request) {
+        //dd($request);
         $inventory_division = 4;
         $setting_list = 6;
         $user_divisi = \Request::get('user_divisi');
@@ -258,6 +259,9 @@ class SettingController extends Controller {
             $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_id_array);
         }
 
+        if($request->category != null) {
+            $inventory_data = $inventory_data->where('inventory_list_id',$request->category);
+        }
 
         $data  = $inventory_data->select(
             'inventory_list.inventory_name AS inventory_category',
@@ -287,7 +291,8 @@ class SettingController extends Controller {
             'inventory_data.po',
 
             'inventory_data.qty',
-            'inventory_data.keterangan'
+            'inventory_data.keterangan',
+            'status_inventory.name'
             )
             ->orderBy('inventory_data.updated_at','desc')
             ->get()
