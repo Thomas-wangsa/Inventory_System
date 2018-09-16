@@ -36,7 +36,7 @@
         ]);
 
         var options = {
-          title: 'Weekly Report Period {{$data["from_date"]}} - {{$data["current_date"]}} ' ,
+          title: 'Weekly Report Period {{$data["from_date"]}} to {{$data["current_date"]}} ' ,
            slices: {
             @foreach($data['color'] as $key=>$val)
             {{$key}}: {color : "{{$val}}"},

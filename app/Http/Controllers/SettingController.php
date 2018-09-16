@@ -60,10 +60,11 @@ class SettingController extends Controller {
         $date = strtotime("-7 day");
         $data['from_date'] =  date('Y-m-d', $date);
 
-        $inventory_data = Inventory_Data::join('status_inventory',
-                    'status_inventory.id','=','inventory_data.status_inventory')
-                    ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
-                    ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
+
+        $inventory_data = Inventory_Data::join('inventory_list',
+                'inventory_list.id','=','inventory_data.inventory_list_id')
+                ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
+                ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
 
         if( !in_array($this->admin_division,$user_divisi) 
             &&
@@ -81,22 +82,47 @@ class SettingController extends Controller {
             
             $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_id_array);
         }
+        
 
-        $inventory_data  = $inventory_data->select('status_inventory.name AS status_name',
-                        'inventory_data.status_inventory'
-                        ,DB::raw('count(inventory_data.id) as total'))
-                    ->groupBy('status_inventory')
-                    ->get();
-        $data['total'] = 0;
-        $data['report'] = array();
-        foreach ($inventory_data as $key => $value) {
-            $data['report'][$value->status_name] = $value->total;
-            $data['total'] += $value->total;
+        $searching_for = "merk";        
+        $inventory_data    = $inventory_data->groupBy('inventory_list.id')
+                    ->select(
+                    'inventory_list.id AS inventory_list_id',
+                    'inventory_list.inventory_name AS inventory_list_name',
+                    DB::raw('count(inventory_data.id) as count_data'),
+                    DB::raw('sum(inventory_data.qty) as sum_data'),
+                    DB::raw('"'.$searching_for.'" as search')
+                    //'count(inventory_data.id) AS total'
+                )
+                ->get();
+        
+        if(count($inventory_data) < 1) {
+            $request->session()->flash('alert-warning', 'there is no inventory data in this moving weekly report');
+            return redirect('home');
         }
 
-        $data['color'] = Status_Inventory::all();
+
+        $report_inventory_data = array();
+        $total = 0;
+        foreach($inventory_data as $key=>$val) {
+            $report_inventory_data[$key] = $val;
+            $report_inventory_data[$key]['data'] = Inventory_Data::where('inventory_list_id',$val['inventory_list_id'])
+            ->groupBy($searching_for)
+            ->select(
+                'merk',
+                DB::raw('count(inventory_data.id) as count_data'),
+                DB::raw('sum(inventory_data.qty) as sum_data')
+            )
+            ->get();
+
+            $total += $val['count_data'];
+        }
+
+
+        $data['total'] = $total;
+        $data['report_inventory_data'] = $report_inventory_data;
         //dd($data);
-        return view('setting/report',compact('data'));
+        return view('setting/inventory_report',compact('data'));
 
     }
     public function access_report(Request $request) {
@@ -180,7 +206,7 @@ class SettingController extends Controller {
 
     public function inventory_report_download() {
         $inventory_division = 4;
-        $setting_list = 5;
+        $setting_list = 6;
         $user_divisi = \Request::get('user_divisi');
         $user_setting = \Request::get('user_setting');
         $allow = false;
@@ -210,6 +236,8 @@ class SettingController extends Controller {
 
         $inventory_data = Inventory_Data::join('status_inventory',
                     'status_inventory.id','=','inventory_data.status_inventory')
+                    ->join('inventory_list',
+                    'inventory_list.id','=','inventory_data.inventory_list_id')
                     ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
                     ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
 
@@ -232,6 +260,8 @@ class SettingController extends Controller {
 
 
         $data  = $inventory_data->select(
+            'inventory_list.inventory_name AS inventory_category',
+            'inventory_list.inventory_detail_name AS inventory_detail_category',
             'inventory_data.tanggal_update_data',
             'inventory_data.kategori',
             'inventory_data.kode_gambar',
