@@ -56,91 +56,91 @@ class DatabaseSeeder extends Seeder
                 "email"=>"admin@gmail.com",
                 "password"=>bcrypt(123456),
                 "mobile"=>$faker->phoneNumber,
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"staff.pic@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"sponsor.pic@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"viewer.pic@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"staff.pendaftaran@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"staff.pencetakan@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"manager.pendaftaran.pencetakan@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"staff.pengaktifan@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"manager.pengaktifan@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"staff.inventoryA@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"head.inventoryA@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"viewer.inventoryA@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"dummy.pic@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"dummy.inv@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
-            array(
-                "name"=>$faker->name,
-                "email"=>"dummy.data@gmail.com",
-                "password"=>bcrypt(123456),
-                "mobile"=>$faker->phoneNumber
-            ),
+            )
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"staff.pic@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"sponsor.pic@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"viewer.pic@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"staff.pendaftaran@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"staff.pencetakan@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"manager.pendaftaran.pencetakan@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"staff.pengaktifan@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"manager.pengaktifan@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"staff.inventoryA@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"head.inventoryA@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"viewer.inventoryA@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"dummy.pic@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"dummy.inv@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
+            // array(
+            //     "name"=>$faker->name,
+            //     "email"=>"dummy.data@gmail.com",
+            //     "password"=>bcrypt(123456),
+            //     "mobile"=>$faker->phoneNumber
+            // ),
         );
 
         $inventory_list_array = array(
@@ -180,14 +180,14 @@ class DatabaseSeeder extends Seeder
 
         foreach ($users_array as $key => $value) {
             Users::firstOrCreate($value); 
-            if($key == 0) {
-                Inventory_List::firstOrCreate($inventory_list_array);
-                Inventory_List::firstOrCreate($inventory_list_array_2);
-                PIC_List::firstOrCreate($pic_list_array);
-                PIC_List::firstOrCreate($pic_list_array_2);
-                PIC_List::firstOrCreate($pic_list_array_3);
-                PIC_List::firstOrCreate($pic_list_array_4);
-            }        
+            // if($key == 0) {
+            //     Inventory_List::firstOrCreate($inventory_list_array);
+            //     Inventory_List::firstOrCreate($inventory_list_array_2);
+            //     PIC_List::firstOrCreate($pic_list_array);
+            //     PIC_List::firstOrCreate($pic_list_array_2);
+            //     PIC_List::firstOrCreate($pic_list_array_3);
+            //     PIC_List::firstOrCreate($pic_list_array_4);
+            // }        
         }
 
 
@@ -403,40 +403,40 @@ class DatabaseSeeder extends Seeder
             Setting_List::firstOrCreate($value);
         }
 
-        $full_data = array();
-        for($i=0;$i<=100;$i++) {
+        // $full_data = array();
+        // for($i=0;$i<=100;$i++) {
 
-            $type_daftar = "vendor";
+        //     $type_daftar = "vendor";
 
-            $akses_data = array(
-                "type_daftar"   => $type_daftar,
-                "name"          => $faker->name,
-                "email"         => $faker->email,
-                "nik"           => $faker->phoneNumber,
-                "status_akses"  => $faker->numberBetween(1,13),
-                "created_by"    => 15,
-                "updated_by"    => 15,
-                "no_access_card"=> $faker->phoneNumber,
-                "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
-                "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
-                "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
-                "additional_note"=> $faker->text,
-                "comment"=> $faker->text,
-                "uuid"          => $faker->uuid,
-                "created_at"    => $faker->dateTime($max = 'now'),
-                "updated_at"    => $faker->dateTime($max = 'now')
-            );
+        //     $akses_data = array(
+        //         "type_daftar"   => $type_daftar,
+        //         "name"          => $faker->name,
+        //         "email"         => $faker->email,
+        //         "nik"           => $faker->phoneNumber,
+        //         "status_akses"  => $faker->numberBetween(1,13),
+        //         "created_by"    => 15,
+        //         "updated_by"    => 15,
+        //         "no_access_card"=> $faker->phoneNumber,
+        //         "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
+        //         "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
+        //         "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
+        //         "additional_note"=> $faker->text,
+        //         "comment"=> $faker->text,
+        //         "uuid"          => $faker->uuid,
+        //         "created_at"    => $faker->dateTime($max = 'now'),
+        //         "updated_at"    => $faker->dateTime($max = 'now')
+        //     );
 
-            if($type_daftar == "vendor") {
-                $akses_data['po']          = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
-                $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
-                $akses_data['floor']       = $faker->numberBetween(1,26);
-            }
+        //     if($type_daftar == "vendor") {
+        //         $akses_data['po']          = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
+        //         $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
+        //         $akses_data['floor']       = $faker->numberBetween(1,26);
+        //     }
 
-            array_push($full_data,$akses_data);
-        }
+        //     array_push($full_data,$akses_data);
+        // }
 
-        Akses_Data::insert($full_data);
+        // Akses_Data::insert($full_data);
         
     }
 
