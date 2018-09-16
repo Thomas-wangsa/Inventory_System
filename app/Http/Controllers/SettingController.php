@@ -188,6 +188,12 @@ class SettingController extends Controller {
                     ->groupBy('status_akses')
                     ->orderBy('status_akses.id','ASC')
                     ->get();
+
+        if(count($akses_data) < 1) {
+            $request->session()->flash('alert-warning', 'there is no access card data in this moving weekly report');
+            return redirect('home');
+        }
+
         $data['total'] = 0;
         $data['report'] = array();
         $color_report = array();
