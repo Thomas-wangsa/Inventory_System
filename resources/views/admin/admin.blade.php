@@ -163,12 +163,11 @@
 			    				foreach($data['level_authorization'][$key] as $key_level=>$val_level) :
 			    				?>	
 			    					@if($val_level->divisi == 1) 
-			    						super admin
+			    						administrator
 			    					@else 
 			    						{{$val_level->nama_jabatan}}
 			    					@endif
 			    					<br/><br/>
-
 			    				<?php 
 			    				endforeach;
 			    				?>
