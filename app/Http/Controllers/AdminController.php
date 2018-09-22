@@ -105,7 +105,7 @@ class AdminController extends Controller
             'email' => 'required',
             'mobile' => 'required',
             'divisi' => 'required',
-            'Personal_Identity' => 'required|image|mimes:jpeg,png,jpg|max:550',
+            'Personal_Identity' => 'required|image|mimes:jpeg,png,jpg|max:5000',
             'company' => 'required|max:50',
         ]);
 

@@ -70,7 +70,7 @@
 			<div class="clearfix"></div>
 		</div>
 
-		<div class="wrapper_map">
+		<div id="id_wrapper_map" class="wrapper_map">
 			<div class="body_map">
 				<div id="pointer_div" 
 				onclick="point_it(event)"
@@ -81,10 +81,15 @@
 
 				</div>
 			</div>
+		</div>
+
+		<div id="define_wrapper" class="wrapper_map" style="background-color: gray">
+			
 		</div> 
 
 <script type="text/javascript">
 	$('#map_reset').hide();
+	$("#id_wrapper_map").hide();
 	$("#map_submit").prop('disabled', true);
 
 	var limit = "{{$data['map_location']->inventory_data_qty}}";
@@ -93,9 +98,7 @@
 
 	var full_data = [];
 
-	
 	function point_it(event){
-
 		if(adjust_left >= limit) {
 			alert("Quantity is limited");
 			return false;
@@ -166,6 +169,13 @@
 		
 	}
 
+	function execute() {
+		$('#define_wrapper').hide();
+		$("#id_wrapper_map").show();
+	}
+	
+
+	setTimeout(execute(),3000); 
 
 	function clear_map() {
 
@@ -232,6 +242,9 @@
 
 		}		
 	}
+
+
+	//$('#id_wrapper_map').show();
 
 </script>
 @endsection

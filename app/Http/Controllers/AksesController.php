@@ -284,11 +284,14 @@ class AksesController extends Controller
         
         if($request->search == "on") {
             if($request->search_nama != null) {
-                $akses_data = $akses_data->where('akses_data.name','like',$request->search_nama."%");
+                $akses_data = $akses_data->where('akses_data.name','like','%'.$request->search_nama."%");
             } 
-            else if($request->search_filter != null) {
+            
+            if($request->search_filter != null) {
                 $akses_data = $akses_data->where('akses_data.status_akses',$request->search_filter);            
-            } else if($request->search_uuid != null) {
+            } 
+
+            if($request->search_uuid != null) {
                 $akses_data = $akses_data->where('akses_data.uuid',$request->search_uuid);
             }
         } else {

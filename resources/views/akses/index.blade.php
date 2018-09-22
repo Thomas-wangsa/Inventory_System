@@ -377,7 +377,7 @@
 		                    				)
 		                    			<button 
 		                    			class="btn btn-danger"
-		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			onclick="deactive_access_card('{{$val->no_access_card}}','{{$val->uuid}}')"
 		                    			>
 		                    				Deactive Access Card
 		                    			</button>
@@ -438,6 +438,7 @@
   	
   	@include('akses.modal_new_vendor')
   	@include('akses.modal_info')
+  	@include('akses.modal_deactive')
   	@include('akses.modal_edit_vendor')
 	@include('akses.modal_all')
 	
@@ -467,6 +468,8 @@
 	function reset_filter() {
     	window.location = "{{route('akses')}}";
     }
+
+    
 </script>
 
 

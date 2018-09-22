@@ -370,6 +370,7 @@ class DatabaseSeeder extends Seeder
             array("name"=>"rejected by staff pengaktifan","color"=>"#FF0000"),
             array("name"=>"rejected by manager pengaktifan","color"=>"#FF0000"),
             array("name"=>"access card is expired","color"=>"#FF0000"),
+            array("name"=>"access card is deactivated","color"=>"#FF0000"),
         );
 
         foreach ($status_akses_array as $key => $value) {

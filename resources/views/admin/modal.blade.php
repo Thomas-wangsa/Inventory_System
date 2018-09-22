@@ -54,6 +54,7 @@
               		<label for="staff_nama"> Personal Identity : </label>
               		<input type="file" class="form-control" id="nama" 
               		name="Personal_Identity" required="">
+              		<span class="text-danger"> note : max 5mb </span>              		
             	 </div>
 
 				  <div class="form-group">
