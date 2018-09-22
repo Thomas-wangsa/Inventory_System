@@ -40,7 +40,7 @@ class AdminController extends Controller
             return redirect('home');
         }
         
-        $users = Users::where('id','!=',Auth::user()->id);
+        $users = Users::get();
         
         $deleted = false;
         if($request->search == "on") {
@@ -63,7 +63,7 @@ class AdminController extends Controller
             } 
         }
         
-        $users_id   = $users->get()->pluck('id');
+        $users_id   = $users->pluck('id');
         $users      = Users::join('users_detail','users_detail.user_id','=','users.id')
                 ->select('users.id','users.name','users.email'
                     ,'users.mobile','users_detail.nik','users_detail.foto',

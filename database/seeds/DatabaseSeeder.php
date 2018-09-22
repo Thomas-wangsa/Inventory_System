@@ -52,8 +52,8 @@ class DatabaseSeeder extends Seeder
 
         $users_array = array(
             array(
-                "name"=>"superman",
-                "email"=>"admin@gmail.com",
+                "name"=>"sir kat",
+                "email"=>"katimin@indosatooredo.com",
                 "password"=>bcrypt(123456),
                 "mobile"=>$faker->phoneNumber,
             ),
@@ -338,7 +338,7 @@ class DatabaseSeeder extends Seeder
             $data_user_detail = array(
                 "user_id"   => $value->id,
                 "uuid"      => time().$faker->uuid,
-                "foto"      => "images/template/default.png",
+                "foto"      => "/images/template/default.png",
                 "nik"       => $faker->phoneNumber,
                 "company"   => $faker->company
             );
