@@ -313,12 +313,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<!-- <button 
+		                    			<button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button> -->
+		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(12,'{{$val->uuid}}')" 
@@ -346,12 +346,12 @@
 		                    			>
 		                    				Approve Access Card
 		                    			</button>
-		                    			<!-- <button 
+		                    			<button 
 		                    			class="btn btn-warning"
 		                    			onclick="edit('{{$val->status_akses}}','{{$val->uuid}}')"
 		                    			>
 		                    				Edit Access Card
-		                    			</button> -->
+		                    			</button>
 		                    			<button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(13,'{{$val->uuid}}')" 
@@ -369,6 +369,19 @@
 		                    			>
 		                    				Info Access Card
 		                    			</button>
+		                    			@if(in_array(1,$user_divisi) 
+		                    				||
+		                    				$data['manager_pengaktifan_data'] == true
+		                    				||
+		                    				$data['staff_pengaktifan_data'] == true
+		                    				)
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+		                    			>
+		                    				Deactive Access Card
+		                    			</button>
+		                    			@endif
 	                    			</div>
 	                    			@break
 	                    		@case("8")

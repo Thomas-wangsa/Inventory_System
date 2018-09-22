@@ -342,6 +342,7 @@ class AksesController extends Controller
             'manager_pengaktifan_data'   => $manager_pengaktifan_data
         );
 
+        //dd($data);
         return view('akses/index',compact('data'));
         
     }

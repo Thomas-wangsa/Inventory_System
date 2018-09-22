@@ -109,7 +109,10 @@
 		pos_x = event.offsetX?(event.offsetX):event.pageX-document.getElementById("pointer_div").offsetLeft;
 		pos_y = event.offsetY?(event.offsetY):event.pageY-document.getElementById("pointer_div").offsetTop;
 
-		calculate_pos_x = (pos_x-3)/clientWidth*100-(adjust_left*2.5)+"%";
+
+		//calculate_pos_x = (pos_x-3)/clientWidth*100-(adjust_left*2.5)+"%";
+		// perhitungan adjustleft *30 for cheat the patern float in css
+		calculate_pos_x = ((pos_x-15)-(adjust_left*30))/(clientWidth)*100+"%";
 		calculate_pos_y = (pos_y-15)/clientHeight*100+"%" ;
 
 		// document.getElementById("cross").style.left = calculate_pos_x;
@@ -156,7 +159,11 @@
 
 		$('#map_reset').show();
 		$('#map_cancel').hide();
-		$("#map_submit").prop('disabled', false);
+
+		if(adjust_left == limit) {
+			$("#map_submit").prop('disabled', false);
+		}
+		
 	}
 
 
