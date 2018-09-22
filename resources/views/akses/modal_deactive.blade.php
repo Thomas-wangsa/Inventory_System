@@ -11,18 +11,18 @@
           </h4>
         </div>
         <div class="modal-body">
-          <form method="POST" action="{{ route('new_pic_list') }}">
+          <form method="POST" action="{{ route('deactivated_access_card') }}">
           {{ csrf_field() }}
           <input type="hidden" id="deactivated_uuid" name="uuid" value="self">
           <div class="form-group">
             <label for="staff_nama"> Access Card No :</label>
             <input type="text" class="form-control" id="no_access_card_deactivated" required="" 
-            name="no_access_card" value="" placeholder="ex : abc" disabled="">
+            name="no_access_card" value="" placeholder="ex : abc" readonly="">
           </div>
           <div class="form-group">
             <label for="staff_nama"> Note :</label>
             <input type="text" class="form-control" id="nama" required="" 
-            name="vendor_detail_name" value="" placeholder="eg : want to update this card.">
+            name="note" value="" placeholder="eg : want to update this card.">
           </div>
 
           
@@ -42,8 +42,10 @@
 
 <script type="text/javascript">
   function deactive_access_card(no_access,uuid) {
-      alert(uuid);
-      $('#no_access_card_deactivated').val(no_access);
-      $('#modal_deactive').modal('show');
+      if (confirm('deactive this card ?')) {
+        $('#deactivated_uuid').val(uuid);
+        $('#no_access_card_deactivated').val(no_access);
+        $('#modal_deactive').modal('show');
+      }
     }
 </script>

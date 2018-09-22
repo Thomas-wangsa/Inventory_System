@@ -1040,4 +1040,32 @@ class AksesController extends Controller
         return redirect($this->redirectTo."?search=on&search_uuid=".$akses_data->uuid);
 
     }
+
+    public function deactivated_access_card(Request $request) {
+        $request->validate([
+            'uuid' => 'required',
+            'no_access_card' => 'required',
+            'note' => 'required',
+        ]);
+
+        $akses_data = Akses_Data::where('uuid',$request->uuid)
+                ->where('status_akses',7)
+                ->first();
+
+        if(count($akses_data) < 1) {
+            $request->session()->flash('alert-danger', 'credentials not found');
+            return redirect($this->redirectTo);
+        }
+
+        $akses_data->status_akses = 15;
+        $akses_data->comment = $request->note;
+        $bool = $akses_data->save();
+
+        if(!$bool) {
+            $request->session()->flash('alert-danger', 'Update Failed');
+        }
+        $request->session()->flash('alert-success', 'Update Success');
+        return redirect($this->redirectTo."?search=on&search_uuid=".$akses_data->uuid);
+        //dd($request);
+    }
 }

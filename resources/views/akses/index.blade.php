@@ -402,6 +402,7 @@
 	                    			{{$val->comment}}
 	                    			@break;
 	                    		@case("14")
+	                    		@case("15")
 	                    			<div class="btn-group-vertical">
 	                    				<button 
 		                    			class="btn btn-info"
@@ -410,6 +411,8 @@
 		                    				Info Access Card
 		                    			</button>
 	                    			</div>
+	                    			<br/> <br/>
+	                    			{{$val->comment}}
 	                    			@break;
 	                    		@default
 	                    			Status Error

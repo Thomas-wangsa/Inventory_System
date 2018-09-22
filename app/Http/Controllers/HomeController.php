@@ -63,7 +63,7 @@ class HomeController extends Controller
             Akses_Data::whereDate('date_end','<',$current_date)
                     ->where('status_akses',7)
                     ->where('status_data',3)
-                    ->update(['status_akses'=>14]);
+                    ->update(['status_akses'=>14,'comment'=>'auto set expired by system']);
 
 
             $akses_data_expiry = Akses_Data::whereDate('date_end','>=',$current_date)
