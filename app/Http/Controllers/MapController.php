@@ -201,6 +201,9 @@ class MapController extends Controller
         if(count($check) < 1) {
             $response['message'] = "Map Data is not found!";
             return json_encode($response);
+        } else {
+            Map_Detail::where('map_location_uuid',$request->map_location_uuid)
+            ->update(['status_map_detail'=>0]);
         }
 
         foreach($request->full_data as $key=>$val) {

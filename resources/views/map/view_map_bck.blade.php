@@ -101,7 +101,7 @@
 
 				calculate_pos_x = "{{$val->x_point}}";
 				calculate_pos_y = "{{$val->y_point}}";
-				var images = '<img '+
+				var images = '<view_img '+
 				'id="'+adjust_id+'" '+
 				'src='+
 					'"'+

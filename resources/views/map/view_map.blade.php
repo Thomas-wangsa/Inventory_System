@@ -4,7 +4,7 @@
 
 <style type="text/css">
 	
-	#full_wrapper_edit_map {
+	#full_wrapper_edit_map,#full_view_wrapper {
 		height: 100%;
 	}
 
@@ -40,6 +40,42 @@
 
 	}
 </style>
+	<div id="full_view_wrapper">
+		<div class="wrapper_top">
+			<div class="col-xs-6">
+				<div class="pull-right">
+					<button id="map_back" 
+					class="btn btn-success"
+					onclick="back()"
+					>
+						<span class="glyphicon glyphicon-chevron-left">
+						</span> Back
+					</button>
+				</div>
+			</div>
+			<div class="col-xs-6">
+				<div class="pull-left">
+					<button id="map_edit" 
+					class="btn btn-warning"
+					onclick="map_edit()"
+					>
+						<span class="glyphicon glyphicon-pencil	">
+						</span> Edit
+					</button>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+
+		<div class="wrapper_map">
+			<div class="body_map">
+				<div id="view_pointer" 
+				class="bg">
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div id="full_wrapper_edit_map">
 		<div class="wrapper_top">
 			<div class="col-xs-6">
@@ -57,11 +93,9 @@
 			<div class="col-xs-6">
 				<div class="pull-left">
 					<div id="map_cancel">
-						<a href="{{route('inventory')}}">
-							<button class="btn btn-danger">
-								Cancel
-							</button>
-						</a>
+						<button class="btn btn-danger" onclick="cancel_edit()"">
+							Cancel Edit
+						</button>
 					</div>
 					<div id="map_reset">
 						<button class="btn btn-warning" onclick="clear_map()">
@@ -83,6 +117,71 @@
 			</div>
 		</div>
 	</div>
+
+
+<script type="text/javascript">
+	$('#full_wrapper_edit_map').hide();
+	var no_img = 0;
+	function back() {
+		window.location = "{{route('inventory')}}"+
+					"?search=on&search_uuid="+
+					"{{$data['data_map']->inventory_data_uuid}}";
+	}
+
+	function map_edit() {
+		if (confirm('are you sure to clear and reset the map ?')) { 
+			$('#full_view_wrapper').hide();
+			$('#full_wrapper_edit_map').show();
+		}
+	}
+
+	function cancel_edit() {
+		$('#full_view_wrapper').show();
+		$('#full_wrapper_edit_map').hide();
+	}
+
+	function generate() {
+
+		@if(count($data['data_position']) > 0) 
+			@foreach($data['data_position'] as $key=>$val)
+
+				adjust_id = "view_image_"+no_img;
+
+				calculate_pos_x = "{{$val->x_point}}";
+				calculate_pos_y = "{{$val->y_point}}";
+				var images = '<img '+
+				'id="'+adjust_id+'" '+
+				'src='+
+					'"'+
+						'{{URL::to("/")}}'+
+						'{{$data["data_map"]->image_position}}'+
+					'"'+
+				' width="30px" '+
+				'style='+
+					'"'+
+						'position:relative;'+
+						'z-index:2;'+
+					
+					'"'+
+					'/>';
+				$('#view_pointer').append(images);
+				document.getElementById(adjust_id).style.left = calculate_pos_x;
+				document.getElementById(adjust_id).style.top = calculate_pos_y;
+
+				no_img++;
+
+			@endforeach
+		@else 
+			console.log("{{count($data['data_position'])}}")
+
+		@endif
+
+	}
+
+	
+
+	generate();
+</script>
 
 <script type="text/javascript">
 	//$('#full_wrapper_edit_map').hide();
@@ -211,7 +310,7 @@
 					response = JSON.parse(result);
 					//console.log(response);
 					if(response.status == true) { 
-						alert("set location success!");
+						alert("update location success!");
 						var url = "{{URL::to('/')}}"+'/inventory?search=on&search_uuid=';
 						window.location = url+"{{$data['data_map']->inventory_data_uuid}}";
 					} else {
