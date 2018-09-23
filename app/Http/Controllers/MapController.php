@@ -39,6 +39,7 @@ class MapController extends Controller
             ->where('map_location.map_location_uuid',$request->map_location_uuid)
             ->select(
                 'inventory_data.uuid AS inventory_data_uuid',
+                'inventory_data.qty AS inventory_data_qty',
                 'map_location.map_location_uuid',
                 'map.map_images AS map_position',
                 'map_location.image_location AS image_position'
@@ -58,7 +59,7 @@ class MapController extends Controller
         $data['data_position']  = $data_position;
         // dd($data_position);
 
-        // dd($request);
+        //dd($data);
         return view('map/view_map',compact('data'));
     }
     public function set_map_location(Request $request) {
