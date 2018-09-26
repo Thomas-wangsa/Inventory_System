@@ -229,7 +229,8 @@ class DatabaseSeeder extends Seeder
 
         $pic_level_array = array(
             array("pic_level_name"=>"staff pic"),
-            array("pic_level_name"=>"sponsor pic")
+            array("pic_level_name"=>"sponsor pic"),
+            array("pic_level_name"=>"owner pic"),
         );
 
         foreach ($pic_level_array as $key => $value) {
@@ -371,6 +372,8 @@ class DatabaseSeeder extends Seeder
             array("name"=>"rejected by manager pengaktifan","color"=>"#FF0000"),
             array("name"=>"access card is expired","color"=>"#FF0000"),
             array("name"=>"access card is deactivated","color"=>"#FF0000"),
+            array("name"=>"pending owner","color"=>"#FC7206"),
+            array("name"=>"rejected by owner","color"=>"#FF0000"),
         );
 
         foreach ($status_akses_array as $key => $value) {
