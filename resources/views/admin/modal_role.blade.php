@@ -541,9 +541,12 @@
             $('#select_posisi_edit'+no_id_unique_param).prop('disabled',true);
             $('#inventory_role'+no_id_unique_param).prop('disabled',true);
             $('#pic_role'+no_id_unique_param).prop('disabled',true);
+            $('#admin_room_role'+no_id_unique_param).prop('disabled',true);
+
 
             $('#btn_pic'+no_id_unique_param).hide();
             $('#btn_inventory'+no_id_unique_param).hide();
+            $('#btn_admin_room'+no_id_unique_param).hide();
         } else {
           alert(response.message);
         }
