@@ -504,9 +504,9 @@ class DatabaseSeeder extends Seeder
                     "admin_room_list_id"     => $list
                 );
 
-                $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
+                $new_admin_room_role = Admin_Room_Role::firstOrCreate($admin_room_role_array);
 
-                $jabatan = $new_inventory_role->id;
+                $jabatan = $new_admin_room_role->id;
             }
 
 
@@ -514,7 +514,7 @@ class DatabaseSeeder extends Seeder
                 "user_id"   => $value->id,
                 "uuid"      => time().$faker->uuid,
                 "foto"      => "/images/template/default.png",
-                "nik"       => $faker->phoneNumber,
+                "nik"       => $faker->uuid,
                 "company"   => $faker->company
             );
             Users_Detail::firstOrCreate($data_user_detail);

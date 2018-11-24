@@ -9,6 +9,9 @@ use App\Http\Models\Users_Detail;
 use App\Http\Models\Divisi;
 use App\Http\Models\Pic_List;
 use App\Http\Models\Pic_Role;
+use App\Http\Models\Admin_Room_List;
+use App\Http\Models\Admin_Room_Role;
+
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
@@ -44,14 +47,13 @@ class AdminController extends Controller
         
         $deleted = false;
         if($request->search == "on") {
-            if($request->search_nama != null) {
-                $users = $users->where('users.name','like',$request->search_nama."%");
-            } else if($request->search_filter != null) {
+
+        	if($request->search_filter != null) {
                 if($request->search_filter == "is_deleted") {
                     $users =  Users::onlyTrashed();
                     $deleted = true;
                 } else {
-                    $roles = $users->join('users_role','users_role.user_id','=','users.id')
+                    $roles = Users::join('users_role','users_role.user_id','=','users.id')
                     ->where('users_role.divisi',$request->search_filter)
                     ->select('users.id')
                     ->distinct()
@@ -61,6 +63,18 @@ class AdminController extends Controller
                     $users = Users::whereIn('id', $roles);
                 }
             } 
+
+
+            if($request->search_nama != null) {
+
+         		if($request->search_filter == null) {
+         			$users = Users::where('users.name','like',$request->search_nama."%");
+         		} else {
+         			$users = $users->where('users.name','like',$request->search_nama."%");
+         		}
+            } 
+
+
         }
         
         $users_id   = $users->pluck('id');
@@ -90,9 +104,15 @@ class AdminController extends Controller
     		'divisi'			=> Divisi::all(),
     		'inventory_list'	=> Inventory_List::all(),
             'pic_list'          => Pic_List::all(),
+            'admin_room_list'	=> Admin_Room_List::all(),
             'setting_list'      => Setting_List::all(),
             'level_authorization'=> $level_authorization
     	);
+    	dd($data);
+
+    	if($this->env == "development") {
+            $data['faker'] = $this->faker;
+        }
         
     	return view('admin/admin',compact('data'));
     }
@@ -114,12 +134,14 @@ class AdminController extends Controller
     		return redirect('admin');
 		}
 
-		if (!preg_match("/^[0-9]*$/",$request->mobile)) {
+
+		if($this->env != 'development') {
+			if (!preg_match("/^[0-9]*$/",$request->mobile)) {
 			$request->session()->flash('alert-danger', 'Only numbers allowed!');
     		return redirect('admin'); 
+			}
 		}
-
-
+		
         if (!$request->hasFile('Personal_Identity')) {
             $request->session()->flash('alert-danger', 'Personal_Identity is required'); 
             return redirect('admin');            
@@ -211,6 +233,21 @@ class AdminController extends Controller
                     $user_role->user_id     = $new_users->id;
                     $user_role->divisi      = $request->divisi;
                     $user_role->jabatan     = $new_inventory_role->id;
+    			break;
+
+    			case 5 : 
+    				$admin_room_role_array = array(
+                        "user_id"              	=> $new_users->id,
+    					"admin_room_list_id"	=> $request->admin_room_list,
+    				);
+
+    				$new_admin_room_role = Admin_Room_Role::firstOrCreate($admin_room_role_array);
+
+
+                    $user_role      = new Users_Role;
+                    $user_role->user_id     = $new_users->id;
+                    $user_role->divisi      = $request->divisi;
+                    $user_role->jabatan     = $new_admin_room_role->id;
     			break;
 
     			default : 

@@ -33,6 +33,15 @@
 	<div style="margin-top: 15px">
 		<div>
 			
+			<div class="pull-left">  
+				<button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#myModal">
+					add new user
+				</button>
+			</div>
+			<div class="clearfix"> </div>
+
+			<div style="margin: 10px"> </div>
+
 			<div class="pull-left">
 				<form class="form-inline" action="{{route('route_admin')}}">
 	
@@ -108,12 +117,8 @@
 				  	</button>
 			  	</form>
 			</div>
-			<div class="pull-right">  
-				<button type="button" class="btn btn-md btn-warning" data-toggle="modal" data-target="#myModal">
-					Add new user
-				</button>
-			</div>
 			<div class="clearfix"> </div>
+			
 		</div>
 
 		<div style="margin-top: 10px"  class="scrollme"> 
@@ -140,7 +145,9 @@
 			    </thead>
 			    <tbody>
 			    	@if (count($data['users']) == 0 ) 
-			    	<td colspan="10" class="text-center"> Kosong </td>
+			    	<td colspan="10" class="text-center"> 
+			    		No User Found! 
+			    	</td>
 			    	@else 
 			    		@foreach($data['users'] as $key=>$val)
 			    		<tr> 
