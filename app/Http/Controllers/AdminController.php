@@ -108,7 +108,6 @@ class AdminController extends Controller
             'setting_list'      => Setting_List::all(),
             'level_authorization'=> $level_authorization
     	);
-    	dd($data);
 
     	if($this->env == "development") {
             $data['faker'] = $this->faker;
@@ -658,6 +657,41 @@ class AdminController extends Controller
         $pic_list_data = new Pic_List;
         $pic_list_data->vendor_name    = $pic_list;
         $pic_list_data->vendor_detail_name = $pic_detail;
+        $pic_list_data->updated_by = Auth::user()->id;
+        $pic_list_data->save();
+        
+
+        $response['status'] = true;
+        $response['data']   = $pic_list_data;        
+        return json_encode($response);
+    }
+
+
+    public function shorcut_insert_admin_room(Request $request) {
+        $admin_room   = strtolower($request->admin_room);
+        $admin_room_detail = strtolower($request->admin_room_detail);
+
+        $response['status'] = false;
+
+        if($admin_room == null || $admin_room == "") {
+            $response['message'] = "Admin Room is not found";
+            return json_encode($response);
+        } else if($admin_room_detail == null || $admin_room_detail == "") {
+            $response['message'] = "Admin Room Detail is not found";
+            return json_encode($response);
+        }
+
+        $check_exist = Admin_Room_List::where('admin_room',$admin_room)
+                        ->first();
+        if(count($check_exist) > 0) {
+            $response['message'] = "Failed, admin room list already registerred!";
+            return json_encode($response);
+        }
+
+
+        $pic_list_data = new Admin_Room_List;
+        $pic_list_data->admin_room    = $admin_room;
+        $pic_list_data->admin_room_detail = $admin_room_detail;
         $pic_list_data->updated_by = Auth::user()->id;
         $pic_list_data->save();
         

@@ -57,6 +57,14 @@ class Users_Role extends Model
                         where ir.id = jabatan 
                         and user_id = '.$user_id.'
                     )
+                WHEN(users_role.divisi = 5)
+                    THEN (select CONCAT("admin room"," ",al.admin_room) 
+                        FROM admin_room_role ar
+                        INNER JOIN admin_room_list al
+                        ON al.id = ar.admin_room_list_id
+                        where ar.id = jabatan 
+                        and user_id = '.$user_id.'
+                    )
                 ELSE "NULL"
                 END AS nama_jabatan')
         );

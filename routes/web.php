@@ -122,7 +122,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 		Route::post('/admin/shorcut_insert_pic', 'AdminController@shorcut_insert_pic')->name('shorcut_insert_pic');
 
-		
+		Route::post('/admin/shorcut_insert_admin_room', 'AdminController@shorcut_insert_admin_room')->name('shorcut_insert_admin_room');
 
 
 
@@ -131,6 +131,8 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/ajax/get_inventory_list', 'AjaxController@get_inventory_list')->name('get_inventory_list');
 		Route::post('/ajax/get_pic_level', 'AjaxController@get_pic_level')->name('get_pic_level');
 		Route::post('/ajax/get_pic_list', 'AjaxController@get_pic_list')->name('get_pic_list');
+		Route::post('/ajax/get_admin_room_list', 'AjaxController@get_admin_room_list')->name('get_admin_room_list');
+
 		Route::post('/ajax/get_special_level', 'AjaxController@get_special_level')->name('get_special_level');
 
 

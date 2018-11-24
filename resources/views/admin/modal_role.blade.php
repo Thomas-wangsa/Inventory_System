@@ -28,9 +28,9 @@
         	<table class="table table-bordered">
   			    <thead>
   			      <tr>
-  			        <th class="text-center"> Level Authority </th>
+  			        <th class="text-center"> User Level </th>
                 <th class="text-center"> Position </th>
-                <th class="text-center"> Sub Level Authority </th>
+                <th class="text-center"> For Category </th>
   			        <th class="text-center"> Action </th>
   			      </tr>
   			    </thead>
@@ -196,7 +196,7 @@
               '</div>'+
 
               
-
+              // PIC CATEGORY LIST
               '<div class="form-group" id="pic_list_html'+no_id_unique+'">' +
                 '<select '+ 
                 'class="form-control" '+
@@ -242,6 +242,56 @@
                   'cancel register pic' +
                 '</button>'+
               '</div>'+
+
+              // ADMIN ROOM CATEGORY LIST
+              '<div class="form-group" id="admin_room_list_html'+no_id_unique+'">' +
+                '<select '+ 
+                'class="form-control" '+
+                'id="admin_room_role'+no_id_unique+'" '+
+                '>' +
+             
+                '</select>'+
+              '</div>'+
+              '<div class="btn btn-primary btn-block"'+
+              'id="btn_admin_room'+no_id_unique+'"'+
+              'onclick="shortcut_admin_room('+no_id_unique+')"'+
+              '>'+
+                'add new admin room' +
+              '</div>'+
+
+
+              '<div id="shortcut_admin_room'+no_id_unique+'">' +
+                '<input '+
+                  'type="text "'+
+                  'class="form-control "'+
+                  'value="" '+
+                  'id="admin_room_list'+no_id_unique+'"'+
+                  'placeholder="ex: access card"'+
+                '>' +
+                '<br/>'+ 
+                '<input '+
+                  'type="text "'+
+                  'class="form-control" '+
+                  'value="" '+
+                  'id="admin_room_detail'+no_id_unique+'" '+
+                  'placeholder="ex: sebelah lobby barat"'+
+                '>' +
+                '<br/>'+
+                '<button '+
+                  'class="btn btn-primary btn-block" '+
+                  'onclick="register_admin_room_action('+no_id_unique+')"'+
+                '>'+
+                  'register admin room' +
+                '</button>'+
+                '<br/>'+
+                '<button '+
+                  'class="btn btn-danger btn-block" '+
+                  'onclick="hide_shortcut_admin_room('+no_id_unique+')"'+
+                '>'+
+                  'cancel admin room' +
+                '</button>'+
+              '</div>'+
+
           '</td>' +
           
           '<td id="td_button_no'+no_id_unique+'" >' +
@@ -254,10 +304,15 @@
     $('#tbody_edit').append(data);
     $('#inventory_head_edit'+no_id_unique).hide();
     $('#pic_list_html'+no_id_unique).hide();
+    $('#admin_room_list_html'+no_id_unique).hide();
+
     $('#btn_inventory'+no_id_unique).hide();
-    $('#shortcut_inventory'+no_id_unique).hide();
     $('#btn_pic'+no_id_unique).hide();
+    $('#btn_admin_room'+no_id_unique).hide();
+
+    $('#shortcut_inventory'+no_id_unique).hide();
     $('#shortcut_pic'+no_id_unique).hide();
+    $('#shortcut_admin_room'+no_id_unique).hide();
 
 
     $.ajaxSetup({
@@ -306,18 +361,46 @@
     });
 
 
+    $.ajax({ 
+      type : "POST",
+      url: " {{ route('get_admin_room_list') }}",
+      contentType: "application/json",
+      success: function(result) {
+        var response = JSON.parse(result);
+        var data_select = "";
+        $.each(response, function (key,val) {
+          data_select += '<option value='+val.id+'>' +
+                val.admin_room +
+                '</option>';
+        });
+        $('#admin_room_role'+no_id_keep).append(data_select);
+
+      },
+      error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+      }
+    });
+
     no_id_unique++;
     $('#add_role_btn').prop('disabled',true);
   }
 
   function conditional_add_role(no_id_unique_param) {
     $('#select_posisi_edit'+no_id_unique_param).prop('disabled',false);
+
     $('#inventory_head_edit'+no_id_unique_param).hide();
     $('#pic_list_html'+no_id_unique_param).hide();
+    $('#admin_room_list_html'+no_id_unique_param).hide();
+    
     $('#btn_inventory'+no_id_unique_param).hide();
     $('#btn_pic'+no_id_unique_param).hide();
+    $('#btn_admin_room'+no_id_unique_param).hide();
+    
+    
     $('#shortcut_inventory'+no_id_unique).hide();
     $('#shortcut_pic'+no_id_unique).hide();
+    $('#shortcut_admin_room'+no_id_unique).hide();
+
     var divisi_id = $('#select_divisi_edit'+no_id_unique_param).val();
     $('#select_posisi_edit'+no_id_unique_param)
           .find('option')
@@ -381,6 +464,15 @@
           }
         });
         break;
+        case "5" : 
+        $('#select_posisi_edit'+no_id_unique_param).prop('disabled',true);
+        $('#select_posisi_edit'+no_id_unique_param).val("0");
+        $('#admin_room_list_html'+no_id_unique_param).show();
+        $('#btn_admin_room'+no_id_unique_param).show();
+        break;
+        default :
+          alert("Check ROLE Error, Please contact your administrator");
+        break;
     }
   }
 
@@ -391,6 +483,7 @@
     var jabatan_role  = $('#select_posisi_edit'+no_id_unique_param).val();
     var inv_role      = $('#inventory_role'+no_id_unique_param).val();
     var pic_role      = $('#pic_role'+no_id_unique_param).val();
+    var admin_room_role      = $('#admin_room_role'+no_id_unique_param).val();
 
 
     if(divisi_role == "2") {
@@ -403,6 +496,11 @@
         alert('please select inventory role');
         return false;
       }
+    } else if(divisi_role == "5") {
+      if(admin_room_role == null) {
+        alert('please select admin room');
+        return false;
+      }
     }
 
     var data = {
@@ -410,7 +508,8 @@
       "divisi_role":divisi_role,
       "jabatan_role":jabatan_role,
       "inv_role":inv_role,
-      "pic_role":pic_role
+      "pic_role":pic_role,
+      "admin_room_role":admin_room_role
     };
 
     
@@ -563,6 +662,19 @@
     $('#shortcut_pic'+no_id_unique_param).hide();
   }
 
+
+  function shortcut_admin_room(no_id_unique_param) {
+    $('#admin_room_list_html'+no_id_unique_param).hide();
+    $('#btn_admin_room'+no_id_unique_param).hide();
+    $('#shortcut_admin_room'+no_id_unique_param).show();
+  }
+
+  function hide_shortcut_admin_room(no_id_unique_param) {
+    $('#admin_room_list_html'+no_id_unique_param).show();
+    $('#btn_admin_room'+no_id_unique_param).show();
+    $('#shortcut_admin_room'+no_id_unique_param).hide();
+  }
+
   function register_inventory_action(no_id_unique_param) {
     var inv_list = $('#inv_list'+no_id_unique_param).val();
     var inv_detail = $('#inv_detail'+no_id_unique_param).val();
@@ -670,6 +782,65 @@
                                '</option>';
               $('#pic_role'+no_id_unique_param).append(data_in_select);
               $('#pic_role'+no_id_unique_param).prop('disabled',true);
+              
+            } else {
+              alert(response.message);
+            }
+        },
+        error: function( jqXhr, textStatus, errorThrown ){
+          console.log( errorThrown );
+        }
+      });
+    }
+  }
+
+  function register_admin_room_action(no_id_unique_param) {
+    var admin_room = $('#admin_room_list'+no_id_unique_param).val();
+    var admin_room_detail = $('#admin_room_detail'+no_id_unique_param).val();
+
+    if(admin_room == "") {
+      alert('Please input the admin room');
+      return false;
+    }
+
+    if(admin_room_detail == "") {
+      alert('Please input the admin room detail');
+      return false;
+    }
+
+    var data = {
+      "admin_room":admin_room,
+      "admin_room_detail":admin_room_detail
+    };
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    if (confirm('are you sure to add this admin_room_detail ?')) {
+      $.ajax({
+        type : "POST",
+        url: " {{ route('shorcut_insert_admin_room') }}",
+        contentType: "application/json",
+        data : JSON.stringify(data),
+        success: function(result) {
+          response = JSON.parse(result);
+            if(response.status == true) {
+              $('#admin_room_list_html'+no_id_unique_param).show();
+              $('#btn_admin_room'+no_id_unique_param).show();
+              $('#shortcut_admin_room'+no_id_unique_param).hide();
+
+
+              data_in_select = '<option '+
+                                  'value="'+response.data.id+'" '+
+                                  'selected ' +
+                                '>' +
+                                  response.data.admin_room +
+                               '</option>';
+              $('#admin_room_role'+no_id_unique_param).append(data_in_select);
+              $('#admin_room_role'+no_id_unique_param).prop('disabled',true);
               
             } else {
               alert(response.message);

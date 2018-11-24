@@ -13,6 +13,8 @@ use App\Http\Models\Pic_Role;
 use App\Http\Models\Inventory_Level;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_List;
+use App\Http\Models\Admin_Room_List;
+use App\Http\Models\Admin_Room_Role;
 use App\Http\Models\Setting_List;
 use App\Http\Models\Setting_Role;
 
@@ -30,6 +32,11 @@ class AjaxController extends Controller
 
     public function get_pic_list(Request $request) {
         $pic_list = Pic_List::all();
+        return json_encode($pic_list);
+    }
+
+    public function get_admin_room_list(Request $request) {
+        $pic_list = Admin_Room_List::all();
         return json_encode($pic_list);
     }
 
@@ -78,6 +85,7 @@ class AjaxController extends Controller
                     ->get();
 
         $response = array();
+
         foreach ($roles as $key => $value) {
             $response[$key] = $value;
             $response[$key]['uuid']        = $data->uuid;
@@ -144,7 +152,23 @@ class AjaxController extends Controller
                         }      
                     }
                 break;
-                
+                case 5:
+                    //$detail_jabatan = Admin_Room_Role::find($value['jabatan']);
+
+                    $detail_jabatan = Admin_Room_Role::join('admin_room_list',
+                        'admin_room_list.id',
+                        '=','admin_room_role.admin_room_list_id')
+                        ->where('admin_room_role.id','=',$value['jabatan'])
+                        ->select('admin_room_list.admin_room')
+                        ->first();
+
+                    $response[$key]['jabatan_name'] = '-';
+                    if(count($detail_jabatan) < 1 ) {
+                        $response[$key]['sub_level'] = "null";
+                    } else {
+                        $response[$key]['sub_level'] = $detail_jabatan->admin_room;
+                    }
+                break;
                 default:
                     $response[$key]['jabatan_name'] = "Null";
                     break;
