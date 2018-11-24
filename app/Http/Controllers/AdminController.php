@@ -314,6 +314,11 @@ class AdminController extends Controller
                         ->where('inventory_level_id',$request->jabatan_role)
                         ->count();
             break;
+            case "5" :
+                $count_exist = Admin_Room_Role::where('user_id',$user->id)
+                        ->where('admin_room_list_id',$request->admin_room_role)
+                        ->count();
+            break;
             default : 
                 $count_exist = 1;
             break;
@@ -371,6 +376,22 @@ class AdminController extends Controller
                 $new_inventory_role = Inventory_Role::firstOrCreate($inventory_role_array);
 
                 $param_jabatan = $new_inventory_role->id;
+
+                $new_user_role = new Users_Role;
+                $new_user_role->user_id = $user->id;
+                $new_user_role->divisi  = $request->divisi_role;
+                $new_user_role->jabatan     = $param_jabatan;
+                $new_user_role->save();
+            break;
+            case "5" :
+                $admin_room_role_array = array(
+                    "user_id"               => $user->id,
+                    "admin_room_list_id"     => $request->admin_room_role
+                );
+
+                $new_admin_room_role = Admin_Room_Role::firstOrCreate($admin_room_role_array);
+
+                $param_jabatan = $new_admin_room_role->id;
 
                 $new_user_role = new Users_Role;
                 $new_user_role->user_id = $user->id;
