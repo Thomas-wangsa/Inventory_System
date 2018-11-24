@@ -52,59 +52,59 @@ class HomeController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index() {
-        $current_date = date('Y-m-d');
-        $count_cron_today = Akses_Expiry::where('date_execution',$current_date)
-                            ->count();
-        if($count_cron_today < 1) {
-            $date = strtotime("+40 day");
-            $to_date =  date('Y-m-d', $date);
+        // $current_date = date('Y-m-d');
+        // $count_cron_today = Akses_Expiry::where('date_execution',$current_date)
+        //                     ->count();
+        // if($count_cron_today < 1) {
+        //     $date = strtotime("+40 day");
+        //     $to_date =  date('Y-m-d', $date);
 
 
-            Akses_Data::whereDate('date_end','<',$current_date)
-                    ->where('status_akses',7)
-                    ->where('status_data',3)
-                    ->update(['status_akses'=>14,'comment'=>'auto set expired by system']);
+        //     Akses_Data::whereDate('date_end','<',$current_date)
+        //             ->where('status_akses',7)
+        //             ->where('status_data',3)
+        //             ->update(['status_akses'=>14,'comment'=>'auto set expired by system']);
 
 
-            $akses_data_expiry = Akses_Data::whereDate('date_end','>=',$current_date)
-                    ->whereDate('date_end','<=',$to_date)
-                    ->where('status_akses',7)
-                    ->where('status_data',3)
-                    ->get();
+        //     $akses_data_expiry = Akses_Data::whereDate('date_end','>=',$current_date)
+        //             ->whereDate('date_end','<=',$to_date)
+        //             ->where('status_akses',7)
+        //             ->where('status_data',3)
+        //             ->get();
 
-            //dd($akses_data_expiry);
-            if(count($akses_data_expiry) > 0) {
-                $full_notification = array();
-                foreach($akses_data_expiry as $key=>$val) {
-                        $list_user_id = Users_Role::where('divisi',3)
-                        ->where('jabatan',1)
-                        ->pluck('user_id');
+        //     //dd($akses_data_expiry);
+        //     if(count($akses_data_expiry) > 0) {
+        //         $full_notification = array();
+        //         foreach($akses_data_expiry as $key=>$val) {
+        //                 $list_user_id = Users_Role::where('divisi',3)
+        //                 ->where('jabatan',1)
+        //                 ->pluck('user_id');
 
-                        if(count($list_user_id) > 0) {
-                            foreach($list_user_id as $key_user=>$val_user) {
-                                $data_notify = array(
-                                'user_id'           => $val_user,
-                                'category'          => 3,
-                                'data_id'     => $val->id,
-                                'status_data_id'   => $val->status_akses,
-                                'sub_notify_id'     => 3,
-                                'created_at'        => date('Y-m-d H:i:s')
+        //                 if(count($list_user_id) > 0) {
+        //                     foreach($list_user_id as $key_user=>$val_user) {
+        //                         $data_notify = array(
+        //                         'user_id'           => $val_user,
+        //                         'category'          => 3,
+        //                         'data_id'     => $val->id,
+        //                         'status_data_id'   => $val->status_akses,
+        //                         'sub_notify_id'     => 3,
+        //                         'created_at'        => date('Y-m-d H:i:s')
 
-                                );
+        //                         );
 
-                                array_push($full_notification,$data_notify);
-                            }
-                        }
-                } // Foreach
-                notify::insert($full_notification);
-            }
+        //                         array_push($full_notification,$data_notify);
+        //                     }
+        //                 }
+        //         } // Foreach
+        //         notify::insert($full_notification);
+        //     }
 
 
-            //dd($full_notification);
-            //dd($akses_data_expiry);
+        //     //dd($full_notification);
+        //     //dd($akses_data_expiry);
             
-            Akses_Expiry::firstOrCreate(['date_execution'=>$current_date]);
-        }
+        //     Akses_Expiry::firstOrCreate(['date_execution'=>$current_date]);
+        // }
 
 
         return view('dashboard/dashboard');        

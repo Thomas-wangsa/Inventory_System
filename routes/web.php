@@ -65,17 +65,17 @@ Route::group(['middleware' => ['auth']], function() {
 		// Akses
 		Route::get('/access', 'AksesController@index')->name('akses');
 
-		Route::post('/akses/new_pic_list', 'AksesController@new_pic_list')->name('new_pic_list');
+		// Route::post('/akses/new_pic_list', 'AksesController@new_pic_list')->name('new_pic_list');
 
 
-		Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');
-		Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
-		Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
-		Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
-		Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
-		Route::post('/akses_get_info', 'AksesController@akses_get_info')->name('akses_get_info');
-		Route::post('/update_access_card', 'AksesController@update_access_card')->name('update_access_card');
-		Route::post('/akses/deactivated_access_card', 'AksesController@deactivated_access_card')->name('deactivated_access_card');
+		// Route::post('/pendaftaran_pic', 'AksesController@pendaftaran_pic')->name('post_pendaftaran_pic');
+		// Route::post('/pendaftaran_akses', 'AksesController@pendaftaran_akses')->name('post_pendaftaran_akses');
+		// Route::get('/akses_approval', 'AksesController@akses_approval')->name('akses_approval');
+		// Route::get('/akses_reject', 'AksesController@akses_reject')->name('akses_reject');
+		// Route::post('/akses_reject', 'AksesController@proses_reject')->name('proses_reject');
+		// Route::post('/akses_get_info', 'AksesController@akses_get_info')->name('akses_get_info');
+		// Route::post('/update_access_card', 'AksesController@update_access_card')->name('update_access_card');
+		// Route::post('/akses/deactivated_access_card', 'AksesController@deactivated_access_card')->name('deactivated_access_card');
 
 
 
