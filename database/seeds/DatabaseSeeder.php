@@ -23,6 +23,8 @@ use App\Http\Models\Inventory_Role;
 use App\Http\Models\Setting_List;
 use App\Http\Models\Setting_Data;
 use App\Http\Models\Sub_Notify;
+use App\Http\Models\AccessCardRegisterStatus;
+use App\Http\Models\AccessCardRequest;
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
@@ -34,6 +36,29 @@ class DatabaseSeeder extends Seeder
      * @return void
      */
     public function run() {	
+
+
+        $accesscardregisterstatus_array = array(
+            array("register_name"=>"permanent"),
+            array("register_name"=>"non permanent"),
+        );
+        foreach ($accesscardregisterstatus_array as $key => $value) {
+            AccessCardRegisterStatus::firstOrCreate($value);
+        }
+        
+        
+
+        $accesscardrequest_array = array(
+            array("request_name"=>"new access card"),
+            array("request_name"=>"extending access card"),
+            array("request_name"=>"access card broken"),
+            array("request_name"=>"access card lost"),
+            array("request_name"=>"change leveling access card"),
+        );
+        
+        foreach ($accesscardrequest_array as $key => $value) {
+            AccessCardRequest::firstOrCreate($value);
+        }
 
         $faker = Faker::create();
     	$divisi_array = array(

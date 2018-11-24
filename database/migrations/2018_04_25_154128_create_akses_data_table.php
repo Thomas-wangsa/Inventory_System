@@ -15,7 +15,8 @@ class CreateAksesDataTable extends Migration
     {
         Schema::create('akses_data', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('type_daftar');
+            $table->unsignedInteger('request_type');
+            $table->unsignedInteger('register_type');
             $table->string('name');
             $table->string('email');
             $table->string('nik')->nullable();
@@ -36,6 +37,13 @@ class CreateAksesDataTable extends Migration
             $table->text('additional_note')->nullable();
             $table->text('comment')->nullable();
             $table->timestamps();
+
+            $table->foreign('request_type', 'akses_data_request_type_fkey')
+                ->references('id')->on('access_card_request')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+            $table->foreign('register_type', 'akses_data_register_type_fkey')
+                ->references('id')->on('access_card_register_status')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
 
             $table->foreign('status_akses', 'akses_data_fkey')
                 ->references('id')->on('status_akses')
