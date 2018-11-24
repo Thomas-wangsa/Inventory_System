@@ -80,6 +80,8 @@
                 in_array(2,$user_divisi)
                 ||
                 in_array(3,$user_divisi)
+                ||
+                in_array(5,$user_divisi)
                 )
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('akses')}}"> 
@@ -89,6 +91,25 @@
     			</a>
     		</div>
             @endif
+
+            @if(in_array(1,$user_divisi)
+                ||
+                in_array(2,$user_divisi)
+                ||
+                in_array(3,$user_divisi)
+                ||
+                in_array(5,$user_divisi)
+                )
+            <div class="sub_menu_options_icon_left">
+                <a href="{{route('accesscard')}}"> 
+                    <span class="glyphicon glyphicon-list-alt">
+                    </span> &nbsp;
+                    Access Card
+                </a>
+            </div>
+            @endif
+
+
             @if(in_array(1,$user_divisi) || in_array(4,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('inventory')}}"> 
