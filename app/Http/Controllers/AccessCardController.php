@@ -135,9 +135,119 @@ class AccessCardController extends Controller
         return view('accesscard/index',compact('data'));
     }
 
-    public function accesscardrequest(Request $request) {
-        $data = array();
-        return view('accesscard/request',compact('data'));
+    public function post_new_access_card(Request $request) {
+
+        $request->validate([
+            'register_id'       => 'required|max:50',
+            'new_full_name'     => 'required|max:50',
+            'new_email'         => 'required|max:50',
+            'new_nik'           => 'required|max:50',
+            'new_date_start'    => 'required|max:50',
+            'new_date_end'      => 'required|max:50',
+            'new_sponsor'       => 'required|max:50',
+            'new_ktp'           => 'required|image|mimes:jpeg,png,jpg|max:550',
+        ]);
+
+
+        $access_data = new Akses_Data;
+        $bool = false;
+        // status in akses data
+        $conditional_status_akses  = 1;
+        $uuid = time().$this->faker->uuid;
+        // status request type
+        $request_type = 1;
+
+
+        if($request->register_id == 1) {
+            $request->validate([
+            'new_division'       => 'required|max:50',
+            'new_position'       => 'required|max:50',
+            ]);
+
+            if ($request->hasFile('new_ktp')) {
+                $image = $request->file('new_ktp');
+                $file_name = $uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->foto      = $path.$file_name;
+            }
+
+
+            $access_data->request_type  = $request_type;
+            $access_data->register_type = $request->register_id;
+            $access_data->name          = strtolower($request->new_full_name);
+            $access_data->email         = strtolower($request->new_email);
+            $access_data->nik           = $request->new_nik;
+            $access_data->date_start    = $request->new_date_start;
+            $access_data->date_end      = $request->new_date_end;
+            $access_data->pic_list_id   = $request->new_sponsor;
+            $access_data->additional_note   = $request->new_additional_note;
+
+            $access_data->divisi        = $request->new_division;
+            $access_data->jabatan       = $request->new_position;
+
+            $access_data->status_akses      = $conditional_status_akses;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();
+
+        } elseif(($request->register_id == 2)) {
+            $request->validate([
+            'new_location_activities'   => 'required|max:100',
+            'new_po'  => 'required|image|mimes:jpeg,png,jpg|max:550',
+            ]);
+
+            if ($request->hasFile('new_ktp')) {
+                $image = $request->file('new_ktp');
+                $file_name = $uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->foto      = $path.$file_name;
+            }
+
+            if ($request->hasFile('new_po')) {
+                $image = $request->file('new_po');
+                $file_name = time().$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->po      = $path.$file_name;
+            }
+
+
+            $access_data->request_type  = $request_type;
+            $access_data->register_type = $request->register_id;
+            $access_data->name          = strtolower($request->new_full_name);
+            $access_data->email         = strtolower($request->new_email);
+            $access_data->nik           = $request->new_nik;
+            $access_data->date_start    = $request->new_date_start;
+            $access_data->date_end      = $request->new_date_end;
+            $access_data->pic_list_id   = $request->new_sponsor;
+            $access_data->additional_note   = $request->new_additional_note;
+
+            $access_data->floor             = $request->new_location_activities;
+
+            $access_data->status_akses      = $conditional_status_akses;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();
+
+        }
+
+
+        if($bool) {
+            $request->session()->flash('alert-success', 'New access has been created');
+        } else {
+            $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');
+        }
+        return redirect($this->redirectTo."?search=on&search_uuid=".$uuid); 
+        
     }
 
     public function new_pic_list(Request $request) {

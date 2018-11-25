@@ -51,10 +51,8 @@
         <!-- modal note-->
 
         @include('accesscard.modal_add_new_permanent')
+        @include('accesscard.modal_add_new_non_permanent')
 
-
-        <div id="new_non_permanent">
-        </div>
         
       </div>
       <!-- modal body-->

@@ -84,14 +84,23 @@ Route::group(['middleware' => ['auth']], function() {
 			'AccessCardController@index')
 		->name('accesscard');
 
-		// insert data pic & admin room category
-		Route::post('/accesscard/new_pic_list', 'AccessCardController@new_pic_list')
-		->name('new_pic_list');
-		
-		Route::post('/akses/new_admin_room_list', 
-			'AccessCardController@new_admin_room_list')
-		->name('new_admin_room_list');
-		// insert data pic & admin room category
+			// insert data pic & admin room category
+			Route::post('/accesscard/new_pic_list', 'AccessCardController@new_pic_list')
+			->name('new_pic_list');
+			
+			Route::post('/akses/new_admin_room_list', 
+				'AccessCardController@new_admin_room_list')
+			->name('new_admin_room_list');
+			// insert data pic & admin room category
+
+
+			// Register New access card
+			Route::post('/accesscard/post_new_access_card', 'AccessCardController@post_new_access_card')
+			->name('post_new_access_card');
+			//
+
+		// Access Card
+
 
 
 

@@ -1,10 +1,10 @@
 <!-- modal add new permanent-->
-  <div id="new_permanent">
+  <div id="new_non_permanent">
     <form method="POST" enctype="multipart/form-data"
     action="{{ route('post_new_access_card') }}">
       {{ csrf_field() }}
       
-      <input type="hidden" name="register_id" value="1">
+      <input type="hidden" name="register_id" value="2">
 
       <div class="form-group">
         <label for="staff_nama"> Full Name :</label>
@@ -75,19 +75,18 @@
       </div>
 
       <div class="form-group">
-        <label for="staff_divisi"> Division :</label>
+        <label for="staff_divisi"> Location Activities :</label>
         <input type="text" 
-        name="new_division" class="form-control" id="nama"  
-        value="@if(env('ENV_STATUS', 'development') == 'development'){{$data['faker']->company}} @endif"
-        placeholder="Division is required" required="">
+        name="new_location_activities" class="form-control" id="nama"  
+        value="@if(env('ENV_STATUS', 'development') == 'development'){{$data['faker']->address}} @endif"
+        placeholder="Location Activities is required" required="">
       </div>
 
       <div class="form-group">
-        <label for="staff_divisi"> Position :</label>
-        <input type="text" 
-        name="new_position" class="form-control" id="nama"  
-        value="@if(env('ENV_STATUS', 'development') == 'development'){{$data['faker']->jobTitle}} @endif"
-        placeholder="Position is required" required="">
+        <label for="staff_nama"> Company Work Contract / PO : </label>
+        <input type="file" 
+        name="new_po" class="form-control" id="nama"  
+        required="">
       </div>
 
       <button type="submit" class="btn btn-block btn-primary">
