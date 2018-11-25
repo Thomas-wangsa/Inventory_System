@@ -288,6 +288,11 @@ class AccessCardController extends Controller
             return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         }
     }
+
+    public function post_new_set_admin_room (Request $request) {
+        dd($request);
+    }
+
     public function post_new_access_card(Request $request) {
 
         $request->validate([

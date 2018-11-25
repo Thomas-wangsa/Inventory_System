@@ -20,7 +20,7 @@
 
       <!-- modal body-->
       <div class="modal-body">
-        <form method="POST" action="{{ route('post_new_set_access_card_number') }}">
+        <form method="POST" action="{{ route('post_new_set_admin_room') }}">
           {{ csrf_field() }}
           
           <input type="hidden" 

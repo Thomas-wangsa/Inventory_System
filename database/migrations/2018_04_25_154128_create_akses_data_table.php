@@ -21,6 +21,7 @@ class CreateAksesDataTable extends Migration
             $table->string('email');
             $table->string('nik')->nullable();
             $table->unsignedInteger('pic_list_id')->nullable();
+            $table->unsignedInteger('admin_room_list_id')->nullable();
             $table->unsignedInteger('status_data')->default(1);
             $table->unsignedInteger('status_akses');
             $table->unsignedInteger('created_by');
