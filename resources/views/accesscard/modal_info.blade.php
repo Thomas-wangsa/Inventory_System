@@ -64,6 +64,10 @@
 						        <th> pic category </th>
 						        <td id="modal_info_pic_list">  </td>
 						      </tr>
+						      <tr id="head_modal_info_admin_room_list">
+						        <th> admin room </th>
+						        <td id="modal_info_admin_room_list">  </td>
+						      </tr>
 						      <tr id="head_modal_info_floor">
 						        <th> floor </th>
 						        <td id="modal_info_floor">  </td>
@@ -181,6 +185,7 @@
 					$('#modal_info_date_start').html(response.data['date_start']);
 					$('#modal_info_date_end').html(response.data['date_end']);
 					$('#modal_info_type_daftar').html(response.data['type_daftar']);
+					$('#modal_info_admin_room_list').html(response.data['admin_room_name']);
 
 					if(response.data['register_type'] == "2") {
 						$('#head_modal_info_pic_list').show();

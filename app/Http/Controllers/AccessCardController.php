@@ -290,7 +290,18 @@ class AccessCardController extends Controller
     }
 
     public function post_new_set_admin_room (Request $request) {
-        dd($request);
+        $data = Akses_Data::where('status_akses',5)
+                    ->where('uuid',$request->uuid)->first();
+        if(count($data) < 1) {
+            $request->session()->flash('alert-danger', 'Set Admin Room Failed!, Data Not Found!');
+            return redirect($this->redirectTo);
+        } else {
+            $data->status_akses         = 6;
+            $data->admin_room_list_id   = $request->selected_admin_room;
+            $data->save();
+            $request->session()->flash('alert-success', 'Admin Room already set');
+            return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+        }
     }
 
     public function post_new_access_card(Request $request) {

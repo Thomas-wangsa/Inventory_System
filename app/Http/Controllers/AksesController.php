@@ -1007,6 +1007,8 @@ class AksesController extends Controller
                         'access_card_register_status.id','=','akses_data.register_type')
                         ->join('access_card_request',
                         'access_card_request.id','=','akses_data.request_type')
+                        ->leftjoin('admin_room_list',
+                        'admin_room_list.id','=','akses_data.admin_room_list_id')
                         ->where('akses_data.status_akses',$request->status)
                         ->where('akses_data.uuid',$request->uuid)
                         ->select('akses_data.*',
@@ -1017,7 +1019,8 @@ class AksesController extends Controller
                             'c_user.name AS created_by_username',
                             'u_user.name AS updated_by_username',
                             'access_card_register_status.register_name AS register_name',
-                            'access_card_request.request_name AS request_name')
+                            'access_card_request.request_name AS request_name',
+                            'admin_room_list.admin_room AS admin_room_name')
                         ->first();
 
         if(count($akses_data) < 1) {

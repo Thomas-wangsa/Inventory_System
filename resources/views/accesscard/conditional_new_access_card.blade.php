@@ -145,6 +145,62 @@
     		@endif
 		</div>
 	@break
+	@case("6")
+		<div class="btn-group-vertical">
+			<button 
+			class="btn btn-info"
+			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+			>
+				Info Access Card
+			</button>
+
+			@if(in_array(1,$user_divisi)
+    		||
+			$data['admin_room'] == true
+			)
+    			<button 
+    			class="btn btn-primary"
+    			onclick="approve(7,'{{$val->uuid}}')"
+    			>
+    				Approve Access Card
+    			</button>
+    			<button 
+    			class="btn btn-danger"
+    			onclick="remove(15,'{{$val->uuid}}')" 
+    			>
+    				Reject Access Card
+    			</button>
+    		@endif
+		</div>
+	@break
+	@case("7")
+		<div class="btn-group-vertical">
+			<button 
+			class="btn btn-info"
+			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+			>
+				Info Access Card
+			</button>
+
+			@if(in_array(1,$user_divisi)
+    		||
+			$data['staff_activation'] == true
+			)
+    			<button 
+    			class="btn btn-primary"
+    			onclick="approve(8,'{{$val->uuid}}')"
+    			>
+    				Approve Access Card
+    			</button>
+    			<button 
+    			class="btn btn-danger"
+    			onclick="remove(16,'{{$val->uuid}}')" 
+    			>
+    				Reject Access Card
+    			</button>
+    		@endif
+		</div>
+	@break
 @endswitch
 
 @include('accesscard.modal_new_update_access_card')
