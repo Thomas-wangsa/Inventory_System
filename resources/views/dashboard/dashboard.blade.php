@@ -50,23 +50,7 @@
     </div> <!-- end .flash-message -->
 
     <div class="menu_wrap_body">
-        @if(in_array(1,$user_divisi)
-            ||
-            in_array(2,$user_divisi)
-            ||
-            in_array(3,$user_divisi)
-            )
-        <div class="menu_block">
-            <a href="{{route('akses')}}">
-                <div class="sub_menu_block">
-                    <div class="icon_block">
-                        <img src="{{ asset('images/logo/id-card.png')}}" / >
-                        <h4> Access Page </h4> 
-                    </div>                
-                </div>
-            </a>
-        </div>
-        @endif
+
 
         @if(in_array(1,$user_divisi)
             ||

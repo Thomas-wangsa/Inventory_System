@@ -89,6 +89,80 @@ class AccessCardController extends Controller
         // Restrict
 
 
+        // for add new acess 
+        if(in_array($this->admin,$user_divisi)) {
+            //echo "only admin";
+            $insert_access_data = true;
+        } else if(in_array($restrict_divisi_pic,$user_divisi)) {
+            //echo "only pic";
+            $data_pic = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+                            ->where('users_role.user_id',Auth::user()->id)
+                            ->where('users_role.divisi',$restrict_divisi_pic)
+                            ->where('pic_role.user_id',Auth::user()->id)
+                            ->where('pic_role.pic_level_id',1)
+                            ->select('users_role.user_id AS user_id',
+                                    'pic_role.user_id AS pic_user_id',
+                                    'users_role.jabatan','pic_role.id AS pic_id',
+                                    'pic_role.pic_list_id','pic_role.pic_level_id'
+                                    )
+                            ->get();
+            if(count($data_pic) > 0) {
+                $insert_access_data = true;
+            }
+        }
+
+        
+
+        // Sponsor
+        $sponsor_access_data = array();
+
+        if(in_array($restrict_divisi_pic,$user_divisi)) {
+            $sponsor_access_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+                            ->where('users_role.user_id',Auth::user()->id)
+                            ->where('users_role.divisi',$restrict_divisi_pic)
+                            ->where('pic_role.user_id',Auth::user()->id)
+                            ->where('pic_role.pic_level_id',2)
+                            ->pluck('pic_list_id')->toArray();
+        }
+        
+
+
+        // Access Card Entity
+        $verification     = false;
+        $approval_verification      = false;
+        $card_printing    = false;
+        $approval_activation     = false;
+        $staff_activation   = false;
+
+        if(in_array($restrict_divisi_access,$user_divisi)) {
+            $access_role_array = Users_Role::where('user_id',Auth::user()->id)
+                            ->where('divisi',$restrict_divisi_access)
+                            ->pluck('jabatan')->toArray();
+            if(in_array(1,$access_role_array)) {
+                $verification = true;
+            }
+
+            if(in_array(2,$access_role_array)) {
+                $approval_verification = true;
+            } 
+
+            if(in_array(3,$access_role_array)) {
+                $card_printing = true;
+            } 
+
+            if(in_array(4,$access_role_array)) {
+                $approval_activation = true;
+            }
+
+            if(in_array(5,$access_role_array)) {
+                $staff_activation = true;
+            } 
+        }
+        // Access Card Entity
+
+
+
+
         // Data && pic list
         if(in_array($this->admin,$user_divisi) 
             || 
@@ -98,6 +172,10 @@ class AccessCardController extends Controller
             $akses_data = Akses_Data::join('status_akses'
                 ,'status_akses.id','=','akses_data.status_akses')
             ->join('users','users.id','=','akses_data.created_by')
+            ->join('access_card_register_status',
+            'access_card_register_status.id','=','akses_data.register_type')
+            ->join('access_card_request',
+            'access_card_request.id','=','akses_data.request_type')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id');
 
             $pic_list_dropdown = Pic_List::all();
@@ -117,6 +195,10 @@ class AccessCardController extends Controller
             $akses_data = Akses_Data::join('status_akses'
                 ,'status_akses.id','=','akses_data.status_akses')
             ->join('users','users.id','=','akses_data.created_by')
+            ->join('access_card_register_status',
+            'access_card_register_status.id','=','akses_data.register_type')
+            ->join('access_card_request',
+            'access_card_request.id','=','akses_data.request_type')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id')
             ->whereIn('akses_data.pic_list_id',$pic_list_id_data);
             $pic_list_dropdown = Pic_List::whereIn('id',$pic_list_id_data)->get();
@@ -124,16 +206,73 @@ class AccessCardController extends Controller
 
 
 
+        // FILTER
+        if($request->search == "on") {
+            if($request->search_nama != null) {
+                $akses_data = $akses_data->where('akses_data.name','like','%'.$request->search_nama."%");
+            } 
+            
+            if($request->search_filter != null) {
+                $akses_data = $akses_data->where('akses_data.status_akses',$request->search_filter);            
+            } 
+
+            if($request->search_uuid != null) {
+                $akses_data = $akses_data->where('akses_data.uuid',$request->search_uuid);
+            }
+        } else {
+
+            if(in_array($this->admin,$user_divisi)) {
+                $akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6,7,8]);    
+            } else if(in_array($restrict_divisi_access, $user_divisi)) {
+                $akses_data = $akses_data->whereIn('akses_data.status_akses',[2,3,4,5,6,7,8]);
+            } else if(in_array($restrict_divisi_pic,$user_divisi)) {
+                $akses_data = $akses_data->whereIn('akses_data.status_akses',[1]);
+            } 
+            
+        }
+
+
+        $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name','users.name AS created_by_name','access_card_register_status.register_name AS register_name','access_card_request.request_name AS request_name');
+
+        if($request->search_order != null) {
+            $akses_data =    $akses_data->orderBy($request->search_order,'asc');
+        } else {
+            $akses_data =    $akses_data->orderBy('akses_data.id','DESC');
+        }
+        
+        $final_akses_data = $akses_data->paginate(10);
+
+
+        $conditional_sponsor = array();
+        foreach($final_akses_data as $key=>$val) {
+            $is_data_sponsor = false;
+            if(in_array($val->pic_list_id,$sponsor_access_data)) {
+                $is_data_sponsor = true;
+            }
+            array_push($conditional_sponsor,$is_data_sponsor);
+            //echo $val->pic_list_id;
+        }
 
     	$data = array(
+        'data'         => $final_akses_data,
         'status_akses'  => Status_Akses::all(),
         'request_type'  => AccessCardRequest::all(),
         'register_type'  => AccessCardRegisterStatus::all(),
         'pic_list'      => $pic_list_dropdown,
         'faker'         => $this->faker,
+        'insert_access_data'       => $insert_access_data,
+        'sponsor_access_data'      => $conditional_sponsor,
+        'verification'   => $verification,
+        'approval_verification'   => $approval_verification,
+        'card_printing'   => $card_printing,
+        'approval_activation'   => $approval_activation,
+        'staff_activation'   => $staff_activation
         );
         return view('accesscard/index',compact('data'));
     }
+
+
+
 
     public function post_new_access_card(Request $request) {
 

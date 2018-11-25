@@ -34,7 +34,7 @@ use Faker\Factory as Faker;
 
 class AksesController extends Controller
 {	
-	protected $redirectTo      = '/access';
+	protected $redirectTo      = '/accesscard';
     protected $url;
     protected $credentials;
     protected $faker;
@@ -626,7 +626,7 @@ class AksesController extends Controller
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
-                    $request->session()->flash('alert-danger', 'Kartu Akses gagal daftarkan');
+                    $request->session()->flash('alert-danger', 'verification failed');
                     return redirect($this->redirectTo);
                 }
             } else if ($data->status_akses == 3) {
@@ -636,7 +636,7 @@ class AksesController extends Controller
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
-                    $request->session()->flash('alert-danger', 'Kartu Akses gagal cetak');
+                    $request->session()->flash('alert-danger', 'approval verification failed');
                     return redirect($this->redirectTo);
                 }
             } else if ($data->status_akses == 4) {
@@ -645,7 +645,7 @@ class AksesController extends Controller
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
-                    $request->session()->flash('alert-danger', 'Kartu Akses gagal di approve manager cetak');
+                    $request->session()->flash('alert-danger', 'card_printing failed');
                     return redirect($this->redirectTo);
                 }
             } else if ($data->status_akses == 5) {
@@ -654,17 +654,35 @@ class AksesController extends Controller
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
-                    $request->session()->flash('alert-danger', 'Kartu Akses gagal aktifkan');
+                    $request->session()->flash('alert-danger', 'approval activation failed');
                     return redirect($this->redirectTo);
                 }
             } else if ($data->status_akses == 6) {
                 if($request->next_status == 7) {
                     $data->status_akses = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'admin room failed');
+                    return redirect($this->redirectTo);
+                }
+            } else if ($data->status_akses == 7) {
+                if($request->next_status == 8) {
+                    $data->status_akses = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
+                } else {
+                    $request->session()->flash('alert-danger', 'activation failed');
+                    return redirect($this->redirectTo);
+                }
+            } else if ($data->status_akses == 8) {
+                if($request->next_status == 9) {
+                    $data->status_akses = $request->next_status;
                     $data->status_data  = 3;
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
                 } else {
-                    $request->session()->flash('alert-danger', 'Kartu Akses gagal approve manager Pengaktifan');
+                    $request->session()->flash('alert-danger', 'pick up card failed');
                     return redirect($this->redirectTo);
                 }
             } else {
@@ -699,7 +717,7 @@ class AksesController extends Controller
         }
 
 
-        $this->notify($data->status_akses,$request->uuid);
+        //$this->notify($data->status_akses,$request->uuid);
         $request->session()->flash('alert-success', 'Access card already approved');
         return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         //return view('akses/approval');
@@ -729,22 +747,28 @@ class AksesController extends Controller
 
                 switch ($data->status_akses) {
                     case 1:
-                        $data->status_akses = 8;
-                        break;
-                    case 2:
-                        $data->status_akses = 9;
-                        break;
-                    case 3;
                         $data->status_akses = 10;
                         break;
-                    case 4;
+                    case 2:
                         $data->status_akses = 11;
                         break;
-                    case 5;
+                    case 3;
                         $data->status_akses = 12;
                         break;
-                    case 6;
+                    case 4;
                         $data->status_akses = 13;
+                        break;
+                    case 5;
+                        $data->status_akses = 14;
+                        break;
+                    case 6;
+                        $data->status_akses = 15;
+                        break;
+                    case 7;
+                        $data->status_akses = 16;
+                        break;
+                    case 8;
+                        $data->status_akses = 17;
                         break;
                     default:
                         # code...
@@ -761,7 +785,7 @@ class AksesController extends Controller
             }
             
         }
-        $this->notify($data->status_akses,$request->uuid);
+        //$this->notify($data->status_akses,$request->uuid);
         $request->session()->flash('alert-success', 'access card has been rejected');
         return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
     }
@@ -975,6 +999,10 @@ class AksesController extends Controller
                         'c_user.id','=','akses_data.created_by')
                         ->join('users as u_user',
                         'u_user.id','=','akses_data.updated_by')
+                        ->join('access_card_register_status',
+                        'access_card_register_status.id','=','akses_data.register_type')
+                        ->join('access_card_request',
+                        'access_card_request.id','=','akses_data.request_type')
                         ->where('akses_data.status_akses',$request->status)
                         ->where('akses_data.uuid',$request->uuid)
                         ->select('akses_data.*',
@@ -983,7 +1011,9 @@ class AksesController extends Controller
                             'status_akses.name AS status_name',
                             'status_akses.color AS status_color',
                             'c_user.name AS created_by_username',
-                            'u_user.name AS updated_by_username')
+                            'u_user.name AS updated_by_username',
+                            'access_card_register_status.register_name AS register_name',
+                            'access_card_request.request_name AS request_name')
                         ->first();
 
         if(count($akses_data) < 1) {
