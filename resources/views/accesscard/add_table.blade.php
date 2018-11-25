@@ -139,17 +139,29 @@
 		                    				||
 		                    				$data['card_printing'] == true
 		                    				)
-		                    			<button 
+		                    			<!-- <button 
 		                    			class="btn btn-primary"
 		                    			onclick="approve(5,'{{$val->uuid}}')"
 		                    			>
 		                    				Approve Access Card
-		                    			</button>
-		                    			<button 
+		                    			</button> -->
+		                    			<!-- <button 
 		                    			class="btn btn-danger"
 		                    			onclick="remove(13,'{{$val->uuid}}')" 
 		                    			>
 		                    				Reject Access Card
+		                    			</button> -->
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick="set_photo('{{$val->uuid}}')" 
+		                    			>
+		                    				Set Photo
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="set_access_card(5,'{{$val->name}}','{{$val->uuid}}')"
+		                    			>
+		                    				Set Access Card Number
 		                    			</button>
 		                    		@endif
 	                    		</div>
@@ -176,8 +188,19 @@
 <div class="clearfix"> </div>
 
 @include('accesscard.modal_info')
+@include('accesscard.modal_new_update_access_card')
 
 <script type="text/javascript">
+
+	function set_photo(uuid) {
+		alert("waiting for open smtm connection");
+	}
+
+	function set_access_card(status,name,uuid) {
+		$('#modal_new_update_access_card_name').val(name);
+		$('#modal_new_update_access_card').modal('show');
+	}
+
 	function approve(status,uuid) {
 		if (confirm('Approve this request ?')) { 
 			var url = "{{URL::to('/')}}"+'/akses_approval?uuid=';

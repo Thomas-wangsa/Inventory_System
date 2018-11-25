@@ -630,7 +630,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $full_data = array();
-        for($i=0;$i<=100;$i++) {
+        for($i=0;$i<=1000;$i++) {
 
             $request_type   = $faker->numberBetween(1,4);
             $request_type   = 1;
@@ -655,7 +655,7 @@ class DatabaseSeeder extends Seeder
                 "additional_note"=> $faker->text,
                 "comment"        => $faker->text,
 
-                "status_akses"  => 1,
+                "status_akses"  => $faker->numberBetween(1,4),
                 "created_by"    => $faker->numberBetween(1,Users::count()),
                 "updated_by"    => $faker->numberBetween(1,Users::count()),
                 
