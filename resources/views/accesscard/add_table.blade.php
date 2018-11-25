@@ -41,9 +41,7 @@
                 		</div>
 	                </td>
 	                <td style="font-family: verdana">
-	                	@if($val->request_type == 1)
-	                		@include('accesscard.conditional_new_access_card')
-	                	@endif
+	                	@include('accesscard.conditional_new_access_card')
 	                </td>
 	            </tr>
 	            @endforeach

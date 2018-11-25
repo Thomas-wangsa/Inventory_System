@@ -609,89 +609,91 @@ class AksesController extends Controller
             return redirect($this->redirectTo);
         } else {
 
-            if($data->status_akses == 1) {
-                if($request->next_status == 2) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else {
-                    $request->session()->flash('alert-danger', 'Error: approved by sponsor is error');
-                    return redirect($this->redirectTo);
-                }
+            if($data->register_type == 1) {
+                if($data->status_akses == 1) {
+                    if($request->next_status == 2) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'Error: approved by sponsor is error');
+                        return redirect($this->redirectTo);
+                    }
 
-            } else if ($data->status_akses == 2) {
+                } else if ($data->status_akses == 2) {
 
-                if($request->next_status == 3) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else {
-                    $request->session()->flash('alert-danger', 'verification failed');
-                    return redirect($this->redirectTo);
-                }
-            } else if ($data->status_akses == 3) {
+                    if($request->next_status == 3) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'verification failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 3) {
 
-                if($request->next_status == 4) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
+                    if($request->next_status == 4) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'approval verification failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 4) {
+                    if($request->next_status == 5) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'card_printing failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 5) {
+                    if($request->next_status == 6) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else if($request->next_status == 7) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'approval activation failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 6) {
+                    if($request->next_status == 7) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'admin room failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 7) {
+                    if($request->next_status == 8) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'activation failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 8) {
+                    if($request->next_status == 9) {
+                        $data->status_akses = $request->next_status;
+                        $data->status_data  = 3;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'pick up card failed');
+                        return redirect($this->redirectTo);
+                    }
                 } else {
-                    $request->session()->flash('alert-danger', 'approval verification failed');
+                    $request->session()->flash('alert-danger', 'System Approval Error');
                     return redirect($this->redirectTo);
                 }
-            } else if ($data->status_akses == 4) {
-                if($request->next_status == 5) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else {
-                    $request->session()->flash('alert-danger', 'card_printing failed');
-                    return redirect($this->redirectTo);
-                }
-            } else if ($data->status_akses == 5) {
-                if($request->next_status == 6) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else if($request->next_status == 7) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else {
-                    $request->session()->flash('alert-danger', 'approval activation failed');
-                    return redirect($this->redirectTo);
-                }
-            } else if ($data->status_akses == 6) {
-                if($request->next_status == 7) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else {
-                    $request->session()->flash('alert-danger', 'admin room failed');
-                    return redirect($this->redirectTo);
-                }
-            } else if ($data->status_akses == 7) {
-                if($request->next_status == 8) {
-                    $data->status_akses = $request->next_status;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else {
-                    $request->session()->flash('alert-danger', 'activation failed');
-                    return redirect($this->redirectTo);
-                }
-            } else if ($data->status_akses == 8) {
-                if($request->next_status == 9) {
-                    $data->status_akses = $request->next_status;
-                    $data->status_data  = 3;
-                    $data->updated_by   = Auth::user()->id;
-                    $data->save();
-                } else {
-                    $request->session()->flash('alert-danger', 'pick up card failed');
-                    return redirect($this->redirectTo);
-                }
-            } else {
-                $request->session()->flash('alert-danger', 'System Approval Error');
-                return redirect($this->redirectTo);
             }
 
 
@@ -748,49 +750,50 @@ class AksesController extends Controller
             return redirect($this->redirectTo);
         } else {
             if($data->status_data == 1 || $data->status_data == 2) {
+                if($data->register_type == 1) {
+                    switch ($data->status_akses) {
+                        case 1:
+                            $data->status_akses = 10;
+                            break;
+                        case 2:
+                            $data->status_akses = 11;
+                            break;
+                        case 3;
+                            $data->status_akses = 12;
+                            break;
+                        case 4;
+                            $data->status_akses = 13;
+                            break;
+                        case 5;
 
-                switch ($data->status_akses) {
-                    case 1:
-                        $data->status_akses = 10;
-                        break;
-                    case 2:
-                        $data->status_akses = 11;
-                        break;
-                    case 3;
-                        $data->status_akses = 12;
-                        break;
-                    case 4;
-                        $data->status_akses = 13;
-                        break;
-                    case 5;
-
-                        $data->status_akses = 14;
-                        break;
-                    case 6;
-                        $data->status_akses = 15;
-                        break;
-                    case 7;
-                        $data->status_akses = 16;
-                        break;
-                    case 8;
-                        $data->status_akses = 17;
-                        break;
-                    default:
-                        # code...
-                        break;
-                }
+                            $data->status_akses = 14;
+                            break;
+                        case 6;
+                            $data->status_akses = 15;
+                            break;
+                        case 7;
+                            $data->status_akses = 16;
+                            break;
+                        case 8;
+                            $data->status_akses = 17;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
                 
-                $data->status_data  = 2;
+                    $data->status_data  = 2;
 
-                if($data->status_akses == 14 || $data->status_akses == 16) {
-                    $data->status_akses = 4;
-                    $data->status_data  = 1;
+                    if($data->status_akses == 14 || $data->status_akses == 16) {
+                        $data->status_akses = 4;
+                        $data->status_data  = 1;
+                    }
+
+                    $data->updated_by   = Auth::user()->id;
+                    $data->additional_note = $data->additional_note."<br/> <br/>".$request->desc;
+                    $data->comment      = $request->desc;
+                    $data->save();
                 }
-
-                $data->updated_by   = Auth::user()->id;
-                $data->additional_note = $data->additional_note."<br/> <br/>".$request->desc;
-                $data->comment      = $request->desc;
-                $data->save();
             } else {
                 $request->session()->flash('alert-danger', 'Failed to reject access card!');
                 return redirect($this->redirectTo);

@@ -430,6 +430,14 @@ class AccessCardController extends Controller
         ]);
 
 
+        $exist = Akses_Data::where('nik',$request->new_nik)->count();
+        if($exist > 0) {
+            $request->session()->flash('alert-danger', 'NIK number has registerred by system, please check the data');
+            return redirect($this->redirectTo);
+        } 
+        //dd($exist);
+
+
         $access_data = new Akses_Data;
         $bool = false;
         // status in akses data
