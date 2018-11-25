@@ -763,6 +763,7 @@ class AksesController extends Controller
                         $data->status_akses = 13;
                         break;
                     case 5;
+
                         $data->status_akses = 14;
                         break;
                     case 6;
@@ -780,7 +781,14 @@ class AksesController extends Controller
                 }
                 
                 $data->status_data  = 2;
+
+                if($data->status_akses == 14 || $data->status_akses == 16) {
+                    $data->status_akses = 4;
+                    $data->status_data  = 1;
+                }
+
                 $data->updated_by   = Auth::user()->id;
+                $data->additional_note = $data->additional_note."<br/> <br/>".$request->desc;
                 $data->comment      = $request->desc;
                 $data->save();
             } else {
@@ -1086,7 +1094,7 @@ class AksesController extends Controller
         ]);
 
         $akses_data = Akses_Data::where('uuid',$request->uuid)
-                ->where('status_akses',7)
+                ->where('status_akses',9)
                 ->first();
 
         if(count($akses_data) < 1) {
@@ -1094,7 +1102,7 @@ class AksesController extends Controller
             return redirect($this->redirectTo);
         }
 
-        $akses_data->status_akses = 15;
+        $akses_data->status_akses = 18;
         $akses_data->comment = $request->note;
         $bool = $akses_data->save();
 

@@ -630,7 +630,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $full_data = array();
-        for($i=0;$i<=1000;$i++) {
+        for($i=0;$i<=200;$i++) {
 
             $request_type   = $faker->numberBetween(1,4);
             $request_type   = 1;
@@ -668,17 +668,22 @@ class DatabaseSeeder extends Seeder
                 "admin_room_list_id"=>null,
                 "uuid"          => $faker->uuid,
                 "created_at"    => $faker->dateTime($max = 'now'),
-                "updated_at"    => $faker->dateTime($max = 'now')
+                "updated_at"    => $faker->dateTime($max = 'now'),
+
+                "comment"       => null
                 );
 
                 if($akses_data['status_akses'] > 4) {
-                    $akses_data['no_access_card'] = $this->faker->uuid;
+                    $akses_data['no_access_card'] = $faker->uuid;
                 }
 
                 if($akses_data['status_akses'] == 6) {
-                    $akses_data['admin_room_list_id'] = $faker->numberBetween(1,Admin_Room_List::count())
+                    $akses_data['admin_room_list_id'] = $faker->numberBetween(1,Admin_Room_List::count());
                 }
 
+                if($akses_data['status_akses'] > 9) {
+                    $akses_data['comment'] = $faker->text;
+                }
 
             }
 

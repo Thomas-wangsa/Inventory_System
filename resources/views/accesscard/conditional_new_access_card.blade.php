@@ -229,10 +229,54 @@
     		@endif
 		</div>
 	@break
+	@case("9")
+		<div class="btn-group-vertical">
+			<button 
+			class="btn btn-info"
+			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+			>
+				Info Access Card
+			</button>
+
+			@if(in_array(1,$user_divisi)
+    		||
+			$data['card_printing'] == true
+			)
+    			<button 
+    			class="btn btn-danger"
+    			onclick="deactive_access_card('{{$val->no_access_card}}','{{$val->uuid}}')"
+    			>
+    				Deactive Access Card
+    			</button>
+    		@endif
+		</div>
+	@break
+	@case("10")
+	@case("11")
+	@case("12")
+	@case("13")
+	@case("14")
+	@case("15")
+	@case("16")
+	@case("17")
+	@case("18")
+		<div class="btn-group-vertical">
+			<button 
+			class="btn btn-info"
+			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+			>
+				Info Access Card
+			</button>
+		</div>
+		<br/> <br/>
+		{{$val->comment}}
+	@break;
+
 @endswitch
 
 @include('accesscard.modal_new_update_access_card')
 @include('accesscard.modal_new_set_admin_room')
+@include('akses.modal_deactive')
 
 
 <script type="text/javascript">
