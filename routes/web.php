@@ -99,6 +99,10 @@ Route::group(['middleware' => ['auth']], function() {
 			->name('post_new_access_card');
 			//
 
+			// Register New access card
+			Route::post('/accesscard/post_new_set_access_card_number', 'AccessCardController@post_new_set_access_card_number')
+			->name('post_new_set_access_card_number');
+			//
 		// Access Card
 
 

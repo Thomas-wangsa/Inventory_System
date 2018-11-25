@@ -273,7 +273,20 @@ class AccessCardController extends Controller
 
 
 
-
+    public function post_new_set_access_card_number(Request $request) {
+        $data = Akses_Data::where('status_akses',4)
+                    ->where('uuid',$request->uuid)->first();
+        if(count($data) < 1) {
+            $request->session()->flash('alert-danger', 'Set Access Card Number Failed!, Data Not Found!');
+            return redirect($this->redirectTo);
+        } else {
+            $data->status_akses         = 5;
+            $data->no_access_card       = $request->accesscard_number;
+            $data->save();
+            $request->session()->flash('alert-success', 'Access card number already set');
+            return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+        }
+    }
     public function post_new_access_card(Request $request) {
 
         $request->validate([

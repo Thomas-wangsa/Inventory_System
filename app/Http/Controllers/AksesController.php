@@ -653,6 +653,10 @@ class AksesController extends Controller
                     $data->status_akses = $request->next_status;
                     $data->updated_by   = Auth::user()->id;
                     $data->save();
+                } else if($request->next_status == 7) {
+                    $data->status_akses = $request->next_status;
+                    $data->updated_by   = Auth::user()->id;
+                    $data->save();
                 } else {
                     $request->session()->flash('alert-danger', 'approval activation failed');
                     return redirect($this->redirectTo);
