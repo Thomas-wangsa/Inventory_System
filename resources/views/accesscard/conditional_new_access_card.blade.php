@@ -147,6 +147,9 @@
 	@break
 @endswitch
 
+@include('accesscard.modal_new_update_access_card')
+@include('accesscard.modal_new_set_admin_room')
+
 
 <script type="text/javascript">
 
@@ -161,7 +164,9 @@
 	}
 
 	function check_admin_room(name,uuid) {
-		alert(name);
+		$('#modal_new_set_admin_room_name').val(name);
+		$('#modal_new_set_admin_room_uuid').val(uuid);
+		$('#modal_new_set_admin_room').modal('show');
 	}
 
 	function approve(status,uuid) {

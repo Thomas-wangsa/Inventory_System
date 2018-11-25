@@ -65,5 +65,4 @@
 <div class="clearfix"> </div>
 
 @include('accesscard.modal_info')
-@include('accesscard.modal_new_update_access_card')
 

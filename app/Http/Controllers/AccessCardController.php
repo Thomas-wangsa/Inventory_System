@@ -258,6 +258,7 @@ class AccessCardController extends Controller
         'status_akses'  => Status_Akses::all(),
         'request_type'  => AccessCardRequest::all(),
         'register_type'  => AccessCardRegisterStatus::all(),
+        'admin_room_drop_down' => Admin_Room_List::all(),
         'pic_list'      => $pic_list_dropdown,
         'faker'         => $this->faker,
         'insert_access_data'       => $insert_access_data,
