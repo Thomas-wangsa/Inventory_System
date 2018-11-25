@@ -655,7 +655,7 @@ class DatabaseSeeder extends Seeder
                 "additional_note"=> $faker->text,
                 "comment"        => $faker->text,
 
-                "status_akses"  => $faker->numberBetween(1,4),
+                "status_akses"  => $faker->numberBetween(1,9),
                 "created_by"    => $faker->numberBetween(1,Users::count()),
                 "updated_by"    => $faker->numberBetween(1,Users::count()),
                 
@@ -664,10 +664,22 @@ class DatabaseSeeder extends Seeder
                 "jabatan"       => $faker->jobTitle,
                 "floor"         => $faker->address,
                 
+                "no_access_card"=> null,
+                "admin_room_list_id"=>null,
                 "uuid"          => $faker->uuid,
                 "created_at"    => $faker->dateTime($max = 'now'),
                 "updated_at"    => $faker->dateTime($max = 'now')
                 );
+
+                if($akses_data['status_akses'] > 4) {
+                    $akses_data['no_access_card'] = $this->faker->uuid;
+                }
+
+                if($akses_data['status_akses'] == 6) {
+                    $akses_data['admin_room_list_id'] = $faker->numberBetween(1,Admin_Room_List::count())
+                }
+
+
             }
 
             array_push($full_data,$akses_data);

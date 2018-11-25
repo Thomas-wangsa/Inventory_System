@@ -201,6 +201,34 @@
     		@endif
 		</div>
 	@break
+	@case("8")
+		<div class="btn-group-vertical">
+			<button 
+			class="btn btn-info"
+			onclick="info('{{$val->status_akses}}','{{$val->uuid}}')"
+			>
+				Info Access Card
+			</button>
+
+			@if(in_array(1,$user_divisi)
+    		||
+			$data['card_printing'] == true
+			)
+    			<button 
+    			class="btn btn-primary"
+    			onclick="approve(9,'{{$val->uuid}}')"
+    			>
+    				Approve Access Card
+    			</button>
+    			<button 
+    			class="btn btn-warning"
+    			onclick="set_photo('{{$val->uuid}}')" 
+    			>
+    				Set Pick Up Access Card
+    			</button>
+    		@endif
+		</div>
+	@break
 @endswitch
 
 @include('accesscard.modal_new_update_access_card')
