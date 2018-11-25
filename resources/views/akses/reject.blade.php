@@ -21,7 +21,7 @@ textarea {
 					<input type="hidden" name="uuid" value="{{$data['uuid']}}">
 					
 					<div class="form-group">
-					<textarea rows="6" cols="50" name="desc" required autofocus placeholder="at least 20 character"></textarea>
+					<textarea rows="6" cols="50" name="desc" required autofocus placeholder="at least 20 character">@if(env('ENV_STATUS', 'development') == 'development')AUTO FILL @endif</textarea>
 					</div>
 
 					<div class="text-center">

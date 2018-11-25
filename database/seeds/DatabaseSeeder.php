@@ -655,7 +655,7 @@ class DatabaseSeeder extends Seeder
                 "additional_note"=> $faker->text,
                 "comment"        => $faker->text,
 
-                "status_akses"  => $faker->numberBetween(1,9),
+                "status_akses"  => $faker->numberBetween(1,18),
                 "created_by"    => $faker->numberBetween(1,Users::count()),
                 "updated_by"    => $faker->numberBetween(1,Users::count()),
                 
