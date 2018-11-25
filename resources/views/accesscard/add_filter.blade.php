@@ -52,6 +52,7 @@
 	</form>
 </div>
 
+<div class="clearfix" style="margin-bottom: 20px"> </div>
 
 <script type="text/javascript">
 	function reset_filter() {

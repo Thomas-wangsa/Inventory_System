@@ -12,6 +12,8 @@
       ACCESS
     @elseif(Route::current()->getName() == 'accesscard')
       ACCESS CARD
+    @elseif(Route::current()->getName() == 'accesscardrequest')
+      ACCESS CARD REQUEST
     @elseif(Route::current()->getName() == 'inventory')
       INVENTORY  
     @elseif(Route::current()->getName() == 'show_inventory')
