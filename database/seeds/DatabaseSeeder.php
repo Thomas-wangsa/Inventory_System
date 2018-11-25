@@ -629,40 +629,86 @@ class DatabaseSeeder extends Seeder
             Setting_List::firstOrCreate($value);
         }
 
-        // $full_data = array();
-        // for($i=0;$i<=100;$i++) {
+        $full_data = array();
+        for($i=0;$i<=100;$i++) {
 
-        //     $type_daftar = "vendor";
+            $request_type   = $faker->numberBetween(1,4);
+            $request_type   = 1;
 
-        //     $akses_data = array(
-        //         "type_daftar"   => $type_daftar,
-        //         "name"          => $faker->name,
-        //         "email"         => $faker->email,
-        //         "nik"           => $faker->phoneNumber,
-        //         "status_akses"  => $faker->numberBetween(1,13),
-        //         "created_by"    => 15,
-        //         "updated_by"    => 15,
-        //         "no_access_card"=> $faker->phoneNumber,
-        //         "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
-        //         "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
-        //         "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
-        //         "additional_note"=> $faker->text,
-        //         "comment"=> $faker->text,
-        //         "uuid"          => $faker->uuid,
-        //         "created_at"    => $faker->dateTime($max = 'now'),
-        //         "updated_at"    => $faker->dateTime($max = 'now')
-        //     );
+            $register_type  = $faker->numberBetween(1,2);
+            
 
-        //     if($type_daftar == "vendor") {
-        //         $akses_data['po']          = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
-        //         $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
-        //         $akses_data['floor']       = $faker->numberBetween(1,26);
-        //     }
+            if($request_type == 1) {
+                
 
-        //     array_push($full_data,$akses_data);
-        // }
+                $akses_data = array(
+                "request_type"  => $request_type,
+                "register_type" => $register_type,
 
-        // Akses_Data::insert($full_data);
+                "name"          => $faker->name,
+                "email"         => $faker->email,
+                "nik"           => $faker->uuid,
+                "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
+                "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
+                "pic_list_id"   => $faker->numberBetween(1,Pic_List::count()),
+                "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
+                
+                "additional_note"=> $faker->text,
+                "comment"        => $faker->text,
+
+                "status_akses"  => 1,
+                "created_by"    => $faker->numberBetween(1,Users::count()),
+                "updated_by"    => $faker->numberBetween(1,Users::count()),
+                
+                
+                
+                "uuid"          => $faker->uuid,
+                "created_at"    => $faker->dateTime($max = 'now'),
+                "updated_at"    => $faker->dateTime($max = 'now')
+                );
+
+
+                if($register_type == 1) {
+                    $akses_data['divisi']   = $faker->jobTitle;
+                    $akses_data['jabatan']  = $faker->jobTitle;
+                } else if($register_type == 2) {
+                    $akses_data['po']   = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
+                    $akses_data['floor']  = $faker->address;
+                }
+
+
+            }
+            // $type_daftar = "vendor";
+
+            // $akses_data = array(
+            //     "type_daftar"   => $type_daftar,
+            //     "name"          => $faker->name,
+            //     "email"         => $faker->email,
+            //     "nik"           => $faker->phoneNumber,
+            //     "status_akses"  => $faker->numberBetween(1,13),
+            //     "created_by"    => 15,
+            //     "updated_by"    => 15,
+            //     "no_access_card"=> $faker->phoneNumber,
+            //     "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
+            //     "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
+            //     "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
+            //     "additional_note"=> $faker->text,
+            //     "comment"=> $faker->text,
+            //     "uuid"          => $faker->uuid,
+            //     "created_at"    => $faker->dateTime($max = 'now'),
+            //     "updated_at"    => $faker->dateTime($max = 'now')
+            // );
+
+            // if($type_daftar == "vendor") {
+            //     $akses_data['po']          = "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg";
+            //     $akses_data['pic_list_id'] = $faker->numberBetween(1,4);
+            //     $akses_data['floor']       = $faker->address;
+            // }
+
+            array_push($full_data,$akses_data);
+        }
+
+        Akses_Data::insert($full_data);
         
     }
 
