@@ -630,7 +630,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $full_data = array();
-        for($i=0;$i<=200;$i++) {
+        for($i=0;$i<=500;$i++) {
 
             $request_type   = $faker->numberBetween(1,4);
             $request_type   = 1;

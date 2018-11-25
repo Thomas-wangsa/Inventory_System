@@ -90,6 +90,7 @@ class AccessCardController extends Controller
 
 
         // for add new acess 
+        $insert_access_data = false;
         if(in_array($this->admin,$user_divisi)) {
             //echo "only admin";
             $insert_access_data = true;
@@ -177,6 +178,7 @@ class AccessCardController extends Controller
 
 
         // Data && pic list
+        $pic_list_dropdown = array();
         if(in_array($this->admin,$user_divisi) 
             || 
             in_array($restrict_divisi_access, $user_divisi)
@@ -221,18 +223,16 @@ class AccessCardController extends Controller
             $pic_list_dropdown = Pic_List::whereIn('id',$pic_list_id_data)->get();
         } else if(in_array($restrict_divisi_admin_room,$user_divisi) && !in_array(2,$user_divisi)) {
             // only owner
-            echo "ONLY OWNER";die;
-            $admin_room_list_id_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+            //echo "ONLY OWNER";
+
+            $admin_room_access_data_pluck = Users_Role::join('admin_room_role','admin_room_role.id','=','users_role.jabatan')
                             ->where('users_role.user_id',Auth::user()->id)
-                            ->where('users_role.divisi',$restrict_divisi_pic)
-                            ->where('pic_role.user_id',Auth::user()->id)
-                            // ->select('users_role.user_id AS user_id',
-                            //         'pic_role.user_id AS pic_user_id',
-                            //         'users_role.jabatan','pic_role.id AS pic_id',
-                            //         'pic_role.pic_list_id','pic_role.pic_level_id'
-                            //         )
-                            ->groupBy('pic_role.pic_list_id')
-                            ->pluck('pic_list_id');
+                            ->where('users_role.divisi',$restrict_divisi_admin_room)
+                            ->where('admin_room_role.user_id',Auth::user()->id)
+                            ->pluck('admin_room_list_id');
+            //dd($admin_room_access_data);die;
+
+            
             
             $akses_data = Akses_Data::join('status_akses'
                 ,'status_akses.id','=','akses_data.status_akses')
@@ -242,8 +242,8 @@ class AccessCardController extends Controller
             ->join('access_card_request',
             'access_card_request.id','=','akses_data.request_type')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id')
-            ->whereIn('akses_data.pic_list_id',$pic_list_id_data);
-            $pic_list_dropdown = Pic_List::whereIn('id',$pic_list_id_data)->get();
+            ->whereIn('akses_data.admin_room_list_id',$admin_room_access_data_pluck);
+           
         } else if(!in_array($restrict_divisi_admin_room,$user_divisi) && in_array(2,$user_divisi)) {
             // only pic
             //echo "ONLY PIC";die;
@@ -310,16 +310,22 @@ class AccessCardController extends Controller
         $final_akses_data = $akses_data->paginate(10);
 
 
-        $conditional_sponsor = array();
+        $conditional_sponsor    = array();
+        $conditional_admin_room = array();
         foreach($final_akses_data as $key=>$val) {
             $is_data_sponsor = false;
             if(in_array($val->pic_list_id,$sponsor_access_data)) {
                 $is_data_sponsor = true;
             }
             array_push($conditional_sponsor,$is_data_sponsor);
+
+            $is_admin_room = false;
+            if(in_array($val->admin_room_list_id,$admin_room_access_data)) {
+                $is_admin_room = true;
+            }
+            array_push($conditional_admin_room,$is_admin_room);
             //echo $val->pic_list_id;
         }
-
     	$data = array(
         'data'         => $final_akses_data,
         'status_akses'  => Status_Akses::all(),
@@ -335,7 +341,7 @@ class AccessCardController extends Controller
         'card_printing'   => $card_printing,
         'approval_activation'   => $approval_activation,
         'staff_activation'   => $staff_activation,
-        'admin_room'        => false
+        'admin_room'        => $conditional_admin_room
         );
         //dd($data);
         return view('accesscard/index',compact('data'));
