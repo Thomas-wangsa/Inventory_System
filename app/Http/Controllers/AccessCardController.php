@@ -196,21 +196,26 @@ class AccessCardController extends Controller
             $pic_list_dropdown = Pic_List::all();
         } else if(in_array($restrict_divisi_admin_room,$user_divisi) && in_array(2,$user_divisi)) {
             // owner & pic
-            echo "ONLY OWNER & PIC";die;
+            //echo "ONLY OWNER & PIC";die;
+            $pic_list_id_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+            ->where('users_role.user_id',Auth::user()->id)
+            ->where('users_role.divisi',2)
+            ->where('pic_role.user_id',Auth::user()->id)
+            // ->select('users_role.user_id AS user_id',
+            //         'pic_role.user_id AS pic_user_id',
+            //         'users_role.jabatan','pic_role.id AS pic_id',
+            //         'pic_role.pic_list_id','pic_role.pic_level_id'
+            //         )
+            ->groupBy('pic_role.pic_list_id')
+            ->pluck('pic_list_id');
+
+            
             
 
-            $pic_list_id_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
-                            ->where('users_role.user_id',Auth::user()->id)
-                            ->where('users_role.divisi',$restrict_divisi_pic)
-                            ->where('pic_role.user_id',Auth::user()->id)
-                            // ->select('users_role.user_id AS user_id',
-                            //         'pic_role.user_id AS pic_user_id',
-                            //         'users_role.jabatan','pic_role.id AS pic_id',
-                            //         'pic_role.pic_list_id','pic_role.pic_level_id'
-                            //         )
-                            ->groupBy('pic_role.pic_list_id')
-                            ->pluck('pic_list_id');
-            
+
+        
+
+
             $akses_data = Akses_Data::join('status_akses'
                 ,'status_akses.id','=','akses_data.status_akses')
             ->join('users','users.id','=','akses_data.created_by')
@@ -219,7 +224,34 @@ class AccessCardController extends Controller
             ->join('access_card_request',
             'access_card_request.id','=','akses_data.request_type')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id')
-            ->whereIn('akses_data.pic_list_id',$pic_list_id_data);
+            ->where(function ($query) {
+                $pic_list_id_data = Users_Role::join('pic_role','pic_role.id','=','users_role.jabatan')
+                            ->where('users_role.user_id',Auth::user()->id)
+                            ->where('users_role.divisi',2)
+                            ->where('pic_role.user_id',Auth::user()->id)
+                            // ->select('users_role.user_id AS user_id',
+                            //         'pic_role.user_id AS pic_user_id',
+                            //         'users_role.jabatan','pic_role.id AS pic_id',
+                            //         'pic_role.pic_list_id','pic_role.pic_level_id'
+                            //         )
+                            ->groupBy('pic_role.pic_list_id')
+                            ->pluck('pic_list_id');
+
+                $admin_room_access_data_pluck = Users_Role::join('admin_room_role','admin_room_role.id','=','users_role.jabatan')
+                            ->where('users_role.user_id',Auth::user()->id)
+                            ->where('users_role.divisi',5)
+                            ->where('admin_room_role.user_id',Auth::user()->id)
+                            ->pluck('admin_room_list_id');
+
+                $query->whereIn('akses_data.pic_list_id',$pic_list_id_data)
+                      ->orWhereIn('akses_data.admin_room_list_id',$admin_room_access_data_pluck);
+            });
+            //dd($akses_data->count());
+            // ->whereIn('akses_data.pic_list_id',$pic_list_id_data)
+            // ->orWhereIn('akses_data.admin_room_list_id',$admin_room_access_data_pluck);
+
+
+
             $pic_list_dropdown = Pic_List::whereIn('id',$pic_list_id_data)->get();
         } else if(in_array($restrict_divisi_admin_room,$user_divisi) && !in_array(2,$user_divisi)) {
             // only owner
@@ -268,11 +300,14 @@ class AccessCardController extends Controller
             'access_card_request.id','=','akses_data.request_type')
             ->leftjoin('pic_list','pic_list.id','=','akses_data.pic_list_id')
             ->whereIn('akses_data.pic_list_id',$pic_list_id_data);
+
+            //dd($akses_data->count());
+
             $pic_list_dropdown = Pic_List::whereIn('id',$pic_list_id_data)->get();
         }
 
 
-
+        //dd($akses_data->count());
         // FILTER
         if($request->search == "on") {
             if($request->search_nama != null) {
@@ -290,22 +325,24 @@ class AccessCardController extends Controller
 
             if(in_array($this->admin,$user_divisi)) {
                 $akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6,7,8]);    
-            } else if(in_array($restrict_divisi_access, $user_divisi)) {
+            } else if(in_array($restrict_divisi_access, $user_divisi) 
+                && count($user_divisi) == 1) {
                 $akses_data = $akses_data->whereIn('akses_data.status_akses',[2,3,4,5,6,7,8]);
-            } else if(in_array($restrict_divisi_pic,$user_divisi)) {
+            } else if(in_array($restrict_divisi_pic,$user_divisi) 
+                    && count($user_divisi) == 1) {
                 $akses_data = $akses_data->whereIn('akses_data.status_akses',[1]);
             } 
             
         }
-
+        //dd($akses_data->count());
 
         $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name','users.name AS created_by_name','access_card_register_status.register_name AS register_name','access_card_request.request_name AS request_name');
 
-        if($request->search_order != null) {
-            $akses_data =    $akses_data->orderBy($request->search_order,'asc');
-        } else {
-            $akses_data =    $akses_data->orderBy('akses_data.id','DESC');
-        }
+        // if($request->search_order != null) {
+        //     $akses_data =    $akses_data->orderBy($request->search_order,'asc');
+        // } else {
+        //     $akses_data =    $akses_data->orderBy('akses_data.id','DESC');
+        // }
         
         $final_akses_data = $akses_data->paginate(10);
 

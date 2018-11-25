@@ -156,7 +156,7 @@
 
 			@if(in_array(1,$user_divisi)
     		||
-			$data['admin_room'] == true
+			$data['admin_room'][$key] 
 			)
     			<button 
     			class="btn btn-primary"
