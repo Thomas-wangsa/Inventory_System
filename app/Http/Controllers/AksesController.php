@@ -608,8 +608,7 @@ class AksesController extends Controller
             $request->session()->flash('alert-danger', 'there is no access card found');
             return redirect($this->redirectTo);
         } else {
-
-            if($data->register_type == 1) {
+            if($data->request_type == 1) {
                 if($data->status_akses == 1) {
                     if($request->next_status == 2) {
                         $data->status_akses = $request->next_status;
@@ -694,6 +693,9 @@ class AksesController extends Controller
                     $request->session()->flash('alert-danger', 'System Approval Error');
                     return redirect($this->redirectTo);
                 }
+            } else  {
+                $request->session()->flash('alert-danger', 'Out of scope');
+                return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
             }
 
 
@@ -750,7 +752,7 @@ class AksesController extends Controller
             return redirect($this->redirectTo);
         } else {
             if($data->status_data == 1 || $data->status_data == 2) {
-                if($data->register_type == 1) {
+                if($data->request_type == 1) {
                     switch ($data->status_akses) {
                         case 1:
                             $data->status_akses = 10;
@@ -1106,6 +1108,7 @@ class AksesController extends Controller
         }
 
         $akses_data->status_akses = 18;
+        $akses_data->status_data = 4;
         $akses_data->comment = $request->note;
         $bool = $akses_data->save();
 

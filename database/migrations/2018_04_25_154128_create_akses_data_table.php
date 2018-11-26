@@ -22,7 +22,14 @@ class CreateAksesDataTable extends Migration
             $table->string('nik')->nullable();
             $table->unsignedInteger('pic_list_id')->nullable();
             $table->unsignedInteger('admin_room_list_id')->nullable();
-            $table->unsignedInteger('status_data')->default(1);
+            // 
+            // 1 = on progress
+            // 2 = rejected
+            // 3 = done
+            // 4 = deactivated
+            // 5 = expired
+            $table->unsignedInteger('status_data')->default(1); 
+
             $table->unsignedInteger('status_akses');
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');

@@ -595,6 +595,7 @@ class DatabaseSeeder extends Seeder
             array("name"=>"reject activation","color"=>"#FF0000"),
             array("name"=>"reject pick up access card","color"=>"#FF0000"),
             array("name"=>"access card is deactived","color"=>"#FF0000"),
+            array("name"=>"access card is expired","color"=>"#FF0000"),
             
         );
 
@@ -630,7 +631,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $full_data = array();
-        for($i=0;$i<=500;$i++) {
+        for($i=0;$i<=1000;$i++) {
 
             $request_type   = $faker->numberBetween(1,4);
             $request_type   = 1;
