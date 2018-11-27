@@ -56,7 +56,8 @@
         <!-- first validation -->
 
         <div id="parent_extend_create_access_card">
-          <form method="POST" action="{{ route('post_extending_access_card_number') }}">
+          <form method="POST" enctype="multipart/form-data"
+          action="{{ route('post_extending_access_card_number') }}">
             {{ csrf_field() }}
             
             <input type="hidden" name="extend_create_uuid" id="extend_create_uuid">
@@ -201,8 +202,8 @@
           $('#extend_create_full_name').val(response.data.name);
           $('#extend_create_accesscard').val(response.data.no_access_card)
 
-          $('#extend_create_full_name').prop("disabled", true)
-          $('#extend_create_accesscard').prop("disabled", true)
+          $('#extend_create_full_name').prop("readonly", true)
+          $('#extend_create_accesscard').prop("readonly", true)
           $('#parent_extend_create_access_card').show();
         }
       },

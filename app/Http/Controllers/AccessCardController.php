@@ -385,7 +385,119 @@ class AccessCardController extends Controller
     }
 
     public function post_extending_access_card_number(Request $request) {
-        dd($request);
+        //dd($request);
+
+        $request->validate([
+            'extend_create_uuid'                => 'required|max:150',
+            'extend_create_register_status'     => 'required|max:50',
+            'extend_create_full_name'           => 'required|max:100',
+            'extend_create_accesscard'          => 'required|max:150',
+            'new_extend_date_start'             => 'required|max:50',
+            'new_extend_date_end'               => 'required|max:50',
+        ]);
+
+        // First Validation 
+        $old_data = Akses_Data::where('no_access_card',$request->extend_create_accesscard)
+                        ->where('status_akses',9)
+                        ->where('uuid',$request->extend_create_uuid)
+                        ->first();
+        if(count($old_data) < 1) {
+            $request->session()->flash('alert-danger', 'Access Card not Found!');
+            return redirect($this->redirectTo);
+        }
+        // First Validation is failed
+
+        $access_data = new Akses_Data;
+        $bool = false;
+        // status in akses data
+        $conditional_status_akses  = 1;
+        $uuid = time().$this->faker->uuid;
+        // status request type
+        $request_type = 2;
+
+        if($request->extend_create_register_status == 1) {
+
+            $access_data->foto              = $old_data->foto;
+
+            $access_data->register_type     = $request->extend_create_register_status;
+            $access_data->name              = $old_data->name;
+            $access_data->no_access_card    = $request->extend_create_accesscard;
+            $access_data->date_start        = $request->new_extend_date_start;
+            $access_data->date_end          = $request->new_extend_date_end;
+            $access_data->additional_note   = $request->new_extend_additional_note;
+
+            $access_data->request_type      = $request_type;
+            
+            
+            $access_data->email         = $old_data->email;
+            $access_data->nik           = $old_data->nik;
+            $access_data->pic_list_id   = $old_data->pic_list_id;
+            
+
+            $access_data->divisi        = $old_data->divisi;
+            $access_data->jabatan       = $old_data->jabatan;
+            $access_data->floor         = $old_data->floor;
+
+            $access_data->status_akses      = $conditional_status_akses;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();
+
+        } elseif(($request->extend_create_register_status == 2)) {
+            //echo "NON PERMANENT"; die;
+            $request->validate([
+            'new_extend_po'  => 'required|image|mimes:jpeg,png,jpg|max:550',
+            ]);
+
+
+            if ($request->hasFile('new_extend_po')) {
+                $image = $request->file('new_extend_po');
+                $file_name = time().$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->po      = $path.$file_name;
+            }
+
+            $access_data->foto              = $old_data->foto;
+
+            $access_data->register_type     = $request->extend_create_register_status;
+            $access_data->name              = $old_data->name;
+            $access_data->no_access_card    = $request->extend_create_accesscard;
+            $access_data->date_start        = $request->new_extend_date_start;
+            $access_data->date_end          = $request->new_extend_date_end;
+            $access_data->additional_note   = $request->new_extend_additional_note;
+
+            $access_data->request_type      = $request_type;
+            
+            
+            $access_data->email         = $old_data->email;
+            $access_data->nik           = $old_data->nik;
+            $access_data->pic_list_id   = $old_data->pic_list_id;
+            
+            $access_data->divisi        = $old_data->divisi;
+            $access_data->jabatan       = $old_data->jabatan;
+            $access_data->floor         = $old_data->floor;
+
+            $access_data->status_akses      = $conditional_status_akses;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();            
+
+        }
+
+
+        if($bool) {
+            $request->session()->flash('alert-success', 'New access has been created');
+        } else {
+            $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');
+        }
+        return redirect($this->redirectTo."?search=on&search_uuid=".$uuid);
+
     } 
 
     public function post_new_set_access_card_number(Request $request) {
