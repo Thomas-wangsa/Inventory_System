@@ -108,6 +108,21 @@
 		      	</div> <!--panel body-->
 		    </div> <!--panel-->
 
+		    <div class="panel panel-primary" id="head_modal_document">
+		      <div class="panel-heading text-center">
+		      	Old Access Card Receipt
+		      </div>
+		      	<div class="panel-body">
+			      	<img class="img-responsive"
+			      	id="modal_info_broken_receipt" 
+			      	src="" 
+			      	alt="Chania">
+
+		      	</div> <!--panel body-->
+		      	<div class="panel-footer"></div>
+		    </div> <!--panel-->
+
+
 		    <div class="panel panel-primary" id="head_modal_info_po">
 		      <div class="panel-heading text-center">
 		      	Kontrak Kerja / PO
@@ -156,6 +171,7 @@
 		$('#head_modal_info_jabatan').hide();
 		$('#head_modal_info_comment').hide();
 		$('#head_modal_info_po').hide();
+		$('#head_modal_document').hide();
 
 		var data = {
 			"status":status,
@@ -202,6 +218,12 @@
 						$('#head_modal_info_jabatan').show();
 						$('#modal_info_divisi').html(response.data['divisi']);
 						$('#modal_info_jabatan').html(response.data['jabatan']);
+					}
+
+
+					if(response.data['request_type'] == "3") {
+						$('#head_modal_document').show();
+						$('#modal_info_broken_receipt').attr("src","{{URL::to('/')}}"+response.data['document']);
 					}
 
 					status_akses_bundle = response.data['status_name'];
