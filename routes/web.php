@@ -111,9 +111,14 @@ Route::group(['middleware' => ['auth']], function() {
 			//
 
 
-			// Set Admin Room
+			// Set CHECK ACCESS CARD NUMBER
 			Route::post('/accesscard/post_extend_check_access_card_number', 'AccessCardController@post_extend_check_access_card_number')
 			->name('post_extend_check_access_card_number');
+			//
+
+			// Set CHECK ACCESS CARD NUMBER
+			Route::post('/accesscard/post_extending_access_card_number', 'AccessCardController@post_extending_access_card_number')
+			->name('post_extending_access_card_number');
 			//
 		// Access Card
 

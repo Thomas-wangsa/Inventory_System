@@ -384,7 +384,9 @@ class AccessCardController extends Controller
         return view('accesscard/index',compact('data'));
     }
 
-
+    public function post_extending_access_card_number(Request $request) {
+        dd($request);
+    } 
 
     public function post_new_set_access_card_number(Request $request) {
         $data = Akses_Data::where('status_akses',4)
