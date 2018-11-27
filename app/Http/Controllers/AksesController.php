@@ -714,7 +714,51 @@ class AksesController extends Controller
                         $request->session()->flash('alert-danger', 'verification failed');
                         return redirect($this->redirectTo);
                     }
-                } 
+                } else if ($data->status_akses == 3) {
+
+                    if($request->next_status == 4) {
+                        $data->status_akses = 5;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'approval verification failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 5) {
+                    if($request->next_status == 6) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else if($request->next_status == 7) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'approval activation failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 6) {
+                    if($request->next_status == 7) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'admin room failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else if ($data->status_akses == 7) {
+                    if($request->next_status == 8) {
+                        $data->status_akses = 9;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'admin room failed');
+                        return redirect($this->redirectTo);
+                    }
+                } else {
+                    $request->session()->flash('alert-danger', 'Out of scope in extending');
+                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                }
             } else  {
                 $request->session()->flash('alert-danger', 'Out of scope');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
@@ -852,7 +896,7 @@ class AksesController extends Controller
                     $data->status_data  = 2;
 
                     if($data->status_akses == 14 || $data->status_akses == 16) {
-                        $data->status_akses = 4;
+                        $data->status_akses = 2;
                         $data->status_data  = 1;
                     }
 

@@ -518,6 +518,9 @@ class AccessCardController extends Controller
                 $data->save();
                 $request->session()->flash('alert-success', 'Access card number already set');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+            } else {
+                $request->session()->flash('alert-danger', 'set Access Number Failed,Please contact your administrator');
+                return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
             }
             
         }
@@ -535,6 +538,15 @@ class AccessCardController extends Controller
                 $data->admin_room_list_id   = $request->selected_admin_room;
                 $data->save();
                 $request->session()->flash('alert-success', 'Admin Room already set');
+                return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+            } else if($data->request_type == 2) {
+                $data->status_akses         = 6;
+                $data->admin_room_list_id   = $request->selected_admin_room;
+                $data->save();
+                $request->session()->flash('alert-success', 'Admin Room already set');
+                return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+            } else {
+                $request->session()->flash('alert-danger', 'set Admin Room Failed,Please contact your administrator');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
             }
         }
