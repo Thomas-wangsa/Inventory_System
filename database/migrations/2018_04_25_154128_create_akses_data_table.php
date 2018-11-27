@@ -41,6 +41,7 @@ class CreateAksesDataTable extends Migration
             $table->string('date_end')->nullable();
             $table->string('po')->nullable();
             $table->string('foto')->nullable();
+            $table->string('document')->nullable();
             $table->string('uuid'); 
             $table->text('additional_note')->nullable();
             $table->text('comment')->nullable();

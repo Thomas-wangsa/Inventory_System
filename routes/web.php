@@ -116,9 +116,15 @@ Route::group(['middleware' => ['auth']], function() {
 			->name('post_extend_check_access_card_number');
 			//
 
-			// Set CHECK ACCESS CARD NUMBER
+			// Submit Exteding Access Card
 			Route::post('/accesscard/post_extending_access_card_number', 'AccessCardController@post_extending_access_card_number')
 			->name('post_extending_access_card_number');
+			//
+
+
+			// Submit Broken Access Card
+			Route::post('/accesscard/post_broken_access_card_number', 'AccessCardController@post_broken_access_card_number')
+			->name('post_broken_access_card_number');
 			//
 		// Access Card
 
