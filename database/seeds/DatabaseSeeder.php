@@ -631,62 +631,66 @@ class DatabaseSeeder extends Seeder
         }
 
         $full_data = array();
-        for($i=0;$i<=1000;$i++) {
+        
+        //$request_type   = 1;
+        for($i=0;$i<=1500;$i++) {
+            $request_type   = $faker->numberBetween(1,2);
+            $register_type  = $faker->numberBetween(1,2);
+            
+            $akses_data = array(
+            "request_type"  => $request_type,
+            "register_type" => $register_type,
 
-            $request_type   = $faker->numberBetween(1,4);
-            $request_type   = 1;
+            "name"          => $faker->name,
+            "email"         => $faker->email,
+            "nik"           => $faker->uuid,
+            "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
+            "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
+            "pic_list_id"   => $faker->numberBetween(1,Pic_List::count()),
+            "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
+            "po"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
+            
+            "additional_note"=> $faker->text,
+            "comment"        => $faker->text,
 
+            "status_akses"  => 1,
+            "created_by"    => $faker->numberBetween(1,Users::count()),
+            "updated_by"    => $faker->numberBetween(1,Users::count()),
+            
+            
+            "divisi"        => $faker->jobTitle,
+            "jabatan"       => $faker->jobTitle,
+            "floor"         => $faker->address,
+            
+            "no_access_card"=> null,
+            "admin_room_list_id"=>null,
+            "uuid"          => $faker->uuid,
+            "created_at"    => $faker->dateTime($max = 'now'),
+            "updated_at"    => $faker->dateTime($max = 'now'),
+
+            "comment"       => null
+            );
 
             if($request_type == 1) {
-                
-                $register_type  = $faker->numberBetween(1,2);
-                $akses_data = array(
-                "request_type"  => $request_type,
-                "register_type" => $register_type,
-
-                "name"          => $faker->name,
-                "email"         => $faker->email,
-                "nik"           => $faker->uuid,
-                "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
-                "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
-                "pic_list_id"   => $faker->numberBetween(1,Pic_List::count()),
-                "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
-                "po"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
-                
-                "additional_note"=> $faker->text,
-                "comment"        => $faker->text,
-
-                "status_akses"  => $faker->numberBetween(1,18),
-                "created_by"    => $faker->numberBetween(1,Users::count()),
-                "updated_by"    => $faker->numberBetween(1,Users::count()),
-                
-                
-                "divisi"        => $faker->jobTitle,
-                "jabatan"       => $faker->jobTitle,
-                "floor"         => $faker->address,
-                
-                "no_access_card"=> null,
-                "admin_room_list_id"=>null,
-                "uuid"          => $faker->uuid,
-                "created_at"    => $faker->dateTime($max = 'now'),
-                "updated_at"    => $faker->dateTime($max = 'now'),
-
-                "comment"       => null
-                );
-
-                if($akses_data['status_akses'] > 4) {
-                    $akses_data['no_access_card'] = $faker->uuid;
-                }
-
-                if($akses_data['status_akses'] == 6) {
-                    $akses_data['admin_room_list_id'] = $faker->numberBetween(1,Admin_Room_List::count());
-                }
-
-                if($akses_data['status_akses'] > 9) {
-                    $akses_data['comment'] = $faker->text;
-                }
-
+                $akses_data['status_akses'] = $faker->numberBetween(1,18);
+            } else if($request_type == 2) {
+                $akses_data['status_akses'] = $faker->numberBetween(1,3);
             }
+
+
+            if($akses_data['status_akses'] > 4 || $request_type == 2) {
+                $akses_data['no_access_card'] = $faker->uuid;
+            }
+
+            if($akses_data['status_akses'] == 6) {
+                $akses_data['admin_room_list_id'] = $faker->numberBetween(1,Admin_Room_List::count());
+            }
+
+            if($akses_data['status_akses'] > 9) {
+                $akses_data['comment'] = $faker->text;
+            }
+
+
 
             array_push($full_data,$akses_data);
         }

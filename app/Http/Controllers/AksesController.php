@@ -693,6 +693,28 @@ class AksesController extends Controller
                     $request->session()->flash('alert-danger', 'System Approval Error');
                     return redirect($this->redirectTo);
                 }
+            } else if($data->request_type == 2)  {
+                if($data->status_akses == 1) {
+                    if($request->next_status == 2) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'Error: approved by sponsor is error');
+                        return redirect($this->redirectTo);
+                    }
+
+                } else if ($data->status_akses == 2) {
+
+                    if($request->next_status == 3) {
+                        $data->status_akses = $request->next_status;
+                        $data->updated_by   = Auth::user()->id;
+                        $data->save();
+                    } else {
+                        $request->session()->flash('alert-danger', 'verification failed');
+                        return redirect($this->redirectTo);
+                    }
+                } 
             } else  {
                 $request->session()->flash('alert-danger', 'Out of scope');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
@@ -795,6 +817,52 @@ class AksesController extends Controller
                     $data->additional_note = $data->additional_note."<br/> <br/>".$request->desc;
                     $data->comment      = $request->desc;
                     $data->save();
+                } else if ($data->request_type == 2) {
+                    switch ($data->status_akses) {
+                        case 1:
+                            $data->status_akses = 10;
+                            break;
+                        case 2:
+                            $data->status_akses = 11;
+                            break;
+                        case 3;
+                            $data->status_akses = 12;
+                            break;
+                        case 4;
+                            $data->status_akses = 13;
+                            break;
+                        case 5;
+
+                            $data->status_akses = 14;
+                            break;
+                        case 6;
+                            $data->status_akses = 15;
+                            break;
+                        case 7;
+                            $data->status_akses = 16;
+                            break;
+                        case 8;
+                            $data->status_akses = 17;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                
+                    $data->status_data  = 2;
+
+                    if($data->status_akses == 14 || $data->status_akses == 16) {
+                        $data->status_akses = 4;
+                        $data->status_data  = 1;
+                    }
+
+                    $data->updated_by   = Auth::user()->id;
+                    $data->additional_note = $data->additional_note."<br/> <br/>".$request->desc;
+                    $data->comment      = $request->desc;
+                    $data->save();
+                } else {
+                   $request->session()->flash('alert-danger', 'Out of scope');
+                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid); 
                 }
             } else {
                 $request->session()->flash('alert-danger', 'Failed to reject access card!');

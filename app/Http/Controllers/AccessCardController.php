@@ -314,6 +314,10 @@ class AccessCardController extends Controller
                 $akses_data = $akses_data->where('akses_data.name','like','%'.$request->search_nama."%");
             } 
             
+            if($request->request_type_filter != null) {
+                $akses_data = $akses_data->where('akses_data.request_type',$request->request_type_filter);
+            }   
+                     
             if($request->search_filter != null) {
                 $akses_data = $akses_data->where('akses_data.status_akses',$request->search_filter);            
             } 

@@ -9,6 +9,20 @@
 	    	<input type="text" class="form-control" 
 	    	name="search_nama" placeholder="Find Name..."
 	    	value="{{Request::get('search_nama')}}">
+	  	</div>
+	  	<div class="form-group">
+	      	<select class="form-control" name="request_type_filter">
+	      		<option value=""> Request Type </option>
+	        	@foreach($data['request_type'] as $key=>$val)
+	    		<option value="{{$val->id}}" 
+	    		@if($val->id == Request::get('request_type_filter')) 
+    				selected
+    			@endif
+	    		> 
+	    			{{$val->request_name}}
+	    		</option>
+	    		@endforeach 
+      		</select>
 	  	</div> 
 	  	<div class="form-group">
 	      	<select class="form-control" name="search_filter">

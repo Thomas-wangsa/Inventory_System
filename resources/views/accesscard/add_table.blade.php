@@ -41,7 +41,11 @@
                 		</div>
 	                </td>
 	                <td style="font-family: verdana">
-	                	@include('accesscard.conditional_new_access_card')
+	                	@if($val->request_type == 1)
+	                		@include('accesscard.conditional_new_access_card')
+	                	@elseif($val->request_type == 2)
+	                		@include('accesscard.conditional_extend_access_card')
+	                	@endif
 	                </td>
 	            </tr>
 	            @endforeach
@@ -62,5 +66,8 @@
 </div>
 <div class="clearfix"> </div>
 
+@include('accesscard.modal_new_update_access_card')
+@include('accesscard.modal_new_set_admin_room')
+@include('akses.modal_deactive')
 @include('accesscard.modal_info')
 
