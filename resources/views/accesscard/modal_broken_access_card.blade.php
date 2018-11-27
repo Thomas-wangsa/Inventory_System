@@ -55,7 +55,7 @@
 
         <div id="parent_broken_create_access_card">
           <form method="POST" enctype="multipart/form-data"
-          action="{{ route('post_extending_access_card_number') }}">
+          action="{{ route('post_broken_access_card_number') }}">
             {{ csrf_field() }}
             
             <input type="hidden" name="broken_create_uuid" id="broken_create_uuid">
