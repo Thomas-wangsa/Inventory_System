@@ -45,7 +45,8 @@
             3. <strong> Permanent : </strong> Division & Position are mandatory
             <br/>
             4. <strong> Non Permanent : </strong> Location Activities,Contract PO are mandatory 
-            <br/> 
+            <br/>
+            5. Only for <b> new worker </b> or for rejected,deactivated or expired access card. 
           </div>
         </div>
         <!-- modal note-->

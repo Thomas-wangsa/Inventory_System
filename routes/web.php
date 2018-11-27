@@ -109,6 +109,12 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/accesscard/post_new_set_admin_room', 'AccessCardController@post_new_set_admin_room')
 			->name('post_new_set_admin_room');
 			//
+
+
+			// Set Admin Room
+			Route::post('/accesscard/post_extend_check_access_card_number', 'AccessCardController@post_extend_check_access_card_number')
+			->name('post_extend_check_access_card_number');
+			//
 		// Access Card
 
 

@@ -422,6 +422,31 @@ class AccessCardController extends Controller
         }
     }
 
+
+    public function post_extend_check_access_card_number(Request $request) {
+        $response= array();
+        $response['error']  = true;
+        $check_exists = Akses_Data::where('no_access_card',$request->access_card_no)->count();
+
+        if($check_exists < 1) {
+            $response['message'] = "access card number is not exists!";
+            return json_encode($response); 
+        }
+
+        $akses_data = Akses_Data::where('no_access_card',$request->access_card_no)
+                        ->where('status_akses',9)
+                        ->first();
+
+        if(count($akses_data) < 1) {
+            $response['message'] = "access card number is not active!";
+            return json_encode($response); 
+        }
+
+        $response['data']   = $akses_data;
+        $response['error']  = false;
+        return json_encode($response);
+    }
+
     public function post_new_access_card(Request $request) {
 
         $request->validate([

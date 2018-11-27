@@ -44,7 +44,9 @@
       <a href="{{route('home')}}">
         <img class="img-responsive" 
         style="max-height: 150px" 
-        src="{{ asset('images/logo/indosat.png')}}"  / >
+        
+        src="{{ asset('images/logo/google.png')}}"  / >
+        <!-- src="{{ asset('images/logo/indosat.png')}}"  / > -->
       </a>
       <div class="text-center"> 
         Access & Inventory <br/> Management
