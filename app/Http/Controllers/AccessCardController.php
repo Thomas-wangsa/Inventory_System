@@ -625,7 +625,7 @@ class AccessCardController extends Controller
             return redirect($this->redirectTo);
         } else {
 
-            if($data->request_type == 1) {
+            if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4) {
                 $data->status_akses         = 5;
                 $data->no_access_card       = $request->accesscard_number;
                 $data->save();
@@ -646,7 +646,7 @@ class AccessCardController extends Controller
             $request->session()->flash('alert-danger', 'Set Admin Room Failed!, Data Not Found!');
             return redirect($this->redirectTo);
         } else {
-            if($data->request_type == 1) {
+            if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4) {
                 $data->status_akses         = 6;
                 $data->admin_room_list_id   = $request->selected_admin_room;
                 $data->save();

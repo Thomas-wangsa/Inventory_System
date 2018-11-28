@@ -608,7 +608,7 @@ class AksesController extends Controller
             $request->session()->flash('alert-danger', 'there is no access card found');
             return redirect($this->redirectTo);
         } else {
-            if($data->request_type == 1) {
+            if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4) {
                 if($data->status_akses == 1) {
                     if($request->next_status == 2) {
                         $data->status_akses = $request->next_status;

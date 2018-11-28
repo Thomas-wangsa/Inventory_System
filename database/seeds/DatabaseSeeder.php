@@ -633,8 +633,8 @@ class DatabaseSeeder extends Seeder
         $full_data = array();
         
         //$request_type   = 1;
-        for($i=0;$i<=1500;$i++) {
-            $request_type   = $faker->numberBetween(1,2);
+        for($i=0;$i<=3000;$i++) {
+            $request_type   = $faker->numberBetween(1,3);
             $register_type  = $faker->numberBetween(1,2);
             
             $akses_data = array(
@@ -671,7 +671,7 @@ class DatabaseSeeder extends Seeder
             "comment"       => null
             );
 
-            if($request_type == 1) {
+            if($request_type == 1 || $request_type == 3) {
                 $akses_data['status_akses'] = $faker->numberBetween(1,18);
             } else if($request_type == 2) {
                 $akses_data['status_akses'] = $faker->numberBetween(1,3);
