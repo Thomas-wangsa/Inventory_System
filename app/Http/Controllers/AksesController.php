@@ -818,7 +818,7 @@ class AksesController extends Controller
             return redirect($this->redirectTo);
         } else {
             if($data->status_data == 1 || $data->status_data == 2) {
-                if($data->request_type == 1) {
+                if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4) {
                     switch ($data->status_akses) {
                         case 1:
                             $data->status_akses = 10;

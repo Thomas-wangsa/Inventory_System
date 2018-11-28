@@ -388,7 +388,9 @@ class AccessCardController extends Controller
         return view('accesscard/index',compact('data'));
     }
 
-
+    public function post_lost_access_card_number(Request $request) {
+        dd($request);
+    }
     public function post_broken_access_card_number(Request $request) {
         $request->validate([
             'broken_create_uuid'                => 'required|max:150',
