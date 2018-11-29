@@ -676,7 +676,7 @@ class DatabaseSeeder extends Seeder
                 $akses_data['status_akses'] = $faker->numberBetween(1,18);
             } else if($request_type == 2) {
                 $akses_data['status_akses'] = $faker->numberBetween(1,3);
-            } else if($requst_type == 5) {
+            } else if($request_type == 5) {
                 if($register_type == 1) {
                     $akses_data['status_akses'] = 5;  
                 } else if($register_type == 2) {

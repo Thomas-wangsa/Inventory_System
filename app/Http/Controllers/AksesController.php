@@ -991,7 +991,44 @@ class AksesController extends Controller
                     $data->additional_note = $data->additional_note."<br/> <br/>".$request->desc;
                     $data->comment      = $request->desc;
                     $data->save();
-                } else {
+                } else if ($data->request_type == 5) { 
+                    switch ($data->status_akses) {
+                        case 1:
+                            $data->status_akses = 10;
+                            break;
+                        case 2:
+                            $data->status_akses = 11;
+                            break;
+                        case 3;
+                            $data->status_akses = 12;
+                            break;
+                        case 4;
+                            $data->status_akses = 13;
+                            break;
+                        case 5;
+                            $data->status_akses = 14;
+                            break;
+                        case 6;
+                            $data->status_akses = 15;
+                            break;
+                        case 7;
+                            $data->status_akses = 16;
+                            break;
+                        case 8;
+                            $data->status_akses = 17;
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
+                
+                    $data->status_data  = 2;
+
+                    $data->updated_by   = Auth::user()->id;
+                    $data->additional_note = $data->additional_note."<br/> <br/>".$request->desc;
+                    $data->comment      = $request->desc;
+                    $data->save();
+                }else {
                    $request->session()->flash('alert-danger', 'Out of scope');
                     return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid); 
                 }
