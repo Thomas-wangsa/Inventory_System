@@ -131,6 +131,11 @@ Route::group(['middleware' => ['auth']], function() {
 			Route::post('/accesscard/post_lost_access_card_number', 'AccessCardController@post_lost_access_card_number')
 			->name('post_lost_access_card_number');
 			//
+
+			// Submit Broken Access Card
+			Route::post('/accesscard/post_leveling_access_card_number', 'AccessCardController@post_leveling_access_card_number')
+			->name('post_leveling_access_card_number');
+			//
 		// Access Card
 
 

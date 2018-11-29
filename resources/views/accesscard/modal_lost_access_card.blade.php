@@ -31,7 +31,7 @@
             <br/>
             2. Additional Note is optional
             <br/>
-            3. only for <b> new worker </b> in active status. 
+            3. only for <b> new worker </b> in status access card is active. 
           </div>
         </div>
         <!-- modal note-->

@@ -388,6 +388,118 @@ class AccessCardController extends Controller
         return view('accesscard/index',compact('data'));
     }
 
+    public function post_leveling_access_card_number(Request $request) {
+        $request->validate([
+            'leveling_create_uuid'                => 'required|max:150',
+            'leveling_create_register_status'     => 'required|max:50',
+            'leveling_create_full_name'           => 'required|max:100',
+            'leveling_create_accesscard'          => 'required|max:150',
+            'leveling_location_activities'        => 'required|max:80',
+        ]);
+
+        // First Validation 
+        $old_data = Akses_Data::where('no_access_card',$request->leveling_create_accesscard)
+                        ->where('status_akses',9)
+                        ->where('uuid',$request->leveling_create_uuid)
+                        ->first();
+        if(count($old_data) < 1) {
+            $request->session()->flash('alert-danger', 'Access Card not Found!');
+            return redirect($this->redirectTo);
+        }
+        // First Validation is failed
+
+        $access_data = new Akses_Data;
+        $bool = false;
+        // status in akses data
+        $uuid = time().$this->faker->uuid;
+        // status request type
+        $request_type = 5;
+
+        if($request->leveling_create_register_status == 1) {
+            //echo "PERMANENT";die;
+
+            $access_data->foto              = $old_data->foto;
+
+            $access_data->register_type     = $request->leveling_create_register_status;
+            $access_data->name              = $old_data->name;
+            $access_data->no_access_card    = $request->leveling_create_accesscard;
+            $access_data->date_start        = $old_data->date_start;
+            $access_data->date_end          = $old_data->date_end;
+            $access_data->additional_note   = $request->leveling_additional_note;
+
+            $access_data->request_type      = $request_type;
+            
+            
+            $access_data->email         = $old_data->email;
+            $access_data->nik           = $old_data->nik;
+            $access_data->pic_list_id   = $old_data->pic_list_id;
+            
+
+            $access_data->divisi        = $old_data->divisi;
+            $access_data->jabatan       = $old_data->jabatan;
+            $access_data->floor         = $request->leveling_location_activities;
+
+            $access_data->status_akses      = 5;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();
+
+        } elseif(($request->leveling_create_register_status == 2)) {
+           
+            $request->validate([
+            'new_leveling_po'  => 'required|image|mimes:jpeg,png,jpg|max:550',
+            ]);
+
+
+            if ($request->hasFile('new_leveling_po')) {
+                $image = $request->file('new_leveling_po');
+                $file_name = time().$this->faker->uuid.".".$image->getClientOriginalExtension();
+                $path = "/images/akses/";
+                $destinationPath = public_path($path);
+                $image->move($destinationPath, $file_name);
+                $access_data->po      = $path.$file_name;
+            }
+
+            $access_data->foto              = $old_data->foto;
+
+            $access_data->register_type     = $request->leveling_create_register_status;
+            $access_data->name              = $old_data->name;
+            $access_data->no_access_card    = $request->leveling_create_accesscard;
+            $access_data->date_start        = $old_data->date_start;
+            $access_data->date_end          = $old_data->date_end;
+            $access_data->additional_note   = $request->leveling_additional_note;
+
+            $access_data->request_type      = $request_type;
+            
+            
+            $access_data->email         = $old_data->email;
+            $access_data->nik           = $old_data->nik;
+            $access_data->pic_list_id   = $old_data->pic_list_id;
+            
+            $access_data->divisi        = $old_data->divisi;
+            $access_data->jabatan       = $old_data->jabatan;
+            $access_data->floor         = $request->leveling_location_activities;
+
+            $access_data->status_akses      = 1;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();            
+
+        }
+
+
+        if($bool) {
+            $request->session()->flash('alert-success', 'extending access card has been created');
+        } else {
+            $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');
+        }
+        return redirect($this->redirectTo."?search=on&search_uuid=".$uuid);
+
+    }
     public function post_lost_access_card_number(Request $request) {
         $request->validate([
             'lost_create_uuid'                => 'required|max:150',

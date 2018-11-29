@@ -1,5 +1,5 @@
 <!-- modal -->
-<div class="modal fade" id="modal_broken_access_card" role="dialog">
+<div class="modal fade" id="modal_leveling_access_card" role="dialog">
   <div class="modal-dialog">
     <!-- modal content-->
     <div class="modal-content">
@@ -12,7 +12,7 @@
             &times;
           </button>
           <h4 class="modal-title text-center">
-            broken access card
+            leveling access card
           </h4>
       </div>
       <!-- modal header-->
@@ -27,11 +27,13 @@
             <strong> Note : </strong>
           </div>
           <div>
-            1. Full Name,Access Card Number,Old Access Card Receipt are mandatory
+            1. Full Name,Access Card Number,Floor Work Location are mandatory
             <br/>
             2. Additional Note is optional
             <br/>
-            3. only for <b> new worker </b> in status access card is active.  
+            3. <strong> Non Permanent : </strong> Contract PO is mandatory 
+            <br/>
+            4. only for <b> new worker </b> in status access card is active. 
           </div>
         </div>
         <!-- modal note-->
@@ -39,34 +41,34 @@
         <!-- first validation -->
         <div class="form-group">
           <label for="staff_nama"> 
-            Access Card Number :
+            access card number :
           </label>
           <input type="text" 
-          id="broken_check_access_card_number" class="form-control"
-          value=""  
+          id="leveling_check_access_card_number" class="form-control"
+          value="@if(env('ENV_STATUS', 'development') == 'development')f87fee4b-7417-3bc5-911e-18e9b3f6d518   @endif"  
           required="">
 
           <div class="btn btn-success btn-block" 
-          style="margin-top: 10px" onclick="broken_check_access_card_number_function()"> 
-            Check Access Card Number :
+          style="margin-top: 10px" onclick="leveling_check_access_card_number_function()"> 
+            check access card number :
           </div>
         </div>
         <!-- first validation -->
 
-        <div id="parent_broken_create_access_card">
+        <div id="parent_leveling_create_access_card">
           <form method="POST" enctype="multipart/form-data"
-          action="{{ route('post_broken_access_card_number') }}">
+          action="{{ route('post_leveling_access_card_number') }}">
             {{ csrf_field() }}
             
-            <input type="hidden" name="broken_create_uuid" id="broken_create_uuid">
+            <input type="hidden" name="leveling_create_uuid" id="leveling_create_uuid">
 
             <div class="form-group">
               <label for="staff_nama"> 
                 register status :
               </label>
               <select class="form-control" 
-              name="broken_create_register_status" id="broken_create_register_status"
-              >
+              name="leveling_create_register_status" id="leveling_create_register_status"
+              onchange="conditional_leveling_access_card_status()">
                 @foreach($data['register_type'] as $key=>$val)
                   <option value="{{$val->id}}" > 
                     {{ucfirst($val->register_name)}}
@@ -77,44 +79,49 @@
 
             <div class="form-group">
               <label for="staff_nama"> 
-                Full name :
+                full name :
               </label>
               <input type="text" 
-              name="broken_create_full_name" id="broken_create_full_name" class="form-control"  
+              name="leveling_create_full_name" id="leveling_create_full_name" class="form-control"  
               required="" placeholder="ex : abc">
             </div>
 
             <div class="form-group">
               <label for="staff_nama"> 
-                Access card:
+                access card:
               </label>
               <input type="text" 
-              name="broken_create_accesscard" id="broken_create_accesscard" 
+              name="leveling_create_accesscard" id="leveling_create_accesscard" 
               class="form-control"  
               required="" placeholder="ex : abc">
             </div>
 
-           
-            <div class="form-group" id="parent_new_extend_po">
-              <label for="staff_nama"> Old Access Card Receipt : </label>
+            <div class="form-group">
+              <label for="staff_divisi"> Location Activities :</label>
+              <input type="text" 
+              name="leveling_location_activities" class="form-control" id="nama"  
+              value="@if(env('ENV_STATUS', 'development') == 'development'){{$data['faker']->address}} @endif"
+              placeholder="Location Activities is required" required="">
+            </div>
+
+            <div class="form-group" id="parent_new_leveling_po">
+              <label for="staff_nama"> Company Work Contract / PO : </label>
               <input type="file" 
-              name="broken_document" class="form-control" id="broken_document"
-              required="" 
+              name="new_leveling_po" 
+              class="form-control" id="new_leveling_po" 
               >
             </div>
 
             <div class="form-group">
               <label for="staff_nama"> Additional Note : </label>
               <input type="text" 
-              name="broken_additional_note" class="form-control" id="nama"  
+              name="leveling_additional_note" class="form-control" id="nama"  
               value="@if(env('ENV_STATUS', 'development') == 'development'){{$data['faker']->text}} @endif" 
               placeholder="optional for add any information">
             </div>
 
-            
-
             <button type="submit" class="btn btn-block btn-primary">
-              REQUEST RECOVER ACCESS CARD
+              REQUEST leveling ACCESS CARD
             </button>
           </form>
         </div>
@@ -139,11 +146,26 @@
 
 <script type="text/javascript">
 
-  $('#parent_broken_create_access_card').hide();
+  $('#parent_leveling_create_access_card').hide();
+  $('#parent_new_leveling_po').hide();
 
 
-  function broken_check_access_card_number_function() {
-    value = $('#broken_check_access_card_number').val();
+  function conditional_leveling_access_card_status() {
+    register_status = $('#leveling_create_register_status').val();
+
+    if(register_status == 1) {
+      $('#parent_new_leveling_po').hide();
+      $("new_leveling_po").prop('required',false);
+    } else if(register_status == 2) {
+      $('#parent_new_leveling_po').show();
+      $("#new_leveling_po").prop('required',true);
+    } else {
+      alert("ERROR,PLEASE CONTACT YOUR ADMIN")
+    }
+  }
+
+  function leveling_check_access_card_number_function() {
+    value = $('#leveling_check_access_card_number').val();
     if(value == "") {
       alert("Please input the access card number!");
       return false;
@@ -168,13 +190,13 @@
         if(response.error) {
           alert(response.message);
         } else {
-          $('#broken_create_uuid').val(response.data.uuid);
-          $('#broken_create_full_name').val(response.data.name);
-          $('#broken_create_accesscard').val(response.data.no_access_card)
+          $('#leveling_create_uuid').val(response.data.uuid);
+          $('#leveling_create_full_name').val(response.data.name);
+          $('#leveling_create_accesscard').val(response.data.no_access_card)
 
-          $('#broken_create_full_name').prop("readonly", true)
-          $('#broken_create_accesscard').prop("readonly", true)
-          $('#parent_broken_create_access_card').show();
+          $('#leveling_create_full_name').prop("readonly", true)
+          $('#leveling_create_accesscard').prop("readonly", true)
+          $('#parent_leveling_create_access_card').show();
         }
       },
       error: function( jqXhr, textStatus, errorThrown ){

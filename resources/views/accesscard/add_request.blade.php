@@ -25,6 +25,7 @@
 @include('accesscard.modal_extend_access_card')
 @include('accesscard.modal_broken_access_card')
 @include('accesscard.modal_lost_access_card')
+@include('accesscard.modal_leveling_access_card')
 
 <script type="text/javascript">
 	function access_card_request_action() {
@@ -42,6 +43,9 @@
         break;
       case "4" : 
         $('#modal_lost_access_card').modal('show');;
+        break;
+      case "5" : 
+        $('#modal_leveling_access_card').modal('show');;
         break;
 			default :
 				alert("out of scope");

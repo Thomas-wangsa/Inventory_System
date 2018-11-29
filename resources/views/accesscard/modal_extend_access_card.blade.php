@@ -33,7 +33,7 @@
             <br/>
             3. <strong> Non Permanent : </strong> Contract PO is mandatory 
             <br/>
-            4. only for <b> new worker </b> in active status. 
+            4. only for <b> new worker </b> in status access card is active.  
           </div>
         </div>
         <!-- modal note-->
