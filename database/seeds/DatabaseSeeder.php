@@ -80,10 +80,10 @@ class DatabaseSeeder extends Seeder
 
         $users_array = array(
             array(
-                "name"=>"superman",
-                "email"=>"admin@gmail.com",
-                // "name"=>"sir kat",
-                // "email"=>"katimin@indosatooredoo.com",
+                //"name"=>"superman",
+                //"email"=>"admin@gmail.com",
+                "name"=>"sir kat",
+                "email"=>"katimin@indosatooredoo.com",
                 "password"=>bcrypt(123456),
                 "mobile"=>$faker->phoneNumber,
             ),
@@ -634,7 +634,7 @@ class DatabaseSeeder extends Seeder
         $full_data = array();
         
         //$request_type   = 1;
-        for($i=0;$i<=2000;$i++) {
+        for($i=0;$i<=500;$i++) {
             $request_type   = $faker->numberBetween(1,5);
             $register_type  = $faker->numberBetween(1,2);
             

@@ -34,7 +34,7 @@
 	<!--body position access card-->
 	<div id="body_access_card"> 
 		@include('accesscard.add_request')
-		@include('accesscard.add_category')
+		
 		@include('accesscard.add_filter')
 		
 		@include('accesscard.add_table')

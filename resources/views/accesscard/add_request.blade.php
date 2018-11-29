@@ -15,7 +15,7 @@
   	<button type="submit" 
   	class="btn btn-primary"
   	onclick="access_card_request_action()"> 
-  		Access Card Request 
+  		Submit 
   	</button>
 </div>
 @endif
