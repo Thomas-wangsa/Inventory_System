@@ -109,7 +109,7 @@
 		    </div> <!--panel-->
 
 		    <div class="panel panel-primary" id="head_modal_document">
-		      <div class="panel-heading text-center">
+		      <div class="panel-heading text-center" id="body_modal_document">
 		      	Old Access Card Receipt
 		      </div>
 		      	<div class="panel-body">
@@ -221,7 +221,14 @@
 					}
 
 
-					if(response.data['request_type'] == "3") {
+					if(response.data['request_type'] == "3" || response.data['request_type'] == "4") {
+
+						if(response.data['request_type'] == "3") {
+							$('#body_modal_document').html('Old Access Card Receipt');
+						} else if(response.data['request_type'] == "4") {
+							$('#body_modal_document').html('Police Letter Receipt');
+						}
+
 						$('#head_modal_document').show();
 						$('#modal_info_broken_receipt').attr("src","{{URL::to('/')}}"+response.data['document']);
 					}

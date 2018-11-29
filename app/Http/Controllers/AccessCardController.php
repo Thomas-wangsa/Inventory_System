@@ -389,7 +389,114 @@ class AccessCardController extends Controller
     }
 
     public function post_lost_access_card_number(Request $request) {
-        dd($request);
+        $request->validate([
+            'lost_create_uuid'                => 'required|max:150',
+            'lost_create_register_status'     => 'required|max:50',
+            'lost_create_full_name'           => 'required|max:100',
+            'lost_create_accesscard'          => 'required|max:150',
+            'lost_document'                   => 'required|image|mimes:jpeg,png,jpg|max:550',
+        ]);
+
+        // First Validation 
+        $old_data = Akses_Data::where('no_access_card',$request->lost_create_accesscard)
+                        ->where('status_akses',9)
+                        ->where('uuid',$request->lost_create_uuid)
+                        ->first();
+        if(count($old_data) < 1) {
+            $request->session()->flash('alert-danger', 'Access Card not Found!');
+            return redirect($this->redirectTo);
+        }
+        // First Validation is failed
+
+        $access_data = new Akses_Data;
+        $bool = false;
+        // status in akses data
+        $conditional_status_akses  = 1;
+        $uuid = time().$this->faker->uuid;
+        // status request type
+        $request_type = 4;
+
+
+
+        if ($request->hasFile('lost_document')) {
+            $image = $request->file('lost_document');
+            $file_name = time().$this->faker->uuid.".".$image->getClientOriginalExtension();
+            $path = "/images/akses/";
+            $destinationPath = public_path($path);
+            $image->move($destinationPath, $file_name);
+            $access_data->document      = $path.$file_name;
+        }
+
+        if($request->lost_create_register_status == 1) {
+
+            $access_data->foto              = $old_data->foto;
+
+            $access_data->register_type     = $request->lost_create_register_status;
+            $access_data->name              = $old_data->name;
+            $access_data->no_access_card    = $request->lost_create_accesscard;
+            $access_data->date_start        = $old_data->date_start;
+            $access_data->date_end          = $old_data->date_end;
+            $access_data->additional_note   = $request->lost_additional_note;
+
+            $access_data->request_type      = $request_type;
+            
+            
+            $access_data->email         = $old_data->email;
+            $access_data->nik           = $old_data->nik;
+            $access_data->pic_list_id   = $old_data->pic_list_id;
+            
+
+            $access_data->divisi        = $old_data->divisi;
+            $access_data->jabatan       = $old_data->jabatan;
+            $access_data->floor         = $old_data->floor;
+
+            $access_data->status_akses      = $conditional_status_akses;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();
+
+        } elseif(($request->lost_create_register_status == 2)) {
+            //echo "NON PERMANENT"; die;
+
+            $access_data->foto              = $old_data->foto;
+            $access_data->po                = $old_data->po;
+            $access_data->register_type     = $request->lost_create_register_status;
+            $access_data->name              = $old_data->name;
+            $access_data->no_access_card    = $request->lost_create_accesscard;
+            $access_data->date_start        = $old_data->date_start;
+            $access_data->date_end          = $old_data->date_end;
+            $access_data->additional_note   = $request->lost_additional_note;
+
+            $access_data->request_type      = $request_type;
+            
+            
+            $access_data->email         = $old_data->email;
+            $access_data->nik           = $old_data->nik;
+            $access_data->pic_list_id   = $old_data->pic_list_id;
+            
+
+            $access_data->divisi        = $old_data->divisi;
+            $access_data->jabatan       = $old_data->jabatan;
+            $access_data->floor         = $old_data->floor;
+
+            $access_data->status_akses      = $conditional_status_akses;
+            $access_data->uuid              = $uuid;
+            $access_data->created_by        = Auth::user()->id;
+            $access_data->updated_by        = Auth::user()->id;
+            
+            $bool = $access_data->save();
+         
+
+        }
+
+        if($bool) {
+            $request->session()->flash('alert-success', 'restore access card has been created');
+        } else {
+            $request->session()->flash('alert-danger', 'Failed restore access card, Please contact your administrator');
+        }
+        return redirect($this->redirectTo."?search=on&search_uuid=".$uuid);
     }
     public function post_broken_access_card_number(Request $request) {
         $request->validate([

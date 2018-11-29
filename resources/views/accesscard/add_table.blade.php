@@ -47,6 +47,8 @@
 	                		@include('accesscard.conditional_extend_access_card')
 	                	@elseif($val->request_type == 3)
 	                		@include('accesscard.conditional_new_access_card')
+	                	@elseif($val->request_type == 4)
+	                		@include('accesscard.conditional_new_access_card')
 	                	@endif
 	                </td>
 	            </tr>

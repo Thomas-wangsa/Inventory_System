@@ -176,7 +176,8 @@
   function extend_check_access_card_number_function() {
     value = $('#extend_check_access_card_number').val();
     if(value == "") {
-      alert("Please input the access card number!")
+      alert("Please input the access card number!");
+      return false;
     }
 
     var data = {

@@ -633,8 +633,8 @@ class DatabaseSeeder extends Seeder
         $full_data = array();
         
         //$request_type   = 1;
-        for($i=0;$i<=1500;$i++) {
-            $request_type   = $faker->numberBetween(1,3);
+        for($i=0;$i<=2000;$i++) {
+            $request_type   = $faker->numberBetween(1,4);
             $register_type  = $faker->numberBetween(1,2);
             
             $akses_data = array(
@@ -647,8 +647,8 @@ class DatabaseSeeder extends Seeder
             "date_start"    => $faker->date($format = 'Y-m-d', $max = 'now'),
             "date_end"      => $faker->date($format = 'Y-m-d', $max = 'now'),
             "pic_list_id"   => $faker->numberBetween(1,Pic_List::count()),
-            "foto"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
-            "po"          => "/images/akses/1536255441bdca178a-b56c-31d0-94fd-cf6052f0da64.jpg",
+            "foto"          => "/images/akses/1543412672c336ecdd-ab95-3ae0-9bd6-a671d87c03d6.jpg",
+            "po"          => "/images/akses/1543412672c336ecdd-ab95-3ae0-9bd6-a671d87c03d6.jpg",
             
             "additional_note"=> $faker->text,
             "comment"        => $faker->text,
@@ -671,7 +671,7 @@ class DatabaseSeeder extends Seeder
             "comment"       => null
             );
 
-            if($request_type == 1 || $request_type == 3) {
+            if($request_type == 1 || $request_type == 3 || $request_type == 4) {
                 $akses_data['status_akses'] = $faker->numberBetween(1,18);
             } else if($request_type == 2) {
                 $akses_data['status_akses'] = $faker->numberBetween(1,3);

@@ -96,7 +96,7 @@
 
            
             <div class="form-group" id="parent_new_extend_po">
-              <label for="staff_nama"> Old Access Card Receipt : </label>
+              <label for="staff_nama"> Police Letter Receipt : </label>
               <input type="file" 
               name="lost_document" class="form-control" id="lost_document"
               required="" 
@@ -145,7 +145,8 @@
   function lost_check_access_card_number_function() {
     value = $('#lost_check_access_card_number').val();
     if(value == "") {
-      alert("Please input the access card number!")
+      alert("Please input the access card number!");
+      return false;
     }
 
     var data = {
