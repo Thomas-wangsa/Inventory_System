@@ -759,6 +759,19 @@ class AksesController extends Controller
                     $request->session()->flash('alert-danger', 'Out of scope in extending');
                     return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
                 }
+            } else if($data->request_type == 5)  {
+                
+                if($data->register_type == 1) {
+                    $request->session()->flash('alert-danger', 'Leveling Type Permanent');
+                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                } elseif($data->register_type == 2) {
+                    $request->session()->flash('alert-danger', 'Leveling Type Non Permanent');
+                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                } else {
+                    $request->session()->flash('alert-danger', 'Out of scope in leveling');
+                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                }
+
             } else  {
                 $request->session()->flash('alert-danger', 'Out of scope');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);

@@ -49,6 +49,16 @@
 	                		@include('accesscard.conditional_new_access_card')
 	                	@elseif($val->request_type == 4)
 	                		@include('accesscard.conditional_new_access_card')
+	                	@elseif($val->request_type == 5)
+	                		@switch($val->register_type)
+	                			@case("1")
+	                				@include('accesscard.conditional_leveling_access_card_permanent')
+	                				@break
+	                			@case("2")
+	                				@break
+	                			@default
+	                				@break
+	                		@endswitch
 	                	@endif
 	                </td>
 	            </tr>
