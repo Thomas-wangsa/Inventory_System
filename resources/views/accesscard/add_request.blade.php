@@ -1,3 +1,4 @@
+@if($data['insert_access_data'])
 <div class="pull-left" style="margin-right: 10px">
 	<div class="form-group">
       	<select class="form-control" id="id_request_type">
@@ -17,6 +18,7 @@
   		Access Card Request 
   	</button>
 </div>
+@endif
 <div class="clearfix"> </div>
 
 @include('accesscard.modal_new_access_card')

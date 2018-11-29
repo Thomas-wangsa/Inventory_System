@@ -620,11 +620,12 @@ class DatabaseSeeder extends Seeder
         $setting_list_array = array(
             array('setting_name'  => 'edit background'),
             array('setting_name'  => 'upload excel'),
-            array('setting_name'  => 'add new vendor'),
+            array('setting_name'  => 'add new pic category'),
             array('setting_name'  => 'add new inventory'),
             array('setting_name'  => 'access report '),
             array('setting_name'  => 'inventory report '),
             array('setting_name'  => 'add new floor plan'),
+            array('setting_name'  => 'add new admin room category'),
         );
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
