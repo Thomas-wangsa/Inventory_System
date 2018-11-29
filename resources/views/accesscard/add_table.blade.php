@@ -55,6 +55,7 @@
 	                				@include('accesscard.conditional_leveling_access_card_permanent')
 	                				@break
 	                			@case("2")
+	                				@include('accesscard.conditional_leveling_access_card_non_permanent')
 	                				@break
 	                			@default
 	                				@break

@@ -635,7 +635,7 @@ class DatabaseSeeder extends Seeder
         
         //$request_type   = 1;
         for($i=0;$i<=2000;$i++) {
-            $request_type   = $faker->numberBetween(1,4);
+            $request_type   = $faker->numberBetween(1,5);
             $register_type  = $faker->numberBetween(1,2);
             
             $akses_data = array(
@@ -676,8 +676,13 @@ class DatabaseSeeder extends Seeder
                 $akses_data['status_akses'] = $faker->numberBetween(1,18);
             } else if($request_type == 2) {
                 $akses_data['status_akses'] = $faker->numberBetween(1,3);
+            } else if($requst_type == 5) {
+                if($register_type == 1) {
+                    $akses_data['status_akses'] = 5;  
+                } else if($register_type == 2) {
+                    $akses_data['status_akses'] = 1;
+                }
             }
-
 
             if($akses_data['status_akses'] > 4 || $request_type == 2) {
                 $akses_data['no_access_card'] = $faker->uuid;

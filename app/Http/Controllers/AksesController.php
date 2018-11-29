@@ -759,14 +759,88 @@ class AksesController extends Controller
                     $request->session()->flash('alert-danger', 'Out of scope in extending');
                     return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
                 }
-            } else if($data->request_type == 5)  {
-                
+            } else if($data->request_type == 5)  {              
                 if($data->register_type == 1) {
-                    $request->session()->flash('alert-danger', 'Leveling Type Permanent');
-                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                    if ($data->status_akses == 5) {
+                        if($request->next_status == 6) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else if($request->next_status == 7) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else {
+                            $request->session()->flash('alert-danger', 'approval activation failed');
+                            return redirect($this->redirectTo);
+                        }
+                    } else if ($data->status_akses == 6) {
+                        if($request->next_status == 7) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else {
+                            $request->session()->flash('alert-danger', 'admin room failed');
+                            return redirect($this->redirectTo);
+                        }
+                    } else if ($data->status_akses == 7) {
+                        if($request->next_status == 9) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else {
+                            $request->session()->flash('alert-danger', 'activation failed');
+                            return redirect($this->redirectTo);
+                        }
+                    } else {
+                        $request->session()->flash('alert-danger', 'Out of scope in leveling type permanent');
+                        return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                    }
                 } elseif($data->register_type == 2) {
-                    $request->session()->flash('alert-danger', 'Leveling Type Non Permanent');
-                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                    if($data->status_akses == 1) {
+                        if($request->next_status == 5) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else {
+                            $request->session()->flash('alert-danger', 'Error: approved by sponsor is error');
+                            return redirect($this->redirectTo);
+                        }
+                    } else if ($data->status_akses == 5) {
+                        if($request->next_status == 6) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else if($request->next_status == 7) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else {
+                            $request->session()->flash('alert-danger', 'approval activation failed');
+                            return redirect($this->redirectTo);
+                        }
+                    } else if ($data->status_akses == 6) {
+                        if($request->next_status == 7) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else {
+                            $request->session()->flash('alert-danger', 'admin room failed');
+                            return redirect($this->redirectTo);
+                        }
+                    } else if ($data->status_akses == 7) {
+                        if($request->next_status == 9) {
+                            $data->status_akses = $request->next_status;
+                            $data->updated_by   = Auth::user()->id;
+                            $data->save();
+                        } else {
+                            $request->session()->flash('alert-danger', 'activation failed');
+                            return redirect($this->redirectTo);
+                        }
+                    } else {
+                        $request->session()->flash('alert-danger', 'Out of scope in leveling type non permanent');
+                        return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                    }
                 } else {
                     $request->session()->flash('alert-danger', 'Out of scope in leveling');
                     return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
