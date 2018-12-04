@@ -62,20 +62,21 @@
             
             <input type="hidden" name="extend_create_uuid" id="extend_create_uuid">
 
+            <input type="hidden" 
+              name="extend_create_register_status" id="extend_create_register_status" 
+              class="form-control"  
+              required="" placeholder="ex : abc">
+
             <div class="form-group">
               <label for="staff_nama"> 
-                register status :
+                register status:
               </label>
-              <select class="form-control" 
-              name="extend_create_register_status" id="extend_create_register_status"
-              onchange="conditional_extend_access_card_status()">
-                @foreach($data['register_type'] as $key=>$val)
-                  <option value="{{$val->id}}" > 
-                    {{ucfirst($val->register_name)}}
-                  </option>
-                @endforeach 
-              </select>
+              <input type="text" 
+              id="show_register_status" 
+              class="form-control"  
+              required="" placeholder="ex : abc">
             </div>
+
 
             <div class="form-group">
               <label for="staff_nama"> 
@@ -199,12 +200,28 @@
         if(response.error) {
           alert(response.message);
         } else {
+
+          var register_name = "";
+
+          if(response.data.register_type == 1) {
+            register_name = "Permanent";
+            $('#parent_new_extend_po').hide();
+            $("new_extend_po").prop('required',false);
+          } else if (response.data.register_type ==  2){
+            register_name = "Non Permanent";
+            $('#parent_new_extend_po').show();
+            $("#new_extend_po").prop('required',true);
+          }
+
           $('#extend_create_uuid').val(response.data.uuid);
           $('#extend_create_full_name').val(response.data.name);
-          $('#extend_create_accesscard').val(response.data.no_access_card)
+          $('#extend_create_accesscard').val(response.data.no_access_card);
+          $('#extend_create_register_status').val(response.data.register_type);
+          $('#show_register_status').val(register_name);
 
-          $('#extend_create_full_name').prop("readonly", true)
-          $('#extend_create_accesscard').prop("readonly", true)
+          $('#extend_create_full_name').prop("readonly", true);
+          $('#extend_create_accesscard').prop("readonly", true);
+          $('#show_register_status').prop("readonly",true);
           $('#parent_extend_create_access_card').show();
         }
       },

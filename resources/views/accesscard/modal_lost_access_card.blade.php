@@ -60,19 +60,19 @@
             
             <input type="hidden" name="lost_create_uuid" id="lost_create_uuid">
 
+            <input type="hidden" 
+              name="lost_create_register_status" id="lost_create_register_status" 
+              class="form-control"  
+              required="" placeholder="ex : abc">
+
             <div class="form-group">
               <label for="staff_nama"> 
-                register status :
+                register status:
               </label>
-              <select class="form-control" 
-              name="lost_create_register_status" id="lost_create_register_status"
-              >
-                @foreach($data['register_type'] as $key=>$val)
-                  <option value="{{$val->id}}" > 
-                    {{ucfirst($val->register_name)}}
-                  </option>
-                @endforeach 
-              </select>
+              <input type="text" 
+              id="show_lost_register_status" 
+              class="form-control"  
+              required="" placeholder="ex : abc">
             </div>
 
             <div class="form-group">
@@ -168,12 +168,23 @@
         if(response.error) {
           alert(response.message);
         } else {
+          var register_name = "";
+
+          if(response.data.register_type == 1) {
+            register_name = "Permanent";
+          } else if (response.data.register_type ==  2){
+            register_name = "Non Permanent";
+          }
+
           $('#lost_create_uuid').val(response.data.uuid);
           $('#lost_create_full_name').val(response.data.name);
-          $('#lost_create_accesscard').val(response.data.no_access_card)
+          $('#lost_create_accesscard').val(response.data.no_access_card);
+          $('#lost_create_register_status').val(response.data.register_type);
+          $('#show_lost_register_status').val(register_name);
 
-          $('#lost_create_full_name').prop("readonly", true)
-          $('#lost_create_accesscard').prop("readonly", true)
+          $('#lost_create_full_name').prop("readonly", true);
+          $('#lost_create_accesscard').prop("readonly", true);
+          $('#show_lost_register_status').prop("readonly", true);
           $('#parent_lost_create_access_card').show();
         }
       },

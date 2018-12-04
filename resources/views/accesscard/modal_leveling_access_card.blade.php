@@ -62,20 +62,22 @@
             
             <input type="hidden" name="leveling_create_uuid" id="leveling_create_uuid">
 
+
+            <input type="hidden" 
+              name="leveling_create_register_status" id="leveling_create_register_status" 
+              class="form-control"  
+              required="" placeholder="ex : abc">
+
             <div class="form-group">
               <label for="staff_nama"> 
-                register status :
+                register status:
               </label>
-              <select class="form-control" 
-              name="leveling_create_register_status" id="leveling_create_register_status"
-              onchange="conditional_leveling_access_card_status()">
-                @foreach($data['register_type'] as $key=>$val)
-                  <option value="{{$val->id}}" > 
-                    {{ucfirst($val->register_name)}}
-                  </option>
-                @endforeach 
-              </select>
+              <input type="text" 
+              id="show_leveling_register_status" 
+              class="form-control"  
+              required="" placeholder="ex : abc">
             </div>
+
 
             <div class="form-group">
               <label for="staff_nama"> 
@@ -190,12 +192,30 @@
         if(response.error) {
           alert(response.message);
         } else {
+
+          var register_name = "";
+
+          if(response.data.register_type == 1) {
+            register_name = "Permanent";
+            $('#parent_new_leveling_po').hide();
+            $("new_leveling_po").prop('required',false);
+          } else if (response.data.register_type ==  2){
+            register_name = "Non Permanent";
+            $('#parent_new_leveling_po').show();
+            $("#new_leveling_po").prop('required',true);
+          }
+
+
+
           $('#leveling_create_uuid').val(response.data.uuid);
           $('#leveling_create_full_name').val(response.data.name);
-          $('#leveling_create_accesscard').val(response.data.no_access_card)
+          $('#leveling_create_accesscard').val(response.data.no_access_card);
+          $('#leveling_create_register_status').val(response.data.register_type);
+          $('#show_leveling_register_status').val(register_name);
 
-          $('#leveling_create_full_name').prop("readonly", true)
-          $('#leveling_create_accesscard').prop("readonly", true)
+          $('#leveling_create_full_name').prop("readonly", true);
+          $('#leveling_create_accesscard').prop("readonly", true);
+          $('#show_leveling_register_status').prop("readonly", true);
           $('#parent_leveling_create_access_card').show();
         }
       },
