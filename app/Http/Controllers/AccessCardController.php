@@ -879,12 +879,23 @@ class AccessCardController extends Controller
                 $data->updated_by        = Auth::user()->id;
                 $data->admin_room_list_id   = $request->selected_admin_room;
                 $data->save();
+                $notify = new custom_notification;
+                $notify_status = $notify->set_notify(1,$data);
+                    if($notify_status['error'] == true) {
+                        $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                    }
                 $request->session()->flash('alert-success', 'Admin Room already set');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
             } else if($data->request_type == 2) {
                 $data->status_akses         = 6;
+                $data->updated_by        = Auth::user()->id;
                 $data->admin_room_list_id   = $request->selected_admin_room;
                 $data->save();
+                $notify = new custom_notification;
+                $notify_status = $notify->set_notify(1,$data);
+                    if($notify_status['error'] == true) {
+                        $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                    }
                 $request->session()->flash('alert-success', 'Admin Room already set');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
             } else {

@@ -26,7 +26,7 @@ class CreateAdminRoomRoleTable extends Migration
                 ->references('id')->on('users')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
             $table->foreign('admin_room_list_id', 'admin_room_role_list_id_fkey')
-                ->references('id')->on('pic_list')
+                ->references('id')->on('admin_room_list')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
         });
     }

@@ -124,15 +124,65 @@ class Notification extends Controller {
 
 					array_push($data_user,$current_user);
 					
-					if(!in_array($requester_user,$data_user)) {
-						array_push($data_user,$requester_user);
-					}
+					// if(!in_array($requester_user,$data_user)) {
+					// 	array_push($data_user,$requester_user);
+					// }
 
 					foreach($next_user as $key=>$val) {
 						if(!in_array($val,$data_user)) {
 							array_push($data_user,$val);
 						}
 					}
+					$this->send_notify($data_user);
+				} else if($this->data->status_akses == 6) {
+					$next_user = Users_Role::join('admin_room_role',
+                        'admin_room_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi','=',5)
+                        ->where('admin_room_role.admin_room_list_id',$this->data->admin_room_list_id)
+                        ->pluck('admin_room_role.user_id');
+
+					array_push($data_user,$current_user);
+					
+					foreach($next_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+
+					$card_printing_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+
+                    foreach($card_printing_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+
+					$this->send_notify($data_user);
+				} else if($this->data->status_akses == 7) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',5)
+                    ->pluck('user_id');
+
+					array_push($data_user,$current_user);
+					
+					foreach($next_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+
+					$card_printing_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+
+                    foreach($card_printing_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+
 					$this->send_notify($data_user);
 				} else {
 					$this->response['error'] 	= true;
