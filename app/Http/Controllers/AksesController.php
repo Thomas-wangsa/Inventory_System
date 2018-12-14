@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Notification AS custom_notification;
+
 use Illuminate\Http\Request;
 use App\Http\Models\Akses_Data;
 use Illuminate\Support\Facades\Auth;
@@ -877,6 +879,11 @@ class AksesController extends Controller
             
         }
 
+        $notify = new custom_notification;
+        $notify_status = $notify->set_notify(1,$data);
+            if($notify_status['error'] == true) {
+                $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+            }
 
         //$this->notify($data->status_akses,$request->uuid);
         $request->session()->flash('alert-success', 'Access card already approved');

@@ -850,7 +850,13 @@ class AccessCardController extends Controller
             if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4) {
                 $data->status_akses         = 5;
                 $data->no_access_card       = $request->accesscard_number;
+                $data->updated_by        = Auth::user()->id;
                 $data->save();
+                $notify = new custom_notification;
+                $notify_status = $notify->set_notify(1,$data);
+                    if($notify_status['error'] == true) {
+                        $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                    }
                 $request->session()->flash('alert-success', 'Access card number already set');
                 return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
             } else {
@@ -870,6 +876,7 @@ class AccessCardController extends Controller
         } else {
             if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4 || $data->request_type == 5) {
                 $data->status_akses         = 6;
+                $data->updated_by        = Auth::user()->id;
                 $data->admin_room_list_id   = $request->selected_admin_room;
                 $data->save();
                 $request->session()->flash('alert-success', 'Admin Room already set');

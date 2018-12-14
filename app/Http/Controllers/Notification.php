@@ -44,18 +44,90 @@ class Notification extends Controller {
 		$data_user = array();
 		// category checker
 		if($this->category == 1) {
-			$current_user = $this->data->updated_by;
-			$next_user = Users_Role::join('pic_role',
+			$requester_user = $this->data->created_by;
+			$current_user 	= $this->data->updated_by;
+			
+
+			// request type checker
+			if($this->data->request_type == 1) {
+				// status type 
+				if($this->data->status_akses == 1) {
+					$next_user = Users_Role::join('pic_role',
                         'pic_role.id','=','users_role.jabatan')
                         ->where('users_role.divisi','=',2)
                         ->where('pic_list_id',$this->data->pic_list_id)
                         ->where('pic_level_id',2)
                         ->pluck('pic_role.user_id');
-			// request type checker
-			if($this->data->request_type == 1) {
-				// status type 
-				if($this->data->status_akses == 1) {
+
 					array_push($data_user,$current_user);
+					foreach($next_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+					$this->send_notify($data_user);
+				} else if($this->data->status_akses == 2) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',1)
+                    ->pluck('user_id');
+
+					array_push($data_user,$current_user);
+
+					if(!in_array($requester_user,$data_user)) {
+						array_push($data_user,$requester_user);
+					}
+
+					foreach($next_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+					$this->send_notify($data_user);
+				} else if($this->data->status_akses == 3) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',2)
+                    ->pluck('user_id');
+
+					array_push($data_user,$current_user);
+					
+					if(!in_array($requester_user,$data_user)) {
+						array_push($data_user,$requester_user);
+					}
+
+					foreach($next_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+					$this->send_notify($data_user);
+				} else if($this->data->status_akses == 4) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+
+					array_push($data_user,$current_user);
+					
+					if(!in_array($requester_user,$data_user)) {
+						array_push($data_user,$requester_user);
+					}
+
+					foreach($next_user as $key=>$val) {
+						if(!in_array($val,$data_user)) {
+							array_push($data_user,$val);
+						}
+					}
+					$this->send_notify($data_user);
+				} else if($this->data->status_akses == 5) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',4)
+                    ->pluck('user_id');
+
+					array_push($data_user,$current_user);
+					
+					if(!in_array($requester_user,$data_user)) {
+						array_push($data_user,$requester_user);
+					}
+
 					foreach($next_user as $key=>$val) {
 						if(!in_array($val,$data_user)) {
 							array_push($data_user,$val);
@@ -72,6 +144,9 @@ class Notification extends Controller {
 				$this->response['message'] 	= "out of category access card scope";
 			}
 			// request type checker
+
+
+
 
 		} else {
 			$this->response['error'] 	= true;
