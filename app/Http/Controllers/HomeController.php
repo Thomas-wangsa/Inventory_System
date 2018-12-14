@@ -127,7 +127,7 @@ class HomeController extends Controller
         $data['notify'] = notify::join('users as u',
                         'u.id','=','notification.user_id')
                         ->where('notification.user_id',Auth::user()->id)
-                        ->orderby('is_read')
+                        ->orderby('created_at','desc')
                         ->select(
                             'notification.category',
                             'notification.notify_type',
@@ -154,7 +154,7 @@ class HomeController extends Controller
                                 ->select('users.name AS username')
                                 ->first()->username;
                 $notify_type    = AccessCardRequest::find($val['notify_type'])->request_name;
-                $notify_status  = Status_Akses::find($val['notify_status'])->name;
+                $notify_status  = Status_Akses::find($val['notify_status']);
             }
 
             $data['notify'][$key]['created_by']     = $created_by;

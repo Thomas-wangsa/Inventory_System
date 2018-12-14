@@ -39,8 +39,8 @@
                         <td>
                             {{ $val['notify_type'] }}
                         </td>
-                        <td>
-                            {{ $val['notify_status'] }}
+                        <td style="color:{{$val['notify_status']->color}}">
+                            {{ $val['notify_status']->name }}
                         </td>
                         <td>
                             {{ $val['created_at'] }}
