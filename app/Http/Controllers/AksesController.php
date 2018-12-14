@@ -1045,6 +1045,13 @@ class AksesController extends Controller
             }
             
         }
+
+
+        $notify = new custom_notification;
+        $notify_status = $notify->set_notify(1,$data);
+            if($notify_status['error'] == true) {
+                $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+            }
         //$this->notify($data->status_akses,$request->uuid);
         $request->session()->flash('alert-success', 'access card has been rejected');
         return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
