@@ -12,9 +12,8 @@
                 <th> No </th>
                 <th> created by </th>
                 <th> category </th>
-                <th> data name  </th>
-                <th>  status data name </th>
-                <th> status notification </th>
+                <th> notify type  </th>
+                <th> notify status  </th>
                 <th> created at </th>
                 <th> check data </th>
               </tr>
@@ -32,38 +31,31 @@
                             * $data['notify']->perpage() + $key + 1 }}
                         </td>
                         <td>
-                            {{$data['info'][$key]->request_name}}
+                            {{ $val['created_by'] }}
                         </td>
                         <td>
-                            {{$val->divisi_name}}
+                            {{ $val['category_name'] }}
                         </td>
                         <td>
-                            {{$data['info'][$key]->notification_data_name}}
-                        </td>
-                        <td style="color:{{$data['info'][$key]->notification_status_data_color}}">
-                            {{$data['info'][$key]->notification_status_data_name}}
-                        </td>
-                        <td >
-                            {{$val->sub_notify_name}}
+                            {{ $val['notify_type'] }}
                         </td>
                         <td>
-                            {{$val->created_at}}
+                            {{ $val['notify_status'] }}
                         </td>
                         <td>
-                            @if($data['info'][$key]->notification_category == 2 
-                                ||
-                                $data['info'][$key]->notification_category == 3)
-                            <a href="{{route('akses')}}?search=on&search_uuid={{$data['info'][$key]->notification_data_uuid}}">
-                                <button class="btn btn-info">
-                                    Cek Access Card
-                                </button>
-                            </a>
-                            @elseif($data['info'][$key]->notification_category == 4)
-                            <a href="{{route('inventory')}}?search=on&search_uuid={{$data['info'][$key]->notification_data_uuid}}">
-                                <button class="btn btn-info">
-                                    Cek Inventory Data
-                                </button>
-                            </a>
+                            {{ $val['created_at'] }}
+                        </td>
+                        <td>
+                            @if($val['category'] == 1)
+                                <a href="{{route('accesscard')}}?search=on&search_uuid={{$val['data_uuid']}}">
+                                    <button class="btn btn-info">
+                                        Cek Access Card
+                                    </button>
+                                </a>
+                            @elseif($val['category'] == 2)
+                                -
+                            @else
+                                -
                             @endif
                         </td>
                     </tr>
@@ -72,9 +64,7 @@
                     
             </tbody>
         </table>
-        <div class="pull-right" style="margin-top: -15px!important"> 
-            {{ $data['notify']->links() }}
-        </div>
+
         <div class="clearfix"> </div>
     </div>
 @endsection

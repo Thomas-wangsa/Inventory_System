@@ -10,6 +10,8 @@ use App\Http\Models\Pic_Role;
 
 use App\Http\Models\Users_Detail;
 use App\Http\Models\Akses_Data;
+use App\Http\Models\AccessCardRequest;
+
 use App\Http\Models\Akses_Expiry;
 use App\Http\Models\Status_Akses;
 use App\Http\Models\Setting_Data;
@@ -120,11 +122,66 @@ class HomeController extends Controller
     }
 
     public function notify(Request $request) {
+        $data = array();
+
+        $data['notify'] = notify::join('users as u',
+                        'u.id','=','notification.user_id')
+                        ->where('notification.user_id',Auth::user()->id)
+                        ->orderby('is_read')
+                        ->select(
+                            'notification.category',
+                            'notification.notify_type',
+                            'notification.notify_status',
+                            'notification.created_at',
+                            'notification.data_uuid'
+                        )
+                        ->paginate(20);
+
+        foreach($data['notify'] as $key=>$val) {
+
+            $created_by     = "-";
+            $category_name  = "-";
+            $notify_type    = "-";
+            $notify_status  = "-";
+
+           
+
+            if($val['category'] == 1) {
+                $category_name  = "access card";
+                $created_by     = Akses_Data::join('users',
+                                'users.id','=','akses_data.created_by')
+                                ->where('akses_data.uuid',$val['data_uuid'])
+                                ->select('users.name AS username')
+                                ->first()->username;
+                $notify_type    = AccessCardRequest::find($val['notify_type'])->request_name;
+                $notify_status  = Status_Akses::find($val['notify_status'])->name;
+            }
+
+            $data['notify'][$key]['created_by']     = $created_by;
+            $data['notify'][$key]['category_name']  = $category_name;
+            $data['notify'][$key]['notify_type']    = $notify_type;
+            $data['notify'][$key]['notify_status']  = $notify_status;
+            $data['notify'][$key]['created_at'] = $val['created_at'];
+            $data['notify'][$key]['data_uuid'] = $val['data_uuid'];
+            
+        }
+
+        // Update 
+        notify::where('user_id',Auth::user()->id)
+        ->where('is_read',0)
+        ->update(['is_read'=>1]);
+
+        ///dd($data);
+
+        return view('dashboard/notify',compact('data'));
+    }
+
+    public function old_notify(Request $request) {
+
+
         $data['notify'] = notify::join('users as u',
                 'u.id','=','notification.user_id')
             ->join('divisi','divisi.id','=','notification.category')
-            ->join('sub_notify',
-                'sub_notify.id','=','notification.sub_notify_id')
             ->where('notification.user_id',Auth::user()->id)
             ->select(
                     'notification.*',
