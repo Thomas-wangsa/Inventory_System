@@ -494,6 +494,11 @@ class AccessCardController extends Controller
 
 
         if($bool) {
+            $notify = new custom_notification;
+            $notify_status = $notify->set_notify(1,$access_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
             $request->session()->flash('alert-success', 'extending access card has been created');
         } else {
             $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');
@@ -605,6 +610,11 @@ class AccessCardController extends Controller
         }
 
         if($bool) {
+            $notify = new custom_notification;
+            $notify_status = $notify->set_notify(1,$access_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
             $request->session()->flash('alert-success', 'restore access card has been created');
         } else {
             $request->session()->flash('alert-danger', 'Failed restore access card, Please contact your administrator');
@@ -715,6 +725,11 @@ class AccessCardController extends Controller
         }
 
         if($bool) {
+            $notify = new custom_notification;
+            $notify_status = $notify->set_notify(1,$access_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
             $request->session()->flash('alert-success', 'restore access card has been created');
         } else {
             $request->session()->flash('alert-danger', 'Failed restore access card, Please contact your administrator');
@@ -831,6 +846,11 @@ class AccessCardController extends Controller
 
 
         if($bool) {
+            $notify = new custom_notification;
+            $notify_status = $notify->set_notify(1,$access_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
             $request->session()->flash('alert-success', 'extending access card has been created');
         } else {
             $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');

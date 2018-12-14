@@ -53,7 +53,8 @@ class Notification extends Controller {
 				$this->data->request_type == 1 ||
 				$this->data->request_type == 2 ||
 				$this->data->request_type == 3 ||
-				$this->data->request_type == 4 
+				$this->data->request_type == 4 ||
+				$this->data->request_type == 5
 			) {
 				// status type 
 				if($this->data->status_akses == 1) {
