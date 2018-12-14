@@ -17,20 +17,15 @@ class CreateNotificationTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('category');
+            $table->unsignedInteger('notify_type');
+            $table->unsignedInteger('notify_status');
             $table->unsignedInteger('data_id');
-            $table->unsignedInteger('status_data_id');
-            $table->unsignedInteger('sub_notify_id');
+            $table->string('data_uuid'); 
             $table->unsignedInteger('is_read')->default(0);
             $table->timestamps();
 
             $table->foreign('user_id', 'notification_user_id_fkey')
                 ->references('id')->on('users')
-                ->onUpdate('CASCADE')->onDelete('RESTRICT');
-            $table->foreign('category', 'notification_category_fkey')
-                ->references('id')->on('divisi')
-                ->onUpdate('CASCADE')->onDelete('RESTRICT');
-            $table->foreign('sub_notify_id', 'notification_status_notify_fkey')
-                ->references('id')->on('sub_notify')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
 
         });

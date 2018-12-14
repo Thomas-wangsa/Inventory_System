@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Notification AS custom_notification;
 use Illuminate\Http\Request;
 use App\Http\Models\Akses_Data;
 use Illuminate\Support\Facades\Auth;
@@ -62,7 +63,7 @@ class AccessCardController extends Controller
     }
 
     public function index(Request $request) {
-
+       
         // Restrict
         $restrict_divisi_pic = 2;
         $restrict_divisi_access = 3;
@@ -921,7 +922,7 @@ class AccessCardController extends Controller
             'new_date_start'    => 'required|max:50',
             'new_date_end'      => 'required|max:50',
             'new_sponsor'       => 'required|max:50',
-            'new_ktp'           => 'required|image|mimes:jpeg,png,jpg|max:550',
+            'new_ktp'           => 'required|image|mimes:jpeg,png,jpg|max:5000',
         ]);
 
 
@@ -982,7 +983,7 @@ class AccessCardController extends Controller
         } elseif(($request->register_id == 2)) {
             $request->validate([
             'new_location_activities'   => 'required|max:100',
-            'new_po'  => 'required|image|mimes:jpeg,png,jpg|max:550',
+            'new_po'  => 'required|image|mimes:jpeg,png,jpg|max:5000',
             ]);
 
             if ($request->hasFile('new_ktp')) {
@@ -1027,6 +1028,11 @@ class AccessCardController extends Controller
 
 
         if($bool) {
+            $notify = new custom_notification;
+            $notify_status = $notify->set_notify(1,$access_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
             $request->session()->flash('alert-success', 'New access has been created');
         } else {
             $request->session()->flash('alert-danger', 'Failed create new access card, Please contact your administrator');

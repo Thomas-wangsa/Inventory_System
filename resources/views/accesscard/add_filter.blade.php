@@ -23,7 +23,7 @@
 	    		</option>
 	    		@endforeach 
       		</select>
-	  	</div> 
+	  	</div>
 	  	<div class="form-group">
 	      	<select class="form-control" name="search_filter">
 	      		<option value=""> Filter  </option>
@@ -57,6 +57,7 @@
 	        	</option>
 	      	</select>
 	  	</div>
+	  	<div class="clearfix" style="margin-bottom: 10px"> </div> 
 	  	<button type="submit" class="btn btn-info"> Filter </button>
 	  	<button type="reset" 
 	  	class="btn"
