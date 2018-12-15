@@ -70,15 +70,314 @@ class Notification extends Controller {
             	$status_akses  = Status_Akses::find($this->data->status_akses);
             	// Global Variable
 
-
+            	$param['cc_email'] = array();
+            	//initiate
+            	array_push($param['cc_email'],Users::find(Auth::user()->id)->email);
+            	
             	$param['subject'] = "[no-reply] [Access Card] ".
             						$request_name." : ".$status_akses->name.
             						" a/n ".$this->data->name;
             	$param['description'] = "Here is auto notification feature from our application, with the information of access card :";
             	$param['status_name'] 	= $status_akses->name;
             	$param['status_color']	= $status_akses->color;
+            	$param['note']			= null;
 
-            	$this->send_notify_email($param);
+            	if($this->data->status_akses == 1) {
+            		$param['note']  = "Note : link ini tidak berlaku untuk ".
+            						$this->data->name;
+            		// worker
+            		if(!in_array($this->data->email,$param['cc_email'])) {				
+            			array_push($param['cc_email'],$this->data->email);
+            		}
+
+            		$next_user = Users_Role::join('pic_role',
+                        'pic_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi','=',2)
+                        ->where('pic_list_id',$this->data->pic_list_id)
+                        ->where('pic_level_id',2)
+                        ->pluck('pic_role.user_id');
+
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+            	} else if($this->data->status_akses == 2) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',1)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+					
+				} else if($this->data->status_akses == 3) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',2)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+					
+				} else if($this->data->status_akses == 4) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 5) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',4)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 6) {
+					$next_user = Users_Role::join('admin_room_role',
+                        'admin_room_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi','=',5)
+                        ->where('admin_room_role.admin_room_list_id',$this->data->admin_room_list_id)
+                        ->pluck('admin_room_role.user_id');
+
+					$list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					$card_printing_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+
+                    $list_email_cp = Users::whereIn('id',$card_printing_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email_cp as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 7) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',5)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+					
+
+					$card_printing_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+                    $list_email_cp = Users::whereIn('id',$card_printing_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email_cp as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 8) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+					
+				} else if($this->data->status_akses == 9) {
+					$requester_user = Users::find($this->data->created_by)->email;
+					// requester
+					if(!in_array($requester_user,$param['cc_email'])) {
+						array_push($param['cc_email'],$requester_user);
+					}
+					
+
+					$sponsor_user = Users_Role::join('pic_role',
+                        'pic_role.id','=','users_role.jabatan')
+                        ->where('users_role.divisi','=',2)
+                        ->where('pic_list_id',$this->data->pic_list_id)
+                        ->where('pic_level_id',2)
+                        ->pluck('pic_role.user_id');
+                    $list_email = Users::whereIn('id',$sponsor_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+					
+
+
+					$approval_verifications = Users_Role::where('divisi',3)
+                    ->where('jabatan',2)
+                    ->pluck('user_id');
+
+                    $list_email_cp = Users::whereIn('id',$approval_verifications)
+                    			->pluck('users.email');
+
+                    foreach($list_email_cp as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 10) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',1)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 11) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',2)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 12) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',2)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 14) {
+					$card_printing_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$card_printing_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 15) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',5)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else if($this->data->status_akses == 16) {
+					$next_user = Users_Role::where('divisi',3)
+                    ->where('jabatan',3)
+                    ->pluck('user_id');
+                    $list_email = Users::whereIn('id',$next_user)
+                    			->pluck('users.email');
+
+                    foreach($list_email as $key=>$val) {
+						if(!in_array($val,$param['cc_email'])) {
+							array_push($param['cc_email'],$val);
+						}
+					}
+
+					array_shift($param['cc_email']);
+                    $this->send_notify_email($param);
+				} else {
+            		$this->response['error'] 	= true;
+					$this->response['message'] 	= "out of scope email access card status";
+            	}
+
+            	
 
 			} else {
 				$this->response['error'] 	= true;
@@ -102,13 +401,14 @@ class Notification extends Controller {
 				"from"				=> "notification@indosatooredoo.com",
 				"replyTo"			=> "notification@indosatooredoo.com",
                 "subject"           => $param['subject'],
-                "cc_email"          => array('thomas.wangsa@gmail.com'),
+                "cc_email"          => $param['cc_email'],
                 "description"       => $param['description'],
                 "access_card_name"  => $this->data->name,
                 "access_card_no"    => $access_card_no,
                 "status_akses"      => $param['status_name'],
                 "status_color"      => $param['status_color'],
                 "uuid"              => $this->data->uuid,
+                "note"              => $param['note'],
                      
             );
 

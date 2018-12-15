@@ -9,7 +9,7 @@
             Name
         </th>
         <th align="center">
-            Access Card
+            Access Card Number
         </th>
         <th align="center">
             Status
@@ -29,13 +29,14 @@
     </tr>
 </table>
 
-<br>
 @component('mail::button', ['url'=>$data['url_data']])
 Direct to Data
 @endcomponent
 
+@if (! empty($data['note']))
+    {{$data['note']}}
+@endif
 
-<br>
 
 Thank you for using our application!
 

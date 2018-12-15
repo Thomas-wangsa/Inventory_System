@@ -47,6 +47,7 @@ class Akses_Notifications extends Notification
             "access_card_no"    => $this->param['access_card_no'],
             "status_akses"      => $this->param['status_akses'],
             "status_color"      => $this->param['status_color'],
+            "note"              => $this->param['note'],
             "url"               => URL::to('/'),
             "url_data"          => URL::to('/').
                                 "/accesscard?search=on&search_uuid=".$this->param['uuid'],
