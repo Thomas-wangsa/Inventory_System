@@ -5,6 +5,15 @@ namespace App\Http\Controllers;
 use Request;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Users_Role;
+use App\Http\Models\Users;
+use App\Http\Models\AccessCardRequest;
+use App\Http\Models\AccessCardRegisterStatus;
+use App\Http\Models\Status_Akses;
+
+use Illuminate\Support\Facades\Auth;
+use App\Notifications\Access_Notification;
+use App\Notifications\Akses_Notifications;
+
 use App\Http\Models\Notification AS Model_Notification;
 
 
@@ -34,10 +43,83 @@ class Notification extends Controller {
 
 		$this->response['error'] = false;
 		$this->notify_apps();
+		$this->notify_mail();
 
 		
 		return $this->response;
+	}
 
+
+	private function notify_mail() {
+		$param = array();
+		// category checker
+		if($this->category == 1) {
+            
+			// Request Type Checker
+            if(
+				$this->data->request_type == 1 ||
+				$this->data->request_type == 2 ||
+				$this->data->request_type == 3 ||
+				$this->data->request_type == 4 ||
+				$this->data->request_type == 5
+			) { 
+				// Global Variable            	
+            	$request_name = AccessCardRequest::find($this->data->request_type)->request_name;
+            	$register_name = AccessCardRegisterStatus::find($this->data->register_type)->register_name;
+
+            	$status_akses  = Status_Akses::find($this->data->status_akses);
+            	// Global Variable
+
+
+            	$param['subject'] = "[no-reply] [Access Card] ".
+            						$request_name." : ".$status_akses->name.
+            						" a/n ".$this->data->name;
+            	$param['description'] = "Here is auto notification feature from our application, with the information of access card :";
+            	$param['status_name'] 	= $status_akses->name;
+            	$param['status_color']	= $status_akses->color;
+
+            	$this->send_notify_email($param);
+
+			} else {
+				$this->response['error'] 	= true;
+				$this->response['message'] 	= "out of scope email access card request type";
+			}
+			// Request Type Checker
+		} else {
+			$this->response['error'] 	= true;
+			$this->response['message'] 	= "out of scope email notification category";
+		}
+        // category checker
+
+	}
+
+
+
+	private function send_notify_email($param) {
+		$user  = Users::find(Auth::user()->id);
+		$access_card_no = $this->data->no_access_card == null ? '-' : $this->data->no_access_card;
+		$data = array(
+				"from"				=> "notification@indosatooredoo.com",
+				"replyTo"			=> "notification@indosatooredoo.com",
+                "subject"           => $param['subject'],
+                "cc_email"          => array('thomas.wangsa@gmail.com'),
+                "description"       => $param['description'],
+                "access_card_name"  => $this->data->name,
+                "access_card_no"    => $access_card_no,
+                "status_akses"      => $param['status_name'],
+                "status_color"      => $param['status_color'],
+                "uuid"              => $this->data->uuid,
+                     
+            );
+
+		try {
+			$user->notify(new Akses_Notifications($data));	
+		} catch (Exception $e) {
+			$this->response['error'] 	= true;
+			$this->response['message'] 	= $e->getMessage();
+    		//exception handling code goes here
+		}
+		
 	}
  
 	private function notify_apps() {

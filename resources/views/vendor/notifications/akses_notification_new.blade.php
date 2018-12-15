@@ -30,12 +30,11 @@
 </table>
 
 <br>
-@component('mail::left_button', ['url'=>$data['url'],'url_data' => $data['url_data'],'url_reject'=>$data['url_reject']])
-View Invoice
+@component('mail::button', ['url'=>$data['url_data']])
+Direct to Data
 @endcomponent
 
 
-<br>
 <br>
 
 Thank you for using our application!

@@ -64,7 +64,9 @@
                     
             </tbody>
         </table>
-
+        <div class="pull-right" style="margin-top: -15px!important"> 
+            {{ $data['notify']->links() }}
+        </div>
         <div class="clearfix"> </div>
     </div>
 @endsection

@@ -42,18 +42,15 @@ class Akses_Notifications extends Notification
     public function toMail($notifiable)
     {   
         $data = array(
-            "desc_1"            => $this->param['desc_1'],
-            "desc_name"         => $this->param['desc_name'],
-            "desc_2"            => $this->param['desc_2'],
+            "description"            => $this->param['description'],
             "access_card_name"  => $this->param['access_card_name'],
             "access_card_no"    => $this->param['access_card_no'],
             "status_akses"      => $this->param['status_akses'],
             "status_color"      => $this->param['status_color'],
             "url"               => URL::to('/'),
             "url_data"          => URL::to('/').
-                                "/access?search=on&search_uuid=".$this->param['uuid'],
-            "url_reject"        => URL::to('/').
-                                "/akses_reject?uuid=".$this->param['uuid'],
+                                "/accesscard?search=on&search_uuid=".$this->param['uuid'],
+            
             
             
             
@@ -62,7 +59,7 @@ class Akses_Notifications extends Notification
                     ->from("no_reply@gmail.com","Indosat-System")
                     ->replyTo("no_reply@gmail.com")
                     ->subject($this->param['subject'])
-                    ->markdown('vendor.notifications.akses_notification', ['data' => $data])
+                    ->markdown('vendor.notifications.akses_notification_new', ['data' => $data])
                     ->cc($this->param['cc_email']);
     }
 
