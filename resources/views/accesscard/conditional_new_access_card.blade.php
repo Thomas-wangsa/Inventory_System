@@ -98,9 +98,9 @@
 			)
     			<button 
     			class="btn btn-warning"
-    			onclick="set_photo('{{$val->uuid}}')" 
+    			onclick="set_photo('{{$val->name}}','{{$val->uuid}}')" 
     			>
-    				Set Photo
+    				Set Photo Schedule
     			</button>
     			<button 
     			class="btn btn-primary"
@@ -222,7 +222,7 @@
     			</button>
     			<button 
     			class="btn btn-warning"
-    			onclick="set_photo('{{$val->uuid}}')" 
+    			onclick="set_pick_up_schedule('{{$val->name}}','{{$val->uuid}}')" 
     			>
     				Set Pick Up Access Card
     			</button>

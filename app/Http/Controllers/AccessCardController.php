@@ -859,11 +859,57 @@ class AccessCardController extends Controller
 
     } 
 
-    public function post_new_set_access_card_number(Request $request) {
+
+    public function post_custome_set_photo_schedule(Request $request) {
+        $request->validate([
+            'modal_set_photo_schedule_date' => 'required|max:200',
+            'uuid' => 'required|max:200',
+        ]);
+
         $data = Akses_Data::where('status_akses',4)
                     ->where('uuid',$request->uuid)->first();
         if(count($data) < 1) {
-            $request->session()->flash('alert-danger', 'Set Access Card Number Failed!, Data Not Found!');
+            $request->session()->flash('alert-danger', 'Failed to set schedule photo!,Data is not found or status has been changed!');
+            return redirect($this->redirectTo);
+        } else {
+            $data->schedule_photo_date = $request->modal_set_photo_schedule_date;
+            $data->schedule_photo_note = $request->modal_set_photo_schedule_photo_note;
+            $data->save();
+            $request->session()->flash('alert-success', 'Schedule photo already sent');
+            return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+        }
+    }
+
+    public function post_custome_set_pick_up_schedule(Request $request) {
+
+        $request->validate([
+            'modal_set_pick_up_schedule_pick_up_access_card_date' => 'required|max:200',
+            'uuid' => 'required|max:200',
+        ]);
+        
+        $data = Akses_Data::where('status_akses',8)
+                    ->where('uuid',$request->uuid)->first();
+        if(count($data) < 1) {
+            $request->session()->flash('alert-danger', 'Failed to set schedule pick up!,Data is not found or status has been changed!');
+            return redirect($this->redirectTo);
+        } else {
+            $data->pick_up_access_card_date = $request->modal_set_pick_up_schedule_pick_up_access_card_date;
+            $data->pick_up_access_card_note = $request->modal_set_pick_up_schedule_pick_up_access_card_note;
+            $data->save();
+            $request->session()->flash('alert-success', 'Schedule pick up already sent');
+            return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+        }
+    }
+
+    public function post_new_set_access_card_number(Request $request) {
+        $request->validate([
+            'accesscard_number' => 'required|max:200',
+            'uuid' => 'required|max:200',
+        ]);
+        $data = Akses_Data::where('status_akses',4)
+                    ->where('uuid',$request->uuid)->first();
+        if(count($data) < 1) {
+            $request->session()->flash('alert-danger', 'Set Access Card Number Failed!, Data is not found or status has been changed!');
             return redirect($this->redirectTo);
         } else {
 
@@ -888,10 +934,14 @@ class AccessCardController extends Controller
     }
 
     public function post_new_set_admin_room (Request $request) {
+        $request->validate([
+            'selected_admin_room' => 'required|max:200',
+            'uuid' => 'required|max:200',
+        ]);
         $data = Akses_Data::where('status_akses',5)
                     ->where('uuid',$request->uuid)->first();
         if(count($data) < 1) {
-            $request->session()->flash('alert-danger', 'Set Admin Room Failed!, Data Not Found!');
+            $request->session()->flash('alert-danger', 'Set Admin Room Failed!,Data is not found or status has been changed!');
             return redirect($this->redirectTo);
         } else {
             if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4 || $data->request_type == 5) {

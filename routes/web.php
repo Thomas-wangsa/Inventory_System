@@ -104,6 +104,15 @@ Route::group(['middleware' => ['auth']], function() {
 			->name('post_new_set_access_card_number');
 			//
 
+			// Set photo schedule
+			Route::post('/accesscard/post_custome_set_photo_schedule', 'AccessCardController@post_custome_set_photo_schedule')
+			->name('post_custome_set_photo_schedule');
+			//
+
+			// Set pick up schedule
+			Route::post('/accesscard/post_custome_set_pick_up_schedule', 'AccessCardController@post_custome_set_pick_up_schedule')
+			->name('post_custome_set_pick_up_schedule');
+			//
 
 			// Set Admin Room
 			Route::post('/accesscard/post_new_set_admin_room', 'AccessCardController@post_new_set_admin_room')

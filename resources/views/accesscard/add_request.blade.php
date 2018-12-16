@@ -26,6 +26,8 @@
 @include('accesscard.modal_broken_access_card')
 @include('accesscard.modal_lost_access_card')
 @include('accesscard.modal_leveling_access_card')
+@include('accesscard.modal_set_photo_schedule')
+@include('accesscard.modal_set_pick_up_schedule')
 
 <script type="text/javascript">
 	function access_card_request_action() {
@@ -58,8 +60,18 @@
 
 <script type="text/javascript">
 
-  function set_photo(uuid) {
-    alert("waiting for open smtm connection");
+  function set_pick_up_schedule(name,uuid) {
+    $('#modal_set_pick_up_schedule_name').val(name);
+    $('#modal_set_pick_up_schedule_uuid').val(uuid);
+    $('#modal_set_pick_up_schedule').modal('show');
+    //alert("waiting for open smtm connection");
+  }
+
+  function set_photo(name,uuid) {
+    $('#modal_set_photo_schedule_name').val(name);
+    $('#modal_set_photo_schedule_uuid').val(uuid);
+    $('#modal_set_photo_schedule').modal('show');
+    //alert("waiting for open smtm connection");
   }
 
   function set_access_card(name,uuid) {

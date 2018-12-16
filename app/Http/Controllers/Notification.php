@@ -43,9 +43,11 @@ class Notification extends Controller {
 
 		$this->response['error'] = false;
 		$this->notify_apps();
-		$this->notify_mail();
 
-		
+		if(env("ENV_STATUS", "development") == "production") {
+			$this->notify_mail();
+		}
+				
 		return $this->response;
 	}
 
