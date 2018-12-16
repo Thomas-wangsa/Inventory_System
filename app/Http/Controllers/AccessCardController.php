@@ -34,6 +34,8 @@ use Illuminate\Support\Facades\Mail;
 
 use App\Notifications\Akses_Notifications;
 use App\Notifications\PhotoSchedule_Notification;
+use App\Notifications\PickupAccessCard_Notification;
+
 //use App\Notifications\Access_Notification;
 use Illuminate\Support\Facades\Notification;
 
@@ -878,13 +880,19 @@ class AccessCardController extends Controller
             "note"              => "-",
         );
         if($from == 1) {
-
             $param['subject']       = "Schedule photo for ".$data->name;
             $param['description']   = "Please come to take a photo for access card : ".
                                         $data->schedule_photo_date;
             $param['note']  = $data->schedule_photo_note;
 
             $user->notify(new PhotoSchedule_Notification($param));
+        } else if ($from == 2) {
+            $param['subject']       = "Schedule pick up access card for ".$data->name;
+            $param['description']   = "Please come to pick up the access card : ".
+                                        $data->pick_up_access_card_date;
+            $param['note']          = $data->pick_up_access_card_note;
+
+            $user->notify(new PickupAccessCard_Notification($param));
         } else {
             $response['message'] = "out of category scope in scheduling";
             return $response;
@@ -936,6 +944,12 @@ class AccessCardController extends Controller
             $data->pick_up_access_card_date = $request->modal_set_pick_up_schedule_pick_up_access_card_date;
             $data->pick_up_access_card_note = $request->modal_set_pick_up_schedule_pick_up_access_card_note;
             $data->save();
+
+            $notify_status = $this->schedule_notification_email(2,$data);
+                    if($notify_status['error'] == true) {
+                        $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                    }
+
             $request->session()->flash('alert-success', 'Schedule pick up already sent');
             return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         }
