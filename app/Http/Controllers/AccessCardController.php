@@ -33,6 +33,7 @@ use App\Mail\AksesMail;
 use Illuminate\Support\Facades\Mail;
 
 use App\Notifications\Akses_Notifications;
+use App\Notifications\PhotoSchedule_Notification;
 //use App\Notifications\Access_Notification;
 use Illuminate\Support\Facades\Notification;
 
@@ -860,6 +861,39 @@ class AccessCardController extends Controller
     } 
 
 
+    private function schedule_notification_email($from,$data) {
+        $response = array(
+            'error'  => true,
+            'message'=> '' 
+        );
+
+        $user  = Users::find(Auth::user()->id);
+
+        $param = array(
+            "from"              => "notification@indosatooredoo.com",
+            "replyTo"           => "notification@indosatooredoo.com",
+            "subject"           => "-",
+            "cc_email"          => $data->email,
+            "description"       => "-",
+            "note"              => "-",
+        );
+        if($from == 1) {
+
+            $param['subject']       = "Schedule photo for ".$data->name;
+            $param['description']   = "Please come to take a photo for access card : ".
+                                        $data->schedule_photo_date;
+            $param['note']  = $data->schedule_photo_note;
+
+            $user->notify(new PhotoSchedule_Notification($param));
+        } else {
+            $response['message'] = "out of category scope in scheduling";
+            return $response;
+        }
+
+        $response['error'] = false;
+        return $response;
+    }
+
     public function post_custome_set_photo_schedule(Request $request) {
         $request->validate([
             'modal_set_photo_schedule_date' => 'required|max:200',
@@ -875,6 +909,12 @@ class AccessCardController extends Controller
             $data->schedule_photo_date = $request->modal_set_photo_schedule_date;
             $data->schedule_photo_note = $request->modal_set_photo_schedule_photo_note;
             $data->save();
+
+            $notify_status = $this->schedule_notification_email(1,$data);
+                    if($notify_status['error'] == true) {
+                        $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                    }
+            
             $request->session()->flash('alert-success', 'Schedule photo already sent');
             return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         }

@@ -6,11 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\URL;
-class Akses_Notifications extends Notification
+
+class PhotoSchedule_Notification extends Notification
 {
     use Queueable;
-
     protected $param;
     /**
      * Create a new notification instance.
@@ -18,7 +17,7 @@ class Akses_Notifications extends Notification
      * @return void
      */
     public function __construct($param)
-    {   
+    {
         $this->param = $param;
     }
 
@@ -41,27 +40,22 @@ class Akses_Notifications extends Notification
      */
     public function toMail($notifiable)
     {   
-        $data = array(
-            "description"       => $this->param['description'],
-            "access_card_name"  => $this->param['access_card_name'],
-            "access_card_no"    => $this->param['access_card_no'],
-            "status_akses"      => $this->param['status_akses'],
-            "status_color"      => $this->param['status_color'],
-            "note"              => $this->param['note'],
-            "url"               => URL::to('/'),
-            "url_data"          => URL::to('/').
-                                "/accesscard?search=on&search_uuid=".$this->param['uuid'],
-            
-            
-            
-            
+        $data = array(   
         );
+
         return (new MailMessage)
                     ->from($this->param['from'],config('app.name'))
                     ->replyTo($this->param['replyTo'])
                     ->subject($this->param['subject'])
-                    ->markdown('vendor.notifications.akses_notification_new', ['data' => $data])
-                    ->cc($this->param['cc_email']);
+                    ->cc($this->param['cc_email'])
+                    ->line($this->param['description'])
+                    ->line('note = ' . $this->param['note'])
+                    ->line('Thank you for your attention!');
+
+        // return (new MailMessage)
+        //             ->line('The introduction to the notification.')
+        //             ->action('Notification Action', url('/'))
+        //             ->line('Thank you for using our application!');
     }
 
     /**
@@ -73,6 +67,7 @@ class Akses_Notifications extends Notification
     public function toArray($notifiable)
     {
         return [
+            //
         ];
     }
 }
