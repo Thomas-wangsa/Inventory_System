@@ -354,6 +354,10 @@ class SettingController extends Controller {
                         'c_user.id','=','akses_data.created_by')
                         ->join('users as u_user',
                         'u_user.id','=','akses_data.updated_by')
+                        ->join('access_card_request',
+                        'access_card_request.id','=','akses_data.request_type')
+                        ->join('access_card_register_status',
+                        'access_card_register_status.id','=','akses_data.register_type')
                         ->whereDate('akses_data.updated_at','>=',$data['from_date'])
                         ->whereDate('akses_data.updated_at','<=',$data['current_date']);                        
         if( !in_array($this->admin_division,$user_divisi) 
@@ -381,13 +385,15 @@ class SettingController extends Controller {
                         //     'u_user.name AS updated_by_username',)
                         // ->first();
 
-        $data  = $akses_data->select('akses_data.name',
+        $data  = $akses_data->select(
+                'access_card_request.request_name',
+                'access_card_register_status.register_name',
+                'akses_data.name',
                 'akses_data.email',
                 'akses_data.nik',
                 'akses_data.no_access_card AS no access card',
-                'akses_data.date_start AS start access card active',
-                'akses_data.date_end AS end access card active',
-                'akses_data.type_daftar AS type',
+                'akses_data.date_start AS start work',
+                'akses_data.date_end AS end work',
                 DB::raw('CONCAT(pic_list.vendor_name, " (", pic_list.vendor_detail_name,")") AS pic_category'),
                 'akses_data.floor',
                 'akses_data.divisi AS division',
