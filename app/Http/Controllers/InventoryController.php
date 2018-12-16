@@ -272,7 +272,7 @@ class InventoryController extends Controller
 
         DB::table('inventory_data')->insert($data);
         
-        $this->notify($status_inventory,$uuid);
+        //$this->notify($status_inventory,$uuid);
         $request->session()->flash('alert-success', 'new inventory already registered');
         return redirect($this->redirectTo."?search=on&search_uuid=".$data['uuid']);
     }
