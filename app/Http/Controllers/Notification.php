@@ -412,13 +412,8 @@ class Notification extends Controller {
                      
             );
 
-		try {
-			$user->notify(new Akses_Notifications($data));	
-		} catch (Exception $e) {
-			$this->response['error'] 	= true;
-			$this->response['message'] 	= $e->getMessage();
-    		//exception handling code goes here
-		}
+		
+		$user->notify(new Akses_Notifications($data));	
 		
 	}
  

@@ -13,7 +13,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+       // \Illuminate\Notifications\Messages\MailMessage::class;
+
     ];
 
     /**
@@ -35,7 +36,7 @@ class Handler extends ExceptionHandler
      * @return void
      */
     public function report(Exception $exception)
-    {
+    {   
         parent::report($exception);
     }
 
@@ -47,7 +48,17 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
-    {
+    {   
+        if ($exception instanceof \Swift_TransportException ||
+            $exception instanceof \ErrorException
+
+            ) {
+            $redirect = $request->header('referer');
+            $request->session()->flash('alert-warning','Failed to create email notification = please check the network connection!, '.$exception->getMessage());
+            $request->session()->flash('alert-success','But the application is running well');
+            return redirect($redirect."?search=on&search_uuid=".$request->uuid);
+        }
+
         return parent::render($request, $exception);
     }
 }

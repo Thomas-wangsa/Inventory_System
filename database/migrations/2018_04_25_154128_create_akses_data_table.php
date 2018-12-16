@@ -47,6 +47,11 @@ class CreateAksesDataTable extends Migration
             $table->text('comment')->nullable();
             $table->timestamps();
 
+            $table->string('schedule_photo_date')->nullable();
+            $table->string('schedule_photo_note')->nullable();
+            $table->string('pick_up_access_card_date')->nullable();
+            $table->string('pick_up_access_card_note')->nullable();
+
             $table->foreign('request_type', 'akses_data_request_type_fkey')
                 ->references('id')->on('access_card_request')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
