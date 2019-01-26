@@ -97,15 +97,8 @@
             @endif
 
 
-            @if(in_array(1,$user_divisi) || in_array(4,$user_divisi))
-    		<div class="sub_menu_options_icon_left">
-    			<a href="{{route('inventory')}}"> 
-	    			<span class="glyphicon glyphicon-th-large">
-	    			</span> &nbsp;
-	    			Inventory
-    			</a>
-    		</div>
-            @endif
+
+
             @if(in_array(1,$user_divisi))
     		<div class="sub_menu_options_icon_left">
     			<a href="{{route('route_admin')}}"> 
@@ -141,18 +134,7 @@
     			</a>
     		</div>
             @endif
-            @if(in_array(1,$user_divisi)
-                || 
-                in_array(4,$user_divisi)
-                )
-            <div class="sub_menu_options_icon_left">
-                <a href="{{route('inventory_report')}}"> 
-                    <span class="glyphicon glyphicon-file">
-                    </span> &nbsp;
-                    Inventory Report
-                </a>
-            </div>
-            @endif
+
     	</div>
     </div> <!--menu_icon_left-->
     <div class="menu_icon_left" 

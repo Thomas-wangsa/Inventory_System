@@ -72,18 +72,8 @@
         </div>
         @endif
 
-        @if(in_array(1,$user_divisi) || in_array(4,$user_divisi))
-        <div class="menu_block">
-            <a href="{{route('inventory')}}">
-                <div class="sub_menu_block">
-                    <div class="icon_block">
-                        <img src="{{ asset('images/logo/checklist.png')}}" / >
-                        <h4> Inventory Page </h4> 
-                    </div>                
-                </div>
-            </a>
-        </div>
-        @endif
+
+
         @if(in_array(1,$user_divisi))
         <div class="menu_block">
             <a href="{{route('route_admin')}}">
@@ -126,22 +116,7 @@
             </a>
         </div>
         @endif
-        @if(in_array(1,$user_divisi)
-            ||
-            in_array(4,$user_divisi)
-            )
-        <div class="menu_block">
-            <a href="{{route('inventory_report')}}">
-                <div class="sub_menu_block">
-                    <div class="icon_block">
-                        <span class="glyphicon glyphicon-file">
-                        </span> &nbsp;
-                        <h4> Inventory Report Page </h4> 
-                    </div>                
-                </div>
-            </a>
-        </div>
-        @endif
+
         <div class="clearfix"> </div>   
     </div>
 

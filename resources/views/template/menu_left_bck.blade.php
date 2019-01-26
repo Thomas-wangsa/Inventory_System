@@ -1,306 +1,179 @@
-<div class="col-sm-3 menu-left" style="">
-                
-  <a href="{{route('home')}}">
-    <img class="center" src="{{ asset('images/logo/indosat.png')}}"  / >
-    <!-- <img class="center" src="{{ asset('images/logo/google.png')}}"  / > -->
-  </a>
-  
-  <div class="text-center" style="margin-bottom: 30px">  
-    Inventory Management 
-  </div>  
-  
-  <div class="col-sm-12" >
-    <div class="row">
-      
-      <h4 class="dashboard">
-        Dashboard
-      </h4>
+<style type="text/css">
+    .wrapper_left {
+        width: 20%;
+        box-shadow: 3px 2px 4px 0 rgba(212, 212, 212, 0.5);
+        min-height: 100%!important;
+        height: auto;
+        float: left;
+    }
+    .wrap_center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+    }
+  .menu_icon_left {
+    margin: 0 8%;
+  }
 
-      <div class="col-sm-12" style="border-bottom : 2px solid gray">
-        <div class="row">
-          
-          <div class="icon-left">
-            <div class="col-sm-2 icon-image">
-              <a href="{{route('home')}}">
-                <span class="glyphicon glyphicon-home"
-                @if(Route::current()->getName() == 'home')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                </span>
-              </a>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                <a class="icon-text" href="{{route('home')}}"
-                @if(Route::current()->getName() == 'home')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                  Beranda
-                </a>
-              </div>
-            </div>     
-          </div>
-          <div class="clearfix"> </div>
-          
-          <div class="icon-left">
-            <div class="col-sm-2 icon-image">
-              <a href="{{route('route_notify')}}">
-                <span class="glyphicon glyphicon-bell"
-                @if(Route::current()->getName() == 'route_notify')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                </span>
-              </a>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                <a class="icon-text" href="{{route('route_notify')}}"
-                @if(Route::current()->getName() == 'route_notify')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                  Pemberitahuan
-                    @if(isset($data['notify']) && $data['notify'] > 0 )
-                      <span class="badge" style="background-color: red;color:white"> 
-                        {{$data['notify']}}
-                    </span>
-                  </a>
-                    @endif
-                </a>
-              </div>
-            </div>     
-          </div>
-          <div class="clearfix"> </div>
+  .sub_menu_icon_left {
+    margin-top: 20px;
+    padding-left: 15px;
+  }
 
-          <div class="icon-left">
-            <div class="col-sm-2 icon-image">
-              <a href="{{route('akses')}}">
-                <span class="glyphicon glyphicon-list-alt"
-                @if(Route::current()->getName() == 'akses')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                </span>
-              </a>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                <a class="icon-text" href="{{route('akses')}}"
-                @if(Route::current()->getName() == 'akses')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                 Access
-                </a>
-              </div>
-            </div>     
-          </div>
-          <div class="clearfix"> </div>
+  .sub_menu_options_icon_left {
+    font-size: 110%;
+    margin-bottom: 17px;
+    margin-left: 15px;
+  }
 
-          <div class="icon-left">
-            <div class="col-sm-2 icon-image">
-              <a href="{{route('inventory')}}">
-                <span class="glyphicon glyphicon-th-large "
-                @if(Route::current()->getName() == 'inventory')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                </span>
-              </a>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                <a class="icon-text" href="{{route('inventory')}}"
-                @if(Route::current()->getName() == 'inventory')
-                  style="color:blue"
-                @endif
-                >
-                  Inventory
-                </a>
-              </div>
-            </div>     
-          </div>
-          <div class="clearfix"> </div>
+  .sub_menu_options_icon_left a {
+    text-decoration: none;
+    color :black;
+  }
 
-          <div class="icon-left">
-            <div class="col-sm-2 icon-image">
-              <a href="{{route('route_admin')}}">
-                <span class="glyphicon glyphicon-user"
-                @if(Route::current()->getName() == 'route_admin')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                </span>
-              </a>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                <a class="icon-text" href="{{route('route_admin')}}"
-                @if(Route::current()->getName() == 'route_admin')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                  Kelola Akun
-                </a>
-              </div>
-            </div>     
-          </div>
-          <div class="clearfix"> </div>
+    .left_menu_active {
+        font-weight: bold;
+        color:#337ab7!important;
+    }
+</style>
 
-          <div class="icon-left">
-            <div class="col-sm-2 icon-image">
-              <a href="{{route('route_setting')}}">
-                <span class="glyphicon glyphicon-cog"
-                @if(Route::current()->getName() == 'show_background')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                </span>
-              </a>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                <a class="icon-text" href="{{route('route_setting')}}"
-                @if(Route::current()->getName() == 'show_background')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                  Setting
-                </a>
-              </div>
-            </div>     
-          </div>
-          <div class="clearfix"> </div>
-
-          <div class="icon-left">
-            <div class="col-sm-2 icon-image">
-              <a href="{{route('route_report')}}">
-                <span class="glyphicon glyphicon-file"
-                @if(Route::current()->getName() == 'route_report')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif>
-                </span>
-              </a>
-            </div>
-            <div class="col-sm-10">
-              <div class="row">
-                <a class="icon-text" href="{{route('route_report')}}"
-                @if(Route::current()->getName() == 'route_report')
-                  style="color:blue"
-                @else
-                  style="color:black"
-                @endif
-                >
-                  Report
-                </a>
-              </div>
-            </div>     
-          </div>
-          
-
-          <div class="clearfix" style="margin-bottom: 20px"> </div>
-
-        </div>
+<div class="wrapper_left">
+    
+    <div class="wrap_center">
+      <a href="{{route('home')}}">
+        <img class="img-responsive" 
+        style="max-height: 150px" 
+        
+        src="{{ asset('images/logo/google.png')}}"  / >
+        <!-- src="{{ asset('images/logo/indosat.png')}}"  / > -->
+      </a>
+      <div class="text-center"> 
+        Access & Inventory <br/> Management
       </div>
     </div>
-  </div>
 
-  <div class="clearfix"> </div>
-  
-  <div class="col-sm-12" style="margin-top: 20px">
-    <div class="row">
-      <h4 class="dashboard"> Profile </h4>
 
-        <div class="col-sm-12">
-          <div class="row">    
-            <div class="icon-left">
-              <div class="col-sm-2 icon-image">
-                <a href="{{route('profile')}}">
-                  <span class="glyphicon glyphicon-envelope"
-                  @if(Route::current()->getName() == 'profile')
-                    style="color:blue"
-                  @else
-                    style="color:black"
-                  @endif
-                  >
-                  </span>
+    <div class="menu_icon_left" 
+    style="border-bottom : 2px solid gray;margin-top: 30px">
+      <strong> Menu : </strong>
+      <div class="sub_menu_icon_left">
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('home')}}"> 
+            <span class="glyphicon glyphicon-home">
+            </span> &nbsp;
+            Dashboard
+          </a>
+        </div>
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('route_notify')}}"> 
+            <span class="glyphicon glyphicon-bell">
+            </span> &nbsp;
+            Notification 
+                    @if($count_user_notify > 0)
+                    <span class="badge" style="background-color: blue">
+                        {{$count_user_notify}}
+                    </span>
+                    @endif
+          </a>
+        </div>
+            
+
+            @if(in_array(1,$user_divisi)
+                ||
+                in_array(2,$user_divisi)
+                ||
+                in_array(3,$user_divisi)
+                ||
+                in_array(5,$user_divisi)
+                )
+            <div class="sub_menu_options_icon_left">
+                <a href="{{route('accesscard')}}"> 
+                    <span class="glyphicon glyphicon-list-alt">
+                    </span> &nbsp;
+                    Access Card
                 </a>
-              </div>
-              <div class="col-sm-10">
-                <div class="row">
-                  <a class="icon-text" href="{{route('profile')}}"
-                  @if(Route::current()->getName() == 'profile')
-                    style="color:blue"
-                  @else
-                    style="color:black"
-                  @endif
-                  >
-                    Profile
-                  </a>
-                </div>
-              </div>     
             </div>
-            <div class="clearfix"> </div>
-            <div class="icon-left">
-              <div class="col-sm-2 icon-image">
-                <a href="{{route('password')}}">
-                  <span class="glyphicon glyphicon-wrench"
-                  @if(Route::current()->getName() == 'password')
-                    style="color:blue"
-                  @else
-                    style="color:black"
-                  @endif
-                  >
-                  </span>
+            @endif
+
+
+            @if(in_array(1,$user_divisi) || in_array(4,$user_divisi))
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('inventory')}}"> 
+            <span class="glyphicon glyphicon-th-large">
+            </span> &nbsp;
+            Inventory
+          </a>
+        </div>
+            @endif
+            @if(in_array(1,$user_divisi))
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('route_admin')}}"> 
+            <span class="glyphicon glyphicon-user">
+            </span> &nbsp;
+            Admin
+          </a>
+        </div>
+            @endif
+            @if(in_array(1,$user_divisi)
+                ||
+                in_array(1,$user_setting)
+                )
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('route_setting')}}"> 
+            <span class="glyphicon glyphicon-cog">
+            </span> &nbsp;
+            Setting
+          </a>
+        </div>
+            @endif
+            @if(in_array(1,$user_divisi)
+                || 
+                in_array(2,$user_divisi)
+                ||
+                in_array(5,$user_setting)
+                )
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('access_report')}}"> 
+            <span class="glyphicon glyphicon-file">
+            </span> &nbsp;
+            Access Report
+          </a>
+        </div>
+            @endif
+            @if(in_array(1,$user_divisi)
+                || 
+                in_array(4,$user_divisi)
+                )
+            <div class="sub_menu_options_icon_left">
+                <a href="{{route('inventory_report')}}"> 
+                    <span class="glyphicon glyphicon-file">
+                    </span> &nbsp;
+                    Inventory Report
                 </a>
-              </div>
-              <div class="col-sm-10">
-                <div class="row">
-                  <a class="icon-text" href="{{route('password')}}"
-                  @if(Route::current()->getName() == 'password')
-                    style="color:blue"
-                  @else
-                    style="color:black"
-                  @endif
-                  >
-                    Ganti Password
-                  </a>
-                </div>
-              </div>     
             </div>
-            <div class="clearfix"> </div>
-          </div>
-        </div>  
-
-    </div>
-  </div>
-
-</div> <!-- col left -->
+            @endif
+      </div>
+    </div> <!--menu_icon_left-->
+    <div class="menu_icon_left" 
+    style="margin-top: 15px">
+      <strong> Profile : </strong>
+      <div class="sub_menu_icon_left">
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('profile')}}"> 
+            <span class="glyphicon glyphicon-envelope">
+            </span> &nbsp;
+            Profile
+          </a>
+        </div>
+        <div class="sub_menu_options_icon_left">
+          <a href="{{route('password')}}"> 
+            <span class="glyphicon glyphicon-wrench">
+            </span> &nbsp;
+            Edit Password
+          </a>
+        </div>
+      </div>
+    </div> <!--menu_icon_left-->
+</div> <!--wrapper_left-->
 
