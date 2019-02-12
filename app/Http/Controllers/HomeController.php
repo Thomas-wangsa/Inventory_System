@@ -311,7 +311,7 @@ class HomeController extends Controller
         ]);
 
         $user = Users::find(Auth::user()->id);
-        $user->name = strtolower($request->nama_lengkap);
+        $user->name = $request->nama_lengkap;
         $user->mobile = $request->phone;
         $cek = $user->save();
 
