@@ -116,6 +116,20 @@
     			</a>
     		</div>
             @endif
+            
+            @if(in_array(1,$user_divisi)
+                ||
+                in_array(9,$user_setting)
+                )
+            <div class="sub_menu_options_icon_left">
+                <a href="{{route('helper.index')}}"> 
+                    <span class="glyphicon glyphicon-cog">
+                    </span> &nbsp;
+                    Helper
+                </a>
+            </div>
+            @endif
+            
             @if(in_array(1,$user_divisi)
                 ||
                 in_array(1,$user_setting)
@@ -128,6 +142,9 @@
     			</a>
     		</div>
             @endif
+
+            
+
             @if(in_array(1,$user_divisi)
                 || 
                 in_array(2,$user_divisi)

@@ -99,6 +99,18 @@
             </a>
         </div>
         @endif
+        @if(in_array(1,$user_divisi) || in_array(9,$user_setting))
+        <div class="menu_block">
+            <a href="{{route('helper.index')}}">
+                <div class="sub_menu_block">
+                    <div class="icon_block">
+                        <img src="{{ asset('images/logo/settings.png')}}" / >
+                        <h4> Helper Page </h4> 
+                    </div>                
+                </div>
+            </a>
+        </div>
+        @endif
         @if(in_array(1,$user_divisi) || in_array(1,$user_setting))
         <div class="menu_block">
             <a href="{{route('route_setting')}}">

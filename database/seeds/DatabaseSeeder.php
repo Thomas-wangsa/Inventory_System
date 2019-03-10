@@ -626,6 +626,7 @@ class DatabaseSeeder extends Seeder
             array('setting_name'  => 'inventory report '),
             array('setting_name'  => 'add new floor plan'),
             array('setting_name'  => 'add new admin room category'),
+            array('setting_name'  => 'helper'),
         );
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
