@@ -435,7 +435,7 @@ class SettingController extends Controller {
         }
 
         if(!$allow) {
-            $request->session()->flash('alert-danger', 'Sorry you dont have access to report features');
+            $request->session()->flash('alert-danger', 'Sorry you dont have access to settings features');
             return redirect('home');
         }
 
