@@ -105,7 +105,7 @@
                 <div class="sub_menu_block">
                     <div class="icon_block">
                         <img src="{{ asset('images/logo/settings.png')}}" / >
-                        <h4> Helper Page </h4> 
+                        <h4> Config Page </h4> 
                     </div>                
                 </div>
             </a>

@@ -34,6 +34,8 @@
       ACCESS REPORT
     @elseif(Route::current()->getName() == 'inventory_report')
       INVENTORY REPORT
+    @elseif(Route::current()->getName() == 'helper.index')
+      CONFIGURATION 
     @else 
       ERROR
     @endif

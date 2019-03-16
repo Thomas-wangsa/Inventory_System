@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Models\Group1;
+use App\Http\Models\Group2;
+use App\Http\Models\Group3;
+use App\Http\Models\Group4;
+use App\Http\Models\Inventory_List;
+
+
 
 class HelperController extends Controller
 {
-
+    protected $redirectTo = 'helper';
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +39,59 @@ class HelperController extends Controller
             $request->session()->flash('alert-danger', 'Sorry you dont have access to helper features');
             return redirect('home');
         }
-        echo "AAA";die;
+
+        $config = array(
+            "Group1"    => 1,
+            "Group2"    => 2,
+            "Group3"    => 3,
+            "Group4"    => 4,
+            "Inventory" => 5
+        );
+        
+
+        $data = array(
+            'config'    => $config,
+            'rows'      => null
+        );
+
+        if($request->search == "on") {
+            $rows = null;
+            
+            
+
+            if($request->search_filter != null) {
+                switch ($request->search_filter) {
+                    case '1':
+                        if($request->search_nama != null) {$rows = Group1::where('group1_name','LIKE',"%$request->search_nama%")->get();}
+                        else {$rows = Group1::all();}
+                        break;
+                    case '2':
+                        if($request->search_nama != null) {$rows = Group2::where('group2_name','LIKE',"%$request->search_nama%")->get();}
+                        else {$rows = Group2::all();}
+                        break;
+                    case '3' :
+                        $rows = Group3::all();
+                        break;
+                    case '4' :
+                        $rows = Group4::all();
+                        break;
+                    case '5' :
+                        if($request->search_nama != null) {$rows = Inventory_List::where('inventory_name','LIKE',"%$request->search_nama%")->get();}
+                        else {$rows = Inventory_List::all();}
+                        break;
+                    default:
+                        $request->session()->flash('alert-danger', "Out Of Scope Category value : $request->config_category");
+                        return redirect($this->redirectTo);
+                        break;
+                }
+            }
+
+
+
+            $data['rows'] = $rows;
+            dd($data);
+        }
+        return view('helper/index',compact('data')); 
     }
 
     /**
@@ -41,7 +101,7 @@ class HelperController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -51,8 +111,102 @@ class HelperController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        $request->validate([
+            'config_main'  => 'required|max:30',
+            'config_additional'  => 'required|max:30',
+            'config_category'  => 'required|max:30',
+        ]);
+
+        switch ($request->config_category) {
+            case '1':
+                $data_exists = Group1::where('group1_name', strtolower($request->config_main))->first();
+
+                if($data_exists) {
+                    $request->session()->flash('alert-danger', "Data already exists in Group1 : $request->config_main");
+                    return redirect($this->redirectTo);
+                }
+
+
+                $data  = new Group1;
+                $data->group1_name      = strtolower($request->config_main);
+                $data->group1_detail    = $request->config_additional;
+
+                break;
+            case '2':
+                $data_exists = Group2::where('group2_name', strtolower($request->config_main))->first();
+
+                if($data_exists) {
+                    $request->session()->flash('alert-danger', "Data already exists in Group2 : $request->config_main");
+                    return redirect($this->redirectTo);
+                }
+
+
+                $data  = new Group2;
+                $data->group2_name      = strtolower($request->config_main);
+                $data->group2_detail    = $request->config_additional;
+
+                break;
+            case '3':
+                $data_exists = Group3::where('group3_name', strtolower($request->config_main))->first();
+
+                if($data_exists) {
+                    $request->session()->flash('alert-danger', "Data already exists in Group3 : $request->config_main");
+                    return redirect($this->redirectTo);
+                }
+
+
+                $data  = new Group3;
+                $data->group3_name      = strtolower($request->config_main);
+                $data->group3_detail    = $request->config_additional;
+
+                break;
+            case '4':
+                $data_exists = Group4::where('group4_name', strtolower($request->config_main))->first();
+
+                if($data_exists) {
+                    $request->session()->flash('alert-danger', "Data already exists in Group4 : $request->config_main");
+                    return redirect($this->redirectTo);
+                }
+
+
+                $data  = new Group4;
+                $data->group4_name      = strtolower($request->config_main);
+                $data->group4_detail    = $request->config_additional;
+
+                break;
+            case '5':
+                $data_exists = Inventory_List::where('inventory_name', strtolower($request->config_main))->first();
+
+                if($data_exists) {
+                    $request->session()->flash('alert-danger', "Data already exists in Inventory List : $request->config_main");
+                    return redirect($this->redirectTo);
+                }
+
+
+                $data  = new Inventory_List;
+                $data->inventory_name      = strtolower($request->config_main);
+                $data->inventory_detail_name    = $request->config_additional;
+
+                break;
+            default:
+                $request->session()->flash('alert-danger', "Out Of Scope Category value : $request->config_category");
+                return redirect($this->redirectTo);
+                break;
+        }
+
+        $data->created_by = Auth::user()->id;
+        $data->updated_by = Auth::user()->id;
+        $data->created_at = date('Y-m-d H:i:s');
+        $data->updated_at = date('Y-m-d H:i:s');
+
+        if($data->save()) {
+            $request->session()->flash('alert-success', "the $request->config_main have been added to category");
+        } else {
+            $request->session()->flash('alert-danger', "Data is not save, Please contact your administator");
+        }
+        
+        return redirect($this->redirectTo);
     }
 
     /**

@@ -533,6 +533,7 @@ class InventoryController extends Controller
         $data = array(
         'inventory_name' => trim(strtolower($request->inventory_name)),
         'inventory_detail_name'=>trim(strtolower($request->inventory_detail_name)),
+        'created_by'=>Auth::user()->id,
         'updated_by'=>Auth::user()->id
         );
 

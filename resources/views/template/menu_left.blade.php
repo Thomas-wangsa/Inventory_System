@@ -125,7 +125,7 @@
                 <a href="{{route('helper.index')}}"> 
                     <span class="glyphicon glyphicon-cog">
                     </span> &nbsp;
-                    Helper
+                    Config
                 </a>
             </div>
             @endif
