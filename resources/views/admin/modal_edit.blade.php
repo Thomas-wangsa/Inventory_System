@@ -12,7 +12,7 @@
         </div>
         <div class="modal-body">
         	<div id="staff">
-	  			<form method="POST" action="{{ route('edit_user') }}">
+	  			<form method="POST" enctype="multipart/form-data"  action="{{ route('edit_user') }}">
 				  {{ csrf_field() }}
 				  <input type="hidden" name="uuid" id="edit_uuid" value="">
 				  <div class="form-group">
@@ -49,6 +49,14 @@
 				    name="mobile" value="" required="" 
 				    placeholder="Only numbers allowed...">
 				  </div>
+
+				  <div class="form-group">
+              		<label for="staff_nama"> Personal Identity : </label>
+              		<input type="file" class="form-control" id="edit_foto" 
+              		name="Edit_Personal_Identity" 
+              		>
+              		<span class="text-danger"> note : max 5mb </span>              		
+            	 </div>
 
 				  <div class="form-group">
 				    <label for="staff_nama"> Company :</label>

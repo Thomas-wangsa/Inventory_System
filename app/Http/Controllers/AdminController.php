@@ -456,6 +456,7 @@ class AdminController extends Controller
     }
 
     public function edit_user(Request $request) {
+        
 
         $request->validate([
             'name'  => 'required|max:50',
@@ -465,7 +466,7 @@ class AdminController extends Controller
             'company' => 'required|max:50',
         ]);
 
-        if (!preg_match("/^[a-zA-Z ]*$/",$request->name)) {
+        if (!preg_match("/^[a-zA-Z. ]*$/",$request->name)) {
             $request->session()->flash('alert-danger', 'Only letters and white space allowed! in name field');
             return redirect('admin');
         }
@@ -487,16 +488,29 @@ class AdminController extends Controller
                 return redirect('admin');
             }
 
+
+            
+
             $user           = Users::find($user_data->id);
             $user->name     = strtolower($request->name);
             $user->email    = strtolower($request->email);
             $user->mobile   = strtolower($request->mobile);
+
+
 
             $user_detail    = Users_Detail::find($user_data->id);
             $user_detail->nik = $request->nik;
             $user_detail->company = $request->company;
             $user_detail->email_2 = $request->email_second;
 
+            if($request->file('Edit_Personal_Identity') != null) {
+                $image      = $request->file('Edit_Personal_Identity');
+                $img_path   = '/images/user/';
+                $img_name   = $this->faker->uuid().".".$image->getClientOriginalExtension();
+                $destinationPath = public_path($img_path);
+                $image->move($destinationPath, $img_name);
+                $user_detail->foto        = $img_path.$img_name;
+            } 
 
             $user->save();
             $user_detail->save();
