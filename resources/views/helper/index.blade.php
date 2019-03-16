@@ -58,7 +58,11 @@
 				      		<option value=""> Select Category </option>
 
 				    		@foreach($data['config'] as $key=>$val)
-				                <option value="{{$val}}">
+				                <option value="{{$val}}"
+				                @if($val == Request::get('search_filter')) 
+				    				selected
+				    			@endif
+				                >
 				                  {{$key}}
 				                </option>
 			              	@endforeach
@@ -101,7 +105,19 @@
 			 				@elseif(count($data['rows']) < 1)
 			 					<td colspan="10" class="text-center"> Data not found! </td>
 			 				@else 
-			 				
+			 					<?php $no=1; ?>
+			 					@foreach($data['rows'] as $key=>$val)
+			 					<tr>
+			 						<td> {{$no}}</td>
+			 						<td> {{$no}} </td>
+			 						<td> {{$no}}</td>
+			 						<td> {{$no}}</td>
+			 						<td> {{$val->created_by}}</td>
+			 						<td> {{$val->updated_by}}</td>
+			 						<td>  </td>
+			 					</tr>
+			 					<?php $no++;?>
+			 					@endforeach
 			 				@endif
 			 			</tr>
 			 		</tbody>

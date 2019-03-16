@@ -70,10 +70,12 @@ class HelperController extends Controller
                         else {$rows = Group2::all();}
                         break;
                     case '3' :
-                        $rows = Group3::all();
+                        if($request->search_nama != null) {$rows = Group3::where('group3_name','LIKE',"%$request->search_nama%")->get();}
+                        else {$rows = Group3::all();}
                         break;
                     case '4' :
-                        $rows = Group4::all();
+                        if($request->search_nama != null) {$rows = Group4::where('group4_name','LIKE',"%$request->search_nama%")->get();}
+                        else {$rows = Group4::all();}
                         break;
                     case '5' :
                         if($request->search_nama != null) {$rows = Inventory_List::where('inventory_name','LIKE',"%$request->search_nama%")->get();}
@@ -89,7 +91,7 @@ class HelperController extends Controller
 
 
             $data['rows'] = $rows;
-            dd($data);
+            // dd($data);
         }
         return view('helper/index',compact('data')); 
     }
