@@ -62,24 +62,24 @@ class HelperController extends Controller
             if($request->search_filter != null) {
                 switch ($request->search_filter) {
                     case '1':
-                        if($request->search_nama != null) {$rows = Group1::where('group1_name','LIKE',"%$request->search_nama%")->get();}
-                        else {$rows = Group1::all();}
+                        if($request->search_nama != null) {$rows = Group1::GetConfig($request->search_nama)->get();}
+                        else {$rows = Group1::GetConfig()->get();}
                         break;
                     case '2':
-                        if($request->search_nama != null) {$rows = Group2::where('group2_name','LIKE',"%$request->search_nama%")->get();}
-                        else {$rows = Group2::all();}
+                        if($request->search_nama != null) {$rows = Group2::GetConfig($request->search_nama)->get();}
+                        else {$rows = Group2::GetConfig()->get();}
                         break;
                     case '3' :
-                        if($request->search_nama != null) {$rows = Group3::where('group3_name','LIKE',"%$request->search_nama%")->get();}
-                        else {$rows = Group3::all();}
+                        if($request->search_nama != null) {$rows = Group3::GetConfig($request->search_nama)->get();}
+                        else {$rows = Group3::GetConfig()->get();}
                         break;
                     case '4' :
-                        if($request->search_nama != null) {$rows = Group4::where('group4_name','LIKE',"%$request->search_nama%")->get();}
-                        else {$rows = Group4::all();}
+                        if($request->search_nama != null) {$rows = Group4::GetConfig($request->search_nama)->get();}
+                        else {$rows = Group4::GetConfig()->get();}
                         break;
                     case '5' :
-                        if($request->search_nama != null) {$rows = Inventory_List::where('inventory_name','LIKE',"%$request->search_nama%")->get();}
-                        else {$rows = Inventory_List::all();}
+                        if($request->search_nama != null) {$rows = Inventory_List::GetConfig($request->search_nama)->get();}
+                        else {$rows = Inventory_List::GetConfig()->get();}
                         break;
                     default:
                         $request->session()->flash('alert-danger', "Out Of Scope Category value : $request->config_category");

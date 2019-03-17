@@ -109,12 +109,67 @@
 			 					@foreach($data['rows'] as $key=>$val)
 			 					<tr>
 			 						<td> {{$no}}</td>
-			 						<td> {{$no}} </td>
-			 						<td> {{$no}}</td>
-			 						<td> {{$no}}</td>
-			 						<td> {{$val->created_by}}</td>
-			 						<td> {{$val->updated_by}}</td>
-			 						<td>  </td>
+			 						<td> 
+			 							@foreach($data['config'] as $key_config=>$val_config)
+			 								@if($val_config == Request::get('search_filter')) 
+				    							{{$key_config}}
+				    						@endif
+			 							@endforeach
+			 						</td>
+			 						<td> 
+			 							@switch(Request::get('search_filter'))
+										    @case(1)
+										        {{$val->group1_name}}
+										        @break
+										    @case(2)
+										    	{{$val->group2_name}}
+										        @break
+										    @case(3)
+										    	{{$val->group3_name}}
+										        @break
+										    @case(4)
+										    	{{$val->group4_name}}
+										        @break
+										    @case(5)
+										    	{{$val->inventory_name}}
+										        @break
+										    @default
+										    	<span> Error </span>
+										    	@break
+										@endswitch
+			 						</td>
+			 						<td> 
+			 							@switch(Request::get('search_filter'))
+										    @case(1)
+										        {{$val->group1_detail}}
+										        @break
+										    @case(2)
+										    	{{$val->group2_detail}}
+										        @break
+										    @case(3)
+										    	{{$val->group3_detail}}
+										        @break
+										    @case(4)
+										    	{{$val->group4_detail}}
+										        @break
+										    @case(5)
+										    	{{$val->inventory_detail_name}}
+										        @break
+										    @default
+										    	<span> Error </span>
+										    	@break
+										@endswitch
+			 						</td>
+			 						<td> {{$val->created_by_user}}</td>
+			 						<td> {{$val->updated_by_user}}</td>
+			 						<td>  
+			 							<button 
+		                    			class="btn btn-warning"
+		                    			onclick="edit_config('{{$val->id}}')"
+		                    			>
+		                    				Edit Access Card
+		                    			</button>
+			 						</td>
 			 					</tr>
 			 					<?php $no++;?>
 			 					@endforeach
@@ -126,6 +181,15 @@
 		</div>
 	</div>
 
+	<script type="text/javascript">
+		function reset_filter() {
+			window.location = "{{route('helper.index')}}";
+		}
 
+		function edit_config(id) {
+			alert(id);
+			alert("{{Request::get('search_filter')}}");
+		}
+	</script>
 	@include('helper.modal_new_config')
 @endsection
