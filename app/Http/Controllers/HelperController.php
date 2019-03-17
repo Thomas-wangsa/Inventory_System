@@ -230,7 +230,7 @@ class HelperController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -242,7 +242,8 @@ class HelperController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        echo $id;
+        dd($request);
     }
 
     /**

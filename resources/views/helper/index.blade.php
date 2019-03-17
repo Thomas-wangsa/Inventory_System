@@ -24,6 +24,10 @@
 		</div>
 	@endif
 
+	<?php
+	$category_value=null; 
+	Request::get('search_filter') == null ? $id_edit_category=null : $id_edit_category = Request::get('search_filter');
+	?>
 
 	<div style="margin-top: 15px">
 		<div id="helper_header">
@@ -105,69 +109,48 @@
 			 				@elseif(count($data['rows']) < 1)
 			 					<td colspan="10" class="text-center"> Data not found! </td>
 			 				@else 
-			 					<?php $no=1; ?>
+			 					<?php $no=1;?>
+
+			 					@switch(Request::get('search_filter'))
+								    @case(1)
+								        <?php $val_name="group1_name";$val_detail="group1_detail";$category_value = "group1";?>
+								        @break
+								    @case(2)
+								    	<?php $val_name="group2_name";$val_detail="group2_detail";$category_value = "group2";?>
+								        @break
+								    @case(3)
+								    	<?php $val_name="group3_name";$val_detail="group3_detail";$category_value = "group3";?>
+								        @break
+								    @case(4)
+								    	<?php $val_name="group4_name";$val_detail="group4_detail";$category_value = "group4";?>
+								        @break
+								    @case(5)
+								    	<?php $val_name="inventory_name";$val_detail="inventory_detail_name";$category_value = "inventory list";?>
+								        @break
+								    @default
+								    	@break
+								@endswitch
+
 			 					@foreach($data['rows'] as $key=>$val)
 			 					<tr>
-			 						<td> {{$no}}</td>
+			 						<td> {{$no}} </td>
 			 						<td> 
-			 							@foreach($data['config'] as $key_config=>$val_config)
-			 								@if($val_config == Request::get('search_filter')) 
-				    							{{$key_config}}
-				    						@endif
-			 							@endforeach
+			 							{{$category_value}}
 			 						</td>
 			 						<td> 
-			 							@switch(Request::get('search_filter'))
-										    @case(1)
-										        {{$val->group1_name}}
-										        @break
-										    @case(2)
-										    	{{$val->group2_name}}
-										        @break
-										    @case(3)
-										    	{{$val->group3_name}}
-										        @break
-										    @case(4)
-										    	{{$val->group4_name}}
-										        @break
-										    @case(5)
-										    	{{$val->inventory_name}}
-										        @break
-										    @default
-										    	<span> Error </span>
-										    	@break
-										@endswitch
+			 							{{$val->$val_name}}
 			 						</td>
 			 						<td> 
-			 							@switch(Request::get('search_filter'))
-										    @case(1)
-										        {{$val->group1_detail}}
-										        @break
-										    @case(2)
-										    	{{$val->group2_detail}}
-										        @break
-										    @case(3)
-										    	{{$val->group3_detail}}
-										        @break
-										    @case(4)
-										    	{{$val->group4_detail}}
-										        @break
-										    @case(5)
-										    	{{$val->inventory_detail_name}}
-										        @break
-										    @default
-										    	<span> Error </span>
-										    	@break
-										@endswitch
+			 							{{$val->$val_detail}}
 			 						</td>
 			 						<td> {{$val->created_by_user}}</td>
 			 						<td> {{$val->updated_by_user}}</td>
 			 						<td>  
 			 							<button 
 		                    			class="btn btn-warning"
-		                    			onclick="edit_config('{{$val->id}}')"
+		                    			onclick="edit_config('{{$val->id}}','{{$val->$val_name}}','{{$val->$val_detail}}')"
 		                    			>
-		                    				Edit Access Card
+		                    				Edit {{ucwords($category_value)}} Category
 		                    			</button>
 			 						</td>
 			 					</tr>
@@ -181,15 +164,21 @@
 		</div>
 	</div>
 
+	
+	@include('helper.modal_new_config')
+	@include('helper.modal_edit_config')
+
 	<script type="text/javascript">
 		function reset_filter() {
 			window.location = "{{route('helper.index')}}";
 		}
 
-		function edit_config(id) {
-			alert(id);
-			alert("{{Request::get('search_filter')}}");
+		function edit_config(id,name,detail) {
+			$('#edit_config_uuid').val(id);
+			$('#edit_main_category').val(name);
+			$('#edit_additional_category').val(detail);
+			// alert(id);
+			$('#modal_edit_config').modal('show');
 		}
 	</script>
-	@include('helper.modal_new_config')
 @endsection
