@@ -241,9 +241,45 @@ class HelperController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        echo $id;
-        dd($request);
+    {   
+        $data = null;
+        switch ($id) {
+            case '1':
+                $data = Group1::find($request->edit_config_uuid);
+                $data->group1_name      = $request->config_main;
+                $data->group1_detail    = $request->config_additional;
+                break;
+            case '2':
+                $data = Group2::find($request->edit_config_uuid);
+                $data->group2_name      = $request->config_main;
+                $data->group2_detail    = $request->config_additional;
+                break;
+            case '3':
+                $data = Group3::find($request->edit_config_uuid);
+                $data->group3_name      = $request->config_main;
+                $data->group3_detail    = $request->config_additional;
+                break;
+            case '4':
+                $data = Group4::find($request->edit_config_uuid);
+                $data->group4_name      = $request->config_main;
+                $data->group4_detail    = $request->config_additional;
+                break;
+            case '5':
+                $data = Inventory_List::find($request->edit_config_uuid);
+                $data->inventory_name      = $request->config_main;
+                $data->inventory_detail_name    = $request->config_additional;
+                break;        
+            default:
+                # code...
+                break;
+        }
+
+        if($data->save()) {
+            $request->session()->flash('alert-success', "data already updated");
+        } else {
+            $request->session()->flash('alert-danger', "Data is not updated, Please contact your administator");
+        }
+        return redirect($this->redirectTo);
     }
 
     /**

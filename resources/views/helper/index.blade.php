@@ -1,6 +1,11 @@
 @extends('layouts.template')
 
 @section('content')
+	<style type="text/css">
+		.table td, .table th {
+   			text-align: center;   
+		}
+	</style>
 	<div class="flash-message center">
     @foreach (['danger', 'warning', 'success', 'info'] as $msg)
       @if(Session::has('alert-' . $msg))
