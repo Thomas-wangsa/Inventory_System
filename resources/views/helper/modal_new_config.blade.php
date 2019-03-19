@@ -16,13 +16,12 @@
 				  <div class="form-group">
             <label for="staff_nama"> Main Category :</label>
             <input type="text" class="form-control" id="nama" required="" 
-            name="config_main" value="" placeholder="ex : cctv">
+            name="config_main" value="">
           </div>
           <div class="form-group">
             <label for="staff_nama"> Additional information :</label>
             <input type="text" class="form-control" id="nama" required="" 
-            name="config_additional" value="" 
-            placeholder="ex : cctv management">
+            name="config_additional" value="">
           </div>
           <div class="form-group">
             <label for="staff_nama"> Select Category :</label>

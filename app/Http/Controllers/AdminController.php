@@ -12,6 +12,11 @@ use App\Http\Models\Pic_Role;
 use App\Http\Models\Admin_Room_List;
 use App\Http\Models\Admin_Room_Role;
 
+use App\Http\Models\Group1;
+use App\Http\Models\Group2;
+use App\Http\Models\Group3;
+use App\Http\Models\Group4;
+
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
 use App\Http\Models\Inventory_Data;
@@ -106,7 +111,11 @@ class AdminController extends Controller
             'pic_list'          => Pic_List::all(),
             'admin_room_list'	=> Admin_Room_List::all(),
             'setting_list'      => Setting_List::all(),
-            'level_authorization'=> $level_authorization
+            'level_authorization'=> $level_authorization,
+            'group_1'            => Group1::all(),
+            'group_2'            => Group2::all(),
+            'group_3'            => Group3::all(),
+            'group_4'            => Group4::all()
     	);
 
     	if($this->env == "development") {

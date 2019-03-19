@@ -65,8 +65,9 @@ class DatabaseSeeder extends Seeder
     		array("name"=>"administrator"),
             array("name"=>"pic sponsor"),
             array("name"=>"access card"),
-    		array("name"=>"inventory"),
+    		array("name"=>"old inventory"),
             array("name"=>"admin room"),
+            array("name"=>"inventory"),
     	);
 
     	foreach ($divisi_array as $key => $value) {
@@ -626,7 +627,7 @@ class DatabaseSeeder extends Seeder
             array('setting_name'  => 'inventory report '),
             array('setting_name'  => 'add new floor plan'),
             array('setting_name'  => 'add new admin room category'),
-            // array('setting_name'  => 'helper'),
+             array('setting_name'  => 'config'),
         );
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
