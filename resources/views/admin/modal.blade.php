@@ -127,6 +127,7 @@
 				    <label for="staff_divisi"> Group 4 :</label>
 				    <select class="form-control" id="id_group4_list" 
 				    name="name_group4_list">
+				    	<option value=""> </option>
 				    	@foreach($data['group_4'] as $key=>$val)
 				    	<option value="{{$val->id}}"> {{$val->group4_name}} </option>
 				    	@endforeach
@@ -192,6 +193,9 @@
 			$('#id_group3_head').hide();
 			$('#id_group4_head').hide();
 			$('#select_posisi').prop('disabled',false);
+			$("#id_group1_list").prop('required',false);
+			$("#id_group2_list").prop('required',false);
+			$("#id_group3_list").prop('required',false);
 			var value = $('#select_divisi').val();
 			var data = {"divisi":value};
 			$('#select_posisi')
@@ -270,7 +274,11 @@
 					$('#id_group2_head').show();
 					$('#id_group3_head').show();
 					$('#id_group4_head').show();
-					$('#inventory_head').show(); 
+					$('#inventory_head').show();
+					$("#id_group1_list").prop('required',true);
+					$("#id_group2_list").prop('required',true);
+					$("#id_group3_list").prop('required',true);
+ 
 					$.ajax({
 						url: 	"{{route('get_inventory_level')}}",
 						method: "POST", 

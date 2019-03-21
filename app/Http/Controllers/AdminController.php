@@ -19,6 +19,7 @@ use App\Http\Models\Group4;
 
 use App\Http\Models\Inventory_List;
 use App\Http\Models\Inventory_Role;
+use App\Http\Models\New_Inventory_Role;
 use App\Http\Models\Inventory_Data;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\Setting_Role;
@@ -137,15 +138,15 @@ class AdminController extends Controller
             'company' => 'required|max:50',
         ]);
 
-    	if (!preg_match("/^[a-zA-Z ]*$/",$request->name)) {
-    		$request->session()->flash('alert-danger', 'Only letters and white space allowed!');
+    	if (!preg_match("/^[a-zA-Z. ]*$/",$request->name)) {
+    		$request->session()->flash('alert-danger', 'Only letters and white space allowed on name!');
     		return redirect('admin');
 		}
 
 
 		if($this->env != 'development') {
 			if (!preg_match("/^[0-9]*$/",$request->mobile)) {
-			$request->session()->flash('alert-danger', 'Only numbers allowed!');
+			$request->session()->flash('alert-danger', 'Only numbers allowed on phone!');
     		return redirect('admin'); 
 			}
 		}
@@ -257,6 +258,37 @@ class AdminController extends Controller
                     $user_role->divisi      = $request->divisi;
                     $user_role->jabatan     = $new_admin_room_role->id;
     			break;
+
+                case 6 :
+                    try {
+                        $request->validate([
+                            'name_group1_list'   => 'required',
+                            'name_group2_list'   => 'required',
+                            'name_group3_list'   => 'required',
+                        ]);
+                    } catch (\Exception $e) {
+                        $request->session()->flash('alert-danger', "Please select the grouping value");
+                        return redirect('admin');
+
+                    }
+                    $inventory_role_array = array(
+                        "user_id"              => $new_users->id,
+                        "group1"                => $request->name_group1_list,
+                        "group2"                => $request->name_group2_list,
+                        "group3"                => $request->name_group3_list,
+                        "group4"                => $request->name_group4_list,
+                        "inventory_list_id"     => $request->inventory_list,
+                        "inventory_level_id"    => $request->position
+                    );
+
+                    $new_inventory_role = New_Inventory_Role::firstOrCreate($inventory_role_array);
+
+
+                    $user_role      = new Users_Role;
+                    $user_role->user_id     = $new_users->id;
+                    $user_role->divisi      = $request->divisi;
+                    $user_role->jabatan     = $new_inventory_role->id;                    
+                break;
 
     			default : 
     				$request->session()->flash('alert-danger', 'Please contact your administrator !,Failed in Transaction Data Process');
