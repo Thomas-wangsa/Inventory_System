@@ -47,7 +47,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 		Route::resource('helper', 'HelperController');
-	
+		Route::post('/ajax/get_group_detail','AjaxController@get_group_detail')->name('get_group_detail');
+
 
 		// MAP
 		Route::post('/map/add_map', 'MapController@add_map')->name('add_map');

@@ -149,7 +149,45 @@
               '</div>'+
           '</td>' +
           '<td id="edit_inventory_role">' +
+            '<div class="form-group" id="group1_head'+no_id_unique+'">' +
+                '<label> Group1 : </label>'+
+                '<select '+ 
+                'class="form-control" '+
+                'id="group1_role'+no_id_unique+'" '+
+                '>' +
+                  
+                '</select>'+
+            '</div>'+
+            '<div class="form-group" id="group2_head'+no_id_unique+'">' +
+                '<label> Group2 : </label>'+
+                '<select '+ 
+                'class="form-control" '+
+                'id="group2_role'+no_id_unique+'" '+
+                '>' +
+                  
+                '</select>'+
+            '</div>'+
+            '<div class="form-group" id="group3_head'+no_id_unique+'">' +
+                '<label> Group3 : </label>'+
+                '<select '+ 
+                'class="form-control" '+
+                'id="group3_role'+no_id_unique+'" '+
+                '>' +
+                  
+                '</select>'+
+            '</div>'+
+            '<div class="form-group" id="group4_head'+no_id_unique+'">' +
+                '<label> Group4 : </label>'+
+                '<select '+ 
+                'class="form-control" '+
+                'id="group4_role'+no_id_unique+'" '+
+                '>' +
+                  
+                '</select>'+
+                '<span class="text-info"> note : group4 optional </span>' +
+            '</div>'+
             '<div class="form-group" id="inventory_head_edit'+no_id_unique+'">' +
+                '<label> Inventory Category : </label>'+
                 '<select '+ 
                 'class="form-control" '+
                 'id="inventory_role'+no_id_unique+'" '+
@@ -306,6 +344,11 @@
     $('#pic_list_html'+no_id_unique).hide();
     $('#admin_room_list_html'+no_id_unique).hide();
 
+    $('#group1_head'+no_id_unique).hide();
+    $('#group2_head'+no_id_unique).hide();
+    $('#group3_head'+no_id_unique).hide();
+    $('#group4_head'+no_id_unique).hide();
+
     $('#btn_inventory'+no_id_unique).hide();
     $('#btn_pic'+no_id_unique).hide();
     $('#btn_admin_room'+no_id_unique).hide();
@@ -334,6 +377,48 @@
         });
         $('#inventory_role'+no_id_keep).append(data_select);
 
+      },
+      error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+      }
+    });
+
+
+    $.ajax({ 
+      type : "POST",
+      url: " {{ route('get_group_detail') }}",
+      contentType: "application/json",
+      success: function(result) {
+        var response = JSON.parse(result);
+        var additional_group1 = "<option value=''> select group 1 </option>";
+        var additional_group2 = "<option value=''> select group 2 </option>";
+        var additional_group3 = "<option value=''> select group 3 </option>";
+        var additional_group4 = "<option value=''> select group 4 </option>";
+        $.each(response, function(group_name, group_value) {
+            $.each(group_value, function(key, val) {
+                if(group_name=="group1") {
+                  additional_group1 += '<option value='+val.id+'>' +
+                              val.group1_name +
+                              '</option>';
+                } else if (group_name=="group2") {
+                  additional_group2 += '<option value='+val.id+'>' +
+                              val.group2_name +
+                              '</option>';
+                } else if (group_name=="group3") {
+                  additional_group3 += '<option value='+val.id+'>' +
+                              val.group3_name +
+                              '</option>';
+                } else if (group_name=="group4") {
+                  additional_group4 += '<option value='+val.id+'>' +
+                              val.group4_name +
+                              '</option>';
+                }
+            });
+        });
+        $('#group1_role'+no_id_keep).append(additional_group1);
+        $('#group2_role'+no_id_keep).append(additional_group2);
+        $('#group3_role'+no_id_keep).append(additional_group3);
+        $('#group4_role'+no_id_keep).append(additional_group4);
       },
       error: function( jqXhr, textStatus, errorThrown ){
         console.log( errorThrown );
@@ -391,6 +476,11 @@
     $('#inventory_head_edit'+no_id_unique_param).hide();
     $('#pic_list_html'+no_id_unique_param).hide();
     $('#admin_room_list_html'+no_id_unique_param).hide();
+
+    $('#group1_head'+no_id_unique_param).hide();
+    $('#group2_head'+no_id_unique_param).hide();
+    $('#group3_head'+no_id_unique_param).hide();
+    $('#group4_head'+no_id_unique_param).hide();
     
     $('#btn_inventory'+no_id_unique_param).hide();
     $('#btn_pic'+no_id_unique_param).hide();
@@ -470,6 +560,28 @@
         $('#admin_room_list_html'+no_id_unique_param).show();
         $('#btn_admin_room'+no_id_unique_param).show();
         break;
+        case "6" :
+        $('#group1_head'+no_id_unique_param).show();
+        $('#group2_head'+no_id_unique_param).show();
+        $('#group3_head'+no_id_unique_param).show();
+        $('#group4_head'+no_id_unique_param).show();
+        $('#inventory_head_edit'+no_id_unique_param).show();
+
+        $.ajax({
+          url:  "{{route('get_inventory_level')}}",
+          method: "POST", 
+          contentType : "application/json; charset=utf-8",
+          data : JSON.stringify(data),
+          success: function(result){
+                $.each(JSON.parse(result), function(key, value) {   
+                 $('#select_posisi_edit'+no_id_unique_param)
+                     .append($("<option></option>")
+                                .attr("value",value.id)
+                                .text(value.inventory_level_name));
+            });
+          }
+        });
+        break;
         default :
           alert("Check ROLE Error, Please contact your administrator");
         break;
@@ -485,6 +597,10 @@
     var pic_role      = $('#pic_role'+no_id_unique_param).val();
     var admin_room_role      = $('#admin_room_role'+no_id_unique_param).val();
 
+    var group1_role      = $('#group1_role'+no_id_unique_param).val();
+    var group2_role      = $('#group2_role'+no_id_unique_param).val();
+    var group3_role      = $('#group3_role'+no_id_unique_param).val();
+    var group4_role      = $('#group4_role'+no_id_unique_param).val();
 
     if(divisi_role == "2") {
       if(pic_role == null) {
@@ -501,6 +617,22 @@
         alert('please select admin room');
         return false;
       }
+    } else if(divisi_role == "6") {
+
+      if(group1_role == "") {
+        alert('please select group 1');
+        return false;
+      }
+
+      if(group2_role == "") {
+        alert('please select group 2');
+        return false;
+      }
+
+      if(group3_role == "") {
+        alert('please select group 3');
+        return false;
+      }
     }
 
     var data = {
@@ -509,7 +641,11 @@
       "jabatan_role":jabatan_role,
       "inv_role":inv_role,
       "pic_role":pic_role,
-      "admin_room_role":admin_room_role
+      "admin_room_role":admin_room_role,
+      "group1_role":group1_role,
+      "group2_role":group2_role,
+      "group3_role":group3_role,
+      "group4_role":group4_role
     };
 
     
@@ -543,6 +679,10 @@
             $('#pic_role'+no_id_unique_param).prop('disabled',true);
             $('#admin_room_role'+no_id_unique_param).prop('disabled',true);
 
+            $('#group1_role'+no_id_unique_param).prop('disabled',true);
+            $('#group2_role'+no_id_unique_param).prop('disabled',true);
+            $('#group3_role'+no_id_unique_param).prop('disabled',true);
+            $('#group4_role'+no_id_unique_param).prop('disabled',true);
 
             $('#btn_pic'+no_id_unique_param).hide();
             $('#btn_inventory'+no_id_unique_param).hide();

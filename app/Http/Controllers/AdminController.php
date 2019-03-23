@@ -360,6 +360,14 @@ class AdminController extends Controller
                         ->where('admin_room_list_id',$request->admin_room_role)
                         ->count();
             break;
+            case "6" :
+                $count_exist = New_Inventory_Role::where('user_id',$user->id)
+                        ->where('group1',$request->group1_role)
+                        ->where('group2',$request->group2_role)
+                        ->where('group3',$request->group3_role)
+                        ->where('group4',$request->group4_role)
+                        ->count();
+            break;
             default : 
                 $count_exist = 1;
             break;
@@ -440,6 +448,28 @@ class AdminController extends Controller
                 $new_user_role->jabatan     = $param_jabatan;
                 $new_user_role->save();
             break;
+            case "6" :
+                $new_inventory_role_array = array(
+                    "user_id"               => $user->id,
+                    "group1"                => $request->group1_role,
+                    "group2"                => $request->group2_role,
+                    "group3"                => $request->group3_role,
+                    "group4"                => $request->group4_role4,
+                    "inventory_list_id"     => $request->inv_role,
+                    "inventory_level_id"    => $request->jabatan_role
+                );
+
+                $new_inventory_role = New_Inventory_Role::firstOrCreate($new_inventory_role_array);
+
+                $param_jabatan = $new_inventory_role->id;
+
+                $new_user_role = new Users_Role;
+                $new_user_role->user_id = $user->id;
+                $new_user_role->divisi  = $request->divisi_role;
+                $new_user_role->jabatan     = $param_jabatan;
+                $new_user_role->save();
+            break;
+
             default :
                 $response['message']  = "outside of scope level authority";
                 return json_encode($response);

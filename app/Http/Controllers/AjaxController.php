@@ -17,9 +17,26 @@ use App\Http\Models\Admin_Room_List;
 use App\Http\Models\Admin_Room_Role;
 use App\Http\Models\Setting_List;
 use App\Http\Models\Setting_Role;
+use App\Http\Models\Group1;
+use App\Http\Models\Group2;
+use App\Http\Models\Group3;
+use App\Http\Models\Group4;
+
 
 class AjaxController extends Controller
-{
+{   
+
+    public function get_group_detail(Request $request) {
+        $response = [
+            "group1"    => Group1::all(),
+            "group2"    => Group2::all(),
+            "group3"    => Group3::all(),
+            "group4"    => Group4::all()
+        ];
+        return json_encode($response);
+    }
+
+
     public function get_akses_role(Request $request) {
     	$role = Akses_Role::all();
     	return json_encode($role);
