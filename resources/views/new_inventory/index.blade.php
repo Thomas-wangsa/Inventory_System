@@ -118,11 +118,23 @@
 			      <tr>
 			      	<th> No </th>
 			      	<th> 
-			      		Inventory
-			      		Category 
+			      		Name
 			      	</th>
-			        <th> Qty </th>
-			        <th> Map Location </th>
+			      	<th> 
+			      		Group1
+			      	</th>
+			      	<th> 
+			      		Group2
+			      	</th>
+			      	<th> 
+			      		Group3
+			      	</th>
+			      	<th> 
+			      		Group4
+			      	</th>
+			      	<th>
+			      		Category
+			      	</th>
 			        <th> Status </th>
 			        <th> Action </th>
 			      </tr>

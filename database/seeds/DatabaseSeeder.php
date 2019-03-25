@@ -25,6 +25,10 @@ use App\Http\Models\Setting_Data;
 use App\Http\Models\Sub_Notify;
 use App\Http\Models\AccessCardRegisterStatus;
 use App\Http\Models\AccessCardRequest;
+use App\Http\Models\Group1;
+use App\Http\Models\Group2;
+use App\Http\Models\Group3;
+use App\Http\Models\Group4;
 use Faker\Factory as Faker;
 
 class DatabaseSeeder extends Seeder
@@ -215,24 +219,24 @@ class DatabaseSeeder extends Seeder
                 "password"=>bcrypt(123456),
                 "mobile"=>$faker->phoneNumber
             ),
-            // array(
-            //     "name"=>$faker->name,
-            //     "email"=>"dummy.pic@gmail.com",
-            //     "password"=>bcrypt(123456),
-            //     "mobile"=>$faker->phoneNumber
-            // ),
-            // array(
-            //     "name"=>$faker->name,
-            //     "email"=>"dummy.inv@gmail.com",
-            //     "password"=>bcrypt(123456),
-            //     "mobile"=>$faker->phoneNumber
-            // ),
-            // array(
-            //     "name"=>$faker->name,
-            //     "email"=>"dummy.data@gmail.com",
-            //     "password"=>bcrypt(123456),
-            //     "mobile"=>$faker->phoneNumber
-            // ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"dummy.pic@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"dummy.inv@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
+            array(
+                "name"=>$faker->name,
+                "email"=>"dummy.data@gmail.com",
+                "password"=>bcrypt(123456),
+                "mobile"=>$faker->phoneNumber
+            ),
         );
 
 
@@ -606,11 +610,10 @@ class DatabaseSeeder extends Seeder
 
         
         $status_inventory_array = array(
-            array("name"=>"pending head inventory","color"=>"#FFA500"),
-            array("name"=>"pending administrator","color"=>"#9618D1"),
+            array("name"=>"draft","color"=>"#FFA500"),
+            array("name"=>"pending head inventory","color"=>"#9618D1"),
             array("name"=>"inventory is active","color"=>"#0000FF"),
             array("name"=>"rejected by head inventory","color"=>"#FF0000"),
-            array("name"=>"rejected by administrator","color"=>"#FF0000"),
         );
 
         foreach ($status_inventory_array as $key => $value) {
@@ -631,6 +634,109 @@ class DatabaseSeeder extends Seeder
         );
         foreach ($setting_list_array as $key => $value) {
             Setting_List::firstOrCreate($value);
+        }
+
+
+
+        $group1_array = array(
+            array(
+                "group1_name"       => "jakarta",
+                "group1_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 22),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 22) 
+            ),
+            array(
+                "group1_name"       => "aceh",
+                "group1_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 22),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 22) 
+            ),
+            array(
+                "group1_name"       => "bali",
+                "group1_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 22),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 22) 
+            )
+        );
+
+        foreach($group1_array as $key=>$value) {
+            Group1::firstOrCreate($value);
+        }
+
+        $group2_array = array(
+            array(
+                "group2_name"       => "banda aceh",
+                "group2_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            ),
+            array(
+                "group2_name"       => "denpasar",
+                "group2_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            ),
+            array(
+                "group2_name"       => "serang",
+                "group2_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            )
+        );
+
+        foreach($group2_array as $key=>$value) {
+            Group2::firstOrCreate($value);
+        }
+
+
+        $group3_array = array(
+            array(
+                "group3_name"       => "Gedung KPPI",
+                "group3_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            ),
+            array(
+                "group3_name"       => "Gedung Indosat",
+                "group3_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            ),
+            array(
+                "group3_name"       => "Gedung III",
+                "group3_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            )
+        );
+
+        foreach($group3_array as $key=>$value) {
+            Group3::firstOrCreate($value);
+        }
+
+        $group4_array = array(
+            array(
+                "group4_name"       => "sebrang warung",
+                "group4_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            ),
+            array(
+                "group4_name"       => "belakang indomaret",
+                "group4_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            ),
+            array(
+                "group4_name"       => "sebelah tukang sate",
+                "group4_detail"     => $faker->text,
+                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
+                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
+            ),
+        );
+
+        foreach($group4_array as $key=>$value) {
+            Group4::firstOrCreate($value);
         }
 
         $full_data = array();
