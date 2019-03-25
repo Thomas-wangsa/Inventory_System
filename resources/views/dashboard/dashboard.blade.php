@@ -72,13 +72,13 @@
         </div>
         @endif
 
-        @if(in_array(1,$user_divisi) || in_array(4,$user_divisi))
+        @if(in_array(1,$user_divisi) || in_array(6,$user_divisi))
         <div class="menu_block">
-            <a href="{{route('inventory')}}">
+            <a href="{{route('new_inventory.index')}}">
                 <div class="sub_menu_block">
                     <div class="icon_block">
                         <img src="{{ asset('images/logo/checklist.png')}}" / >
-                        <h4> Inventory Page </h4> 
+                        <h4> New Inventory Page </h4> 
                     </div>                
                 </div>
             </a>

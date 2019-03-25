@@ -15,7 +15,7 @@
     @elseif(Route::current()->getName() == 'accesscardrequest')
       ACCESS CARD REQUEST
     @elseif(Route::current()->getName() == 'inventory')
-      INVENTORY  
+      OLD INVENTORY  
     @elseif(Route::current()->getName() == 'show_inventory')
       SHOW INVENTORY
     @elseif(Route::current()->getName() == 'show_background')
@@ -36,6 +36,8 @@
       INVENTORY REPORT
     @elseif(Route::current()->getName() == 'helper.index')
       CONFIGURATION 
+    @elseif(Route::current()->getName() == 'new_inventory.index')
+      INVENTORY
     @else 
       ERROR
     @endif
