@@ -454,7 +454,7 @@ class AdminController extends Controller
                     "group1"                => $request->group1_role,
                     "group2"                => $request->group2_role,
                     "group3"                => $request->group3_role,
-                    "group4"                => $request->group4_role4,
+                    "group4"                => $request->group4_role,
                     "inventory_list_id"     => $request->inv_role,
                     "inventory_level_id"    => $request->jabatan_role
                 );

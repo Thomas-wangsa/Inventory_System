@@ -48,7 +48,7 @@ class Users_Role extends Model
                         from akses_role where id = jabatan
                     )
                 WHEN(users_role.divisi = 4)
-                    THEN (select CONCAT(il.inventory_level_name," ",i_list.inventory_name) 
+                    THEN (select CONCAT(il.inventory_level_name," ",i_list.inventory_name," (old inventory)") 
                         FROM inventory_role ir
                         INNER JOIN inventory_level il
                         ON il.id = ir.inventory_level_id
