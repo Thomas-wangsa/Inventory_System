@@ -41,6 +41,10 @@ class CreateNewInventoryRole extends Migration
                 ->references('id')->on('group3')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
 
+            $table->foreign('group4', 'new_group4_fkey')
+                ->references('id')->on('group4')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
             $table->foreign('inventory_list_id', 'new_inventory_role_list_id_fkey')
                 ->references('id')->on('inventory_list')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
