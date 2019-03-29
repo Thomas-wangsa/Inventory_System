@@ -37,37 +37,7 @@
 		      @endif
 		    @endforeach
 		</div> <!-- end .flash-message -->
-
-		
-		<div> 
-			@if(in_array(1,$user_divisi) || in_array(4,$user_setting))
-			<div class="pull-left" style="margin-right: 5px">
-				<div class="btn btn-primary" 
-				data-toggle="modal" data-target="#modal_new_inventory">
-					Add Inventory Category 
-				</div>
-			</div>
-			@endif
-			@if(in_array(1,$user_divisi) || in_array(2,$user_setting))
-			<div class="pull-left" style="margin-right: 5px">
-				<div class="btn btn-primary"
-				data-toggle="modal" data-target="#modal_upload">
-					Upload Excel
-				</div>
-			</div>
-			@endif
-			@if(in_array(1,$user_divisi) || in_array(7,$user_setting))
-			<div class="pull-left">
-				<div class="btn btn-primary"
-				data-toggle="modal" data-target="#modal_new_floor">
-					Add Map Location
-				</div>
-			</div>
-			@endif
-		</div>
-
-		<div class="clearfix" style="margin-bottom: 10px"> </div>
-		
+	
 
 		<div class="pull-left">
 		 	<form class="form-inline" action="{{route('new_inventory.index')}}">
@@ -147,7 +117,7 @@
 
 	</div>
   
-
+	@include('new_inventory.modal_new')
 
 
 

@@ -366,6 +366,8 @@ class AdminController extends Controller
                         ->where('group2',$request->group2_role)
                         ->where('group3',$request->group3_role)
                         ->where('group4',$request->group4_role)
+                        ->where('inventory_list_id',$request->inv_role)
+                        ->where('inventory_level_id',$request->jabatan_role)
                         ->count();
             break;
             default : 

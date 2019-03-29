@@ -22,9 +22,39 @@ class CreateTableNewInventoryData extends Migration
             $table->unsignedInteger('group4')->nullable();
             $table->unsignedInteger('inventory_list_id');
             $table->unsignedInteger('status');
-            $table->unsignedInteger('main_quantity');
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');
+            
+            $table->string('file_name_upload')->nullable();
+
+            $table->string('tanggal_update_data')->nullable();
+            $table->string('kategori')->nullable();
+            $table->string('kode_gambar')->nullable();
+            $table->string('dvr')->nullable();
+            $table->string('lokasi_site')->nullable();
+
+            $table->string('kode_lokasi')->nullable();
+            $table->string('jenis_barang')->nullable();
+            $table->string('merk')->nullable();
+            $table->string('tipe')->nullable();
+            $table->string('model')->nullable();
+
+            $table->string('serial_number')->nullable();
+            $table->string('psu_adaptor')->nullable();
+            $table->string('tahun_pembuatan')->nullable();
+            $table->string('tahun_pengadaan')->nullable();
+            $table->string('kondisi')->nullable();
+
+            $table->string('deskripsi')->nullable();
+            $table->string('asuransi')->nullable();
+            $table->string('lampiran')->nullable();
+            $table->string('tanggal_retired')->nullable();
+            $table->string('po')->nullable();
+
+            $table->unsignedInteger('qty')->nullable();
+            $table->string('keterangan')->nullable();
+
+            
             $table->string('uuid');
             $table->text('comment')->nullable();
             $table->timestamps();

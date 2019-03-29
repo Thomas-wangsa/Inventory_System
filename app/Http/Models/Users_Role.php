@@ -16,6 +16,44 @@ class Users_Role extends Model
     protected $primaryKey = 'role_id';
 
 
+    public function scopeGetInventoryRoleById($query,$user_id) {
+        return
+        $query->where('users_role.user_id','=',$user_id)
+        ->whereIn('divisi',array(6))
+        ->select('divisi','jabatan',
+        DB::raw('case 
+            WHEN(users_role.divisi = 6)
+                THEN (select CONCAT(
+                    il.inventory_level_name," ",i_list.inventory_name
+                    ," ("
+                    ,IFNULL(group1.group1_name,"undefined"),", "
+                    ,IFNULL(group2.group2_name,"undefined"),", "
+                    ,IFNULL(group3.group3_name,"undefined"),", "
+                    ,IFNULL(group4.group4_name,"undefined")
+                    ,")"
+                    ) 
+                    FROM new_inventory_role ir
+                    INNER JOIN inventory_level il
+                    ON il.id = ir.inventory_level_id
+                    INNER JOIN inventory_list i_list
+                    ON i_list.id = ir.inventory_list_id
+                    LEFT JOIN group1 
+                    ON ir.group1 = group1.id
+                    LEFT JOIN group2
+                    ON ir.group2 = group2.id
+                    LEFT JOIN group3
+                    ON ir.group3 = group3.id
+                    LEFT JOIN group4
+                    ON ir.group4 = group4.id
+                    where ir.id = jabatan 
+                    and user_id = '.$user_id.'
+                )
+            ELSE "NULL"
+            END AS nama_jabatan')
+        );
+
+    }
+
     public function scopeGetDivisiById($query,$user_id) {
         return 
         $query->where('users_role.user_id','=',$user_id)
@@ -69,11 +107,11 @@ class Users_Role extends Model
                     THEN (select CONCAT(
                         il.inventory_level_name," ",i_list.inventory_name
                         ," ("
-                        ,IFNULL(group1.group1_name,"undefined")," , "
-                        ,IFNULL(group2.group2_name,"undefined")," , "
-                        ,IFNULL(group3.group3_name,"undefined")," , "
+                        ,IFNULL(group1.group1_name,"undefined"),", "
+                        ,IFNULL(group2.group2_name,"undefined"),", "
+                        ,IFNULL(group3.group3_name,"undefined"),", "
                         ,IFNULL(group4.group4_name,"undefined")
-                        ," )"
+                        ,")"
                         ) 
                         FROM new_inventory_role ir
                         INNER JOIN inventory_level il
