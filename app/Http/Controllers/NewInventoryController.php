@@ -55,17 +55,30 @@ class NewInventoryController extends Controller
                             ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
                             ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
                             ->leftjoin('status_inventory','status_inventory.id','=','new_inventory_data.status');
+        //dd($base_inventory_data->get());
+        if($request->search == "on") {
+            if($request->search_nama != null) {
+                $base_inventory_data->where('new_inventory_data.inventory_name','like','%'.$request->search_nama."%");
+            }
 
+            if($request->search_filter != null) {
+                $base_inventory_data->where('new_inventory_data.status',$request->search_filter);            
+            } 
+
+            if($request->search_uuid != null) {
+                $base_inventory_data->where('new_inventory_data.uuid',$request->search_uuid);
+            } 
+        }
+        
         $base_inventory_data->select('new_inventory_data.*'
                         ,'group1.group1_name'
                         ,'group2.group2_name'
                         ,'group3.group3_name'
                         ,'group4.group4_name'
-                        ,'inventory_list.inventory_name'
+                        ,'inventory_list.inventory_name AS inventory_list_name'
                         ,'status_inventory.name AS status_inventory_name'
                         ,'status_inventory.color AS status_inventory_color'
                         );
-
         $new_inventory_data = $base_inventory_data->get();
 
         

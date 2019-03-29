@@ -63,12 +63,35 @@
 				<div class="form-group">
 			      	<select class="form-control" name="search_filter">
 			      		<option value=""> Filter  </option>
-			 			
+			 			@foreach($data['status_inventory'] as $val)
+			 			<option value="{{$val->id}}"
+			 				@if($val->id == Request::get('search_filter')) 
+			    				selected
+			    			@endif
+			    			> 
+			 				{{$val->name}}
+			 			</option>
+			 			@endforeach
 			      	</select>
 			  	</div>
 
 			  	<div class="form-group">
-			      	<select class="form-control" name="search_order">			      		
+			      	<select class="form-control" name="search_order">
+			      		<option value=""> Sort  </option>
+			        	<option value="created"
+			        		@if('created' == Request::get('search_order')) 
+			    				selected
+			    			@endif
+			    			> 
+			        		created
+			        	</option>
+			        	<option value="updated"
+			        		@if('updated' == Request::get('search_order')) 
+			    				selected
+			    			@endif
+			        		> 
+			        		updated
+			        	</option>			      		
 			      	</select>
 			  	</div>
 			  
@@ -119,7 +142,7 @@
 			    <tbody>
 			    </tbody>
 			    <?php $no = 0;?>
-			    @if(count($data['new_inventory_data']) > 1)
+			    @if(count($data['new_inventory_data']) > 0)
 			    	@foreach($data['new_inventory_data'] as $key=>$val)
 			    	<tr> 
 			    		<td> {{$no+1}}</td>
@@ -128,7 +151,7 @@
 			    		<td> {{$val->group2_name}} </td>
 			    		<td> {{$val->group3_name}} </td>
 			    		<td> {{$val->group4_name ? $val->group4_name : "undefined"}}  </td>
-			    		<td> {{$val->inventory_name}} </td>
+			    		<td> {{$val->inventory_list_name}} </td>
 			    		<td style="color:{{$val->status_inventory_color}}"> {{$val->status_inventory_name}} </td>
 			    		<td> ACtion </td>
 			    	</tr> 
@@ -145,6 +168,10 @@
   
 	@include('new_inventory.modal_new')
 
-
+	<script type="text/javascript">
+		function reset_filter() {
+    		window.location = "{{route('new_inventory.index')}}";
+    	}
+	</script>
 
 @endsection
