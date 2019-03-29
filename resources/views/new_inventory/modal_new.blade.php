@@ -13,7 +13,7 @@
         <div class="modal-body">
           <form class="form-horizontal" 
           method="POST" enctype="multipart/form-data"
-          action="{{ route('inventory_insert_data') }}">
+          action="{{ route('new_inventory_draft_data') }}">
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label col-xs-4" for="email">
@@ -21,7 +21,7 @@
               </label>
               <div class="col-xs-8">
                 <select class="form-control" 
-                name="inventory_list_id" 
+                name="new_inventory_role_id" 
                 required="">
                   <option value=""> Select role inventory </option>
                   @foreach($data['list_new_inventory_role'] as $key=>$val)
@@ -30,9 +30,33 @@
                   </option>
                   @endforeach
                 </select>
+              </div>  
+            </div>
+
+
+            <div class="form-group">
+              <label class="control-label col-xs-4" for="email">
+                Inventory Name :
+              </label>
+              <div class="col-xs-8">
+                <input type="text" class="form-control" 
+                id="" name="inventory_name" value=""
+                required="" 
+                placeholder="Required Field" >
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="control-label col-xs-4" for="email">
+                QTY :
+              </label>
+              <div class="col-xs-8">
+                <input type="number" class="form-control" 
+                id="" name="qty" value=""
+                required="" 
+                placeholder="Required Field">
+              </div>
+            </div>
 
             <div class="form-group">
               <label class="control-label col-xs-4" for="email">
@@ -41,9 +65,11 @@
               <div class="col-xs-8">
                 <input type="text" class="form-control datepicker_class" 
                 id="" name="tanggal_update_data" value=""
+                required="" 
                 placeholder="example : 2018-09-15" >
               </div>
             </div>
+
             <div class="form-group">
               <label class="control-label col-xs-4" for="email">
                 Kategori :
@@ -114,8 +140,7 @@
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
                 id="" name="merk" value=""
-                required="" 
-                placeholder="Required Field" >
+                placeholder="Optional..." >
               </div>
             </div>
             <div class="form-group">
@@ -244,19 +269,6 @@
               </div>
             </div>
 
-
-
-            <div class="form-group">
-              <label class="control-label col-xs-4" for="email">
-                QTY :
-              </label>
-              <div class="col-xs-8">
-                <input type="text" class="form-control" 
-                id="" name="qty" value=""
-                required="" 
-                placeholder="Required Field">
-              </div>
-            </div>
             <div class="form-group">
               <label class="control-label col-xs-4" for="email">
                 Keterangan :

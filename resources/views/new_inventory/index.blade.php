@@ -11,7 +11,14 @@
 </style>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+<script>
+  $( function() {
+    $(".datepicker_class" ).datepicker({
+      dateFormat: 'yy-mm-dd' ,
+      showButtonPanel: true
+    });
+  });
+</script>
 	<div style="margin-top: 40px">
 		@if ($errors->any())
 	    <div class="alert alert-danger">
@@ -111,6 +118,25 @@
 			    </thead>
 			    <tbody>
 			    </tbody>
+			    <?php $no = 0;?>
+			    @if(count($data['new_inventory_data']) > 1)
+			    	@foreach($data['new_inventory_data'] as $key=>$val)
+			    	<tr> 
+			    		<td> {{$no+1}}</td>
+			    		<td> {{$val->inventory_name}} </td>
+			    		<td> {{$val->group1_name}} </td>
+			    		<td> {{$val->group2_name}} </td>
+			    		<td> {{$val->group3_name}} </td>
+			    		<td> {{$val->group4_name ? $val->group4_name : "undefined"}}  </td>
+			    		<td> {{$val->inventory_name}} </td>
+			    		<td style="color:{{$val->status_inventory_color}}"> {{$val->status_inventory_name}} </td>
+			    		<td> ACtion </td>
+			    	</tr> 
+			    	<?php $no++;?>
+			    	@endforeach
+			    @else
+			    	<tr> <td colspan="10"> NO DATA FOUND! </td></tr> 
+			    @endif
 			</table>
 		</div>
 

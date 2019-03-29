@@ -48,6 +48,9 @@ Route::group(['middleware' => ['auth']], function() {
 
 		Route::resource('helper', 'HelperController');
 		Route::resource('new_inventory','NewInventoryController');
+
+		Route::post('/new_inventory/draft_data','NewInventoryController@set_draft_data')->name('new_inventory_draft_data');
+
 		Route::post('/ajax/get_group_detail','AjaxController@get_group_detail')->name('get_group_detail');
 
 
