@@ -48,6 +48,10 @@
 						        <th> inventory category </th>
 						        <td id="new_inventory_info_category">  </td>
 						      </tr>
+						      <tr>
+						        <th> inventory name </th>
+						        <td id="new_inventory_info_name">  </td>
+						      </tr>
 
 						      <tr class="info">
 						        <th> file name upload </th>
@@ -238,7 +242,7 @@
 					$('#new_inventory_info_group4').html(response.data.group4_name);
 					$('#new_inventory_info_category').html(response.data.inventory_list_name);
 					$('#new_inventory_info_level').html(response.data.inventory_level_name);
-
+					$('#new_inventory_info_name').html(response.data.inventory_name);
 
 					$('#file_name_upload').html(response.data.file_name_upload);
 

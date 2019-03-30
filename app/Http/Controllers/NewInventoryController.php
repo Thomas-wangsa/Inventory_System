@@ -310,7 +310,15 @@ class NewInventoryController extends Controller
                 ->leftjoin('inventory_level','inventory_level.id','=','new_inventory_data.inventory_level_id')
                 ->where('uuid',$request->uuid)
                 ->select('new_inventory_data.*'
-                    ,'CONCAT("aaa","bbb") AS grouping_name'
+                    ,DB::raw('CONCAT(
+                    inventory_level.inventory_level_name," ",inventory_list.inventory_name
+                    ," ("
+                    ,IFNULL(group1.group1_name,"undefined"),", "
+                    ,IFNULL(group2.group2_name,"undefined"),", "
+                    ,IFNULL(group3.group3_name,"undefined"),", "
+                    ,IFNULL(group4.group4_name,"undefined")
+                    ,")"
+                    ) AS grouping_detail')
                 )
                 ->first();
         if(count($data) < 1) {
@@ -321,5 +329,61 @@ class NewInventoryController extends Controller
         $response['status'] = true;
         $response['data'] = $data; 
         return json_encode($response);
+    }
+
+    public function new_inventory_update_data(Request $request) {
+        $request->validate([
+                'uuid' => 'required',
+        ]);
+
+        $inventory_data = New_Inventory_Data::where('status',1)
+                ->where('uuid',$request->uuid)
+                ->first();
+
+        if(count($inventory_data) < 1 ) {
+            $request->session()->flash('alert-danger', 'credentials not found');
+            return redirect($this->redirectTo);
+        }
+
+        $inventory_data->inventory_name = $request->inventory_name;
+        $inventory_data->tanggal_update_data = $request->tanggal_update_data;
+        $inventory_data->kategori = $request->kategori;
+        $inventory_data->kode_gambar = $request->kode_gambar;
+        $inventory_data->dvr = $request->dvr;
+        $inventory_data->lokasi_site = $request->lokasi_site;
+
+        $inventory_data->kode_lokasi = $request->kode_lokasi;
+        $inventory_data->jenis_barang = $request->jenis_barang;
+        $inventory_data->merk = $request->merk;
+        $inventory_data->tipe = $request->tipe;
+        $inventory_data->model = $request->model;
+
+
+        $inventory_data->serial_number = $request->serial_number;
+        $inventory_data->psu_adaptor = $request->psu_adaptor;
+        $inventory_data->tahun_pembuatan = $request->tahun_pembuatan;
+        $inventory_data->tahun_pengadaan = $request->tahun_pengadaan;
+        $inventory_data->kondisi = $request->kondisi;
+
+
+        $inventory_data->deskripsi = $request->deskripsi;
+        $inventory_data->asuransi = $request->asuransi;
+        $inventory_data->lampiran = $request->lampiran;
+        $inventory_data->tanggal_retired = $request->tanggal_retired;
+        $inventory_data->po = $request->po;
+
+        $inventory_data->qty = $request->qty;
+        $inventory_data->keterangan = $request->keterangan;
+        $inventory_data->updated_by     = Auth::user()->id;
+
+        $bool = $inventory_data->save();
+
+        if(!$bool) {
+            $request->session()->flash('alert-danger', 'Update Failed');
+        } else {
+            $request->session()->flash('alert-success', 'Update Success');
+        }
+
+        return redirect($this->redirectTo."?search=on&search_uuid=".$inventory_data->uuid);
     }
 }

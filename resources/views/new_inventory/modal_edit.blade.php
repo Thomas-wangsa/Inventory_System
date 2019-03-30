@@ -13,7 +13,7 @@
         <div class="modal-body">
           <form class="form-horizontal" 
           method="POST" enctype="multipart/form-data"
-          action="{{ route('inventory_update_data') }}">
+          action="{{ route('new_inventory_update_data') }}">
             {{ csrf_field() }}
             <input type="hidden" name="uuid" id="uuid_in_edit_scope">
             <div class="form-group">
@@ -26,6 +26,29 @@
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="control-label col-xs-4" for="email">
+                Inventory Name :
+              </label>
+              <div class="col-xs-8">
+                <input type="text" class="form-control" 
+                id="inventory_name_edit_id" name="inventory_name" value=""
+                required="" 
+                placeholder="Required Field" >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="control-label col-xs-4" for="email">
+                QTY :
+              </label>
+              <div class="col-xs-8">
+                <input type="number" class="form-control" 
+                id="qty_id" name="qty" value=""
+                required="" 
+                placeholder="Required Field">
+              </div>
+            </div>
 
             <div class="form-group">
               <label class="control-label col-xs-4" for="email">
@@ -240,16 +263,6 @@
 
             <div class="form-group">
               <label class="control-label col-xs-4" for="email">
-                QTY :
-              </label>
-              <div class="col-xs-8">
-                <input type="text" class="form-control" 
-                id="qty_id" name="qty" value=""
-                placeholder="Optional..." >
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="control-label col-xs-4" for="email">
                 Keterangan :
               </label>
               <div class="col-xs-8">
@@ -304,7 +317,10 @@
         if(response.status == true) {
 
           $('#uuid_in_edit_scope').val(response.data.uuid);
-          $('#inventory_list_id').val(response.data.inventory_list_name);
+
+          $('#inventory_name_edit_id').val(response.data.inventory_name);
+
+          $('#inventory_list_id').val(response.data.grouping_detail);
 
           $('#tanggal_update_data_id').val(response.data.tanggal_update_data);
           $('#kategori_id').val(response.data.kategori);
