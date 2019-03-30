@@ -153,7 +153,34 @@
 			    		<td> {{$val->group4_name ? $val->group4_name : "undefined"}}  </td>
 			    		<td> {{$val->inventory_list_name}} </td>
 			    		<td style="color:{{$val->status_inventory_color}}"> {{$val->status_inventory_name}} </td>
-			    		<td> ACtion </td>
+			    		<td> 
+			    			@switch($val->status)
+				    			@case("1")
+				    				<div class="btn-group-vertical">
+				    					<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->uuid}}')" 
+		                    			>
+		                    				Info Inventory
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-warning"
+		                    			onclick='edit("{{$val->uuid}}")' 
+		                    			>
+		                    				Edit Inventory
+		                    			</button>
+				    				</div>
+				    				@break
+				    			@case("3")
+				    				@break
+				    			@case("4")
+				    				@break
+				    			@default
+				    				-
+				    				@break
+				    		@endswitch 
+
+			    		</td>
 			    	</tr> 
 			    	<?php $no++;?>
 			    	@endforeach
@@ -167,7 +194,8 @@
 	</div>
   
 	@include('new_inventory.modal_new')
-
+	@include('new_inventory.modal_info')
+	
 	<script type="text/javascript">
 		function reset_filter() {
     		window.location = "{{route('new_inventory.index')}}";

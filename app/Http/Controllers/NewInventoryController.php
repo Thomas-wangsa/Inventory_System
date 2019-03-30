@@ -253,4 +253,38 @@ class NewInventoryController extends Controller
         return redirect($this->redirectTo."?search=on&search_uuid=".$data['uuid']);
 
     }
+
+    public function get_inventory_detail_ajax(Request $request) {
+        $response['status'] = false;
+
+        $data = New_Inventory_Data::join('status_inventory',
+                'status_inventory.id','=','new_inventory_data.status')
+                ->join('users AS c_users',
+                'c_users.id','=','new_inventory_data.created_by')
+                ->join('users AS u_users',
+                'u_users.id','=','new_inventory_data.updated_by')
+                ->leftjoin('map_location',
+                'map_location.inventory_data_id','=','new_inventory_data.id')
+                ->leftjoin('map',
+                'map.id','=','map_location.map_id')
+                ->where('uuid',$request->uuid)
+                ->select(
+                    'new_inventory_data.*',
+                    'status_inventory.name AS status_name',
+                    'status_inventory.color AS status_color',
+                    'c_users.name AS c_username',
+                    'u_users.name AS u_username',
+                    'map_location.id AS map_location_id',
+                    'map_location.image_location',
+                    'map.map_images'
+                )
+                ->first();
+        if(count($data) < 1 ) {
+            $response['message'] = "Inventory Data is not found!";
+            return json_encode($response);
+        }
+        $response['status'] = true;
+        $response['data']   = $data;
+        return json_encode($response);
+    }
 }

@@ -21,6 +21,8 @@ class CreateTableNewInventoryData extends Migration
             $table->unsignedInteger('group3');
             $table->unsignedInteger('group4')->nullable();
             $table->unsignedInteger('inventory_list_id');
+            $table->unsignedInteger('inventory_level_id');
+
             $table->unsignedInteger('status');
             $table->unsignedInteger('created_by');
             $table->unsignedInteger('updated_by');
@@ -76,6 +78,11 @@ class CreateTableNewInventoryData extends Migration
             $table->foreign('inventory_list_id', 'new_inventory_data_list_id_fkey')
                 ->references('id')->on('inventory_list')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
+            $table->foreign('inventory_level_id', 'new_inventory_data_level_id_fkey')
+                ->references('id')->on('inventory_level')
+                ->onUpdate('CASCADE')->onDelete('RESTRICT');
+
             $table->foreign('status', 'new_inventory_data_status_fkey')
                 ->references('id')->on('status_inventory')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
