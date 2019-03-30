@@ -164,7 +164,7 @@
 		                    				Info Inventory
 		                    			</button>
 		                    			<button 
-		                    			class="btn btn-primary"
+		                    			class="btn btn-basic"
 		                    			onclick="set_sub_data_inventory('{{$val->uuid}}')" 
 		                    			>
 		                    				Set Sub Data
@@ -174,6 +174,12 @@
 		                    			onclick='edit("{{$val->uuid}}")' 
 		                    			>
 		                    				Edit Inventory
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve('{{$val->uuid}}')" 
+		                    			>
+		                    				Submit Inventory
 		                    			</button>
 				    				</div>
 				    				@break
@@ -224,6 +230,10 @@
 			window.location = url+uuid;
 		}
 		
+
+		function approve(uuid) {
+			alert(uuid);
+		}
 	</script>
 
 @endsection

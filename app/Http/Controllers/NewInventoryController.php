@@ -7,6 +7,7 @@ use App\Http\Models\Users_Role;
 use App\Http\Models\Status_Inventory;
 use App\Http\Models\New_Inventory_Role;
 use App\Http\Models\New_Inventory_Data;
+use App\Http\Models\New_Inventory_Sub_Data;
 
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
@@ -153,9 +154,30 @@ class NewInventoryController extends Controller
             return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
         }
 
+        $new_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$new_inventory_data->id)->get();
+
+        if($new_inventory_sub_data == null or count($new_inventory_sub_data) < 1) {
+            $full_array = [];
+            for($i=1;$i<=$new_inventory_data->qty;$i++) {
+                $array = array(
+                    'new_inventory_data_id' => $new_inventory_data->id,
+                    'sub_data_status'       => "good",
+                    "sub_data_uuid"         => $new_inventory_data->id.$i.$this->faker->uuid,
+                    "created_by"            => Auth::user()->id,
+                    "updated_by"            => Auth::user()->id,
+                    "created_at"            => date("Y-m-d H:i:s"),
+                    "updated_at"            => date("Y-m-d H:i:s"), 
+                );
+                array_push($full_array,$array);
+            }
+            New_Inventory_Sub_Data::insert($full_array);
+            $new_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$new_inventory_data->id)->get();
+        }
+
 
         $data = [
-            'new_inventory_data' => $new_inventory_data
+            'new_inventory_data' => $new_inventory_data,
+            'new_inventory_sub_data' => $new_inventory_sub_data
         ];
 
         return view('new_inventory/create',compact('data'));
@@ -420,5 +442,26 @@ class NewInventoryController extends Controller
         }
 
         return redirect($this->redirectTo."?search=on&search_uuid=".$inventory_data->uuid);
+    }
+
+
+    public function new_inventory_sub_data_update_ajax(Request $request) {
+        $response = array();
+        $response['status'] = false;
+
+        $data = New_Inventory_Sub_Data::where('sub_data_uuid','=',$request->sub_data_uuid)
+                ->first();
+        if(count($data) < 1) {
+            $response['message'] = "Sub Inventory data ID not found";
+            return json_encode($response);
+        }
+
+        $data->comment = $request->sub_data_comment;
+        $data->sub_data_status  = $request->sub_data_status;
+        $data->save();
+
+        $response['status'] = true;
+        $response['data'] = $data; 
+        return json_encode($response);
     }
 }

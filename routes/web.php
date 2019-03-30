@@ -53,6 +53,8 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/new_inventory/get_inventory_detail_ajax','NewInventoryController@get_inventory_detail_ajax')->name('get_new_inventory_data_ajax');
 		Route::post('/new_inventory/get_inventory_detail_ajax_by_uuid','NewInventoryController@get_inventory_detail_ajax_by_uuid')->name('get_inventory_detail_ajax_by_uuid');
 		Route::post('/new_inventory/new_inventory_update_data','NewInventoryController@new_inventory_update_data')->name('new_inventory_update_data');
+
+		Route::post('/new_inventory/new_inventory_sub_data_update_ajax','NewInventoryController@new_inventory_sub_data_update_ajax')->name('new_inventory_sub_data_update_ajax');
 		
 		
 		Route::post('/ajax/get_group_detail','AjaxController@get_group_detail')->name('get_group_detail');

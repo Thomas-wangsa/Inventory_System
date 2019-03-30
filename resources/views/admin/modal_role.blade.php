@@ -21,7 +21,7 @@
             <button class="btn btn-primary"
             style="margin-bottom: 10px" 
             id="add_role_btn"
-            onclick="append_table()""> 
+            onclick="append_table()"> 
               Add new role position
             </button>
           </div>
