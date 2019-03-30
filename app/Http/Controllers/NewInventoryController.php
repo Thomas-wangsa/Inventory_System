@@ -105,7 +105,7 @@ class NewInventoryController extends Controller
                         ,'status_inventory.name AS status_inventory_name'
                         ,'status_inventory.color AS status_inventory_color'
                         );
-        $new_inventory_data = $base_inventory_data->get();
+        $new_inventory_data = $base_inventory_data->paginate(2);
 
         
         $list_new_inventory_role = Users_Role::GetInventoryRoleById(Auth::user()->id)->get();

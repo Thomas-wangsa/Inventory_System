@@ -164,6 +164,12 @@
 		                    				Info Inventory
 		                    			</button>
 		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="set_sub_data_inventory('{{$val->uuid}}')" 
+		                    			>
+		                    				Set Sub Data
+		                    			</button>
+		                    			<button 
 		                    			class="btn btn-warning"
 		                    			onclick='edit("{{$val->uuid}}")' 
 		                    			>
@@ -189,6 +195,17 @@
 			    @endif
 			</table>
 		</div>
+		<div class="pull-right" style="margin-top: -20px!important"> 
+			{{ $data['new_inventory_data']->appends(
+				[
+				'search' => Request::get('search'),
+				'search_nama' => Request::get('search_nama'),
+				'search_filter' => Request::get('search_filter'),
+				'search_order' => Request::get('search_order')
+				])->links() }}
+	
+		</div>
+		<div class="clearfix"> </div>
 
 
 	</div>
@@ -201,6 +218,14 @@
 		function reset_filter() {
     		window.location = "{{route('new_inventory.index')}}";
     	}
+
+    	function set_sub_data_inventory(uuid) {
+			if (confirm('Approve this request ?')) { 
+				var url = "{{URL::to('/')}}"+'/inventory_approval?uuid=';
+				var url_status = "&next_status=";
+				window.location = url+uuid+url_status+next_status;
+			}
+		}
 	</script>
 
 @endsection
