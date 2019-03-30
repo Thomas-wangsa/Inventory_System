@@ -458,10 +458,53 @@ class NewInventoryController extends Controller
 
         $data->comment = $request->sub_data_comment;
         $data->sub_data_status  = $request->sub_data_status;
+        $data->updated_by   = Auth::user()->id;
         $data->save();
 
         $response['status'] = true;
         $response['data'] = $data; 
+        return json_encode($response);
+    }
+
+    public function new_inventory_data_approve_ajax(Request $request) {
+        $response = array();
+        $response['status'] = false;
+
+        $new_inventory_data = New_Inventory_Data::where('uuid','=',$request->uuid)
+                ->first();
+        if(count($new_inventory_data) < 1) {
+            $response['message'] = "Inventory data ID not found";
+            return json_encode($response);
+        }
+
+        $new_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$new_inventory_data->id)
+                ->get();
+
+        if(count($new_inventory_sub_data) < 1) {
+            $response['message'] = "Sub Inventory data ID not found";
+            return json_encode($response);
+        }
+
+        if($new_inventory_data->qty != count($new_inventory_sub_data)) {
+            $response['message'] = "total qty and sub qty is not equal!";
+            return json_encode($response);
+        } 
+        
+        if($new_inventory_data->inventory_level_id == 1) {
+            $new_inventory_data->status = 2;
+        } else if($new_inventory_data->inventory_level_id == 2) {
+            $new_inventory_data->status = 3;
+        } else {
+            $response['message'] = "out of scope!";
+            return json_encode($response);
+        }
+
+        $new_inventory_data->updated_by = Auth::user()->id;
+        $new_inventory_data->save();
+        $request->session()->flash('alert-success', 'Update Success');
+
+        $response['status'] = true;
+        $response['data'] = $new_inventory_data; 
         return json_encode($response);
     }
 }

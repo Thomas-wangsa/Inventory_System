@@ -232,7 +232,35 @@
 		
 
 		function approve(uuid) {
-			alert(uuid);
+			var data = {
+				"uuid":uuid,
+			}
+			$.ajaxSetup({
+		      headers: {
+		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+		      }
+		    });
+
+
+		    $.ajax({
+		      type : "POST",
+		      url: " {{ route('new_inventory_data_approve_ajax') }}",
+		      contentType: "application/json",
+		      data : JSON.stringify(data),
+		      success: function(result) {
+		        response = JSON.parse(result);
+		        if(response.status == true) {
+		        	var url = "{{URL::to('/')}}"+'/new_inventory?search=on&search_uuid=';
+					window.location = url+response.data.uuid;
+		        } else {
+		          alert(response.message);
+		        }
+
+		      },
+		      error: function( jqXhr, textStatus, errorThrown ){
+		        console.log( errorThrown );
+		      }
+		    });
 		}
 	</script>
 
