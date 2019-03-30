@@ -141,11 +141,13 @@
 			    </thead>
 			    <tbody>
 			    </tbody>
-			    <?php $no = 0;?>
 			    @if(count($data['new_inventory_data']) > 0)
 			    	@foreach($data['new_inventory_data'] as $key=>$val)
 			    	<tr> 
-			    		<td> {{$no+1}}</td>
+			    		<td> 
+			    			{{ ($data['new_inventory_data']->currentpage()-1) 
+			    				* $data['new_inventory_data']->perpage() + $key + 1 }}  
+			    		</td>
 			    		<td> {{$val->inventory_name}} </td>
 			    		<td> {{$val->group1_name}} </td>
 			    		<td> {{$val->group2_name}} </td>
@@ -183,6 +185,16 @@
 		                    			</button>
 				    				</div>
 				    				@break
+				    			@case("2")
+				    				<div class="btn-group-vertical">
+				    					<button 
+		                    			class="btn btn-info"
+		                    			onclick="info('{{$val->uuid}}')" 
+		                    			>
+		                    				Info Inventory
+		                    			</button>
+				    				</div>
+				    				@break
 				    			@case("3")
 				    				@break
 				    			@case("4")
@@ -194,7 +206,6 @@
 
 			    		</td>
 			    	</tr> 
-			    	<?php $no++;?>
 			    	@endforeach
 			    @else
 			    	<tr> <td colspan="10"> NO DATA FOUND! </td></tr> 
@@ -232,35 +243,37 @@
 		
 
 		function approve(uuid) {
-			var data = {
-				"uuid":uuid,
+			if (confirm('Submit inventory ?')) {
+				var data = {
+					"uuid":uuid,
+				}
+				$.ajaxSetup({
+			      headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			      }
+			    });
+
+
+			    $.ajax({
+			      type : "POST",
+			      url: " {{ route('new_inventory_data_approve_ajax') }}",
+			      contentType: "application/json",
+			      data : JSON.stringify(data),
+			      success: function(result) {
+			        response = JSON.parse(result);
+			        if(response.status == true) {
+			        	var url = "{{URL::to('/')}}"+'/new_inventory?search=on&search_uuid=';
+						window.location = url+response.data.uuid;
+			        } else {
+			          alert(response.message);
+			        }
+
+			      },
+			      error: function( jqXhr, textStatus, errorThrown ){
+			        console.log( errorThrown );
+			      }
+			    });
 			}
-			$.ajaxSetup({
-		      headers: {
-		        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		      }
-		    });
-
-
-		    $.ajax({
-		      type : "POST",
-		      url: " {{ route('new_inventory_data_approve_ajax') }}",
-		      contentType: "application/json",
-		      data : JSON.stringify(data),
-		      success: function(result) {
-		        response = JSON.parse(result);
-		        if(response.status == true) {
-		        	var url = "{{URL::to('/')}}"+'/new_inventory?search=on&search_uuid=';
-					window.location = url+response.data.uuid;
-		        } else {
-		          alert(response.message);
-		        }
-
-		      },
-		      error: function( jqXhr, textStatus, errorThrown ){
-		        console.log( errorThrown );
-		      }
-		    });
 		}
 	</script>
 

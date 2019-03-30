@@ -109,11 +109,21 @@ class NewInventoryController extends Controller
         $new_inventory_data = $base_inventory_data->paginate(2);
 
         
+        $conditional_head = array();
+        foreach($new_inventory_data as $key=>$val) {
+            $conditional_head[$key] = false;
+            // pake foreach ya ambil semua
+            // if(in_array($val->inventory_list_id,$head_role_inventory)) {
+            //     $conditional_head[$key] = true;
+            // }
+        }
+
         $list_new_inventory_role = Users_Role::GetInventoryRoleById(Auth::user()->id)->get();
         $data = [
             'list_new_inventory_role'   => $list_new_inventory_role,
             'status_inventory'          => Status_Inventory::all(),
-            'new_inventory_data'        => $new_inventory_data
+            'new_inventory_data'        => $new_inventory_data,
+            'conditional_head'          => $conditional_head
         ];
         //dd($data);
         return view('new_inventory/index',compact('data'));
