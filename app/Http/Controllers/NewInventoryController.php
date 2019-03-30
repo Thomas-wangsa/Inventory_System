@@ -19,6 +19,7 @@ class NewInventoryController extends Controller
     protected $admin = 1;
     protected $new_inventory_divisi_id = 6;
     protected $faker;
+    protected $is_super_admin = false;
 
      public function __construct() {
         $this->faker    = Faker::create();
@@ -41,6 +42,9 @@ class NewInventoryController extends Controller
             ) 
         {
             $allow = true;
+            if(in_array($this->admin,$user_divisi)) {
+                $this->is_super_admin = true;
+            }
         }
 
         if(!$allow) {
@@ -55,6 +59,28 @@ class NewInventoryController extends Controller
                             ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
                             ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
                             ->leftjoin('status_inventory','status_inventory.id','=','new_inventory_data.status');
+
+        if(!$this->is_super_admin) {
+            $role_specific_users = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+                                ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->get();
+
+            if(count($role_specific_users) > 0) {
+                foreach($role_specific_users as $key_role=>$val_role) {
+                    // echo $val_role;
+                    $base_inventory_data->Orwhere(function ($query) use ($val_role) {
+                        $query->where('group1', '=', $val_role->group1)
+                        ->where('group2', '=', $val_role->group2)
+                        ->where('group3', '=', $val_role->group3)
+                        ->where('group4', '=', $val_role->group4)
+                        ->where('inventory_list_id', '=', $val_role->inventory_list_id);
+                    });
+                }
+            } else {
+                echo "ERROR in logic";die;
+            }
+        }
         //dd($base_inventory_data->get());
         if($request->search == "on") {
             if($request->search_nama != null) {
