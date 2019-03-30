@@ -220,12 +220,10 @@
     	}
 
     	function set_sub_data_inventory(uuid) {
-			if (confirm('Approve this request ?')) { 
-				var url = "{{URL::to('/')}}"+'/inventory_approval?uuid=';
-				var url_status = "&next_status=";
-				window.location = url+uuid+url_status+next_status;
-			}
+			var url = "{{URL::to('/')}}"+'/new_inventory/create?uuid=';
+			window.location = url+uuid;
 		}
+		
 	</script>
 
 @endsection

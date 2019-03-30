@@ -38,6 +38,8 @@
       CONFIGURATION 
     @elseif(Route::current()->getName() == 'new_inventory.index')
       INVENTORY
+    @elseif(Route::current()->getName() == 'new_inventory.create')
+      SET STATUS INVENTORY
     @else 
       ERROR
     @endif

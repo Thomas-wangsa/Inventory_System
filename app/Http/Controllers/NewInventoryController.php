@@ -123,9 +123,44 @@ class NewInventoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create(Request $request) {
+        $request->validate([
+            'uuid'=>'required',
+        ]);
+
+        $new_inventory_data = New_Inventory_Data::leftjoin('group1','group1.id','=','new_inventory_data.group1')
+                        ->leftjoin('group2','group2.id','=','new_inventory_data.group2')
+                        ->leftjoin('group3','group3.id','=','new_inventory_data.group3')
+                        ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
+                        ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
+                        ->leftjoin('inventory_level','inventory_level.id','=','new_inventory_data.inventory_level_id')
+                        ->where('uuid','=',$request->uuid)
+                        ->select('new_inventory_data.*'
+                            ,DB::raw('CONCAT(
+                            inventory_level.inventory_level_name," ",inventory_list.inventory_name
+                            ," ("
+                            ,IFNULL(group1.group1_name,"undefined"),", "
+                            ,IFNULL(group2.group2_name,"undefined"),", "
+                            ,IFNULL(group3.group3_name,"undefined"),", "
+                            ,IFNULL(group4.group4_name,"undefined")
+                            ,")"
+                            ) AS grouping_detail')
+                        )
+                        ->first();
+
+        if($new_inventory_data == null or count($new_inventory_data) < 1) {
+            $request->session()->flash('alert-danger', 'Data not found!');
+            return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+        }
+
+
+        $data = [
+            'new_inventory_data' => $new_inventory_data
+        ];
+
+        return view('new_inventory/create',compact('data'));
+
+
     }
 
     /**
@@ -147,7 +182,7 @@ class NewInventoryController extends Controller
      */
     public function show($id)
     {
-        echo "AAA";die;
+
     }
 
     /**
