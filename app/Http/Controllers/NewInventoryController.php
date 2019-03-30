@@ -205,6 +205,7 @@ class NewInventoryController extends Controller
             'group3'            => $grouping->group3,
             'group4'            => $grouping->group4,
             'inventory_list_id' => $grouping->inventory_list_id,
+            'inventory_level_id' => $grouping->inventory_level_id,
 
 
             'status'=>$status_inventory,
@@ -259,17 +260,25 @@ class NewInventoryController extends Controller
 
         $data = New_Inventory_Data::join('status_inventory',
                 'status_inventory.id','=','new_inventory_data.status')
-                ->join('users AS c_users',
-                'c_users.id','=','new_inventory_data.created_by')
-                ->join('users AS u_users',
-                'u_users.id','=','new_inventory_data.updated_by')
-                ->leftjoin('map_location',
-                'map_location.inventory_data_id','=','new_inventory_data.id')
-                ->leftjoin('map',
-                'map.id','=','map_location.map_id')
+                ->leftjoin('users AS c_users','c_users.id','=','new_inventory_data.created_by')
+                ->leftjoin('users AS u_users','u_users.id','=','new_inventory_data.updated_by')
+                ->leftjoin('group1','group1.id','=','new_inventory_data.group1')
+                ->leftjoin('group2','group2.id','=','new_inventory_data.group2')
+                ->leftjoin('group3','group3.id','=','new_inventory_data.group3')
+                ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
+                ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
+                ->leftjoin('inventory_level','inventory_level.id','=','new_inventory_data.inventory_level_id')
+                ->leftjoin('map_location','map_location.inventory_data_id','=','new_inventory_data.id')
+                ->leftjoin('map','map.id','=','map_location.map_id')
                 ->where('uuid',$request->uuid)
                 ->select(
                     'new_inventory_data.*',
+                    'group1.group1_name',
+                    'group2.group2_name',
+                    'group3.group3_name',
+                    'group4.group4_name',
+                    'inventory_list.inventory_name AS inventory_list_name',
+                    'inventory_level.inventory_level_name AS inventory_level_name',
                     'status_inventory.name AS status_name',
                     'status_inventory.color AS status_color',
                     'c_users.name AS c_username',
@@ -285,6 +294,32 @@ class NewInventoryController extends Controller
         }
         $response['status'] = true;
         $response['data']   = $data;
+        return json_encode($response);
+    }
+
+    public function get_inventory_detail_ajax_by_uuid(Request $request) {
+        $response = array();
+        $response['status'] = false;
+
+        $data = New_Inventory_Data::leftjoin('inventory_list',
+                'inventory_list.id','=','new_inventory_data.inventory_list_id')
+                ->leftjoin('group1','group1.id','=','new_inventory_data.group1')
+                ->leftjoin('group2','group2.id','=','new_inventory_data.group2')
+                ->leftjoin('group3','group3.id','=','new_inventory_data.group3')
+                ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
+                ->leftjoin('inventory_level','inventory_level.id','=','new_inventory_data.inventory_level_id')
+                ->where('uuid',$request->uuid)
+                ->select('new_inventory_data.*'
+                    ,'CONCAT("aaa","bbb") AS grouping_name'
+                )
+                ->first();
+        if(count($data) < 1) {
+            $response['message'] = "Inventory data ID not found";
+            return json_encode($response);
+        }
+
+        $response['status'] = true;
+        $response['data'] = $data; 
         return json_encode($response);
     }
 }

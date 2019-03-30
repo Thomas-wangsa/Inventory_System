@@ -195,6 +195,7 @@
   
 	@include('new_inventory.modal_new')
 	@include('new_inventory.modal_info')
+	@include('new_inventory.modal_edit')
 	
 	<script type="text/javascript">
 		function reset_filter() {

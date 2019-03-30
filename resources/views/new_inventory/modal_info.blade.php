@@ -26,7 +26,7 @@
 						    <tbody id="info_tbody">
 						      <tr class="info">
 						        <th> Grouping </th>
-						        <td id="new_inventory_info_grouping">  </td>
+						        <td id="new_inventory_info_level">  </td>
 						      </tr>
 						      <tr>
 						        <th> group1 </th>
@@ -46,11 +46,7 @@
 						      </tr>
 						      <tr>
 						        <th> inventory category </th>
-						        <td id="new_inventory_info_group4">  </td>
-						      </tr>
-						      <tr>
-						        <th> inventory level </th>
-						        <td id="new_inventory_info_group4">  </td>
+						        <td id="new_inventory_info_category">  </td>
 						      </tr>
 
 						      <tr class="info">
@@ -235,6 +231,13 @@
 			success: function(result) {
 				response = JSON.parse(result);
 				if(response.status == true) { 
+
+					$('#new_inventory_info_group1').html(response.data.group1_name);
+					$('#new_inventory_info_group2').html(response.data.group2_name);
+					$('#new_inventory_info_group3').html(response.data.group3_name);
+					$('#new_inventory_info_group4').html(response.data.group4_name);
+					$('#new_inventory_info_category').html(response.data.inventory_list_name);
+					$('#new_inventory_info_level').html(response.data.inventory_level_name);
 
 
 					$('#file_name_upload').html(response.data.file_name_upload);
