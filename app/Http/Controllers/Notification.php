@@ -386,6 +386,8 @@ class Notification extends Controller {
 				$this->response['message'] 	= "out of scope email access card request type";
 			}
 			// Request Type Checker
+		} else if($this->category == 2) {
+			echo "AAA";die;
 		} else {
 			$this->response['error'] 	= true;
 			$this->response['message'] 	= "out of scope email notification category";
@@ -722,16 +724,30 @@ class Notification extends Controller {
 			// request type checker
 		} else if($this->category == 2) {
 			// status inventory
-			$current_user 	= Auth::user()->id;
+			$requester_user = $this->data->created_by;
+			$current_user 	= $this->data->updated_by;
 			
-			if($this->data->status == 1) {
+			if(
+				$this->data->status == 1 
+				|| 
+				$this->data->status == 2
+				|| 
+				$this->data->status == 3
+				|| 
+				$this->data->status == 4
+			) {
 				$next_user = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
 					->where('users_role.divisi',6)
 					->where('new_inventory_role.inventory_level_id','=',2)
 					->where('new_inventory_role.inventory_list_id','=',$this->data['inventory_list_id'])
                     ->pluck('users_role.user_id');
+
                 array_push($data_user,$current_user);
-					
+				
+				if(!in_array($requester_user,$data_user)) {
+						array_push($data_user,$requester_user);
+				}
+
 				foreach($next_user as $key=>$val) {
 					if(!in_array($val,$data_user)) {
 						array_push($data_user,$val);

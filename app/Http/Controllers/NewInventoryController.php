@@ -272,6 +272,12 @@ class NewInventoryController extends Controller
             } else {
                 $request->session()->flash('alert-success', 'inventory has been updated');
             }
+
+            $notify = new custom_notification;
+            $notify_status = $notify->set_notify(2,$new_inventory_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
             
         } else {
            $request->session()->flash('alert-danger', 'Reject failed, Data is not updated'); 
@@ -604,6 +610,12 @@ class NewInventoryController extends Controller
 
         $new_inventory_data->updated_by = Auth::user()->id;
         $new_inventory_data->save();
+
+        $notify = new custom_notification;
+        $notify_status = $notify->set_notify(2,$new_inventory_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
         $request->session()->flash('alert-success', 'Update Success');
 
         $response['status'] = true;
