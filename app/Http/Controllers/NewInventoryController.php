@@ -79,16 +79,29 @@ class NewInventoryController extends Controller
 
 
             if(count($role_specific_users) > 0) {
-                foreach($role_specific_users as $key_role=>$val_role) {
-                    // echo $val_role;
-                    $base_inventory_data->Orwhere(function ($query) use ($val_role) {
-                        $query->where('group1', '=', $val_role->group1)
+                // foreach($role_specific_users as $key_role=>$val_role) {
+                //     $base_inventory_data->Orwhere(function ($query) use ($val_role) {
+                //         $query->where('group1', '=', $val_role->group1)
+                //         ->where('group2', '=', $val_role->group2)
+                //         ->where('group3', '=', $val_role->group3)
+                //         ->where('group4', '=', $val_role->group4)
+                //         ->where('inventory_list_id', '=', $val_role->inventory_list_id);
+                //     });
+                // }
+
+
+                $base_inventory_data->where(function ($query) use ($role_specific_users)  {
+                    foreach($role_specific_users as $key_role=>$val_role) {
+                        $query->Orwhere(function ($sub_query) use ($val_role) {
+                        $sub_query->where('group1', '=', $val_role->group1)
                         ->where('group2', '=', $val_role->group2)
                         ->where('group3', '=', $val_role->group3)
                         ->where('group4', '=', $val_role->group4)
                         ->where('inventory_list_id', '=', $val_role->inventory_list_id);
-                    });
-                }
+                        });
+                    }
+                });
+
             } else {
                 echo "ERROR in logic";die;
             }
@@ -103,11 +116,7 @@ class NewInventoryController extends Controller
             if($request->search_category != null) {
                 $base_inventory_data->where('new_inventory_data.inventory_list_id','=',$request->search_category);            
             }
-            echo $request->search_category;
-            $foo_sql = $base_inventory_data->toSql();
-
-            $base_inventory_data->get();
-            dd($foo_sql);
+            
             if($request->search_filter != null) {
                 $base_inventory_data->where('new_inventory_data.status',$request->search_filter);            
             } 
