@@ -150,60 +150,50 @@
 			    		<td> {{$val->group4_name ? $val->group4_name : "undefined"}}  </td>
 			    		<td> {{$val->inventory_list_name}} </td>
 			    		<td style="color:{{$val->status_inventory_color}}"> {{$val->status_inventory_name}} </td>
-			    		<td> 
+			    		<td>
+			    			<div class="btn-group-vertical"> 
+			    				<button 
+                    			class="btn btn-info"
+                    			onclick="info('{{$val->uuid}}')" 
+                    			>
+                    				Info Inventory
+                    			</button>
 			    			@switch($val->status)
 				    			@case("1")
-				    				<div class="btn-group-vertical">
-				    					<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->uuid}}')" 
-		                    			>
-		                    				Info Inventory
-		                    			</button>
-		                    			<button 
-		                    			class="btn btn-basic"
-		                    			onclick="set_sub_data_inventory('{{$val->uuid}}')" 
-		                    			>
-		                    				Set Sub Data
-		                    			</button>
-		                    			<button 
-		                    			class="btn btn-warning"
-		                    			onclick='edit("{{$val->uuid}}")' 
-		                    			>
-		                    				Edit Inventory
-		                    			</button>
-		                    			<button 
-		                    			class="btn btn-primary"
-		                    			onclick="approve('{{$val->uuid}}')" 
-		                    			>
-		                    				Submit Inventory
-		                    			</button>
-				    				</div>
+	                    			<button 
+	                    			class="btn btn-basic"
+	                    			onclick="set_sub_data_inventory('{{$val->uuid}}')" 
+	                    			>
+	                    				Set Sub Data
+	                    			</button>
+	                    			<button 
+	                    			class="btn btn-warning"
+	                    			onclick='edit("{{$val->uuid}}")' 
+	                    			>
+	                    				Edit Inventory
+	                    			</button>
+	                    			<button 
+	                    			class="btn btn-primary"
+	                    			onclick="approve('{{$val->uuid}}')" 
+	                    			>
+	                    				Submit Inventory
+	                    			</button>
 				    				@break
 				    			@case("2")
-				    				<div class="btn-group-vertical">
-				    					<button 
-		                    			class="btn btn-info"
-		                    			onclick="info('{{$val->uuid}}')" 
-		                    			>
-		                    				Info Inventory
-		                    			</button>
-
-		                    			@if($data['conditional_head'][$key])
-		                    			<button 
-		                    			class="btn btn-primary"
-		                    			onclick="approve_head('{{$val->uuid}}')" 
-		                    			>
-		                    				Approve Inventory
-		                    			</button>
-		                    			<button 
-		                    			class="btn btn-danger"
-		                    			onclick="reject_head('{{$val->uuid}}')" 
-		                    			>
-		                    				Reject Inventory
-		                    			</button>
-		                    			@endif
-				    				</div>
+	                    			@if($data['conditional_head'][$key])
+	                    			<button 
+	                    			class="btn btn-primary"
+	                    			onclick="approve('{{$val->uuid}}')" 
+	                    			>
+	                    				Approve Inventory
+	                    			</button>
+	                    			<button 
+	                    			class="btn btn-danger"
+	                    			onclick="reject_head('{{$val->uuid}}','{{$val->inventory_name}}')" 
+	                    			>
+	                    				Reject Inventory
+	                    			</button>
+	                    			@endif
 				    				@break
 				    			@case("3")
 				    				@break
@@ -213,7 +203,7 @@
 				    				-
 				    				@break
 				    		@endswitch 
-
+				    		</div>
 			    		</td>
 			    	</tr> 
 			    	@endforeach
@@ -240,6 +230,7 @@
 	@include('new_inventory.modal_new')
 	@include('new_inventory.modal_info')
 	@include('new_inventory.modal_edit')
+	@include('new_inventory.modal_reject')
 	
 	<script type="text/javascript">
 		function reset_filter() {

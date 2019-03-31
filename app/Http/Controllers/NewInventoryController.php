@@ -116,7 +116,7 @@ class NewInventoryController extends Controller
             if($request->search_category != null) {
                 $base_inventory_data->where('new_inventory_data.inventory_list_id','=',$request->search_category);            
             }
-            
+
             if($request->search_filter != null) {
                 $base_inventory_data->where('new_inventory_data.status',$request->search_filter);            
             } 
@@ -137,7 +137,7 @@ class NewInventoryController extends Controller
                         ,'status_inventory.name AS status_inventory_name'
                         ,'status_inventory.color AS status_inventory_color'
                         );
-        $new_inventory_data = $base_inventory_data->paginate(2);
+        $new_inventory_data = $base_inventory_data->paginate(5);
 
         
         $conditional_head = array();
@@ -252,8 +252,30 @@ class NewInventoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+        $new_inventory_data = New_Inventory_Data::where('uuid','=',$request->uuid)
+                ->first();
+        if(count($new_inventory_data) < 1) {
+            $request->session()->flash('alert-danger', 'Reject failed, Inventory data not found');
+            return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+        }
+
+        $new_inventory_data->status  = $request->reject_options;
+        $new_inventory_data->comment = $request->note; 
+        
+        if($new_inventory_data->save()) {
+            if($request->reject_options == "1") {
+                $request->session()->flash('alert-success', 'inventory has been rolled back');
+            } else if ($request->reject_options == "2"){
+                $request->session()->flash('alert-success', 'inventory has been rejected');
+            } else {
+                $request->session()->flash('alert-success', 'inventory has been updated');
+            }
+            
+        } else {
+           $request->session()->flash('alert-danger', 'Reject failed, Data is not updated'); 
+        }
+        return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
     }
 
     /**
@@ -550,14 +572,22 @@ class NewInventoryController extends Controller
             return json_encode($response);
         } 
         
-        if($new_inventory_data->inventory_level_id == 1) {
-            $new_inventory_data->status = 2;
-        } else if($new_inventory_data->inventory_level_id == 2) {
+        if($new_inventory_data->status == 1) {
+            if($new_inventory_data->inventory_level_id == 1) {
+                $new_inventory_data->status = 2;
+            } else if($new_inventory_data->inventory_level_id == 2) {
+                $new_inventory_data->status = 3;
+            } else {
+                $response['message'] = "out of level scope!";
+                return json_encode($response);
+            }
+        } else if ($new_inventory_data->status == 2) {
             $new_inventory_data->status = 3;
         } else {
             $response['message'] = "out of scope!";
             return json_encode($response);
         }
+        
 
         $new_inventory_data->updated_by = Auth::user()->id;
         $new_inventory_data->save();

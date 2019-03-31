@@ -162,7 +162,7 @@
 						      </tr>
 						      <tr id="head_modal_info_comment">
 						        <th> comment </th>
-						        <td id="inventory_comment">  </td>
+						        <td id="inventory_comment" style="color:red">  </td>
 						      </tr>
 
 
