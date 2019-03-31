@@ -14,6 +14,7 @@ use App\Http\Models\New_Inventory_Sub_Data;
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Notification AS custom_notification;
 
  
 class NewInventoryController extends Controller
@@ -346,7 +347,7 @@ class NewInventoryController extends Controller
             'inventory_list_id' => $grouping->inventory_list_id,
             'inventory_level_id' => $grouping->inventory_level_id,
 
-
+            'status_data'=>1,
             'status'=>$status_inventory,
             'created_by'=>Auth::user()->id,
             'updated_by'=>Auth::user()->id,
@@ -386,11 +387,23 @@ class NewInventoryController extends Controller
         );
 
 
-        DB::table('new_inventory_data')->insert($data);
+        try {
+            DB::table('new_inventory_data')->insert($data);
+            $new_inventory_data = New_Inventory_Data::where('uuid','=',$data['uuid'])->first();
+            $request->session()->flash('alert-success', 'new inventory already registered');
+            $notify = new custom_notification;
+            $notify_status = $notify->set_notify(2,$new_inventory_data);
+                if($notify_status['error'] == true) {
+                    $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
+                }
+        } catch(Exception $e) {
+            $request->session()->flash('alert-danger', $e->getMessage());
+        }
+        return redirect($this->redirectTo."?search=on&search_uuid=".$data['uuid']);
+        
         
         //$this->notify($status_inventory,$uuid);
-        $request->session()->flash('alert-success', 'new inventory already registered');
-        return redirect($this->redirectTo."?search=on&search_uuid=".$data['uuid']);
+        
 
     }
 

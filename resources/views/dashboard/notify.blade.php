@@ -49,11 +49,15 @@
                             @if($val['category'] == 1)
                                 <a href="{{route('accesscard')}}?search=on&search_uuid={{$val['data_uuid']}}">
                                     <button class="btn btn-info">
-                                        Cek Access Card
+                                        View Access Card
                                     </button>
                                 </a>
                             @elseif($val['category'] == 2)
-                                -
+                                <a href="{{route('new_inventory.index')}}?search=on&search_uuid={{$val['data_uuid']}}">
+                                    <button class="btn btn-info">
+                                        View Inventory
+                                    </button>
+                                </a>
                             @else
                                 -
                             @endif

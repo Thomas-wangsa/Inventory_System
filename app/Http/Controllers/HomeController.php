@@ -14,8 +14,12 @@ use App\Http\Models\AccessCardRequest;
 
 use App\Http\Models\Akses_Expiry;
 use App\Http\Models\Status_Akses;
+use App\Http\Models\Status_Inventory;
+
 use App\Http\Models\Setting_Data;
 use App\Http\Models\Inventory_Data;
+use App\Http\Models\New_Inventory_Data;
+
 use Illuminate\Support\Facades\Hash;
 use App\Http\Models\Notification AS notify;
 use Illuminate\Support\Facades\DB;
@@ -155,6 +159,21 @@ class HomeController extends Controller
                                 ->first()->username;
                 $notify_type    = AccessCardRequest::find($val['notify_type'])->request_name;
                 $notify_status  = Status_Akses::find($val['notify_status']);
+            } else if($val['category'] == 2) {
+
+                $notify_name = "undefined";
+                if($val['notify_type'] == 1) {
+                    $notify_name = "new inventory";
+                }
+
+                $category_name  = "inventory";
+                $created_by     = New_Inventory_Data::join('users',
+                                'users.id','=','new_inventory_data.created_by')
+                                ->where('new_inventory_data.uuid',$val['data_uuid'])
+                                ->select('users.name AS username')
+                                ->first()->username;
+                $notify_type    = $notify_name;
+                $notify_status  = Status_Inventory::find($val['notify_status']);
             }
 
             $data['notify'][$key]['created_by']     = $created_by;
@@ -166,6 +185,7 @@ class HomeController extends Controller
             
         }
 
+        //dd($data);
         // Update 
         notify::where('user_id',Auth::user()->id)
         ->where('is_read',0)

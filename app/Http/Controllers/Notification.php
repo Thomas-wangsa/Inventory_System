@@ -720,10 +720,26 @@ class Notification extends Controller {
 				$this->response['message'] 	= "out of category access card scope";
 			}
 			// request type checker
-
-
-
-
+		} else if($this->category == 2) {
+			// status inventory
+			$current_user 	= Auth::user()->id;
+			
+			if($this->data->status == 1) {
+				$next_user = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+					->where('users_role.divisi',6)
+					->where('new_inventory_role.inventory_level_id','=',2)
+					->where('new_inventory_role.inventory_list_id','=',$this->data['inventory_list_id'])
+                    ->pluck('users_role.user_id');
+                array_push($data_user,$current_user);
+					
+				foreach($next_user as $key=>$val) {
+					if(!in_array($val,$data_user)) {
+						array_push($data_user,$val);
+					}
+				}
+				$this->send_notify($data_user);
+			}
+			
 		} else {
 			$this->response['error'] 	= true;
 			$this->response['message'] 	= "out of category apps scope";
@@ -734,8 +750,11 @@ class Notification extends Controller {
 
 	private function send_notify($user_array) {
 		$full_data = array();
+		// dd($this->data);
 		for($i=0;$i<count($user_array);$i++) {
-			$data = array(
+
+			if($this->category == 1) {
+				$data = array(
 				'user_id'		=> $user_array[$i],
 				'category'		=> $this->category,
 				'notify_type'	=> $this->data->request_type,
@@ -744,7 +763,20 @@ class Notification extends Controller {
 				'data_uuid'		=> $this->data->uuid,
 				'created_at'	=> date('Y-m-d H:i:s'),
 				'updated_at'	=> date('Y-m-d H:i:s')
-			);
+				);
+			} else if($this->category == 2) {
+				$data = array(
+				'user_id'		=> $user_array[$i],
+				'category'		=> $this->category,
+				'notify_type'	=> $this->data->status_data,
+				'notify_status' => $this->data->status,
+				'data_id'		=> $this->data->id,
+				'data_uuid'		=> $this->data->uuid,
+				'created_at'	=> date('Y-m-d H:i:s'),
+				'updated_at'	=> date('Y-m-d H:i:s')
+				);
+			}
+			
 			array_push($full_data,$data);
 		}
 		Model_Notification::insert($full_data);
