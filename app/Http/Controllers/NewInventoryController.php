@@ -563,7 +563,7 @@ class NewInventoryController extends Controller
                 ->get();
 
         if(count($new_inventory_sub_data) < 1) {
-            $response['message'] = "Sub Inventory data ID not found";
+            $response['message'] = "Please set the sub inventory data first";
             return json_encode($response);
         }
 
