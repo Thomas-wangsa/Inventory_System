@@ -63,7 +63,11 @@ class NewInventoryController extends Controller
                             ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
                             ->leftjoin('status_inventory','status_inventory.id','=','new_inventory_data.status');
 
-        $role_specific_head = array();
+        $role_specific_head = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+                                ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('new_inventory_role.user_id','=',Auth::user()->id)
+                                ->where('inventory_level_id','=',2)->get();
         if(!$this->is_super_admin) {
             $role_specific_users = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
                                 ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
@@ -71,11 +75,7 @@ class NewInventoryController extends Controller
                                 ->where('new_inventory_role.user_id','=',Auth::user()->id)
                                 ->get();
 
-            $role_specific_head = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
-                                ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
-                                ->where('users_role.user_id','=',Auth::user()->id)
-                                ->where('new_inventory_role.user_id','=',Auth::user()->id)
-                                ->where('inventory_level_id','=',2)->get();
+            
 
 
             if(count($role_specific_users) > 0) {
@@ -138,7 +138,7 @@ class NewInventoryController extends Controller
                         ,'status_inventory.color AS status_inventory_color'
                         );
         $new_inventory_data = $base_inventory_data->paginate(5);
-
+        
         
         $conditional_head = array();
         foreach($new_inventory_data as $key=>$val) {
