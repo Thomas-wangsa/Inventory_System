@@ -9,7 +9,7 @@ use App\Http\Models\Users;
 use App\Http\Models\AccessCardRequest;
 use App\Http\Models\AccessCardRegisterStatus;
 use App\Http\Models\Status_Akses;
-
+use App\Http\Models\New_Inventory_Data;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\Access_Notification;
 use App\Notifications\Akses_Notifications;
@@ -390,11 +390,70 @@ class Notification extends Controller {
 			$param['cc_email'] = array();
         	//initiate
         	array_push($param['cc_email'],Users::find(Auth::user()->id)->email);
-        	
-        	$param['subject'] = "[no-reply] [Inventory] ";
-        	$param['description'] = "Here is auto notification feature from our application, with the information of access card :";
-        	$param['status_name'] 	= "status_name";
-        	$param['status_color']	= "#FF0000";
+
+        	// list related email
+        	$requester_user = Users::find($this->data->created_by)->email;
+			$current_user 	= Users::find($this->data->updated_by)->email;
+        	$list_email = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+					->join('users','users.id','=','users_role.user_id')
+					->where('users_role.divisi',6)
+					->where('new_inventory_role.inventory_level_id','=',2)
+					->where('new_inventory_role.inventory_list_id','=',$this->data['inventory_list_id'])
+                    ->pluck('users.email');
+
+
+            // collect the related email
+            if(!in_array($requester_user,$param['cc_email'])) {
+				array_push($param['cc_email'],$requester_user);
+			}
+
+			if(!in_array($current_user,$param['cc_email'])) {
+				array_push($param['cc_email'],$current_user);
+			}
+
+			foreach($list_email as $key=>$val) {
+				if(!in_array($val,$param['cc_email'])) {
+					array_push($param['cc_email'],$val);
+				}
+			}
+			// collect the related email
+
+			// full data
+			$base_data = New_Inventory_Data::leftjoin('group1','group1.id','=','new_inventory_data.group1')
+                            ->leftjoin('group2','group2.id','=','new_inventory_data.group2')
+                            ->leftjoin('group3','group3.id','=','new_inventory_data.group3')
+                            ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
+                            ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
+                            ->leftjoin('status_inventory','status_inventory.id','=','new_inventory_data.status')
+                            ->where('new_inventory_data.uuid','=',$this->data->uuid)
+                            ->select(
+                            	'new_inventory_data.*',
+                            	'group1.group1_name',
+                            	'group1.group1_name',
+                            	'group1.group1_name',
+                            	'group1.group1_name',
+                            	'inventory_list.inventory_name as inventory_list_name',
+                            	'status_inventory.name as status_inventory_name',
+                            	'status_inventory.color as status_inventory_color'
+                            	)
+                            ->first();
+            if(count($base_data) < 1) {
+            	$this->response['error'] 	= true;
+				$this->response['message'] 	= "base data not found!";
+            }
+			// full data
+
+        	$notify_name = "undefined";
+                if($this->data->status_data == 1) {
+                    $notify_name = "new inventory";
+                }
+
+        	$param['subject'] = "[no-reply] [".$notify_name."] ".
+        						$base_data->inventory_list_name." : ".
+        						$base_data->status_inventory_name." for ".$base_data->inventory_name;
+        	$param['description'] = "Here is auto notification feature from our application, with the information of inventory :";
+        	$param['status_name'] 	= $base_data->status_inventory_name;
+        	$param['status_color']	= $base_data->status_inventory_color;
         	$param['note']			= null;
 
 
@@ -430,8 +489,8 @@ class Notification extends Controller {
                 "subject"           => $param['subject'],
                 "cc_email"          => $param['cc_email'],
                 "description"       => $param['description'],
-                "access_card_name"  => "access card name",
-                "access_card_no"    => "number",
+                "inventory_name"  	=> $this->data->inventory_name,
+                "inventory_qty"    	=> $this->data->qty,
                 "status_akses"      => $param['status_name'],
                 "status_color"      => $param['status_color'],
                 "uuid"              => $this->data->uuid,

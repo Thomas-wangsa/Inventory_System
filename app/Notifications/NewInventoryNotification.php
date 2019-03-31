@@ -43,8 +43,8 @@ class NewInventoryNotification extends Notification
     {   
         $data = array(
             "description"       => $this->param['description'],
-            "access_card_name"  => $this->param['access_card_name'],
-            "access_card_no"    => $this->param['access_card_no'],
+            "inventory_name"  => $this->param['inventory_name'],
+            "inventory_qty"    => $this->param['inventory_qty'],
             "status_akses"      => $this->param['status_akses'],
             "status_color"      => $this->param['status_color'],
             "note"              => $this->param['note'],
@@ -54,10 +54,11 @@ class NewInventoryNotification extends Notification
         );
 
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->from($this->param['from'],config('app.name'))
+                    ->replyTo($this->param['replyTo'])
+                    ->subject($this->param['subject'])
                     ->markdown('vendor.notifications.new_inventory_notification', ['data' => $data])
-                    ->line('Thank you for using our application!');
+                    ->cc($this->param['cc_email']);
     }
 
     /**

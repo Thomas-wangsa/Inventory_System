@@ -5,22 +5,22 @@
 
 <table class="table" align="center" width="100%" cellpadding="0" cellspacing="0">
     <tr>
-        <th align="center">
-            Name
+        <th align="left">
+            Inventory Name
         </th>
         <th align="center">
-            Access Card Number
+            Quantity
         </th>
         <th align="center">
             Status
         </th>
     </tr>
     <tr>
-        <td align="center" style="border-bottom: 1px solid #EDEFF2;">
-            {{ $data['access_card_name']}}
+        <td align="left" style="border-bottom: 1px solid #EDEFF2;">
+            {{ $data['inventory_name']}}
         </td>
         <td align="center" style="border-bottom: 1px solid #EDEFF2;">
-            {{$data['access_card_no']}}
+            {{$data['inventory_qty']}}
             
         </td>
         <td align="center" style="border-bottom: 1px solid #EDEFF2;color:{{$data['status_color']}}" >
