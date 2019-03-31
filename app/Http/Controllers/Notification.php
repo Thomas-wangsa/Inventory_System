@@ -484,8 +484,8 @@ class Notification extends Controller {
 		$user  = Users::find(Auth::user()->id);
 
 		$data = array(
-				"from"				=> "notification@indosatooredoo.com",
-				"replyTo"			=> "notification@indosatooredoo.com",
+				"from"				=> "admin@supporthelpdesk.com",
+				"replyTo"			=> "admin@supporthelpdesk.com",
                 "subject"           => $param['subject'],
                 "cc_email"          => $param['cc_email'],
                 "description"       => $param['description'],
@@ -505,8 +505,8 @@ class Notification extends Controller {
 		$user  = Users::find(Auth::user()->id);
 		$access_card_no = $this->data->no_access_card == null ? '-' : $this->data->no_access_card;
 		$data = array(
-				"from"				=> "notification@indosatooredoo.com",
-				"replyTo"			=> "notification@indosatooredoo.com",
+				"from"				=> "admin@supporthelpdesk.com",
+				"replyTo"			=> "admin@supporthelpdesk.com",
                 "subject"           => $param['subject'],
                 "cc_email"          => $param['cc_email'],
                 "description"       => $param['description'],
