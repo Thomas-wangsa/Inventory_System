@@ -56,6 +56,7 @@ class NewInventoryNotification extends Notification
         return (new MailMessage)
                     ->line('The introduction to the notification.')
                     ->action('Notification Action', url('/'))
+                    ->markdown('vendor.notifications.new_inventory_notification', ['data' => $data])
                     ->line('Thank you for using our application!');
     }
 
