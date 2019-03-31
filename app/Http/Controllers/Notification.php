@@ -13,7 +13,7 @@ use App\Http\Models\Status_Akses;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\Access_Notification;
 use App\Notifications\Akses_Notifications;
-
+use App\Notifications\NewInventoryNotification;
 use App\Http\Models\Notification AS Model_Notification;
 
 
@@ -387,7 +387,32 @@ class Notification extends Controller {
 			}
 			// Request Type Checker
 		} else if($this->category == 2) {
-			echo "AAA";die;
+			$param['cc_email'] = array();
+        	//initiate
+        	array_push($param['cc_email'],Users::find(Auth::user()->id)->email);
+        	
+        	$param['subject'] = "[no-reply] [Inventory] ";
+        	$param['description'] = "Here is auto notification feature from our application, with the information of access card :";
+        	$param['status_name'] 	= "status_name";
+        	$param['status_color']	= "#FF0000";
+        	$param['note']			= null;
+
+
+        	if(
+				$this->data->status == 1 
+				|| 
+				$this->data->status == 2
+				|| 
+				$this->data->status == 3
+				|| 
+				$this->data->status == 4
+			) { 
+        		$this->send_notify_email_inventory($param);
+			} else {
+				$this->response['error'] 	= true;
+				$this->response['message'] 	= "out of scope email inventory request type";
+			}
+
 		} else {
 			$this->response['error'] 	= true;
 			$this->response['message'] 	= "out of scope email notification category";
@@ -396,7 +421,26 @@ class Notification extends Controller {
 
 	}
 
+	private function send_notify_email_inventory($param) {
+		$user  = Users::find(Auth::user()->id);
 
+		$data = array(
+				"from"				=> "notification@indosatooredoo.com",
+				"replyTo"			=> "notification@indosatooredoo.com",
+                "subject"           => $param['subject'],
+                "cc_email"          => $param['cc_email'],
+                "description"       => $param['description'],
+                "access_card_name"  => "access card name",
+                "access_card_no"    => "number",
+                "status_akses"      => $param['status_name'],
+                "status_color"      => $param['status_color'],
+                "uuid"              => $this->data->uuid,
+                "note"              => $param['note'],
+                     
+            );
+
+		$user->notify(new NewInventoryNotification($data));
+	}
 
 	private function send_notify_email($param) {
 		$user  = Users::find(Auth::user()->id);
