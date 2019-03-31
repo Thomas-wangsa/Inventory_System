@@ -61,8 +61,23 @@
 			  	</div>
 				
 				<div class="form-group">
+			      	<select class="form-control" name="search_category">
+			      		<option value=""> Category  </option>
+			 			@foreach($data['category'] as $val)
+			 			<option value="{{$val->id}}"
+			 				@if($val->id == Request::get('search_category')) 
+			    				selected
+			    			@endif
+			    			> 
+			 				{{$val->inventory_name}}
+			 			</option>
+			 			@endforeach
+			      	</select>
+			  	</div>
+
+				<div class="form-group">
 			      	<select class="form-control" name="search_filter">
-			      		<option value=""> Filter  </option>
+			      		<option value=""> Status  </option>
 			 			@foreach($data['status_inventory'] as $val)
 			 			<option value="{{$val->id}}"
 			 				@if($val->id == Request::get('search_filter')) 
@@ -75,26 +90,6 @@
 			      	</select>
 			  	</div>
 
-			  	<div class="form-group">
-			      	<select class="form-control" name="search_order">
-			      		<option value=""> Sort  </option>
-			        	<option value="created"
-			        		@if('created' == Request::get('search_order')) 
-			    				selected
-			    			@endif
-			    			> 
-			        		created
-			        	</option>
-			        	<option value="updated"
-			        		@if('updated' == Request::get('search_order')) 
-			    				selected
-			    			@endif
-			        		> 
-			        		updated
-			        	</option>			      		
-			      	</select>
-			  	</div>
-			  
 			  	<button type="submit" class="btn btn-info"> Filter </button>
 			  	<button type="reset" 
 			  	class="btn"
@@ -193,6 +188,21 @@
 		                    			>
 		                    				Info Inventory
 		                    			</button>
+
+		                    			@if($data['conditional_head'][$key])
+		                    			<button 
+		                    			class="btn btn-primary"
+		                    			onclick="approve_head('{{$val->uuid}}')" 
+		                    			>
+		                    				Approve Inventory
+		                    			</button>
+		                    			<button 
+		                    			class="btn btn-danger"
+		                    			onclick="reject_head('{{$val->uuid}}')" 
+		                    			>
+		                    				Reject Inventory
+		                    			</button>
+		                    			@endif
 				    				</div>
 				    				@break
 				    			@case("3")
@@ -218,7 +228,7 @@
 				'search' => Request::get('search'),
 				'search_nama' => Request::get('search_nama'),
 				'search_filter' => Request::get('search_filter'),
-				'search_order' => Request::get('search_order')
+				'search_category' => Request::get('search_category')
 				])->links() }}
 	
 		</div>

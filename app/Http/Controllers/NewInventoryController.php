@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Status_Inventory;
+use App\Http\Models\Inventory_List;
+
 use App\Http\Models\New_Inventory_Role;
 use App\Http\Models\New_Inventory_Data;
 use App\Http\Models\New_Inventory_Sub_Data;
@@ -61,11 +63,20 @@ class NewInventoryController extends Controller
                             ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
                             ->leftjoin('status_inventory','status_inventory.id','=','new_inventory_data.status');
 
+        $role_specific_head = array();
         if(!$this->is_super_admin) {
             $role_specific_users = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
                                 ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
                                 ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('new_inventory_role.user_id','=',Auth::user()->id)
                                 ->get();
+
+            $role_specific_head = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+                                ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('new_inventory_role.user_id','=',Auth::user()->id)
+                                ->where('inventory_level_id','=',2)->get();
+
 
             if(count($role_specific_users) > 0) {
                 foreach($role_specific_users as $key_role=>$val_role) {
@@ -82,12 +93,21 @@ class NewInventoryController extends Controller
                 echo "ERROR in logic";die;
             }
         }
-        //dd($base_inventory_data->get());
+
+
         if($request->search == "on") {
             if($request->search_nama != null) {
                 $base_inventory_data->where('new_inventory_data.inventory_name','like','%'.$request->search_nama."%");
             }
 
+            if($request->search_category != null) {
+                $base_inventory_data->where('new_inventory_data.inventory_list_id','=',$request->search_category);            
+            }
+            echo $request->search_category;
+            $foo_sql = $base_inventory_data->toSql();
+
+            $base_inventory_data->get();
+            dd($foo_sql);
             if($request->search_filter != null) {
                 $base_inventory_data->where('new_inventory_data.status',$request->search_filter);            
             } 
@@ -96,6 +116,8 @@ class NewInventoryController extends Controller
                 $base_inventory_data->where('new_inventory_data.uuid',$request->search_uuid);
             } 
         }
+
+        
         
         $base_inventory_data->select('new_inventory_data.*'
                         ,'group1.group1_name'
@@ -112,6 +134,24 @@ class NewInventoryController extends Controller
         $conditional_head = array();
         foreach($new_inventory_data as $key=>$val) {
             $conditional_head[$key] = false;
+
+            if(count($role_specific_head) > 0) {
+                foreach($role_specific_head as $key_head=>$val_head) {
+
+                    if (
+                        $val->group1 == $val_head->group1
+                        && $val->group2 == $val_head->group2
+                        && $val->group3 == $val_head->group3
+                        && $val->group4 == $val_head->group4
+                        && $val->inventory_list_id == $val_head->inventory_list_id
+                    ) {
+                        $conditional_head[$key] = true;
+                    }
+                }
+                // dd($new_inventory_data);
+                // dd($role_specific_head);
+            }
+
             // pake foreach ya ambil semua
             // if(in_array($val->inventory_list_id,$head_role_inventory)) {
             //     $conditional_head[$key] = true;
@@ -123,7 +163,8 @@ class NewInventoryController extends Controller
             'list_new_inventory_role'   => $list_new_inventory_role,
             'status_inventory'          => Status_Inventory::all(),
             'new_inventory_data'        => $new_inventory_data,
-            'conditional_head'          => $conditional_head
+            'conditional_head'          => $conditional_head,
+            'category'                  => Inventory_List::all()
         ];
         //dd($data);
         return view('new_inventory/index',compact('data'));
