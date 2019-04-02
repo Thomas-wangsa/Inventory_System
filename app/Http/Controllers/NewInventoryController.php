@@ -660,4 +660,16 @@ class NewInventoryController extends Controller
         }
         return redirect($this->redirectTo."/create?uuid=".$request->token_main_uuid);
     }
+
+    public function delete_new_inventory_sub_data(Request $request) {
+        $response = array();
+        $response['status'] = false;
+
+        $data = New_Inventory_Sub_Data::where('sub_data_uuid','=',$request->sub_data_uuid)
+                ->first()->delete();;
+    
+
+        $response['status'] = true;
+        return json_encode($response);
+    }
 }

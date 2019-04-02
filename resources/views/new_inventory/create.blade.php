@@ -197,24 +197,26 @@
 			      }
 		    	});
 
-		    	// $.ajax({
-			    //   type : "POST",
-			    //   url: " {{ route('new_inventory_sub_data_update_ajax') }}",
-			    //   contentType: "application/json",
-			    //   data : JSON.stringify(data),
-			    //   success: function(result) {
-			    //     response = JSON.parse(result);
-			    //     if(response.status == true) {
-			    //     	alert("Update success");
-			    //     } else {
-			    //       alert(response.message);
-			    //     }
+		    	$.ajax({
+			      type : "POST",
+			      url: " {{ route('delete_new_inventory_sub_data') }}",
+			      contentType: "application/json",
+			      data : JSON.stringify(data),
+			      success: function(result) {
+			        response = JSON.parse(result);
+			        if(response.status == true) {
+			        	alert("Deleted success");
+			        	var url = "{{URL::to('/')}}"+'/new_inventory/create?uuid=';
+						window.location = url+"{{$data['token_main_uuid']}}";
+			        } else {
+			          alert(response.message);
+			        }
 
-			    //   },
-			    //   error: function( jqXhr, textStatus, errorThrown ){
-			    //     console.log( errorThrown );
-			    //   }
-			    // });
+			      },
+			      error: function( jqXhr, textStatus, errorThrown ){
+			        console.log( errorThrown );
+			      }
+			    });
 
 			}
 
