@@ -238,7 +238,8 @@ class NewInventoryController extends Controller
 
         $data = [
             'new_inventory_data' => $new_inventory_data,
-            'new_inventory_sub_data' => $new_inventory_sub_data
+            'new_inventory_sub_data' => $new_inventory_sub_data,
+            'token_main_uuid'            => $request->uuid
         ];
 
         return view('new_inventory/create',compact('data'));
@@ -621,5 +622,42 @@ class NewInventoryController extends Controller
         $response['status'] = true;
         $response['data'] = $new_inventory_data; 
         return json_encode($response);
+    }
+
+
+    public function save_new_inventory_sub_data(Request $request) {
+        $request->validate([
+            'token_main_uuid'=>'required',
+        ]);
+
+        $new_inventory_data = New_Inventory_Data::where('uuid','=',$request->token_main_uuid)
+                        ->first();
+
+        if($new_inventory_data == null or count($new_inventory_data) < 1) {
+            $request->session()->flash('alert-danger', 'Data not found!');
+            return redirect($this->redirectTo."/create?uuid=".$request->token_main_uuid);
+        }
+
+        $new_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$new_inventory_data->id)->get();
+
+        $data = array(
+            'new_inventory_data_id' => $new_inventory_data->id,
+            'sub_data_status'       => $request->sub_data_status,
+            'comment'               => $request->sub_data_additional,
+            "sub_data_uuid"         => $new_inventory_data->id.$this->faker->uuid,
+            "created_by"            => Auth::user()->id,
+            "updated_by"            => Auth::user()->id,
+            "created_at"            => date("Y-m-d H:i:s"),
+            "updated_at"            => date("Y-m-d H:i:s"), 
+        );
+
+    
+        try {
+            DB::table('new_inventory_sub_data')->insert($data);
+            $request->session()->flash('alert-success', 'new sub data inventory already registered');
+        } catch(Exception $e) {
+            $request->session()->flash('alert-danger', $e->getMessage());
+        }
+        return redirect($this->redirectTo."/create?uuid=".$request->token_main_uuid);
     }
 }

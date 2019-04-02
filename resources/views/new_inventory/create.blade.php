@@ -11,6 +11,32 @@
 
 	<div class="main_section">	
 
+		@if ($errors->any())
+	    <div class="alert alert-danger">
+	    	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	        <ul>
+	            @foreach ($errors->all() as $error)
+	                <li>{{ $error }}</li>
+	            @endforeach
+	        </ul>
+	    </div>
+		@endif
+
+
+		<div class="flash-message center">
+		    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+		      @if(Session::has('alert-' . $msg))
+
+		      <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} 
+		        <a href="#" class="close" data-dismiss="alert" aria-label="close">
+		          &times;
+		        </a>
+		     </p>
+		      @endif
+		    @endforeach
+		</div> <!-- end .flash-message -->
+
+
 		<div class="main_section_information">
 			<strong> Grouping : </strong> {{$data['new_inventory_data']->grouping_detail}} 
 			<br/>
@@ -21,13 +47,23 @@
 		</div>
 
 		<div class="interactive_action">
-			<div class="pull-left">
+			<div class="pull-left" style="margin-right: 10px">
 				<button id="map_back" 
 				class="btn btn-success"
 				onclick="back()"
 				>
 					<span class="glyphicon glyphicon-chevron-left">
 					</span> Back
+				</button>
+			</div>
+
+			<div class="pull-left">
+				<button id="map_back" 
+				class="btn btn-primary"
+				data-toggle="modal" 
+				data-target="#modal_create_sub_inventory"
+				>
+					Add New Sub Data
 				</button>
 			</div>
 			<div class="clearfix"> </div>
@@ -79,10 +115,18 @@
 						</td>
 
 						<td> on progress </td>
-						<td> 
-							<button class="btn btn-primary" onclick="submit_sub_data('{{$val->sub_data_uuid}}','{{$key}}')">
-								submit sub data
-							</button> 
+						<td>
+							<div class="btn-group-vertical"> 
+								<button class="btn btn-primary" onclick="submit_sub_data('{{$val->sub_data_uuid}}','{{$key}}')">
+									submit sub data
+								</button>
+								<button 
+                    			class="btn btn-danger"
+                    			onclick="delete_sub_data('{{$val->sub_data_uuid}}')" 
+                    			>
+	                    			delete sub data
+	                    		</button> 
+							</div>
 						</td>
 					</tr>
 					<?php $no++;?>
@@ -92,6 +136,8 @@
 		</div> 
 	</div>
 
+
+	@include('new_inventory.modal_create_sub_inventory')
 
 	<script type="text/javascript">
 		function back() {
@@ -135,6 +181,43 @@
 		        console.log( errorThrown );
 		      }
 		    });
+		}
+
+		function delete_sub_data(sub_data_uuid) {
+			
+			if (confirm('Delete this sub data ?')) { 
+				
+				var data = {
+		        	"sub_data_uuid":sub_data_uuid
+		    	};
+
+		    	$.ajaxSetup({
+			      headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			      }
+		    	});
+
+		    	// $.ajax({
+			    //   type : "POST",
+			    //   url: " {{ route('new_inventory_sub_data_update_ajax') }}",
+			    //   contentType: "application/json",
+			    //   data : JSON.stringify(data),
+			    //   success: function(result) {
+			    //     response = JSON.parse(result);
+			    //     if(response.status == true) {
+			    //     	alert("Update success");
+			    //     } else {
+			    //       alert(response.message);
+			    //     }
+
+			    //   },
+			    //   error: function( jqXhr, textStatus, errorThrown ){
+			    //     console.log( errorThrown );
+			    //   }
+			    // });
+
+			}
+
 		}
 	</script>
  
