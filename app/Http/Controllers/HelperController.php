@@ -9,6 +9,8 @@ use App\Http\Models\Group2;
 use App\Http\Models\Group3;
 use App\Http\Models\Group4;
 use App\Http\Models\Inventory_List;
+use App\Http\Models\Pic_List;
+use App\Http\Models\Admin_Room_List;
 
 
 
@@ -45,7 +47,9 @@ class HelperController extends Controller
             "Group2"    => 2,
             "Group3"    => 3,
             "Group4"    => 4,
-            "Inventory" => 5
+            "Inventory" => 5,
+            "PIC"       => 6,
+            "Admin Room"=> 7,
         );
         
 
@@ -81,6 +85,14 @@ class HelperController extends Controller
                         if($request->search_nama != null) {$rows = Inventory_List::GetConfig($request->search_nama)->get();}
                         else {$rows = Inventory_List::GetConfig()->get();}
                         break;
+                    case '6' :
+                        if($request->search_nama != null) {$rows = Pic_List::GetConfig($request->search_nama)->get();}
+                        else {$rows = Pic_List::GetConfig()->get();}
+                        break;
+                    case '7' :
+                        if($request->search_nama != null) {$rows = Admin_Room_List::GetConfig($request->search_nama)->get();}
+                        else {$rows = Admin_Room_List::GetConfig()->get();}
+                        break;
                     default:
                         $request->session()->flash('alert-danger', "Out Of Scope Category value : $request->config_category");
                         return redirect($this->redirectTo);
@@ -91,7 +103,7 @@ class HelperController extends Controller
 
 
             $data['rows'] = $rows;
-            // dd($data);
+            //dd($data);
         }
         return view('helper/index',compact('data')); 
     }
@@ -191,6 +203,34 @@ class HelperController extends Controller
                 $data->inventory_detail_name    = $request->config_additional;
 
                 break;
+            case '6':
+                $data_exists = Pic_List::where('vendor_name', strtolower($request->config_main))->first();
+
+                if($data_exists) {
+                    $request->session()->flash('alert-danger', "Data already exists in Inventory List : $request->config_main");
+                    return redirect($this->redirectTo);
+                }
+
+
+                $data  = new Pic_List;
+                $data->vendor_name      = strtolower($request->config_main);
+                $data->vendor_detail_name    = $request->config_additional;
+
+                break;
+            case '7':
+                $data_exists = Admin_Room_List::where('admin_room', strtolower($request->config_main))->first();
+
+                if($data_exists) {
+                    $request->session()->flash('alert-danger', "Data already exists in Inventory List : $request->config_main");
+                    return redirect($this->redirectTo);
+                }
+
+
+                $data  = new Admin_Room_List;
+                $data->admin_room      = strtolower($request->config_main);
+                $data->admin_room_detail    = $request->config_additional;
+
+                break;
             default:
                 $request->session()->flash('alert-danger', "Out Of Scope Category value : $request->config_category");
                 return redirect($this->redirectTo);
@@ -268,7 +308,17 @@ class HelperController extends Controller
                 $data = Inventory_List::find($request->edit_config_uuid);
                 $data->inventory_name      = $request->config_main;
                 $data->inventory_detail_name    = $request->config_additional;
-                break;        
+                break;
+            case '6':
+                $data = Pic_List::find($request->edit_config_uuid);
+                $data->vendor_name      = $request->config_main;
+                $data->vendor_detail_name    = $request->config_additional;
+                break;
+            case '7':
+                $data = Admin_Room_List::find($request->edit_config_uuid);
+                $data->admin_room      = $request->config_main;
+                $data->admin_room_detail    = $request->config_additional;
+                break;                
             default:
                 # code...
                 break;

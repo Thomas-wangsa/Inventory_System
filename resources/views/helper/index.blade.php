@@ -132,6 +132,12 @@
 								    @case(5)
 								    	<?php $val_name="inventory_name";$val_detail="inventory_detail_name";$category_value = "inventory list";?>
 								        @break
+								    @case(6)
+								    	<?php $val_name="vendor_name";$val_detail="vendor_detail_name";$category_value = "pic list";?>
+								        @break
+								     @case(7)
+								    	<?php $val_name="admin_room";$val_detail="admin_room_detail";$category_value = "admin room list";?>
+								        @break
 								    @default
 								    	@break
 								@endswitch

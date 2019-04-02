@@ -765,6 +765,7 @@ class AdminController extends Controller
         $pic_list_data = new Pic_List;
         $pic_list_data->vendor_name    = $pic_list;
         $pic_list_data->vendor_detail_name = $pic_detail;
+        $pic_list_data->created_by = Auth::user()->id;
         $pic_list_data->updated_by = Auth::user()->id;
         $pic_list_data->save();
         
@@ -800,6 +801,7 @@ class AdminController extends Controller
         $pic_list_data = new Admin_Room_List;
         $pic_list_data->admin_room    = $admin_room;
         $pic_list_data->admin_room_detail = $admin_room_detail;
+        $pic_list_data->created_by = Auth::user()->id;
         $pic_list_data->updated_by = Auth::user()->id;
         $pic_list_data->save();
         
