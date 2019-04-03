@@ -161,32 +161,26 @@
 			    			@switch($val->status)
 				    			@case("1")
 
-				    				@if($val->status_data == 1) 
 	                    			<button 
 	                    			class="btn btn-basic"
 	                    			onclick="set_sub_data_inventory('{{$val->uuid}}')" 
 	                    			>
 	                    				Set Sub Data
 	                    			</button>
-	                    			@endif 
 	                    			
-	                    			@if($val->status_data == 1)
 	                    			<button 
 	                    			class="btn btn-warning"
 	                    			onclick='edit("{{$val->uuid}}")' 
 	                    			>
 	                    				Edit Inventory
 	                    			</button>
-	                    			@endif
 
-	                    			@if($val->status_data == 1)
 	                    			<button 
 	                    			class="btn btn-primary"
 	                    			onclick="approve('{{$val->uuid}}')" 
 	                    			>
 	                    				Submit Inventory
 	                    			</button>
-	                    			@endif
 
 				    				@break
 				    			@case("2")
@@ -247,7 +241,6 @@
 	@include('new_inventory.modal_info')
 	@include('new_inventory.modal_edit')
 	@include('new_inventory.modal_reject')
-	@include('new_inventory.modal_update_select')
 
 	<script type="text/javascript">
 		function reset_filter() {
