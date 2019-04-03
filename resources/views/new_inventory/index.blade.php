@@ -177,7 +177,8 @@
 
 	                    			<button 
 	                    			class="btn btn-primary"
-	                    			onclick="approve('{{$val->uuid}}')" 
+	                    			onclick="approve('{{$val->uuid}}')"
+	                    			id="id_approve_{{$val->uuid}}" 
 	                    			>
 	                    				Submit Inventory
 	                    			</button>
@@ -188,6 +189,7 @@
 	                    			<button 
 	                    			class="btn btn-primary"
 	                    			onclick="approve('{{$val->uuid}}')" 
+	                    			id="id_approve_{{$val->uuid}}"
 	                    			>
 	                    				Approve Inventory
 	                    			</button>
@@ -203,6 +205,7 @@
 				    				<button 
 	                    			class="btn btn-warning"
 	                    			onclick='update_inventory("{{$val->uuid}}")' 
+	                    			id="id_update_{{$val->uuid}}"
 	                    			>
 	                    				Update Inventory
 	                    			</button>
@@ -255,6 +258,8 @@
 
 		function approve(uuid) {
 			if (confirm('Submit inventory ?')) {
+				$("#id_approve_"+uuid).html("Please wait..");
+				$("#id_approve_"+uuid).prop('disabled', true);
 				var data = {
 					"uuid":uuid,
 				}
@@ -290,6 +295,8 @@
 
 		function update_inventory(uuid) {
 			if (confirm('Update inventory ?')) {
+				$("#id_update_"+uuid).html("Please wait..");
+				$("#id_update_"+uuid).prop('disabled', true);
 				var data = {
 					"uuid":uuid,
 				}
