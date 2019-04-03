@@ -52,6 +52,15 @@
 						        <th> inventory name </th>
 						        <td id="new_inventory_info_name">  </td>
 						      </tr>
+						      <tr>
+						        <th> event </th>
+						        <td id="new_inventory_info_event">  </td>
+						      </tr>
+						      <tr>
+						        <th> sub inventory list </th>
+						        <td id="new_inventory_info_sub_inventory_list">  </td>
+						      </tr>
+
 
 						      <tr class="info">
 						        <th> file name upload </th>
@@ -218,6 +227,7 @@
 	function info(uuid) {
 		$('#head_modal_info_map_location').hide();
 		$('#head_modal_info_images_location').hide();
+		$('#new_inventory_info_sub_inventory_list').empty();
 		var data = {
 	        "uuid":uuid
 	        };
@@ -236,6 +246,13 @@
 				response = JSON.parse(result);
 				if(response.status == true) { 
 
+					status_data = "undefined";
+
+					if(response.data.status_data == 1) {
+						status_data = "new inventory";
+					} else if(response.data.status_data == 2) {
+						status_data = "update inventory";
+					}
 					$('#new_inventory_info_group1').html(response.data.group1_name);
 					$('#new_inventory_info_group2').html(response.data.group2_name);
 					$('#new_inventory_info_group3').html(response.data.group3_name);
@@ -243,6 +260,14 @@
 					$('#new_inventory_info_category').html(response.data.inventory_list_name);
 					$('#new_inventory_info_level').html(response.data.inventory_level_name);
 					$('#new_inventory_info_name').html(response.data.inventory_name);
+					$('#new_inventory_info_event').html(status_data).css("font-weight","Bold");
+
+					shortcut_sub_list = '<a href="{{ url("/new_inventory/create?uuid=") }}'+response.data.uuid+'"'
+													+ 'target="_blank">'
+													+ 'click here'
+													+ '</a>';
+
+					$('#new_inventory_info_sub_inventory_list').append(shortcut_sub_list);					
 
 					$('#file_name_upload').html(response.data.file_name_upload);
 
