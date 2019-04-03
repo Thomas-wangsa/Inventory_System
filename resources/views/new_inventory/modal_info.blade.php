@@ -262,12 +262,13 @@
 					$('#new_inventory_info_name').html(response.data.inventory_name);
 					$('#new_inventory_info_event').html(status_data).css("font-weight","Bold");
 
-					shortcut_sub_list = '<a href="{{ url("/new_inventory/create?uuid=") }}'+response.data.uuid+'"'
+					shortcut_sub_list = '<a href="{{ route("new_inventory.show",["id"=>"%ID%"])}}"'
 													+ 'target="_blank">'
 													+ 'click here'
 													+ '</a>';
 
-					$('#new_inventory_info_sub_inventory_list').append(shortcut_sub_list);					
+
+					$('#new_inventory_info_sub_inventory_list').append(shortcut_sub_list.replace("%ID%",response.data.uuid));					
 
 					$('#file_name_upload').html(response.data.file_name_upload);
 

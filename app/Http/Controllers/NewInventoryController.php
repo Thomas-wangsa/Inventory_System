@@ -292,9 +292,23 @@ class NewInventoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$uuid)
     {
+        $inventory_data = New_Inventory_Data::where('uuid',$uuid)->first();
 
+        if(count($inventory_data) < 1 ) {
+            $request->session()->flash('alert-danger', 'credentials not found');
+            return redirect($this->redirectTo."?search=on&search_uuid=".$uuid);
+        }
+
+        $new_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$inventory_data->id)->get();
+
+        $data = [
+            'sub_data' => $new_inventory_sub_data
+        ];
+
+        return view('new_inventory/show',compact('data'));
+        //dd($uuid);
     }
 
     /**

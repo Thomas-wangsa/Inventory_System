@@ -40,6 +40,8 @@
       INVENTORY
     @elseif(Route::current()->getName() == 'new_inventory.create')
       SET STATUS INVENTORY
+    @elseif(Route::current()->getName() == 'new_inventory.show')
+      SHOW SUB DATA INVENTORY
     @else 
       ERROR
     @endif
