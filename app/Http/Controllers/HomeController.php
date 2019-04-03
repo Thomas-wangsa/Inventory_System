@@ -164,6 +164,8 @@ class HomeController extends Controller
                 $notify_name = "undefined";
                 if($val['notify_type'] == 1) {
                     $notify_name = "new inventory";
+                } else if ($val['notify_type'] == 2) {
+                    $notify_name = "update inventory";
                 }
 
                 $category_name  = "inventory";

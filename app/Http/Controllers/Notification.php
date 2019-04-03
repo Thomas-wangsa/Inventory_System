@@ -446,6 +446,8 @@ class Notification extends Controller {
         	$notify_name = "undefined";
                 if($this->data->status_data == 1) {
                     $notify_name = "new inventory";
+                } else if($this->data->status_data == 2) {
+                	$notify_name = "update inventory";
                 }
 
         	$param['subject'] = "[no-reply] [".$notify_name."] ".

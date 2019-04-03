@@ -57,6 +57,8 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/new_inventory/new_inventory_sub_data_update_ajax','NewInventoryController@new_inventory_sub_data_update_ajax')->name('new_inventory_sub_data_update_ajax');
 		Route::post('/new_inventory/new_inventory_data_approve_ajax','NewInventoryController@new_inventory_data_approve_ajax')->name('new_inventory_data_approve_ajax');
 
+		Route::post('/new_inventory/new_inventory_data_update_ajax','NewInventoryController@new_inventory_data_update_ajax')->name('new_inventory_data_update_ajax');
+
 		Route::post('/new_inventory/save_new_inventory_sub_data','NewInventoryController@save_new_inventory_sub_data')->name('save_new_inventory_sub_data');
 		
 		Route::post('/new_inventory/delete_new_inventory_sub_data','NewInventoryController@delete_new_inventory_sub_data')->name('delete_new_inventory_sub_data');
