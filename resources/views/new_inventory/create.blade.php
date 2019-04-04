@@ -46,32 +46,54 @@
 			<br/>
 		</div>
 
-		<div class="interactive_action">
-			<div class="pull-left" style="margin-right: 10px">
-				<button id="map_back" 
-				class="btn btn-success"
-				onclick="back()"
-				>
-					<span class="glyphicon glyphicon-chevron-left">
-					</span> Back
-				</button>
-			</div>
-
-			<div class="pull-left">
+		<div class="interactive_action_map" style="margin-top: 7px">
+		 	<div class="pull-left" style="margin-right: 10px">
 				<div class="btn btn-primary"
 				data-toggle="modal" data-target="#modal_create_new_map">
-					Add Map Location
+					Register Map 
 				</div>
 			</div>
 
 			@if(count($data['map_data']) > 0)
-			<div class="pull-left" style="margin-left: 10px">
+			<div class="pull-left" style="margin-right: 10px">
 				<div class="btn btn-info"
 				data-toggle="modal" data-target="#modal_show_new_map">
 					Show Map List
 				</div>
 			</div>
 			@endif
+
+			<div class="pull-left" style="margin-right: 10px">
+				<div class="btn btn-success"
+				data-toggle="modal" data-target="#modal_create_new_images">
+					Register Images 
+				</div>
+			</div>
+
+			@if(count($data['images_data']) > 0)
+			<div class="pull-left" style="margin-right: 10px">
+				<div class="btn btn-info"
+				data-toggle="modal" data-target="#modal_show_new_map_images">
+					Show Images List
+				</div>
+			</div>
+			@endif
+
+			<div class="clearfix"> </div>
+		</div>
+
+
+		<div class="interactive_action">
+			<div class="pull-left" style="margin-right: 10px">
+				<button id="map_back" 
+				class="btn btn-warning"
+				onclick="back()"
+				>
+					<span class="glyphicon glyphicon-chevron-left">
+					</span> Back
+				</button>
+			</div>
+			
 
 			<div class="pull-right">
 				<button id="map_back" 
@@ -130,7 +152,17 @@
 							</div> 
 						</td>
 
-						<td> on progress </td>
+						<td> 
+							@if(count($data['map_data']) < 1 && count($data['images_data']) < 1)
+								- 
+							@elseif(count($data['map_data']) > 0 && count($data['images_data']) < 1)
+								set images too!
+							@elseif(count($data['map_data']) < 1 && count($data['images_data']) > 0)
+								set map too!
+							@else
+								on progress
+							@endif
+						</td>
 						<td>
 							<div class="btn-group-vertical"> 
 								<button class="btn btn-primary" onclick="submit_sub_data('{{$val->sub_data_uuid}}','{{$key}}')">
@@ -155,7 +187,9 @@
 
 	@include('new_inventory.modal_create_sub_inventory')
 	@include('new_inventory.modal_create_new_map')
+	@include('new_inventory.modal_create_new_images')
 	@include('new_inventory.modal_show_new_map')
+	@include('new_inventory.modal_show_new_map_images')
 
 	<script type="text/javascript">
 		function back() {

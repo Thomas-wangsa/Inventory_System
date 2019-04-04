@@ -11,6 +11,7 @@ use App\Http\Models\New_Inventory_Role;
 use App\Http\Models\New_Inventory_Data;
 use App\Http\Models\New_Inventory_Sub_Data;
 use App\Http\Models\New_Map;
+use App\Http\Models\New_Map_Images;
 
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
@@ -237,12 +238,14 @@ class NewInventoryController extends Controller
         }
 
         $map_data = New_Map::where('new_inventory_data_id','=',$new_inventory_data->id)->get();
+        $images_data = New_Map_Images::where('new_inventory_data_id','=',$new_inventory_data->id)->get();
 
         $data = [
             'new_inventory_data' => $new_inventory_data,
             'new_inventory_sub_data' => $new_inventory_sub_data,
             'token_main_uuid'            => $request->uuid,
-            'map_data'              => $map_data
+            'map_data'              => $map_data,
+            'images_data'           => $images_data
         ];
         return view('new_inventory/create',compact('data'));
 
@@ -765,5 +768,48 @@ class NewInventoryController extends Controller
         }
 
         return redirect($this->redirectTo."/create?uuid=".$request->token_main_uuid);
+    }
+
+    public function new_inventory_add_new_images(Request $request) {
+        $request->validate([
+            'images' => 'required|image|mimes:jpeg,png,jpg|max:550',
+            'token_main_uuid' => 'required',
+            'images_name' => 'required|max:50',
+        ]);
+
+        $new_inventory_data = New_Inventory_Data::where('uuid','=',$request->token_main_uuid)
+                        ->first();
+
+        if($new_inventory_data == null or count($new_inventory_data) < 1) {
+            $request->session()->flash('alert-danger', 'Data Inventory not found!');
+            return redirect($this->redirectTo."/create?uuid=".$request->token_main_uuid);
+        }
+
+        $images = new New_Map_Images;
+        if ($request->hasFile('images')) {
+            $image = $request->file('images');
+            $file_name = $this->faker->uuid.".".$image->getClientOriginalExtension();
+            $path = "/images/new_map_images/";
+            $destinationPath = public_path($path);
+            $image->move($destinationPath, $file_name);
+            $images->images = $path.$file_name;
+        }
+
+        $images->new_inventory_data_id = $new_inventory_data->id;
+        $images->images_name          = $request->images_name;
+        $images->images_notes         = $request->images_notes;
+        $images->uuid              = $new_inventory_data->id.$this->faker->uuid;
+        $images->created_by        = Auth::user()->id;
+        $images->updated_by        = Auth::user()->id;
+        $check = $images->save();
+
+        if($check) {
+            $request->session()->flash('alert-success', 'new images has been registerred');
+        } else {
+            $request->session()->flash('alert-danger', 'failed to register new images');
+        }
+
+        return redirect($this->redirectTo."/create?uuid=".$request->token_main_uuid);
+
     }
 }
