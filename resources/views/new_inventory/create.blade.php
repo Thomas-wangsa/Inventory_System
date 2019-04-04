@@ -166,7 +166,7 @@
 						<td>
 							<div class="btn-group-vertical"> 
 								<button class="btn btn-primary" onclick="submit_sub_data('{{$val->sub_data_uuid}}','{{$key}}')">
-									submit sub data
+									update sub data
 								</button>
 								<button 
                     			class="btn btn-danger"
