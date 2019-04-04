@@ -58,6 +58,22 @@
 			</div>
 
 			<div class="pull-left">
+				<div class="btn btn-primary"
+				data-toggle="modal" data-target="#modal_create_new_map">
+					Add Map Location
+				</div>
+			</div>
+
+			@if(count($data['map_data']) > 0)
+			<div class="pull-left" style="margin-left: 10px">
+				<div class="btn btn-info"
+				data-toggle="modal" data-target="#modal_show_new_map">
+					Show Map List
+				</div>
+			</div>
+			@endif
+
+			<div class="pull-right">
 				<button id="map_back" 
 				class="btn btn-primary"
 				data-toggle="modal" 
@@ -138,6 +154,8 @@
 
 
 	@include('new_inventory.modal_create_sub_inventory')
+	@include('new_inventory.modal_create_new_map')
+	@include('new_inventory.modal_show_new_map')
 
 	<script type="text/javascript">
 		function back() {

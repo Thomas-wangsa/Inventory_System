@@ -64,6 +64,8 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/new_inventory/delete_new_inventory_sub_data','NewInventoryController@delete_new_inventory_sub_data')->name('delete_new_inventory_sub_data');
 		
 
+		Route::post('/new_inventory/new_inventory_add_new_map','NewInventoryController@new_inventory_add_new_map')->name('new_inventory_add_new_map');
+
 		Route::post('/ajax/get_group_detail','AjaxController@get_group_detail')->name('get_group_detail');
 
 
