@@ -818,61 +818,39 @@ class NewInventoryController extends Controller
         $response['status'] = false;
 
         if($request->new_inventory_role_id == null) {
-            $response['message'] = "Inventory data ID not found";
+            $response['message'] = "Inventory credentials is required in server side";
             return json_encode($response);
         }
 
         if($request->inventory_name == null) {
-            $response['message'] = "Inventory name is required";
+            $response['message'] = "Inventory name is required in server side";
             return json_encode($response);
         }        
 
-        $response['message'] = "sukses sih";
+        $grouping = New_Inventory_Role::find($request->new_inventory_role_id);
+
+        if($grouping == null || count($grouping) < 1) {
+            $response['message'] = "Grouping Data is not found";
+            return json_encode($response);
+        }
+
+        $inventory_name = strtolower(trim($request->inventory_name));
+
+        $check_exist = New_Inventory_Data::where('inventory_name','=',$inventory_name)
+                    ->where('group1','=',$grouping->group1)
+                    ->where('group2','=',$grouping->group2)
+                    ->where('group3','=',$grouping->group3)
+                    ->where('group4','=',$grouping->group4)
+                    ->where('inventory_list_id','=',$grouping->inventory_list_id)
+                    ->get();
+
+        if(count($check_exist) > 0) {
+            $response['message'] = "Inventory name is exist in this grouping";
+            return json_encode($response);   
+        }
+
+
+        $response['status'] = true;
         return json_encode($response);
-        // $new_inventory_data = New_Inventory_Data::where('uuid','=',$request->uuid)
-        //         ->first();
-        // if(count($new_inventory_data) < 1) {
-        //     $response['message'] = "Inventory data ID not found";
-        //     return json_encode($response);
-        // }
-
-        // if($new_inventory_data->status != 3) {
-        //     $response['message'] = "Inventory data is not active";
-        //     return json_encode($response);
-        // }
-
-        // $new_inventory_data->status_data = 2;
-        // $new_inventory_data->status = 1;
-        // $new_inventory_data->updated_by = Auth::user()->id;
-        // $new_inventory_data->save();
-
-        // $notify = new custom_notification;
-        // $notify_status = $notify->set_notify(2,$new_inventory_data);
-        //         if($notify_status['error'] == true) {
-        //             $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
-        //         }
-        // $request->session()->flash('alert-success', 'Inventory status changed');
-
-
-        // $response['status'] = true;
-        // $response['data'] = $new_inventory_data;
-        // return json_encode($response);
-
-
-        // -------------------------------------------------------
-
-        // $grouping = New_Inventory_Role::find($request->new_inventory_role_id);
-
-        // if($grouping == null) {
-
-        // }
-
-        // $new_inventory_name =  strtolower(trim($request->inventory_name)),
-
-        //     'group1'            => $grouping->group1,
-        //     'group2'            => $grouping->group2,
-        //     'group3'            => $grouping->group3,
-        //     'group4'            => $grouping->group4,
-        //     'inventory_list_id' => $grouping->inventory_list_id,
     }
 }

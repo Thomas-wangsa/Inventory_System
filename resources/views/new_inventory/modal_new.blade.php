@@ -350,6 +350,8 @@
       success: function(result) {
         var response = JSON.parse(result);
         if(response.status) {
+          $("#checking_jabatan").prop('disabled', true);
+          $("#checking_inventory_name").prop('disabled', true);
           $('.conditional_checking').show();
           $('.conditional_checking_reverse').hide();
         } else {
