@@ -20,7 +20,8 @@
                 Insert inventory AS :
               </label>
               <div class="col-xs-8">
-                <select class="form-control" 
+                <select class="form-control"
+                id="checking_jabatan" 
                 name="new_inventory_role_id" 
                 required="">
                   <option value=""> Select role inventory </option>
@@ -40,13 +41,21 @@
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
-                id="" name="inventory_name" value=""
+                id="checking_inventory_name" name="inventory_name" value=""
                 required="" 
                 placeholder="Required Field" >
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group conditional_checking_reverse"> 
+              <div class="col-xs-12">
+                <div class="btn btn-success btn-block" onclick="validate_inventory()">
+                  Checking Inventory 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 QTY :
               </label>
@@ -58,7 +67,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Tanggal Update :
               </label>
@@ -70,7 +79,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Kategori :
               </label>
@@ -80,7 +89,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Kode Gambar :
               </label>
@@ -90,7 +99,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 DVR :
               </label>
@@ -100,7 +109,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Lokasi site :
               </label>
@@ -113,7 +122,7 @@
 
             
 
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Kode Lokasi :
               </label>
@@ -123,7 +132,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Jenis Barang :
               </label>
@@ -133,7 +142,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Merk :
               </label>
@@ -143,7 +152,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Tipe :
               </label>
@@ -153,7 +162,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Model :
               </label>
@@ -165,7 +174,7 @@
             </div>
 
 
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Serial Number :
               </label>
@@ -175,7 +184,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 PSU Adaptor :
               </label>
@@ -185,7 +194,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Tahun Pembuatan :
               </label>
@@ -195,7 +204,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Tahun Pengadaan :
               </label>
@@ -205,7 +214,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Kondisi :
               </label>
@@ -218,7 +227,7 @@
 
 
 
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Deskripsi :
               </label>
@@ -228,7 +237,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Asuransi :
               </label>
@@ -238,7 +247,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Lampiran :
               </label>
@@ -248,7 +257,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Tanggal Retired :
               </label>
@@ -258,7 +267,7 @@
                 placeholder="Optional..." >
               </div>
             </div>
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 PO :
               </label>
@@ -269,7 +278,7 @@
               </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
                 Keterangan :
               </label>
@@ -283,7 +292,7 @@
 
 
 
-            <div class="form-group"> 
+            <div class="form-group conditional_checking"> 
               <div class="col-xs-12">
                 <button type="submit" class="btn btn-primary btn-block">
                   Insert Inventory Data
@@ -302,3 +311,54 @@
     </div>
   </div>
 
+<script type="text/javascript">
+
+  $('.conditional_checking').hide();
+
+  function validate_inventory() {
+
+    jabatan = $('#checking_jabatan').val();
+    inventory_name = $('#checking_inventory_name').val();
+
+    if(jabatan == null || jabatan == "") {
+      alert("Please select role inventory");
+      return
+    }
+
+    if(inventory_name == null || inventory_name == "") {
+      alert("Please set the inventory name");
+      return
+    }
+
+    var data = {
+        "new_inventory_role_id":jabatan,
+        "inventory_name":inventory_name
+    };
+
+    $.ajaxSetup({
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+
+    $.ajax({
+      type : "POST",
+      url: " {{ route('new_inventory_checking_data') }}",
+      contentType: "application/json",
+      data : JSON.stringify(data),
+      success: function(result) {
+        var response = JSON.parse(result);
+        if(response.status) {
+          $('.conditional_checking').show();
+          $('.conditional_checking_reverse').hide();
+        } else {
+          alert(response.message);
+        }
+      },
+      error: function( jqXhr, textStatus, errorThrown ){
+        console.log( errorThrown );
+      }
+    })
+  }
+</script>
