@@ -159,12 +159,41 @@
 								set images too!
 							@elseif(count($data['map_data']) < 1 && count($data['images_data']) > 0)
 								set map too!
+							@elseif( count($data['map_data']) > 0 && count($data['images_data']) > 0 )
+								<form action="{{route('new_inventory_select_map')}}">
+								  	<input type="hidden" name="sub_data_uuid" value="{{$val->sub_data_uuid}}">
+								 	<div class="form-group">
+									  	<label for="sel1">Select map :</label>
+									    <select class="form-control" id="sel1" name="map_uuid">
+									    	@foreach($data['map_data'] as $key_map=>$val_map) 
+									    		<option value="{{$val_map['uuid']}}"> 
+									    			{{$val_map['map_name']}}
+									    		</option>
+									    	@endforeach
+	  									</select>
+								 	</div>
+								  
+								  	<div class="form-group">
+								  		<label for="sel1">Select images :</label>
+									    <select class="form-control" id="sel1" name="images_uuid">
+										    @foreach($data['images_data'] as $key_images=>$val_images) 
+									    		<option value="{{$val_images['uuid']}}"> 
+									    			{{$val_images['images_name']}}
+									    		</option>
+									    	@endforeach
+	  									</select>
+								  	</div>
+
+								  	<button type="submit" class="btn btn-warning btn-block">
+								  		Submit
+								  	</button>
+								</form>
 							@else
-								on progress
+								out of scope
 							@endif
 						</td>
 						<td>
-							<div class="btn-group-vertical"> 
+							<div class="btn-group-vertical btn-block"> 
 								<button class="btn btn-primary" onclick="submit_sub_data('{{$val->sub_data_uuid}}','{{$key}}')">
 									update sub data
 								</button>

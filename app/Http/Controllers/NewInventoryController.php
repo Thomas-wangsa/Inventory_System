@@ -247,6 +247,7 @@ class NewInventoryController extends Controller
             'map_data'              => $map_data,
             'images_data'           => $images_data
         ];
+        //dd($data);
         return view('new_inventory/create',compact('data'));
 
 

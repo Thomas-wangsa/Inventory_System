@@ -225,4 +225,8 @@ class MapController extends Controller
     }
 
 
+    public function new_inventory_select_map(Request $request) {
+        echo "on process";die;
+    }
+
 }
