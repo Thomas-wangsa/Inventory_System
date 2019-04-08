@@ -116,16 +116,16 @@
 			      		Name
 			      	</th>
 			      	<th> 
-			      		Group1
+			      		Kota
 			      	</th>
 			      	<th> 
-			      		Group2
+			      		Gedung
 			      	</th>
 			      	<th> 
-			      		Group3
+			      		Divisi Indosat
 			      	</th>
 			      	<th> 
-			      		Group4
+			      		Sub Divisi Indosat
 			      	</th>
 			      	<th>
 			      		Category
