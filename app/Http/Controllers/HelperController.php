@@ -43,10 +43,10 @@ class HelperController extends Controller
         }
 
         $config = array(
-            "Group1"    => 1,
-            "Group2"    => 2,
-            "Group3"    => 3,
-            "Group4"    => 4,
+            "Kota"    => 1,
+            "Gedung"    => 2,
+            "Divisi Indosat"    => 3,
+            "Sub Divisi Indosat"    => 4,
             "Inventory" => 5,
             "PIC"       => 6,
             "Admin Room"=> 7,

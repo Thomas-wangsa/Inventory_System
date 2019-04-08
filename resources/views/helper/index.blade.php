@@ -118,16 +118,16 @@
 
 			 					@switch(Request::get('search_filter'))
 								    @case(1)
-								        <?php $val_name="group1_name";$val_detail="group1_detail";$category_value = "group1";?>
+								        <?php $val_name="group1_name";$val_detail="group1_detail";$category_value = "kota";?>
 								        @break
 								    @case(2)
-								    	<?php $val_name="group2_name";$val_detail="group2_detail";$category_value = "group2";?>
+								    	<?php $val_name="group2_name";$val_detail="group2_detail";$category_value = "gedung";?>
 								        @break
 								    @case(3)
-								    	<?php $val_name="group3_name";$val_detail="group3_detail";$category_value = "group3";?>
+								    	<?php $val_name="group3_name";$val_detail="group3_detail";$category_value = "divisi indosat";?>
 								        @break
 								    @case(4)
-								    	<?php $val_name="group4_name";$val_detail="group4_detail";$category_value = "group4";?>
+								    	<?php $val_name="group4_name";$val_detail="group4_detail";$category_value = "sub divisi indosat";?>
 								        @break
 								    @case(5)
 								    	<?php $val_name="inventory_name";$val_detail="inventory_detail_name";$category_value = "inventory list";?>
