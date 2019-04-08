@@ -150,7 +150,7 @@
           '</td>' +
           '<td id="edit_inventory_role">' +
             '<div class="form-group" id="group1_head'+no_id_unique+'">' +
-                '<label> Group1 : </label>'+
+                '<label> Kota : </label>'+
                 '<select '+ 
                 'class="form-control" '+
                 'id="group1_role'+no_id_unique+'" '+
@@ -159,7 +159,7 @@
                 '</select>'+
             '</div>'+
             '<div class="form-group" id="group2_head'+no_id_unique+'">' +
-                '<label> Group2 : </label>'+
+                '<label> Gedung : </label>'+
                 '<select '+ 
                 'class="form-control" '+
                 'id="group2_role'+no_id_unique+'" '+
@@ -168,7 +168,7 @@
                 '</select>'+
             '</div>'+
             '<div class="form-group" id="group3_head'+no_id_unique+'">' +
-                '<label> Group3 : </label>'+
+                '<label> Divisi Indosat : </label>'+
                 '<select '+ 
                 'class="form-control" '+
                 'id="group3_role'+no_id_unique+'" '+
@@ -177,14 +177,14 @@
                 '</select>'+
             '</div>'+
             '<div class="form-group" id="group4_head'+no_id_unique+'">' +
-                '<label> Group4 : </label>'+
+                '<label> Sub Divisi Indosat : </label>'+
                 '<select '+ 
                 'class="form-control" '+
                 'id="group4_role'+no_id_unique+'" '+
                 '>' +
                   
                 '</select>'+
-                '<span class="text-info"> note : group4 optional </span>' +
+                '<span class="text-info"> note : sub divisi optional </span>' +
             '</div>'+
             '<div class="form-group" id="inventory_head_edit'+no_id_unique+'">' +
                 '<label> Inventory Category : </label>'+
@@ -390,10 +390,10 @@
       contentType: "application/json",
       success: function(result) {
         var response = JSON.parse(result);
-        var additional_group1 = "<option value=''> select group 1 </option>";
-        var additional_group2 = "<option value=''> select group 2 </option>";
-        var additional_group3 = "<option value=''> select group 3 </option>";
-        var additional_group4 = "<option value=''> select group 4 </option>";
+        var additional_group1 = "<option value=''> select kota </option>";
+        var additional_group2 = "<option value=''> select gedung </option>";
+        var additional_group3 = "<option value=''> select divisi indosat </option>";
+        var additional_group4 = "<option value=''> select sub divisi indosat </option>";
         $.each(response, function(group_name, group_value) {
             $.each(group_value, function(key, val) {
                 if(group_name=="group1") {
