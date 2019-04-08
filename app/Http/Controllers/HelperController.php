@@ -134,7 +134,7 @@ class HelperController extends Controller
 
         switch ($request->config_category) {
             case '1':
-                $data_exists = Group1::where('group1_name', strtolower($request->config_main))->first();
+                $data_exists = Group1::where('group1_name', $request->config_main)->first();
 
                 if($data_exists) {
                     $request->session()->flash('alert-danger', "Data already exists in Group1 : $request->config_main");
@@ -143,12 +143,12 @@ class HelperController extends Controller
 
 
                 $data  = new Group1;
-                $data->group1_name      = strtolower($request->config_main);
+                $data->group1_name      = $request->config_main;
                 $data->group1_detail    = $request->config_additional;
 
                 break;
             case '2':
-                $data_exists = Group2::where('group2_name', strtolower($request->config_main))->first();
+                $data_exists = Group2::where('group2_name', $request->config_main)->first();
 
                 if($data_exists) {
                     $request->session()->flash('alert-danger', "Data already exists in Group2 : $request->config_main");
@@ -157,12 +157,12 @@ class HelperController extends Controller
 
 
                 $data  = new Group2;
-                $data->group2_name      = strtolower($request->config_main);
+                $data->group2_name      = $request->config_main;
                 $data->group2_detail    = $request->config_additional;
 
                 break;
             case '3':
-                $data_exists = Group3::where('group3_name', strtolower($request->config_main))->first();
+                $data_exists = Group3::where('group3_name', $request->config_main)->first();
 
                 if($data_exists) {
                     $request->session()->flash('alert-danger', "Data already exists in Group3 : $request->config_main");
@@ -171,12 +171,12 @@ class HelperController extends Controller
 
 
                 $data  = new Group3;
-                $data->group3_name      = strtolower($request->config_main);
+                $data->group3_name      = $request->config_main;
                 $data->group3_detail    = $request->config_additional;
 
                 break;
             case '4':
-                $data_exists = Group4::where('group4_name', strtolower($request->config_main))->first();
+                $data_exists = Group4::where('group4_name', $request->config_main)->first();
 
                 if($data_exists) {
                     $request->session()->flash('alert-danger', "Data already exists in Group4 : $request->config_main");
@@ -185,7 +185,7 @@ class HelperController extends Controller
 
 
                 $data  = new Group4;
-                $data->group4_name      = strtolower($request->config_main);
+                $data->group4_name      = $request->config_main;
                 $data->group4_detail    = $request->config_additional;
 
                 break;
