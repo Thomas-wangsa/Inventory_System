@@ -81,7 +81,7 @@
 
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Kategori :
+                Ket 1 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -91,7 +91,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Kode Gambar :
+                Ket 2 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -101,7 +101,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                DVR :
+                Ket 3 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -111,7 +111,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Lokasi site :
+                Ket 4 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -124,7 +124,7 @@
 
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Kode Lokasi :
+                Ket 5 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -134,7 +134,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Jenis Barang :
+                Ket 6 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -144,7 +144,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Merk :
+                Ket 7 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -154,7 +154,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Tipe :
+                Ket 8 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -164,7 +164,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Model :
+                Ket 9 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -176,7 +176,7 @@
 
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Serial Number :
+                Ket 10 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -186,7 +186,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                PSU Adaptor :
+                Ket 11 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -196,7 +196,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Tahun Pembuatan :
+                Ket 12 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -206,7 +206,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Tahun Pengadaan :
+                Ket 13 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -216,7 +216,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Kondisi :
+                Ket 14 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -229,7 +229,7 @@
 
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Deskripsi :
+                Ket 15 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -239,7 +239,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Asuransi :
+                Ket 16 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -249,7 +249,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Lampiran :
+                Ket 17 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -259,7 +259,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Tanggal Retired :
+                Ket 18 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -269,7 +269,7 @@
             </div>
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                PO :
+                Ket 19 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 
@@ -280,7 +280,7 @@
 
             <div class="form-group conditional_checking">
               <label class="control-label col-xs-4" for="email">
-                Keterangan :
+                Ket 20 :
               </label>
               <div class="col-xs-8">
                 <input type="text" class="form-control" 

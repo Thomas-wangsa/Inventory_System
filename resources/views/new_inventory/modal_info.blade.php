@@ -29,19 +29,19 @@
 						        <td id="new_inventory_info_level">  </td>
 						      </tr>
 						      <tr>
-						        <th> group1 </th>
+						        <th> kota </th>
 						        <td id="new_inventory_info_group1">  </td>
 						      </tr>
 						      <tr>
-						        <th> group2 </th>
+						        <th> gedung </th>
 						        <td id="new_inventory_info_group2">  </td>
 						      </tr>
 						      <tr>
-						        <th> group3 </th>
+						        <th> divisi indosat </th>
 						        <td id="new_inventory_info_group3">  </td>
 						      </tr>
 						      <tr>
-						        <th> group4 </th>
+						        <th> sub divisi indosat </th>
 						        <td id="new_inventory_info_group4">  </td>
 						      </tr>
 						      <tr>
@@ -67,93 +67,94 @@
 						        <td id="file_name_upload">  </td>
 						      </tr>
 						      <tr>
-						        <th> tanggal update data </th>
-						        <td id="tanggal_update_data">  </td>
-						      </tr>
-						      <tr>
-						        <th> kategori </th>
-						        <td id="kategori">  </td>
-						      </tr>
-						      <tr>
-						        <th> kode gambar </th>
-						        <td id="kode_gambar">  </td>
-						      </tr>
-						      <tr>
-						        <th> dvr </th>
-						        <td id="dvr">  </td>
-						      </tr>
-						      <tr>
-						        <th> lokasi site </th>
-						        <td id="lokasi_site">  </td>
-						      </tr>	
-						      <tr>
-						        <th> kode lokasi </th>
-						        <td id="kode_lokasi">  </td>
-						      </tr>
-						      <tr>
-						        <th> jenis barang </th>
-						        <td id="jenis_barang">  </td>
-						      </tr>
-						      <tr>
-						        <th> merk </th>
-						        <td id="merk">  </td>
-						      </tr>
-						      <tr>
-						        <th> tipe </th>
-						        <td id="tipe">  </td>
-						      </tr>
-						      <tr>
-						        <th> model </th>
-						        <td id="model">  </td>
-						      </tr>
-						      <tr>
-						        <th> serial number </th>
-						        <td id="serial_number">  </td>
-						      </tr>
-
-						      <tr>
-						        <th> psu adaptor </th>
-						        <td id="psu_adaptor">  </td>
-						      </tr>
-						      <tr>
-						        <th> tahun pembuatan </th>
-						        <td id="tahun_pembuatan">  </td>
-						      </tr>
-						      <tr>
-						        <th> tahun pengadaan </th>
-						        <td id="tahun_pengadaan">  </td>
-						      </tr>
-						      <tr>
-						        <th> kondisi	 </th>
-						        <td id="kondisi">  </td>
-						      </tr>
-						      <tr>
-						        <th> deskripsi </th>
-						        <td id="deskripsi">  </td>
-						      </tr>
-
-						      <tr>
-						        <th> asuransi </th>
-						        <td id="asuransi">  </td>
-						      </tr>
-						      <tr>
-						        <th> lampiran </th>
-						        <td id="lampiran">  </td>
-						      </tr>
-						      <tr>
-						        <th> tanggal retired </th>
-						        <td id="tanggal_retired">  </td>
-						      </tr>
-						      <tr>
-						        <th> po </th>
-						        <td id="po">  </td>
-						      </tr>
-						      <tr>
 						        <th> qty </th>
 						        <td id="qty">  </td>
 						      </tr>
 						      <tr>
-						        <th> keterangan </th>
+						        <th> tanggal update data </th>
+						        <td id="tanggal_update_data">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 1 </th>
+						        <td id="kategori">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 2 </th>
+						        <td id="kode_gambar">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 3 </th>
+						        <td id="dvr">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 4 </th>
+						        <td id="lokasi_site">  </td>
+						      </tr>	
+						      <tr>
+						        <th> ket 5 </th>
+						        <td id="kode_lokasi">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 6 </th>
+						        <td id="jenis_barang">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 7 </th>
+						        <td id="merk">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 8 </th>
+						        <td id="tipe">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 9 </th>
+						        <td id="model">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 10 </th>
+						        <td id="serial_number">  </td>
+						      </tr>
+
+						      <tr>
+						        <th> ket 11 </th>
+						        <td id="psu_adaptor">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 12 </th>
+						        <td id="tahun_pembuatan">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 13 </th>
+						        <td id="tahun_pengadaan">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 14	 </th>
+						        <td id="kondisi">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 15 </th>
+						        <td id="deskripsi">  </td>
+						      </tr>
+
+						      <tr>
+						        <th> ket 16 </th>
+						        <td id="asuransi">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 17 </th>
+						        <td id="lampiran">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 18 </th>
+						        <td id="tanggal_retired">  </td>
+						      </tr>
+						      <tr>
+						        <th> ket 19 </th>
+						        <td id="po">  </td>
+						      </tr>
+						      
+						      <tr>
+						        <th> ket 20 </th>
 						        <td id="keterangan">  </td>
 						      </tr>
 						      
