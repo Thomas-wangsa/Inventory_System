@@ -101,7 +101,7 @@
                 <a href="{{route('new_inventory.index')}}"> 
                     <span class="glyphicon glyphicon-th-large">
                     </span> &nbsp;
-                    New Inventory
+                    Inventory
                 </a>
             </div>
             @endif

@@ -130,7 +130,7 @@
 								    	<?php $val_name="group4_name";$val_detail="group4_detail";$category_value = "sub divisi indosat";?>
 								        @break
 								    @case(5)
-								    	<?php $val_name="inventory_name";$val_detail="inventory_detail_name";$category_value = "inventory list";?>
+								    	<?php $val_name="inventory_name";$val_detail="inventory_detail_name";$category_value = "inventory category";?>
 								        @break
 								    @case(6)
 								    	<?php $val_name="vendor_name";$val_detail="vendor_detail_name";$category_value = "pic list";?>

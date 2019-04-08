@@ -78,7 +78,7 @@
                 <div class="sub_menu_block">
                     <div class="icon_block">
                         <img src="{{ asset('images/logo/checklist.png')}}" / >
-                        <h4> New Inventory Page </h4> 
+                        <h4> Inventory Page </h4> 
                     </div>                
                 </div>
             </a>
