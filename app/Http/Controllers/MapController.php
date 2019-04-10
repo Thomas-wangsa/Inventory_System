@@ -8,6 +8,11 @@ use App\Http\Models\Inventory_Data;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+use App\Http\Models\New_Inventory_Data;
+use App\Http\Models\New_Inventory_Sub_Data;
+use App\Http\Models\New_Map;
+use App\Http\Models\New_Map_Images;
+
 use Faker\Factory as Faker;
 
 
@@ -196,37 +201,95 @@ class MapController extends Controller
         $response = array();
         $response['status'] = false;
 
-        $check = Map_Location::where('map_location_uuid',$request->map_location_uuid)
-                    ->first();
-        if(count($check) < 1) {
-            $response['message'] = "Map Data is not found!";
+        if($request->data_x == null || $request->data_y == null)  {
+            $response['message'] = "coordinate map is not found!";
             return json_encode($response);
+        } 
+
+        $inventory_sub_data = New_Inventory_Sub_Data::where('sub_data_uuid','=',$request->sub_data_uuid)
+                            ->first();
+
+        if($inventory_sub_data == null) {
+            $response['message'] = "inventory sub data is not found!";
+            return json_encode($response);
+        }
+
+        $inventory_sub_data->x_point = $request->data_x;
+        $inventory_sub_data->y_point = $request->data_y;
+
+        if($inventory_sub_data->save()) {
+            $response['status'] = true;
         } else {
-            Map_Detail::where('map_location_uuid',$request->map_location_uuid)
-            ->update(['status_map_detail'=>0]);
+            $response['message'] = "Set Map Failed!";
         }
 
-        foreach($request->full_data as $key=>$val) {
-            $map_detail = new Map_Detail;
-            $map_detail->map_location_uuid = $request->map_location_uuid;
-            $map_detail->x_point = $val['data_x'];
-            $map_detail->y_point = $val['data_y'];
-            $map_detail->status_map_detail = 1;
-            $map_detail->save();
-        }
-
-
-        Map_Location::where('map_location_uuid',$request->map_location_uuid)
-            ->where('status_data',1)
-            ->update(['status_data'=>2]);
-
-        $response['status'] = true;
+    
         return json_encode($response);
     }
 
 
     public function new_inventory_select_map(Request $request) {
-        echo "on process";die;
+
+        $request->validate([
+            'inventory_data_uuid'   => 'required|max:200',
+            'sub_data_uuid'         => 'required|max:200',
+            'map_uuid'              => 'required|max:200',
+            'images_uuid'           => 'required|max:200',
+        ]);
+
+
+        // Validation Data
+        $inventory_data = New_Inventory_Data::where('uuid','=',$request->inventory_data_uuid)
+                            ->first();
+
+        if($inventory_data == null) {
+            $request->session()->flash('alert-danger', 'inventory data is not found!');
+            return redirect('/new_inventory/create?uuid='.$request->inventory_data_uuid);
+        }
+
+
+        $inventory_sub_data = New_Inventory_Sub_Data::where('sub_data_uuid','=',$request->sub_data_uuid)
+                            ->where('new_inventory_data_id','=',$inventory_data->id)
+                            ->first();
+
+        if($inventory_sub_data == null) {
+            $request->session()->flash('alert-danger', 'inventory sub data is not found!');
+            return redirect('/new_inventory/create?uuid='.$request->inventory_data_uuid);
+        }
+
+        $map_data = New_Map::where('uuid','=',$request->map_uuid)
+                    ->where('new_inventory_data_id','=',$inventory_data->id)
+                    ->first();
+
+         if($map_data == null) {
+            $request->session()->flash('alert-danger', 'map data is not found!');
+            return redirect('/new_inventory/create?uuid='.$request->inventory_data_uuid);
+        }
+
+
+        $map_images_data = New_Map_Images::where('uuid','=',$request->images_uuid)
+                    ->where('new_inventory_data_id','=',$inventory_data->id)
+                    ->first();
+
+         if($map_images_data == null) {
+            $request->session()->flash('alert-danger', 'map images is not found!');
+            return redirect('/new_inventory/create?uuid='.$request->inventory_data_uuid);
+        }
+
+
+        $inventory_sub_data->map_id = $map_data->id;
+        $inventory_sub_data->map_images_id = $map_images_data->id;
+        $inventory_sub_data->save(); 
+
+        // dd($inventory_sub_data);
+        $data = [
+            'inventory_data'        => $inventory_data,
+            'inventory_sub_data'    => $inventory_sub_data,
+            'map_data'              => $map_data,
+            'map_images_data'       => $map_images_data
+        ];
+
+        return view('map/new_set_map',compact('data'));
     }
 
 }

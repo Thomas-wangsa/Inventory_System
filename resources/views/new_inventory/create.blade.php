@@ -112,6 +112,7 @@
 					<tr> 
 						<th> No </th>
 						<th> Status </th>
+						<th> System ID </th>
 						<th> Additional Note </th>
 						<th> Set Map Location </th>
 						<th> Action </th>
@@ -145,6 +146,10 @@
 							</div> 
 						</td>
 
+						<td>
+							<?php echo substr($val->sub_data_uuid, 0,10); ?>
+						</td>
+
 						<td> 
 							<div class="form-group">
 								<input type="text" class="form-control" 
@@ -160,8 +165,17 @@
 							@elseif(count($data['map_data']) < 1 && count($data['images_data']) > 0)
 								set map too!
 							@elseif( count($data['map_data']) > 0 && count($data['images_data']) > 0 )
+								@if($val['x_point'] != null && $val['y_point'] != null)
+									<button type="submit" class="btn btn-info btn-block">
+								  		Check Map
+								  	</button>
+								  	<button type="submit" class="btn btn-warning btn-block">
+								  		Edit Map
+								  	</button>
+								@else 
 								<form action="{{route('new_inventory_select_map')}}">
 								  	<input type="hidden" name="sub_data_uuid" value="{{$val->sub_data_uuid}}">
+								  	<input type="hidden" name="inventory_data_uuid" value="{{$data['new_inventory_data']->uuid}}">
 								 	<div class="form-group">
 									  	<label for="sel1">Select map :</label>
 									    <select class="form-control" id="sel1" name="map_uuid">
@@ -184,10 +198,11 @@
 	  									</select>
 								  	</div>
 
-								  	<button type="submit" class="btn btn-warning btn-block">
+								  	<button type="submit" class="btn btn-primary btn-block">
 								  		Submit
 								  	</button>
 								</form>
+								@endif
 							@else
 								out of scope
 							@endif
