@@ -162,7 +162,7 @@
 
             @if(in_array(1,$user_divisi)
                 || 
-                in_array(4,$user_divisi)
+                in_array(6,$user_divisi)
                 )
             <div class="sub_menu_options_icon_left">
                 <a href="{{route('inventory_report')}}"> 

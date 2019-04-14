@@ -8,7 +8,7 @@ use App\Http\Models\Inventory_List;
 use App\Http\Models\Setting_Role;
 use App\Http\Models\Design;
 use App\Http\Models\Akses_Data;
-use App\Http\Models\Inventory_Data;
+use App\Http\Models\New_Inventory_Data;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Status_Akses;
@@ -20,7 +20,11 @@ use Excel;
 
 class SettingController extends Controller {
 
-    protected $admin_division = 1;
+    protected $admin = 1;
+    protected $new_inventory_divisi_id = 6;
+    protected $is_super_admin = false;
+
+
 
     public function __construct() {
         
@@ -30,21 +34,60 @@ class SettingController extends Controller {
         return redirect('setting/show-background');    
     }
 
+
+    public function get_inventory_base_data($data) {
+        $base_inventory_data = New_Inventory_Data::whereDate('new_inventory_data.updated_at','>=',$data['from_date'])
+                ->whereDate('new_inventory_data.updated_at','<=',$data['current_date']);
+
+
+        if(!$this->is_super_admin) {
+            $role_specific_users = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+                                ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('new_inventory_role.user_id','=',Auth::user()->id)
+                                ->get();
+
+
+            if(count($role_specific_users) > 0) {
+
+
+                $base_inventory_data->where(function ($query) use ($role_specific_users)  {
+                    foreach($role_specific_users as $key_role=>$val_role) {
+                        $query->Orwhere(function ($sub_query) use ($val_role) {
+                        $sub_query->where('group1', '=', $val_role->group1)
+                        ->where('group2', '=', $val_role->group2)
+                        ->where('group3', '=', $val_role->group3)
+                        ->where('group4', '=', $val_role->group4)
+                        ->where('inventory_list_id', '=', $val_role->inventory_list_id);
+                        });
+                    }
+                });
+
+            } else {
+                echo "ERROR in logic";die;
+            }
+        }
+
+        return $base_inventory_data;
+    }
+
     public function inventory_report(Request $request) {
-        $inventory_division = 4;
         $setting_list = 6;
         $user_divisi = \Request::get('user_divisi');
         $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->admin_division,$user_divisi)
+            in_array($this->admin,$user_divisi)
             ||
-            in_array($inventory_division,$user_divisi)
+            in_array($this->new_inventory_divisi_id,$user_divisi)
             || 
             in_array($setting_list,$user_setting)
             ) 
         {
             $allow = true;
+            if(in_array($this->admin,$user_divisi)) {
+                $this->is_super_admin = true;
+            }
         }
 
         if(!$allow) {
@@ -61,68 +104,11 @@ class SettingController extends Controller {
         $data['from_date'] =  date('Y-m-d', $date);
 
 
-        $inventory_data = Inventory_Data::join('inventory_list',
-                'inventory_list.id','=','inventory_data.inventory_list_id')
-                ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
-                ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
 
-        if( !in_array($this->admin_division,$user_divisi) 
-            &&
-            !in_array($setting_list,$user_setting)
-            &&
-            in_array($inventory_division,$user_divisi)
-            ) {
+        $new_inventory_data = $this->get_inventory_base_data($data)->get();
+        $data['new_inventory_data'] = $new_inventory_data;
 
-            $inventory_list_id_array = Users_Role::join('inventory_role',
-                        'inventory_role.id','=','users_role.jabatan')
-                        ->where('users_role.divisi',4)
-                        ->where('users_role.user_id',Auth::user()->id)
-                        ->where('inventory_role.user_id',Auth::user()->id)
-                        ->pluck('inventory_list_id');
-            
-            $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_id_array);
-        }
-        
-
-        $searching_for = "merk";        
-        $inventory_data    = $inventory_data->groupBy('inventory_list.id')
-                    ->select(
-                    'inventory_list.id AS inventory_list_id',
-                    'inventory_list.inventory_name AS inventory_list_name',
-                    DB::raw('count(inventory_data.id) as count_data'),
-                    DB::raw('sum(inventory_data.qty) as sum_data'),
-                    DB::raw('"'.$searching_for.'" as search')
-                    //'count(inventory_data.id) AS total'
-                )
-                ->get();
-        
-        if(count($inventory_data) < 1) {
-            $request->session()->flash('alert-warning', 'there is no inventory data in this moving weekly report');
-            return redirect('home');
-        }
-
-
-        $report_inventory_data = array();
-        $total = 0;
-        foreach($inventory_data as $key=>$val) {
-            $report_inventory_data[$key] = $val;
-            $report_inventory_data[$key]['data'] = Inventory_Data::where('inventory_list_id',$val['inventory_list_id'])
-            ->groupBy($searching_for)
-            ->select(
-                'merk',
-                DB::raw('count(inventory_data.id) as count_data'),
-                DB::raw('sum(inventory_data.qty) as sum_data')
-            )
-            ->get();
-
-            $total += $val['count_data'];
-        }
-
-
-        $data['total'] = $total;
-        $data['report_inventory_data'] = $report_inventory_data;
-        //dd($data);
-        return view('setting/inventory_report',compact('data'));
+        return view('setting/new_inventory_report',compact('data'));
 
     }
     public function access_report(Request $request) {
@@ -211,21 +197,22 @@ class SettingController extends Controller {
     }
 
     public function inventory_report_download(Request $request) {
-        //dd($request);
-        $inventory_division = 4;
         $setting_list = 6;
         $user_divisi = \Request::get('user_divisi');
         $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->admin_division,$user_divisi)
+            in_array($this->admin,$user_divisi)
             ||
-            in_array($inventory_division,$user_divisi)
+            in_array($this->new_inventory_divisi_id,$user_divisi)
             || 
             in_array($setting_list,$user_setting)
             ) 
         {
             $allow = true;
+            if(in_array($this->admin,$user_divisi)) {
+                $this->is_super_admin = true;
+            }
         }
 
         if(!$allow) {
@@ -234,73 +221,49 @@ class SettingController extends Controller {
         }
 
         $data = array();
-
+        $data['report_for'] = "inventory";
         // // get the current time
         $data['current_date'] = date('Y-m-d');
 
         $date = strtotime("-7 day");
         $data['from_date'] =  date('Y-m-d', $date);
 
-        $inventory_data = Inventory_Data::join('status_inventory',
-                    'status_inventory.id','=','inventory_data.status_inventory')
-                    ->join('inventory_list',
-                    'inventory_list.id','=','inventory_data.inventory_list_id')
-                    ->whereDate('inventory_data.updated_at','>=',$data['from_date'])
-                    ->whereDate('inventory_data.updated_at','<=',$data['current_date']);
 
-        if( !in_array($this->admin_division,$user_divisi) 
-            &&
-            !in_array($setting_list,$user_setting)
-            &&
-            in_array($inventory_division,$user_divisi)
-            ) {
 
-            $inventory_list_id_array = Users_Role::join('inventory_role',
-                        'inventory_role.id','=','users_role.jabatan')
-                        ->where('users_role.divisi',4)
-                        ->where('users_role.user_id',Auth::user()->id)
-                        ->where('inventory_role.user_id',Auth::user()->id)
-                        ->pluck('inventory_list_id');
-            
-            $inventory_data = $inventory_data->whereIn('inventory_list_id',$inventory_list_id_array);
-        }
+        $new_inventory_data = $this->get_inventory_base_data($data);
+        //dd($new_inventory_data);
+        $data  = $new_inventory_data->select(
+            'new_inventory_data.inventory_name AS inventory_name'
+            // 'inventory_list.inventory_detail_name AS inventory_detail_category',
+            // 'inventory_data.tanggal_update_data',
+            // 'inventory_data.kategori',
+            // 'inventory_data.kode_gambar',
+            // 'inventory_data.dvr',
+            // 'inventory_data.lokasi_site',
 
-        if($request->category != null) {
-            $inventory_data = $inventory_data->where('inventory_list_id',$request->category);
-        }
+            // 'inventory_data.kode_lokasi',
+            // 'inventory_data.jenis_barang',
+            // 'inventory_data.merk',
+            // 'inventory_data.tipe',
+            // 'inventory_data.model',
 
-        $data  = $inventory_data->select(
-            'inventory_list.inventory_name AS inventory_category',
-            'inventory_list.inventory_detail_name AS inventory_detail_category',
-            'inventory_data.tanggal_update_data',
-            'inventory_data.kategori',
-            'inventory_data.kode_gambar',
-            'inventory_data.dvr',
-            'inventory_data.lokasi_site',
+            // 'inventory_data.serial_number',
+            // 'inventory_data.psu_adaptor',
+            // 'inventory_data.tahun_pembuatan',
+            // 'inventory_data.tahun_pengadaan',
+            // 'inventory_data.kondisi',
 
-            'inventory_data.kode_lokasi',
-            'inventory_data.jenis_barang',
-            'inventory_data.merk',
-            'inventory_data.tipe',
-            'inventory_data.model',
+            // 'inventory_data.deskripsi',
+            // 'inventory_data.asuransi',
+            // 'inventory_data.lampiran',
+            // 'inventory_data.tanggal_retired',
+            // 'inventory_data.po',
 
-            'inventory_data.serial_number',
-            'inventory_data.psu_adaptor',
-            'inventory_data.tahun_pembuatan',
-            'inventory_data.tahun_pengadaan',
-            'inventory_data.kondisi',
-
-            'inventory_data.deskripsi',
-            'inventory_data.asuransi',
-            'inventory_data.lampiran',
-            'inventory_data.tanggal_retired',
-            'inventory_data.po',
-
-            'inventory_data.qty',
-            'inventory_data.keterangan',
-            'status_inventory.name'
+            // 'inventory_data.qty',
+            // 'inventory_data.keterangan',
+            // 'status_inventory.name'
             )
-            ->orderBy('inventory_data.updated_at','desc')
+            ->orderBy('new_inventory_data.updated_at','desc')
             ->get()
             ->toArray();
         //dd($data);
