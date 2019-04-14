@@ -166,7 +166,8 @@
 								set map too!
 							@elseif( count($data['map_data']) > 0 && count($data['images_data']) > 0 )
 								@if($val['x_point'] != null && $val['y_point'] != null)
-									<button type="submit" class="btn btn-info btn-block">
+									<button type="submit" class="btn btn-info btn-block"
+									onclick='show_map_location("{{$val->sub_data_uuid}}")'>
 								  		Check Map
 								  	</button>
 								  	<button type="submit" class="btn btn-warning btn-block" 
@@ -242,6 +243,11 @@
 		function back() {
 			var url = "{{URL::to('/')}}"+'/new_inventory?search=on&search_uuid=';
 			window.location = url+uuid
+		}
+
+		function show_map_location(sub_data_uuid) {
+			var url = "{{URL::to('/')}}"+'/map/new_inventory_show_map?sub_data_uuid=';
+			window.open(url+sub_data_uuid);
 		}
 
 		function edit_map_location(sub_data_uuid) {

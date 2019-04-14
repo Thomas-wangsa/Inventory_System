@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 		Route::get('/map/new_inventory_select_map', 'MapController@new_inventory_select_map')->name('new_inventory_select_map');
 		Route::post('/map/edit_map_location', 'MapController@edit_map_location')->name('edit_map_location');
+		Route::get('/map/new_inventory_show_map', 'MapController@new_inventory_show_map')->name('new_inventory_show_map');
 
 	});
 	

@@ -329,4 +329,56 @@ class MapController extends Controller
         return view('map/new_set_map',compact('data'));
     }
 
+
+    function new_inventory_show_map(Request $request) {
+        $request->validate([
+            'sub_data_uuid'         => 'required|max:200',
+        ]);
+
+        $inventory_sub_data = New_Inventory_Sub_Data::where('sub_data_uuid','=',$request->sub_data_uuid)
+                            ->first();
+
+        if($inventory_sub_data == null) {
+            $request->session()->flash('alert-danger', 'inventory sub data is not found!');
+            return redirect()->back();
+        }
+
+
+
+        $map_data = New_Map::find($inventory_sub_data->map_id);
+
+         if($map_data == null) {
+            $request->session()->flash('alert-danger', 'map data is not found!');
+            return redirect()->back();
+        }
+
+
+        $map_images_data = New_Map_Images::find($inventory_sub_data->map_images_id);
+
+         if($map_images_data == null) {
+            $request->session()->flash('alert-danger', 'map images is not found!');
+            return redirect()->back();
+        }
+
+
+
+
+        $group_map = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$inventory_sub_data->new_inventory_data_id)
+                    ->where('map_id','=',$inventory_sub_data->map_id)
+                    ->where('map_images_id','=',$inventory_sub_data->map_images_id)
+                    ->whereNotNull('x_point')
+                    ->whereNotNull('y_point')
+                    ->get();
+
+        $data = [
+            'inventory_sub_data'    => $inventory_sub_data,
+            'map_data'              => $map_data,
+            'map_images_data'       => $map_images_data,
+            'group_map'             => $group_map
+        ];
+        
+
+        // dd($data);
+        return view('map/new_show_map',compact('data'));
+    }
 }
