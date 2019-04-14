@@ -237,8 +237,9 @@
 	@include('new_inventory.modal_show_new_map_images')
 
 	<script type="text/javascript">
+		var uuid = "{{$data['new_inventory_data']->uuid}}";
+
 		function back() {
-			var uuid = "{{$data['new_inventory_data']->uuid}}";
 			var url = "{{URL::to('/')}}"+'/new_inventory?search=on&search_uuid=';
 			window.location = url+uuid
 		}
@@ -256,13 +257,14 @@
 
 		    	$.ajax({
 			      type : "POST",
-			      url: " {{ route('new_inventory_sub_data_update_ajax') }}",
+			      url: " {{ route('edit_map_location') }}",
 			      contentType: "application/json",
 			      data : JSON.stringify(data),
 			      success: function(result) {
 			        response = JSON.parse(result);
 			        if(response.status == true) {
 			        	alert("Update success");
+			        	window.location = "{{URL::to('/')}}"+'/new_inventory/create?uuid='+uuid;
 			        } else {
 			          alert(response.message);
 			        }

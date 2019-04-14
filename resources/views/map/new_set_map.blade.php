@@ -146,7 +146,14 @@
 					'"'+
 					'/>';
 				$('#pointer_div').append(images);
-				document.getElementById(adjust_id).style.left = calculate_pos_x;
+				// 
+
+				// calculate_pos_x_modif = ((adjust_left*30))/(clientWidth)*100;
+				// alert(calculate_pos_x_modif);
+
+				new_x_coordinate = calculate_x_coordinate(adjust_left,calculate_pos_x);
+
+				document.getElementById(adjust_id).style.left = new_x_coordinate;
 				document.getElementById(adjust_id).style.top = calculate_pos_y;
 
 				adjust_left++;
@@ -156,6 +163,24 @@
 			console.log("{{count($data['group_map'])}}")
 
 		@endif
+
+	}
+
+
+	function calculate_x_coordinate(adjust_left,calculate_pos_x) {
+
+		if(adjust_left == 0 ) {
+			return calculate_pos_x
+		} else {
+			var clientWidth = document.getElementById('pointer_div').clientWidth;
+			calculate_pos_x_modif = (adjust_left*30)/(clientWidth)*100;
+			//
+			var res = calculate_pos_x.split("%");
+			x_ori = res[0];
+			//
+			//alert(res);
+			return x_ori-calculate_pos_x_modif+"%";
+		}
 
 	}
 
@@ -174,6 +199,7 @@
 		calculate_pos_x = ((pos_x-15)-(adjust_left*30))/(clientWidth)*100+"%";
 		calculate_pos_y = (pos_y-15)/clientHeight*100+"%" ;
 
+		calculate_pos_x_ori = ((pos_x-15))/(clientWidth)*100+"%";
 
 		<?php 
 			if($data['inventory_sub_data']->sub_data_status == "good") {
@@ -214,7 +240,7 @@
 		document.getElementById(adjust_id).style.left = calculate_pos_x;
 		document.getElementById(adjust_id).style.top = calculate_pos_y;
 
-		images_position['data_x'] = calculate_pos_x;
+		images_position['data_x'] = calculate_pos_x_ori;
 		images_position['data_y'] = calculate_pos_y; 
 
 		$('#'+adjust_id).fadeIn(800);

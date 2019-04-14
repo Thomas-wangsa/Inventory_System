@@ -196,7 +196,34 @@ class MapController extends Controller
         return redirect("/inventory");
     }
 
+    public function edit_map_location(Request $request) {
+        $response = array();
+        $response['status'] = false;
 
+
+        $inventory_sub_data = New_Inventory_Sub_Data::where('sub_data_uuid','=',$request->sub_data_uuid)
+                            ->first();
+
+        if($inventory_sub_data == null) {
+            $response['message'] = "inventory sub data is not found!";
+            return json_encode($response);
+        }
+
+        $inventory_sub_data->x_point = null;
+        $inventory_sub_data->y_point = null;
+        $inventory_sub_data->map_id = null;
+        $inventory_sub_data->map_images_id   = null;
+
+        if($inventory_sub_data->save()) {
+            $response['status'] = true;
+        } else {
+            $response['message'] = "Update Map Failed!";
+        }
+
+    
+        return json_encode($response);
+    }
+ 
     public function approve_map_location(Request $request) {
         $response = array();
         $response['status'] = false;
