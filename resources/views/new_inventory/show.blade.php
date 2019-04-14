@@ -32,7 +32,16 @@
 							<td> {{$no+1}}</td>
 							<td> {{$val->sub_data_status}} </td>
 							<td> {{$val->comment}}</td>
-							<td> on progress</td>
+							<td> 
+							@if($val['x_point'] != null && $val['y_point'] != null)
+								<button type="submit" class="btn btn-info btn-block"
+								onclick='show_map_location("{{$val->sub_data_uuid}}")'>
+								  	Check Map
+								</button>
+							@else
+								on progress
+							@endif
+							</td>
 						</tr>
 						<?php $no++;?>
 						@endforeach
@@ -42,7 +51,12 @@
 		</div>
 	</div>
 
-
+<script type="text/javascript">
+	function show_map_location(sub_data_uuid) {
+			var url = "{{URL::to('/')}}"+'/map/new_inventory_show_map?sub_data_uuid=';
+			window.open(url+sub_data_uuid);
+		}
+</script>
 
  
 @endsection
