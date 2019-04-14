@@ -39,7 +39,7 @@
 								  	Check Map
 								</button>
 							@else
-								on progress
+								-
 							@endif
 							</td>
 						</tr>
