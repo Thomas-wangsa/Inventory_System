@@ -216,6 +216,8 @@ class MapController extends Controller
 
         $inventory_sub_data->x_point = $request->data_x;
         $inventory_sub_data->y_point = $request->data_y;
+        $inventory_sub_data->map_id = $request->map_id;
+        $inventory_sub_data->map_images_id   = $request->map_images_id;
 
         if($inventory_sub_data->save()) {
             $response['status'] = true;
@@ -277,16 +279,24 @@ class MapController extends Controller
         }
 
 
-        $inventory_sub_data->map_id = $map_data->id;
-        $inventory_sub_data->map_images_id = $map_images_data->id;
-        $inventory_sub_data->save(); 
+        // $inventory_sub_data->map_id = $map_data->id;
+        // $inventory_sub_data->map_images_id = $map_images_data->id;
+        // $inventory_sub_data->save();
 
-        // dd($inventory_sub_data);
+        $group_map = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$inventory_data->id)
+                    ->where('map_id','=',$map_data->id)
+                    ->where('map_images_id','=',$map_images_data->id)
+                    ->whereNotNull('x_point')
+                    ->whereNotNull('y_point')
+                    ->get();
+
+        //dd($group_map);
         $data = [
             'inventory_data'        => $inventory_data,
             'inventory_sub_data'    => $inventory_sub_data,
             'map_data'              => $map_data,
-            'map_images_data'       => $map_images_data
+            'map_images_data'       => $map_images_data,
+            'group_map'             => $group_map
         ];
 
         return view('map/new_set_map',compact('data'));

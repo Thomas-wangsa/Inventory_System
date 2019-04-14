@@ -14,3 +14,5 @@ yarn-error.log
 /public/images/user
 /public/images/map
 /public/images/imagelocation
+/public/images/new_map
+/public/images/*

@@ -169,7 +169,8 @@
 									<button type="submit" class="btn btn-info btn-block">
 								  		Check Map
 								  	</button>
-								  	<button type="submit" class="btn btn-warning btn-block">
+								  	<button type="submit" class="btn btn-warning btn-block" 
+								  	onclick='edit_map_location("{{$val->sub_data_uuid}}")'>
 								  		Edit Map
 								  	</button>
 								@else 
@@ -240,6 +241,38 @@
 			var uuid = "{{$data['new_inventory_data']->uuid}}";
 			var url = "{{URL::to('/')}}"+'/new_inventory?search=on&search_uuid=';
 			window.location = url+uuid
+		}
+
+		function edit_map_location(sub_data_uuid) {
+			if (confirm('Are you sure to edit this map location ?')) {
+				$.ajaxSetup({
+			      headers: {
+			        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			      }
+		    	});
+				var data = {
+		        "sub_data_uuid":sub_data_uuid
+		    	};
+
+		    	$.ajax({
+			      type : "POST",
+			      url: " {{ route('new_inventory_sub_data_update_ajax') }}",
+			      contentType: "application/json",
+			      data : JSON.stringify(data),
+			      success: function(result) {
+			        response = JSON.parse(result);
+			        if(response.status == true) {
+			        	alert("Update success");
+			        } else {
+			          alert(response.message);
+			        }
+
+			      },
+			      error: function( jqXhr, textStatus, errorThrown ){
+			        console.log( errorThrown );
+			      }
+		    	});
+			}
 		}
 
 		function submit_sub_data(sub_data_uuid,key) {

@@ -34,6 +34,7 @@
 	    background-repeat: no-repeat;
 	    background-size: 100% 100%;
 	    cursor: cell;
+	    z-index: 1;
 
 	}
 </style>
@@ -75,9 +76,7 @@
 				<div id="pointer_div" 
 				onclick="point_it(event)"
 				onmousemove="get()" 
-				class="bg">
-					
-
+				class="bg" style="cursor: pointer;">
 
 				</div>
 			</div>
@@ -88,11 +87,15 @@
 		</div> 
 
 <script type="text/javascript">
+	$(document).ready(function(){
+  		$('[data-toggle="tooltip"]').tooltip();   
+	});
+
 	$('#map_reset').hide();
 	$("#id_wrapper_map").hide();
 	$("#map_submit").prop('disabled', true);
 
-	var limit = 1;
+	var limit = <?php echo count($data['group_map']) + 1 ?>;
 	var adjust_left = 0;
 
 	var images_position = {
@@ -100,6 +103,61 @@
 	    "data_y":null
 	};
 
+	function generate() {
+
+		@if(count($data['group_map']) > 0) 
+			@foreach($data['group_map'] as $key=>$val)
+				color = "white";
+
+				<?php 
+					if($val->sub_data_status == "good") {
+						$colors = "blue";
+					} else if($val->sub_data_status == "bad") {
+						$colors = "red";
+					} else if($val->sub_data_status == "others") {
+						$colors = "yellow";
+					} else {
+						$colors = "white";
+					}
+				?>
+
+				color = "{{$colors}}";
+
+				adjust_id = "view_image_"+adjust_left;
+
+				calculate_pos_x = "{{$val->x_point}}";
+				calculate_pos_y = "{{$val->y_point}}";
+				var images = '<img '+
+				'id="'+adjust_id+'" '+
+				'class="img-thumbnail" '+ 
+				'src='+
+					'"'+
+						'{{URL::to("/")}}'+
+						'{{$data["map_images_data"]->images}}'+
+					'"'+
+				' width="30px" '+
+				' data-toggle="tooltip" title="<?php echo substr($val->sub_data_uuid, 0,10); ?>" '+
+				'style='+
+					'"'+
+						'position:relative;'+
+						'z-index:2;'+
+						'background-color:'+color+';'+
+
+					'"'+
+					'/>';
+				$('#pointer_div').append(images);
+				document.getElementById(adjust_id).style.left = calculate_pos_x;
+				document.getElementById(adjust_id).style.top = calculate_pos_y;
+
+				adjust_left++;
+
+			@endforeach
+		@else 
+			console.log("{{count($data['group_map'])}}")
+
+		@endif
+
+	}
 
 
 	function point_it(event){
@@ -116,18 +174,36 @@
 		calculate_pos_x = ((pos_x-15)-(adjust_left*30))/(clientWidth)*100+"%";
 		calculate_pos_y = (pos_y-15)/clientHeight*100+"%" ;
 
+
+		<?php 
+			if($data['inventory_sub_data']->sub_data_status == "good") {
+				$colors = "blue";
+			} else if($data['inventory_sub_data']->sub_data_status == "bad") {
+				$colors = "red";
+			} else if($data['inventory_sub_data']->sub_data_status == "others") {
+				$colors = "yellow";
+			} else {
+				$colors = "white";
+			}
+		?>
+
+		color = "{{$colors}}";
+
 		var new_images = '<img '+
 				'id="'+adjust_id+'" '+
+				'class="img-thumbnail" '+ 
 				'src='+
 					'"'+
 						'{{URL::to("/")}}'+
 						'{{$data["map_images_data"]->images}}'+
 					'"'+
 				' width="30px" '+
+				' data-toggle="tooltip" title="<?php echo substr($data['inventory_sub_data']->sub_data_uuid, 0,10); ?>" '+
 				'style='+
 					'"'+
 						'position:relative;'+
 						'z-index:2;'+
+						'background-color:'+color+';'+
 					
 					'"'+
 					'/>';
@@ -166,10 +242,10 @@
 
 		if (confirm('are you sure to clear and reset the map ?')) {
 			$('#pointer_div')
-			    .find('img')
+			    .find('#img_'+"{{count($data['group_map'])}}")
 			    .remove()
 			    .end();
-			adjust_left = 0;
+			adjust_left = "{{count($data['group_map'])}}";
 			$('#map_reset').hide();
 			$('#map_cancel').show();
 			$("#map_submit").prop('disabled', true);
@@ -200,6 +276,8 @@
 			var data = {
 	        "data_x":images_position['data_x'],
 	        "data_y":images_position['data_y'],
+	        "map_id":"{{$data['map_data']->id}}",
+	        "map_images_id":"{{$data['map_images_data']->id}}",
 	        "sub_data_uuid":"{{$data['inventory_sub_data']->sub_data_uuid}}"
 	        };
 
@@ -234,7 +312,10 @@
 		}		
 	}
 
+	
 
+
+	generate();
 	//$('#id_wrapper_map').show();
 
 </script>
