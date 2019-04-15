@@ -36,7 +36,14 @@ class SettingController extends Controller {
 
 
     public function get_inventory_base_data($data) {
-        $base_inventory_data = New_Inventory_Data::whereDate('new_inventory_data.updated_at','>=',$data['from_date'])
+        $base_inventory_data = New_Inventory_Data::leftjoin('group1','group1.id','=','new_inventory_data.group1')
+                ->leftjoin('group2','group2.id','=','new_inventory_data.group2')
+                ->leftjoin('group3','group3.id','=','new_inventory_data.group3')
+                ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
+                ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
+                ->leftjoin('users as uc','uc.id','=','new_inventory_data.created_by')
+                ->leftjoin('users as uu','uu.id','=','new_inventory_data.updated_by')
+                ->whereDate('new_inventory_data.updated_at','>=',$data['from_date'])
                 ->whereDate('new_inventory_data.updated_at','<=',$data['current_date']);
 
 
@@ -118,7 +125,7 @@ class SettingController extends Controller {
         $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->admin_division,$user_divisi)
+            in_array($this->admin,$user_divisi)
             ||
             in_array($pic_division,$user_divisi)
             || 
@@ -150,7 +157,7 @@ class SettingController extends Controller {
                     ->whereDate('akses_data.updated_at','>=',$data['from_date'])
                     ->whereDate('akses_data.updated_at','<=',$data['current_date']);
 
-        if( !in_array($this->admin_division,$user_divisi) 
+        if( !in_array($this->admin,$user_divisi) 
             &&
             !in_array($setting_list,$user_setting)
             &&
@@ -233,34 +240,41 @@ class SettingController extends Controller {
         $new_inventory_data = $this->get_inventory_base_data($data);
         //dd($new_inventory_data);
         $data  = $new_inventory_data->select(
-            'new_inventory_data.inventory_name AS inventory_name'
+            'new_inventory_data.inventory_name AS inventory_name',
+            'group1.group1_name',
+            'group2.group2_name',
+            'group3.group3_name',
+            'group4.group4_name',
+            'inventory_list.inventory_name AS inventory_category',
+            'new_inventory_data.qty',
+            'uc.name as created_by',
+            'uu.name as updated_by',
             // 'inventory_list.inventory_detail_name AS inventory_detail_category',
-            // 'inventory_data.tanggal_update_data',
-            // 'inventory_data.kategori',
-            // 'inventory_data.kode_gambar',
-            // 'inventory_data.dvr',
-            // 'inventory_data.lokasi_site',
+            'new_inventory_data.tanggal_update_data',
+            'new_inventory_data.kategori',
+            'new_inventory_data.kode_gambar',
+            'new_inventory_data.dvr',
+            'new_inventory_data.lokasi_site',
 
-            // 'inventory_data.kode_lokasi',
-            // 'inventory_data.jenis_barang',
-            // 'inventory_data.merk',
-            // 'inventory_data.tipe',
-            // 'inventory_data.model',
+            'new_inventory_data.kode_lokasi',
+            'new_inventory_data.jenis_barang',
+            'new_inventory_data.merk',
+            'new_inventory_data.tipe',
+            'new_inventory_data.model',
 
-            // 'inventory_data.serial_number',
-            // 'inventory_data.psu_adaptor',
-            // 'inventory_data.tahun_pembuatan',
-            // 'inventory_data.tahun_pengadaan',
-            // 'inventory_data.kondisi',
+            'new_inventory_data.serial_number',
+            'new_inventory_data.psu_adaptor',
+            'new_inventory_data.tahun_pembuatan',
+            'new_inventory_data.tahun_pengadaan',
+            'new_inventory_data.kondisi',
 
-            // 'inventory_data.deskripsi',
-            // 'inventory_data.asuransi',
-            // 'inventory_data.lampiran',
-            // 'inventory_data.tanggal_retired',
-            // 'inventory_data.po',
+            'new_inventory_data.deskripsi',
+            'new_inventory_data.asuransi',
+            'new_inventory_data.lampiran',
+            'new_inventory_data.tanggal_retired',
+            'new_inventory_data.po',
 
-            // 'inventory_data.qty',
-            // 'inventory_data.keterangan',
+            'new_inventory_data.keterangan'
             // 'status_inventory.name'
             )
             ->orderBy('new_inventory_data.updated_at','desc')
@@ -284,7 +298,7 @@ class SettingController extends Controller {
         $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->admin_division,$user_divisi)
+            in_array($this->admin,$user_divisi)
             ||
             in_array($pic_division,$user_divisi)
             || 
@@ -323,7 +337,7 @@ class SettingController extends Controller {
                         'access_card_register_status.id','=','akses_data.register_type')
                         ->whereDate('akses_data.updated_at','>=',$data['from_date'])
                         ->whereDate('akses_data.updated_at','<=',$data['current_date']);                        
-        if( !in_array($this->admin_division,$user_divisi) 
+        if( !in_array($this->admin,$user_divisi) 
             &&
             !in_array($setting_list,$user_setting)
             &&
@@ -389,7 +403,7 @@ class SettingController extends Controller {
         $user_setting = \Request::get('user_setting');
         $allow = false;
         if(
-            in_array($this->admin_division,$user_divisi)
+            in_array($this->admin,$user_divisi)
             || 
             in_array($restrict_setting,$user_setting)
             ) 
