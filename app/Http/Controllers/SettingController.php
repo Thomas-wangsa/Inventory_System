@@ -115,6 +115,9 @@ class SettingController extends Controller {
         $new_inventory_data = $this->get_inventory_base_data($data)->get();
         $data['new_inventory_data'] = $new_inventory_data;
 
+        $list_new_inventory_role = Users_Role::GetInventoryRoleById(Auth::user()->id)->get();
+        $data['list_new_inventory_role'] = $list_new_inventory_role;
+        //dd($data);
         return view('setting/new_inventory_report',compact('data'));
 
     }
