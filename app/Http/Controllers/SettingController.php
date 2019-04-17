@@ -137,7 +137,14 @@ class SettingController extends Controller {
                 if(count($each_inventory) > 0) {
 
                     foreach($each_inventory as $key_each_inventory=>$val_each_inventory) {
-                        $each_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$val_each_inventory['id'])->get();
+                        $each_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$val_each_inventory['id'])
+                            ->select(
+                                'sub_data_status',
+                                DB::raw('COUNT(*) AS total')
+                            )
+                            ->groupBy('sub_data_status')
+                            ->orderBy('sub_data_status','ASC')
+                            ->get();
                         $each_inventory[$key_each_inventory]['inventory_sub_data'] = $each_inventory_sub_data;
                     }
 

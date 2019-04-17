@@ -1,6 +1,9 @@
 @extends('layouts.template')
 
 @section('content')
+<style type="text/css">
+	.barchart {width: 800px;height: 500px }
+</style>
 	<div id="parent_chart" class="col-sm-12" style="padding: 10px">
 
 		<div class="pull-left">
@@ -53,15 +56,15 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
-  google.charts.load('current', {'packages':['bar']});
-  google.charts.setOnLoadCallback(drawChart);
+  	google.charts.load('current', {'packages':['corechart']});
+ 	google.charts.setOnLoadCallback(drawChart);
 
   function drawChart() {
 
   	@if($data['each_inventory'] != null && count($data['each_inventory']) > 0)
     	@foreach($data['each_inventory'] as $key=>$val)
-	      var append  ='<div class="panel panel-info">';
-	          append     +='<div class="panel-heading">'+
+	      	var append  ='<div class="panel panel-info">';
+	        append     +='<div class="panel-heading">'+
 	                          '<div class="pull-left">'+
 	                            '<h5>'+
 	                            'report for '+"{{$val['inventory_name']}}" +
@@ -77,19 +80,44 @@
 	                          '</div>'+
 	                          '<div class="clearfix"> </div>'+
 	                        '</div>';
-	          append     +='<div class="panel-body" style="padding:30px">'+
-	                          '<div id="barchart{{$key}}" style="width: 800px; height: 500px">  </div>'+  
+	        append     +='<div class="panel-body" style="padding:30px">'+
+	                          '<div class="barchart" id="barchart{{$key}}">  </div>'+  
 	                        '</div>';
-	          append     +='<div class="panel-footer"></div>';
-	          append +='</div>';
+	        append     +='<div class="panel-footer"></div>';
+	        append +='</div>';
 	      	
 
-	      $('#parent_chart').append(append);
+	      	$('#parent_chart').append(append);
 
-	      if({{count($val['inventory_sub_data'])}} < 1) {
-	      	$('#download_sub_data{{$key}}').prop('disabled', true);
-	      	$('#download_sub_data{{$key}}').html("please set the sub data first");
-	      }
+		    if({{count($val['inventory_sub_data'])}} < 1) {
+		      	$('#download_sub_data{{$key}}').prop('disabled', true);
+		      	$('#download_sub_data{{$key}}').html("please set the sub data first");
+		      	$('#barchart{{$key}}').removeClass("barchart");
+
+		    } else {
+		    	var data = google.visualization.arrayToDataTable([
+		        	["STATUS", "QTY"],
+			        @foreach($val['inventory_sub_data'] as $key_data=>$val_data)
+			          [
+			          "{{$val_data['sub_data_status']}}",
+			          {{$val_data['total']}}
+			          ],
+			        @endforeach
+		    	]);
+
+		    	var options = {
+		          title: 'Weekly Report '
+		                +"{{$val['inventory_name']}} "+
+		                'Period = '+"{{$data['from_date']}}"+" to "+"{{$data['current_date']}}",
+			        
+		      	};
+
+		      	var chart = new google.visualization.PieChart(document.getElementById('barchart{{$key}}'));
+
+        		chart.draw(data, options);
+
+		      
+		    }
     	@endforeach
     @endif  
   }
