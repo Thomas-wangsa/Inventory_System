@@ -477,4 +477,37 @@ class SettingController extends Controller {
 
         return redirect('setting/show-background');
     }
+
+
+    public function inventory_report_each_download(Request $request) {
+        $inventory_data = New_Inventory_Data::where('uuid','=',$request->uuid."a")->first();
+
+        $data = New_Inventory_Sub_Data::join('new_inventory_data',
+                        'new_inventory_data.id','=','new_inventory_sub_data.new_inventory_data_id')
+                        ->join('users as c_user','c_user.id','=','new_inventory_sub_data.created_by')
+                        ->join('users as u_user','u_user.id','=','new_inventory_sub_data.updated_by')
+                        ->where('new_inventory_data_id','=',$inventory_data['id'])
+                        ->select(
+                        'new_inventory_data.inventory_name  AS inventory_name',
+                        'new_inventory_sub_data.sub_data_status',
+                        'new_inventory_sub_data.comment AS additional_note',
+                        DB::raw('CONCAT(c_user.name, " =", new_inventory_sub_data.created_at) AS created_by'),
+                        DB::raw('CONCAT(u_user.name, " =", new_inventory_sub_data.updated_at) AS updated_by'),
+                        'new_inventory_sub_data.sub_data_uuid AS system id'
+                        )
+                        ->get()
+                        ->toArray();
+
+
+        $type = "xls";
+        //$data = Akses_Data::get()->toArray();
+        return Excel::create('inventory_sub_data_report', function($excel) use ($data) {
+            $excel->sheet('mySheet', function($sheet) use ($data)
+            {
+                $sheet->fromArray($data);
+            });
+        })->download($type);
+
+        //dd($inventory_data);
+    } 
 }

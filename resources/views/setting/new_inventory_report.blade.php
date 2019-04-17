@@ -68,7 +68,7 @@
 	                            '</h5>'+
 	                          '</div>'+
 	                          '<div class="pull-right">'+
-	                            '<a href="">' +
+	                            '<a href="{{route("inventory_report_each_download")}}?uuid={{$val["uuid"]}}">' +
 	                              '<button id="download_sub_data{{$key}}" class="btn btn-primary">'+
 	                                'Download'+" {{$val['inventory_name']}} "+"Report "+
 	                                '='+" {{$val['qty']}} "+"rows"+
