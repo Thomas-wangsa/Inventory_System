@@ -9,6 +9,8 @@ use App\Http\Models\Setting_Role;
 use App\Http\Models\Design;
 use App\Http\Models\Akses_Data;
 use App\Http\Models\New_Inventory_Data;
+use App\Http\Models\New_Inventory_Sub_Data;
+use App\Http\Models\New_Inventory_Role;
 use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Status_Akses;
@@ -117,6 +119,32 @@ class SettingController extends Controller {
 
         $list_new_inventory_role = Users_Role::GetInventoryRoleById(Auth::user()->id)->get();
         $data['list_new_inventory_role'] = $list_new_inventory_role;
+
+
+        $data['each_inventory'] = null;
+        if($request->search == "on") {
+            $position = New_Inventory_Role::find($request->position);
+            if($position != null) {
+                $each_inventory = New_Inventory_Data::where('inventory_list_id','=',$position['inventory_list_id'])
+                                ->where('group1','=',$position['group1'])
+                                ->where('group2','=',$position['group2'])
+                                ->where('group3','=',$position['group3'])
+                                ->where('group4','=',$position['group4'])
+                                ->whereDate('updated_at','>=',$data['from_date'])
+                                ->whereDate('updated_at','<=',$data['current_date'])
+                                ->get();
+                
+                if(count($each_inventory) > 0) {
+
+                    foreach($each_inventory as $key_each_inventory=>$val_each_inventory) {
+                        $each_inventory_sub_data = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$val_each_inventory['id'])->get();
+                        $each_inventory[$key_each_inventory]['inventory_sub_data'] = $each_inventory_sub_data;
+                    }
+
+                    $data['each_inventory'] = $each_inventory;
+                }
+            }
+        }
         //dd($data);
         return view('setting/new_inventory_report',compact('data'));
 
