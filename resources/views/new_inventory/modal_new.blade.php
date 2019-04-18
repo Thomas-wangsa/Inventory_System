@@ -17,14 +17,14 @@
             {{ csrf_field() }}
             <div class="form-group">
               <label class="control-label col-xs-4" for="email">
-                Insert inventory AS :
+                Select Position :
               </label>
               <div class="col-xs-8">
                 <select class="form-control"
                 id="checking_jabatan" 
                 name="new_inventory_role_id" 
                 required="">
-                  <option value=""> Select role inventory </option>
+                  <option value=""> Select position inventory </option>
                   @foreach($data['list_new_inventory_role'] as $key=>$val)
                   <option value="{{$val->jabatan}}">
                     {{$val->nama_jabatan}} 

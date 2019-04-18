@@ -44,7 +44,17 @@
 		      @endif
 		    @endforeach
 		</div> <!-- end .flash-message -->
-	
+		
+
+		@if(in_array(1,$user_divisi) || in_array(2,$user_setting))
+		<div class="pull-left" style="margin-bottom: 10px">
+			<div class="btn btn-primary"
+			data-toggle="modal" data-target="#modal_upload_new">
+				Upload Excel
+			</div>
+		</div>
+		<div class="clearfix"> </div>
+		@endif
 
 		<div class="pull-left">
 		 	<form class="form-inline" action="{{route('new_inventory.index')}}">
@@ -244,6 +254,7 @@
 	@include('new_inventory.modal_info')
 	@include('new_inventory.modal_edit')
 	@include('new_inventory.modal_reject')
+	@include('new_inventory.modal_upload_new')
 
 	<script type="text/javascript">
 		function reset_filter() {

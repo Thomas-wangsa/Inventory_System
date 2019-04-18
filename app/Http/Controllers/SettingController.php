@@ -15,6 +15,7 @@ use App\Http\Models\Users;
 use App\Http\Models\Users_Role;
 use App\Http\Models\Status_Akses;
 use App\Http\Models\Status_Inventory;
+use App\Http\Models\Status_Sub_Inventory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Excel;
@@ -145,6 +146,22 @@ class SettingController extends Controller {
                             ->groupBy('sub_data_status')
                             ->orderBy('sub_data_status','ASC')
                             ->get();
+
+
+                        foreach($each_inventory_sub_data as $key_each_inventory_sub_data=>$val_each_inventory_sub_data) {
+                            $each_inventory_sub_data[$key_each_inventory_sub_data]['color'] = "gray";
+
+                            $status_sub_inventory_data = Status_Sub_Inventory::where('name','=',$val_each_inventory_sub_data['sub_data_status'])
+                                        ->select('color')
+                                        ->first();
+
+                            if($status_sub_inventory_data != null) {
+                                $each_inventory_sub_data[$key_each_inventory_sub_data]['color'] = $status_sub_inventory_data->color;
+                            }
+
+                        }
+
+                        //dd($each_inventory_sub_data);
                         $each_inventory[$key_each_inventory]['inventory_sub_data'] = $each_inventory_sub_data;
                     }
 
@@ -152,7 +169,7 @@ class SettingController extends Controller {
                 }
             }
         }
-        //dd($data);
+        // dd($data);
         return view('setting/new_inventory_report',compact('data'));
 
     }

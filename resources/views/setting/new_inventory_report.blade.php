@@ -106,9 +106,14 @@
 		    	]);
 
 		    	var options = {
-		          title: 'Weekly Report '
+		          	title: 'Weekly Report '
 		                +"{{$val['inventory_name']}} "+
 		                'Period = '+"{{$data['from_date']}}"+" to "+"{{$data['current_date']}}",
+		            slices: {
+			            @foreach($val['inventory_sub_data'] as $key_data=>$val_data)
+			            {{$key_data}}: {color : "{{$val_data['color']}}"},
+			            @endforeach
+          			}
 			        
 		      	};
 
