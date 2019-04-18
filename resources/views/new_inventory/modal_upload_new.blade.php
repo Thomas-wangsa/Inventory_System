@@ -14,7 +14,7 @@
           <div style="margin-bottom: 20px">
             <form class="form-horizontal" 
             method="POST" enctype="multipart/form-data"
-            action="{{ route('upload_excel') }}">
+            action="{{ route('new_upload_excel') }}">
               {{ csrf_field() }}
               <div class="form-group">
                 <label class="control-label col-xs-3" for="email">
@@ -25,7 +25,11 @@
                   name="inventory_list_id" 
                   required="">
                     <option value=""> Select position inventory </option>
-                    
+                    @foreach($data['list_new_inventory_role'] as $key=>$val)
+                    <option value="{{$val->jabatan}}">
+                      {{$val->nama_jabatan}} 
+                    </option>
+                    @endforeach
                   </select>
                 </div>
               </div>

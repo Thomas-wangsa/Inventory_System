@@ -854,4 +854,9 @@ class NewInventoryController extends Controller
         $response['status'] = true;
         return json_encode($response);
     }
+
+
+    function new_upload_excel(Request $request) {
+        dd($request);
+    }
 }
