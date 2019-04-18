@@ -74,7 +74,7 @@
 	                            '<a href="{{route("inventory_report_each_download")}}?uuid={{$val["uuid"]}}">' +
 	                              '<button id="download_sub_data{{$key}}" class="btn btn-primary">'+
 	                                'Download'+" {{$val['inventory_name']}} "+"Report "+
-	                                '='+" {{$val['qty']}} "+"rows"+
+	                                '='+" {{$val['inventory_sub_data_qty']}} "+"rows"+
 	                              '</button>'+
 	                            '</a>'+
 	                          '</div>'+
@@ -89,7 +89,7 @@
 
 	      	$('#parent_chart').append(append);
 
-		    if({{count($val['inventory_sub_data'])}} < 1) {
+		    if({{$val['inventory_sub_data_qty']}} < 1) {
 		      	$('#download_sub_data{{$key}}').prop('disabled', true);
 		      	$('#download_sub_data{{$key}}').html("please set the sub data first");
 		      	$('#barchart{{$key}}').removeClass("barchart");

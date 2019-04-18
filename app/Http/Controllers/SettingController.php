@@ -163,13 +163,14 @@ class SettingController extends Controller {
 
                         //dd($each_inventory_sub_data);
                         $each_inventory[$key_each_inventory]['inventory_sub_data'] = $each_inventory_sub_data;
+                        $each_inventory[$key_each_inventory]['inventory_sub_data_qty'] = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$val_each_inventory['id'])->count();
                     }
 
                     $data['each_inventory'] = $each_inventory;
                 }
             }
         }
-        // dd($data);
+        //dd($data);
         return view('setting/new_inventory_report',compact('data'));
 
     }
@@ -504,7 +505,7 @@ class SettingController extends Controller {
 
 
     public function inventory_report_each_download(Request $request) {
-        $inventory_data = New_Inventory_Data::where('uuid','=',$request->uuid."a")->first();
+        $inventory_data = New_Inventory_Data::where('uuid','=',$request->uuid)->first();
 
         $data = New_Inventory_Sub_Data::join('new_inventory_data',
                         'new_inventory_data.id','=','new_inventory_sub_data.new_inventory_data_id')
@@ -521,7 +522,6 @@ class SettingController extends Controller {
                         )
                         ->get()
                         ->toArray();
-
 
         $type = "xls";
         //$data = Akses_Data::get()->toArray();
