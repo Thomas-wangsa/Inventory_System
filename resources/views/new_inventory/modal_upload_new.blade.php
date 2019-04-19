@@ -17,23 +17,6 @@
             action="{{ route('new_upload_excel') }}">
               {{ csrf_field() }}
               <div class="form-group">
-                <label class="control-label col-xs-3" for="email">
-                  Select Position :
-                </label>
-                <div class="col-xs-9">
-                  <select class="form-control" 
-                  name="inventory_list_id" 
-                  required="">
-                    <option value=""> Select position inventory </option>
-                    @foreach($data['list_new_inventory_role'] as $key=>$val)
-                    <option value="{{$val->jabatan}}">
-                      {{$val->nama_jabatan}} 
-                    </option>
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
                 <label class="control-label col-sm-3" for="pwd">
                   Upload Excel
                 </label>

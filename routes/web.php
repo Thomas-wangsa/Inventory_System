@@ -185,7 +185,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 		// Inventory
-		Route::get('/inventory','InventoryController@index')->name('inventory');
+		// Route::get('/inventory','InventoryController@index')->name('inventory');
 		Route::post('/inventory/add-inventory', 'InventoryController@add_inventory')->name('add_inventory');
 		Route::post('/inventory/upload-excel', 'InventoryController@upload_excel')->name('upload_excel');
 		Route::get('/inventory_approval', 'InventoryController@inventory_approval')->name('inventory_approval');

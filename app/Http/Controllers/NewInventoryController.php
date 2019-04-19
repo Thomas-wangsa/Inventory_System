@@ -18,6 +18,9 @@ use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Notification AS custom_notification;
 
+use Illuminate\Support\Facades\Input;
+use Excel;
+
  
 class NewInventoryController extends Controller
 {   
@@ -857,6 +860,80 @@ class NewInventoryController extends Controller
 
 
     function new_upload_excel(Request $request) {
-        dd($request);
+        $allow = false;
+        $request->validate([
+            'excel_file' => 'required'
+        ]);
+
+        if(
+            $request->excel_file->getClientOriginalExtension() == 'xls' 
+            ||
+            $request->excel_file->getClientOriginalExtension() == 'xlsx'
+          ) 
+        {
+            $allow = true;
+        } 
+
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Extension file must in xls or xlsx');
+            return redirect($this->redirectTo);
+        }
+
+
+        if($request->excel_file){
+            $path = Input::file('excel_file')->getRealPath();
+            $data = Excel::load($path, function($reader) {
+                //$reader->skipRows = 1;
+            })->get();
+
+            if(count($data) <= 4) {
+                $request->session()->flash('alert-danger', 'Limit rows minimum issue!');
+                return redirect($this->redirectTo);
+            }
+
+            if(count($data) > 504) {
+                $request->session()->flash('alert-danger', 'Limit rows maximum issue!');
+                return redirect($this->redirectTo);
+            }
+
+
+            try {
+                
+                foreach ($data as $key => $value) {
+                    if($key <= 3) {continue;}
+
+
+
+                    if( $value->kota == null ||
+                        $value->gedung == null ||
+                        $value->divisi_indosat == null ||
+                        $value->inventory_category == null ||
+                        $value->inventory_name == null
+                        ) 
+                    {
+                        dd("ROLL BACK RUN");
+                    }
+
+                    
+                    $group1 = Group1::where('group1_name','=',$value->kota)->first();
+                    if($group1 == null || count($group1) < 1) {
+                        
+                    }
+
+                    dd($value);      
+                }  
+
+            } catch(Exception $e) {
+                $request->session()->flash('alert-danger', $e);
+                return redirect($this->redirectTo);
+            }
+
+
+        } else {
+            $request->session()->flash('alert-danger', 'Out of scope!');
+            return redirect($this->redirectTo);
+        }
+
     }
 }
