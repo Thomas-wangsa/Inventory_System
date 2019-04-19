@@ -13,6 +13,11 @@ use App\Http\Models\New_Inventory_Sub_Data;
 use App\Http\Models\New_Map;
 use App\Http\Models\New_Map_Images;
 
+use App\Http\Models\Group1;
+use App\Http\Models\Group2;
+use App\Http\Models\Group3;
+use App\Http\Models\Group4;
+
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
@@ -899,30 +904,75 @@ class NewInventoryController extends Controller
 
 
             try {
-                
+                $file_name = $request->excel_file->getClientOriginalName();
                 foreach ($data as $key => $value) {
                     if($key <= 3) {continue;}
 
+                    $value_kota                 = trim($value->kota);
+                    $value_gedung               = trim($value->gedung);
+                    $value_divisi_indosat       = trim($value->divisi_indosat);
+                    $value_sub_divisi_indosat   = trim($value->sub_divisi_indosat);
+                    $value_inventory_category   = trim($value->inventory_category);
+                    $value_inventory_name       = trim($value->inventory_name);
 
-
-                    if( $value->kota == null ||
-                        $value->gedung == null ||
-                        $value->divisi_indosat == null ||
-                        $value->inventory_category == null ||
-                        $value->inventory_name == null
+                    if( $value_kota == null ||
+                        $value_gedung == null ||
+                        $value_divisi_indosat == null ||
+                        $value_inventory_category == null ||
+                        $value_inventory_name == null
                         ) 
                     {
                         dd("ROLL BACK RUN");
                     }
 
                     
-                    $group1 = Group1::where('group1_name','=',$value->kota)->first();
+                    $group1 = Group1::where('group1_name','=',$value_kota)->first();
                     if($group1 == null || count($group1) < 1) {
-                        
+                        $group1 = new Group1;
+                        $group1->group1_name        = $value_kota;
+                        $group1->group1_detail      = "upload filename : " . $file_name;
+                        $group1->created_by         = Auth::user()->id;
+                        $group1->updated_by         = Auth::user()->id;
+                        $group1->save();
                     }
 
-                    dd($value);      
-                }  
+                    $group2 = Group2::where('group2_name','=',$value_gedung)->first();
+                    if($group2 == null || count($group2) < 1) {
+                        $group2 = new Group2;
+                        $group2->group2_name        = $value_gedung;
+                        $group2->group2_detail      = "upload filename : " . $file_name;
+                        $group2->created_by         = Auth::user()->id;
+                        $group2->updated_by         = Auth::user()->id;
+                        $group2->save();
+                    }
+
+                    $group3 = Group3::where('group3_name','=',$value_divisi_indosat)->first();
+                    if($group3 == null || count($group3) < 1) {
+                        $group3 = new Group3;
+                        $group3->group3_name        = $value_divisi_indosat;
+                        $group3->group3_detail      = "upload filename : " . $file_name;
+                        $group3->created_by         = Auth::user()->id;
+                        $group3->updated_by         = Auth::user()->id;
+                        $group3->save();
+                    }
+
+
+                    if($value_sub_divisi_indosat != null) {
+                        $group4 = Group4::where('group4_name','=',$value_sub_divisi_indosat)->first();
+                        if($group4 == null || count($group4) < 1) {
+                            $group4 = new Group4;
+                            $group4->group4_name        = $value_sub_divisi_indosat;
+                            $group4->group4_detail      = "upload filename : " . $file_name;
+                            $group4->created_by         = Auth::user()->id;
+                            $group4->updated_by         = Auth::user()->id;
+                            $group4->save();
+                        }
+                    }
+                    
+
+                }
+
+                echo "finish";die;  
 
             } catch(Exception $e) {
                 $request->session()->flash('alert-danger', $e);
