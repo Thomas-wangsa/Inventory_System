@@ -893,7 +893,7 @@ class NewInventoryController extends Controller
             })->get();
 
             //dd($data);
-            if(count($data) <= 4) {
+            if(count($data) <= 3) {
                 $request->session()->flash('alert-danger', 'Limit rows minimum issue!');
                 return redirect($this->redirectTo);
             }
