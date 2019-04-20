@@ -889,16 +889,15 @@ class NewInventoryController extends Controller
         if($request->excel_file){
             $path = Input::file('excel_file')->getRealPath();
             $data = Excel::load($path, function($reader) {
-                //$reader->skipRows = 1;
+                $reader->noHeading = true;
             })->get();
-
             //dd($data);
             if(count($data) <= 3) {
                 $request->session()->flash('alert-danger', 'Limit rows minimum issue!');
                 return redirect($this->redirectTo);
             }
 
-            if(count($data) > 303) {
+            if(count($data) > 304) {
                 $request->session()->flash('alert-danger', 'Limit rows maximum (300 rows) issue!');
                 return redirect($this->redirectTo);
             }
@@ -912,14 +911,14 @@ class NewInventoryController extends Controller
                 $file_name = $request->excel_file->getClientOriginalName();
                 $full_new_inventory_data = array();
                 foreach ($data as $key => $value) {
-                    if($key < 3) {continue;}
+                    if($key < 4) {continue;}
 
-                    $value_kota                 = trim($value->kota);
-                    $value_gedung               = trim($value->gedung);
-                    $value_divisi_indosat       = trim($value->divisi_indosat);
-                    $value_sub_divisi_indosat   = trim($value->sub_divisi_indosat);
-                    $value_inventory_category   = trim($value->inventory_category);
-                    $value_inventory_name       = trim($value->inventory_name);
+                    $value_kota                 = trim($value['1']);
+                    $value_gedung               = trim($value['2']);
+                    $value_divisi_indosat       = trim($value['3']);
+                    $value_sub_divisi_indosat   = trim($value['4']);
+                    $value_inventory_category   = trim($value['5']);
+                    $value_inventory_name       = trim($value['6']);
 
 
                     if($value_kota == "-" || $value_kota == "") {
@@ -1055,33 +1054,33 @@ class NewInventoryController extends Controller
                         'created_by'=>Auth::user()->id,
                         'updated_by'=>Auth::user()->id,
 
-                        'qty' => (int) $value->qty,
+                        'qty' => (int) $value['7'],
                         'file_name_upload' => $additional_note_for_upload,
                         'tanggal_update_data' => date('Y-m-d'),
 
-                        'kategori'      => $value->ket_1,
-                        'kode_gambar'   => $value->ket_2,
-                        'dvr'           => $value->ket_3,
-                        'lokasi_site'   => $value->ket_4,
-                        'kode_lokasi'   => $value->ket_5,
+                        'kategori'      => $value['8'],
+                        'kode_gambar'   => $value['9'],
+                        'dvr'           => $value['10'],
+                        'lokasi_site'   => $value['11'],
+                        'kode_lokasi'   => $value['12'],
 
-                        'jenis_barang'  => $value->ket_6,
-                        'merk'          => $value->ket_7,
-                        'tipe'          => $value->ket_8,
-                        'model'         => $value->ket_9,
-                        'serial_number' => $value->ket_10,
+                        'jenis_barang'  => $value['13'],
+                        'merk'          => $value['14'],
+                        'tipe'          => $value['15'],
+                        'model'         => $value['16'],
+                        'serial_number' => $value['17'],
 
-                        'psu_adaptor'       => $value->ket_11,
-                        'tahun_pembuatan'   => $value->ket_12,
-                        'tahun_pengadaan'   => $value->ket_13,
-                        'kondisi'           => $value->ket_14,
-                        'deskripsi'         => $value->ket_15,
+                        'psu_adaptor'       => $value['18'],
+                        'tahun_pembuatan'   => $value['19'],
+                        'tahun_pengadaan'   => $value['20'],
+                        'kondisi'           => $value['21'],
+                        'deskripsi'         => $value['22'],
 
-                        'asuransi'          => $value->ket_16,
-                        'lampiran'          => $value->ket_17,
-                        'tanggal_retired'   => $value->ket_18,
-                        'po'                => $value->ket_19,
-                        'keterangan'        => $value->ket_20,
+                        'asuransi'          => $value['23'],
+                        'lampiran'          => $value['24'],
+                        'tanggal_retired'   => $value['25'],
+                        'po'                => $value['26'],
+                        'keterangan'        => $value['27'],
 
                         'uuid'  => time().$this->faker->uuid,
                         'created_at'=> date('Y-m-d H:i:s'),
