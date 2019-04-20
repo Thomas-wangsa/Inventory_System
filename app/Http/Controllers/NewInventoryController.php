@@ -892,21 +892,27 @@ class NewInventoryController extends Controller
                 //$reader->skipRows = 1;
             })->get();
 
+            //dd($data);
             if(count($data) <= 4) {
                 $request->session()->flash('alert-danger', 'Limit rows minimum issue!');
                 return redirect($this->redirectTo);
             }
 
-            if(count($data) > 504) {
-                $request->session()->flash('alert-danger', 'Limit rows maximum issue!');
+            if(count($data) > 303) {
+                $request->session()->flash('alert-danger', 'Limit rows maximum (500 rows) issue!');
                 return redirect($this->redirectTo);
             }
 
+            $rollback = array(
+                'status'    => False,
+                'msg'       => ''
+            );
 
             try {
                 $file_name = $request->excel_file->getClientOriginalName();
+                $full_new_inventory_data = array();
                 foreach ($data as $key => $value) {
-                    if($key <= 3) {continue;}
+                    if($key < 3) {continue;}
 
                     $value_kota                 = trim($value->kota);
                     $value_gedung               = trim($value->gedung);
@@ -915,22 +921,75 @@ class NewInventoryController extends Controller
                     $value_inventory_category   = trim($value->inventory_category);
                     $value_inventory_name       = trim($value->inventory_name);
 
-                    if( $value_kota == null ||
-                        $value_gedung == null ||
-                        $value_divisi_indosat == null ||
-                        $value_inventory_category == null ||
-                        $value_inventory_name == null
-                        ) 
-                    {
-                        dd("ROLL BACK RUN");
+
+                    if($value_kota == "-" || $value_kota == "") {
+                        $value_kota = null;
                     }
 
-                    
+                    if($value_kota == null) {
+                        $rollback['status'] = True;
+                        $rollback['msg']    = "kota value is empty in rows : ". ($key + 2);
+                        break;
+                    }
+
+
+                    if($value_gedung == "-" || $value_gedung == "") {
+                        $value_gedung = null;
+                    }
+
+                    if($value_gedung == null) {
+                        $rollback['status'] = True;
+                        $rollback['msg']    = "gedung value is empty in rows : ". ($key + 2);
+                        break;
+                    }
+
+
+                    if($value_divisi_indosat == "-" || $value_divisi_indosat == "") {
+                        $value_divisi_indosat = null;
+                    }
+
+                    if($value_divisi_indosat == null) {
+                        $rollback['status'] = True;
+                        $rollback['msg']    = "divisi indosat value is empty in rows : ". ($key + 2);
+                        break;
+                    }
+
+                    // for sub divisi
+                    if($value_sub_divisi_indosat == "-" || $value_sub_divisi_indosat == "") {
+                        $value_sub_divisi_indosat = null;
+                    }
+                    // for sub divisi
+
+
+                    if($value_inventory_category == "-" || $value_inventory_category == "") {
+                        $value_inventory_category = null;
+                    }
+
+                    if($value_inventory_category == null) {
+                        $rollback['status'] = True;
+                        $rollback['msg']    = "inventory category value is empty in rows : ". ($key + 2);
+                        break;
+                    }
+
+
+                    if($value_inventory_name == "-" || $value_inventory_name == "") {
+                        $value_inventory_name = null;
+                    }
+
+                    if($value_inventory_name == null) {
+                        $rollback['status'] = True;
+                        $rollback['msg']    = "inventory name value is empty in rows : ". ($key + 2);
+                        break;
+                    }
+
+
+
+                    $additional_note_for_upload = "upload filename : " . $file_name." : ". date('Y-m-d H:i:s');
                     $group1 = Group1::where('group1_name','=',$value_kota)->first();
                     if($group1 == null || count($group1) < 1) {
                         $group1 = new Group1;
                         $group1->group1_name        = $value_kota;
-                        $group1->group1_detail      = "upload filename : " . $file_name;
+                        $group1->group1_detail      = $additional_note_for_upload;
                         $group1->created_by         = Auth::user()->id;
                         $group1->updated_by         = Auth::user()->id;
                         $group1->save();
@@ -940,7 +999,7 @@ class NewInventoryController extends Controller
                     if($group2 == null || count($group2) < 1) {
                         $group2 = new Group2;
                         $group2->group2_name        = $value_gedung;
-                        $group2->group2_detail      = "upload filename : " . $file_name;
+                        $group2->group2_detail      = $additional_note_for_upload;
                         $group2->created_by         = Auth::user()->id;
                         $group2->updated_by         = Auth::user()->id;
                         $group2->save();
@@ -950,7 +1009,7 @@ class NewInventoryController extends Controller
                     if($group3 == null || count($group3) < 1) {
                         $group3 = new Group3;
                         $group3->group3_name        = $value_divisi_indosat;
-                        $group3->group3_detail      = "upload filename : " . $file_name;
+                        $group3->group3_detail      = $additional_note_for_upload;
                         $group3->created_by         = Auth::user()->id;
                         $group3->updated_by         = Auth::user()->id;
                         $group3->save();
@@ -962,17 +1021,89 @@ class NewInventoryController extends Controller
                         if($group4 == null || count($group4) < 1) {
                             $group4 = new Group4;
                             $group4->group4_name        = $value_sub_divisi_indosat;
-                            $group4->group4_detail      = "upload filename : " . $file_name;
+                            $group4->group4_detail      = $additional_note_for_upload;
                             $group4->created_by         = Auth::user()->id;
                             $group4->updated_by         = Auth::user()->id;
                             $group4->save();
                         }
-                    }
-                    
+                    } 
 
+                    $inventory_list = Inventory_List::where('inventory_name','=',$value_inventory_category)->first();
+                    if($inventory_list == null || count($inventory_list) < 1) {
+                        $inventory_list = new Inventory_List;
+                        $inventory_list->inventory_name        = $value_inventory_category;
+                        $inventory_list->inventory_detail_name      = $additional_note_for_upload;
+                        $inventory_list->created_by         = Auth::user()->id;
+                        $inventory_list->updated_by         = Auth::user()->id;
+                        $inventory_list->save();
+                    }
+
+
+
+                    $each_new_inventory_data = array(
+                        'inventory_name'    => strtolower(trim($value_inventory_name)),
+                        
+                        'group1'            => $group1->id,
+                        'group2'            => $group2->id,
+                        'group3'            => $group3->id,
+                        'group4'            => $value_sub_divisi_indosat != null ? $group4->id : null,
+                        'inventory_list_id' => $inventory_list->id,
+                        'inventory_level_id' => 1,
+
+                        'status_data'=>1,
+                        'status'=>1,
+                        'created_by'=>Auth::user()->id,
+                        'updated_by'=>Auth::user()->id,
+
+                        'qty' => (int) $value->qty,
+                        'file_name_upload' => $additional_note_for_upload,
+                        'tanggal_update_data' => date('Y-m-d'),
+
+                        'kategori'      => $value->ket_1,
+                        'kode_gambar'   => $value->ket_2,
+                        'dvr'           => $value->ket_3,
+                        'lokasi_site'   => $value->ket_4,
+                        'kode_lokasi'   => $value->ket_5,
+
+                        'jenis_barang'  => $value->ket_6,
+                        'merk'          => $value->ket_7,
+                        'tipe'          => $value->ket_8,
+                        'model'         => $value->ket_9,
+                        'serial_number' => $value->ket_10,
+
+                        'psu_adaptor'       => $value->ket_11,
+                        'tahun_pembuatan'   => $value->ket_12,
+                        'tahun_pengadaan'   => $value->ket_13,
+                        'kondisi'           => $value->ket_14,
+                        'deskripsi'         => $value->ket_15,
+
+                        'asuransi'          => $value->ket_16,
+                        'lampiran'          => $value->ket_17,
+                        'tanggal_retired'   => $value->ket_18,
+                        'po'                => $value->ket_19,
+                        'keterangan'        => $value->ket_20,
+
+                        'uuid'  => time().$this->faker->uuid,
+                        'created_at'=> date('Y-m-d H:i:s'),
+                        'updated_at'=> date('Y-m-d H:i:s')
+                    );
+
+
+                    array_push($full_new_inventory_data,$each_new_inventory_data);
+
+
+                } // foreach
+
+
+                if($rollback['status']) {
+                    $request->session()->flash('alert-danger', $rollback['msg']);
+                    return redirect($this->redirectTo);
                 }
 
-                echo "finish";die;  
+                if(New_Inventory_Data::insert($full_new_inventory_data)) {
+                    $request->session()->flash('alert-success', 'upload success!');
+                    return redirect($this->redirectTo);
+                }
 
             } catch(Exception $e) {
                 $request->session()->flash('alert-danger', $e);

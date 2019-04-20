@@ -8,4 +8,7 @@ class New_Inventory_Data extends Model
 {
     protected $table = "new_inventory_data";
 
+    protected $guarded = ['id'];
+
+
 }

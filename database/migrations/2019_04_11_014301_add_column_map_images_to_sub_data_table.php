@@ -17,10 +17,10 @@ class AddColumnMapImagesToSubDataTable extends Migration
             $table->unsignedInteger('map_id')->nullable()->after('sub_data_uuid');
             $table->unsignedInteger('map_images_id')->nullable()->after('map_id');
 
-            $table->foreign('map_id', 'new_inventory_sub_data_map_id_fkey')
+            $table->foreign('map_id')
                 ->references('id')->on('new_map')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
-            $table->foreign('map_images_id', 'new_inventory_sub_data_map_images_id_fkey')
+            $table->foreign('map_images_id')
                 ->references('id')->on('new_map_images')
                 ->onUpdate('CASCADE')->onDelete('RESTRICT');
         });
@@ -34,7 +34,8 @@ class AddColumnMapImagesToSubDataTable extends Migration
     public function down()
     {
         Schema::table('new_inventory_sub_data', function (Blueprint $table) {
-            //
+            $table->dropForeign(['map_id']);
+            $table->dropForeign(['map_images_id']);
         });
     }
 }
