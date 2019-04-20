@@ -899,7 +899,7 @@ class NewInventoryController extends Controller
             }
 
             if(count($data) > 303) {
-                $request->session()->flash('alert-danger', 'Limit rows maximum (500 rows) issue!');
+                $request->session()->flash('alert-danger', 'Limit rows maximum (300 rows) issue!');
                 return redirect($this->redirectTo);
             }
 
