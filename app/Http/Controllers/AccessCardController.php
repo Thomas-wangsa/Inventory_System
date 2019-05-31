@@ -870,12 +870,13 @@ class AccessCardController extends Controller
         );
 
         $user  = Users::find(Auth::user()->id);
+        $requester = Users::find($data->created_by);
 
         $param = array(
             "from"              => "notification@indosatooredoo.com",
             "replyTo"           => "notification@indosatooredoo.com",
             "subject"           => "-",
-            "cc_email"          => $data->email,
+            "cc_email"          => [$data->email,$requester['email']],
             "description"       => "-",
             "note"              => "-",
         );
@@ -968,6 +969,14 @@ class AccessCardController extends Controller
         } else {
 
             if($data->request_type == 1 || $data->request_type == 3 || $data->request_type == 4) {
+
+                $exist_access_card = Akses_Data::where('no_access_card',$request->accesscard_number)->first();
+
+                if(count($exist_access_card) > 0) {
+                    $request->session()->flash('alert-danger', 'Access card number '. $request->accesscard_number .' already exist in another data');
+                    return redirect($this->redirectTo."?search=on&search_uuid=".$request->uuid);
+                }
+
                 $data->status_akses         = 5;
                 $data->no_access_card       = $request->accesscard_number;
                 $data->updated_by        = Auth::user()->id;

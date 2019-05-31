@@ -3,11 +3,11 @@
 namespace App\Http\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Akses_Data extends Model
 {
     protected $table = "akses_data";
-
+    use SoftDeletes;
     protected $fileable = array('type_daftar','nik');
     public function scopeGetDetailAkses($query) {
     	return $query->join('status_akses','status_akses.id','=','akses_data.status_akses')

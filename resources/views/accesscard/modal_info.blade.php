@@ -139,7 +139,7 @@
 
 		    <div class="panel panel-primary">
 		      <div class="panel-heading text-center">
-		      	ID Card
+		      	KTP
 		      </div>
 		      	<div class="panel-body">
 			      	<img class="img-responsive"

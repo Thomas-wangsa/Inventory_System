@@ -75,6 +75,10 @@ class Notification extends Controller {
             	$param['cc_email'] = array();
             	//initiate
             	array_push($param['cc_email'],Users::find(Auth::user()->id)->email);
+
+
+            	$requester = Users::find($this->data->created_by);
+            	array_push($param['cc_email'],$requester['email']);
             	
             	$param['subject'] = "[no-reply] [Access Card] ".
             						$request_name." : ".$status_akses->name.
@@ -527,6 +531,7 @@ class Notification extends Controller {
 	}
  
 	private function notify_apps() {
+
 		$data_user = array();
 		// category checker
 		if($this->category == 1) {
