@@ -910,6 +910,7 @@ class NewInventoryController extends Controller
             try {
                 $file_name = $request->excel_file->getClientOriginalName();
                 $full_new_inventory_data = array();
+                //dd($data);
                 foreach ($data as $key => $value) {
                     if($key < 4) {continue;}
 
@@ -1058,29 +1059,29 @@ class NewInventoryController extends Controller
                         'file_name_upload' => $additional_note_for_upload,
                         'tanggal_update_data' => date('Y-m-d'),
 
-                        'kategori'      => $value['8'],
-                        'kode_gambar'   => $value['9'],
-                        'dvr'           => $value['10'],
-                        'lokasi_site'   => $value['11'],
-                        'kode_lokasi'   => $value['12'],
+                        'kategori'      => isset($value['8']) ? $value['8'] : "-",
+                        'kode_gambar'   => isset($value['9']) ? $value['9'] : "-",
+                        'dvr'           => isset($value['10']) ? $value['10'] : "-",
+                        'lokasi_site'   => isset($value['11']) ? $value['11'] : "-",
+                        'kode_lokasi'   => isset($value['12']) ? $value['12'] : "-",
 
-                        'jenis_barang'  => $value['13'],
-                        'merk'          => $value['14'],
-                        'tipe'          => $value['15'],
-                        'model'         => $value['16'],
-                        'serial_number' => $value['17'],
+                        'jenis_barang'  => isset($value['13']) ? $value['13'] : "-",
+                        'merk'          => isset($value['14']) ? $value['14'] : "-",
+                        'tipe'          => isset($value['15']) ? $value['15'] : "-",
+                        'model'         => isset($value['16']) ? $value['16'] : "-",
+                        'serial_number' => isset($value['17']) ? $value['17'] : "-",
 
-                        'psu_adaptor'       => $value['18'],
-                        'tahun_pembuatan'   => $value['19'],
-                        'tahun_pengadaan'   => $value['20'],
-                        'kondisi'           => $value['21'],
-                        'deskripsi'         => $value['22'],
+                        'psu_adaptor'       => isset($value['18']) ? $value['18'] : "-",
+                        'tahun_pembuatan'   => isset($value['19']) ? $value['19'] : "-",
+                        'tahun_pengadaan'   => isset($value['20']) ? $value['20'] : "-",
+                        'kondisi'           => isset($value['21']) ? $value['21'] : "-",
+                        'deskripsi'         => isset($value['22']) ? $value['22'] : "-",
 
-                        'asuransi'          => $value['23'],
-                        'lampiran'          => $value['24'],
-                        'tanggal_retired'   => $value['25'],
-                        'po'                => $value['26'],
-                        'keterangan'        => $value['27'],
+                        'asuransi'          => isset($value['23']) ? $value['23'] : "-",
+                        'lampiran'          => isset($value['24']) ? $value['24'] : "-",
+                        'tanggal_retired'   => isset($value['25']) ? $value['25'] : "-",
+                        'po'                => isset($value['26']) ? $value['26'] : "-" ,
+                        'keterangan'        => isset($value['27']) ? $value['27'] : "-",
 
                         'uuid'  => time().$this->faker->uuid,
                         'created_at'=> date('Y-m-d H:i:s'),
