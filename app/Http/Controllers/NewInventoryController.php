@@ -90,16 +90,6 @@ class NewInventoryController extends Controller
 
 
             if(count($role_specific_users) > 0) {
-                // foreach($role_specific_users as $key_role=>$val_role) {
-                //     $base_inventory_data->Orwhere(function ($query) use ($val_role) {
-                //         $query->where('group1', '=', $val_role->group1)
-                //         ->where('group2', '=', $val_role->group2)
-                //         ->where('group3', '=', $val_role->group3)
-                //         ->where('group4', '=', $val_role->group4)
-                //         ->where('inventory_list_id', '=', $val_role->inventory_list_id);
-                //     });
-                // }
-
 
                 $base_inventory_data->where(function ($query) use ($role_specific_users)  {
                     foreach($role_specific_users as $key_role=>$val_role) {

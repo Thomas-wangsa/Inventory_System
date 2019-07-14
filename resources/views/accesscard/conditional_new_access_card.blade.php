@@ -260,6 +260,7 @@
 	@case("16")
 	@case("17")
 	@case("18")
+	@case("19")
 		<div class="btn-group-vertical">
 			<button 
 			class="btn btn-info"
