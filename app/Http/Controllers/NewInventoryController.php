@@ -119,9 +119,36 @@ class NewInventoryController extends Controller
         }
 
 
+
         if($request->search == "on") {
             if($request->search_nama != null) {
-                $base_inventory_data->where('new_inventory_data.inventory_name','like','%'.$request->search_nama."%");
+                //$base_inventory_data->where('new_inventory_data.inventory_name','=',$request->search_nama);
+                $searchName = $request->search_nama;
+                $base_inventory_data->where(function ($newquery) use ($searchName)  {
+                    $newquery->Orwhere('new_inventory_data.inventory_name','=',$searchName)
+                    ->Orwhere('new_inventory_data.kategori','=',$searchName)
+                    ->Orwhere('new_inventory_data.kode_gambar','=',$searchName)
+                    ->Orwhere('new_inventory_data.dvr','=',$searchName)
+                    ->Orwhere('new_inventory_data.lokasi_site','=',$searchName)
+                    ->Orwhere('new_inventory_data.kode_lokasi','=',$searchName)
+                    ->Orwhere('new_inventory_data.jenis_barang','=',$searchName)
+                    ->Orwhere('new_inventory_data.merk','=',$searchName)
+                    ->Orwhere('new_inventory_data.tipe','=',$searchName)
+                    ->Orwhere('new_inventory_data.model','=',$searchName)
+                    ->Orwhere('new_inventory_data.serial_number','=',$searchName)
+
+                    ->Orwhere('new_inventory_data.psu_adaptor','=',$searchName)
+                    ->Orwhere('new_inventory_data.tahun_pembuatan','=',$searchName)
+                    ->Orwhere('new_inventory_data.tahun_pengadaan','=',$searchName)
+                    ->Orwhere('new_inventory_data.kondisi','=',$searchName)
+                    ->Orwhere('new_inventory_data.deskripsi','=',$searchName)
+                    ->Orwhere('new_inventory_data.asuransi','=',$searchName)
+                    ->Orwhere('new_inventory_data.lampiran','=',$searchName)
+                    ->Orwhere('new_inventory_data.tanggal_retired','=',$searchName)
+                    ->Orwhere('new_inventory_data.po','=',$searchName)
+                    ->Orwhere('new_inventory_data.keterangan','=',$searchName);
+                });
+
             }
 
             if($request->search_category != null) {
@@ -147,7 +174,8 @@ class NewInventoryController extends Controller
                         ,'inventory_list.inventory_name AS inventory_list_name'
                         ,'status_inventory.name AS status_inventory_name'
                         ,'status_inventory.color AS status_inventory_color'
-                        );
+                        )
+                        ->orderBy('new_inventory_data.inventory_name', 'ASC');
         $new_inventory_data = $base_inventory_data->paginate(5);
         
         
