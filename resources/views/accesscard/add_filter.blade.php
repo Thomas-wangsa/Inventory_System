@@ -38,6 +38,23 @@
 	    		@endforeach 
 	      	</select>
 	  	</div>
+
+	  	<div class="form-group">
+	      	<select class="form-control" name="search_pic">
+	      		<option value=""> PIC-Sponsor  </option>
+	        	@foreach($data['pic_list'] as $key=>$val)
+	    		<option value="{{$val->id}}" 
+	    			@if($val->id == Request::get('search_pic')) 
+	    				selected
+	    			@endif
+	    			> 
+	    			{{ucfirst($val->vendor_name)}}
+	    		</option>
+	    		@endforeach 
+	      	</select>
+	  	</div>
+
+
 	  	<div class="form-group">
 	      	<select class="form-control" name="search_order">
 	      		<option value=""> Sort  </option>

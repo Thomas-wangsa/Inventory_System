@@ -311,7 +311,7 @@ class AccessCardController extends Controller
         }
 
 
-        //dd($akses_data->count());
+        //
         // FILTER
         if($request->search == "on") {
             if($request->search_nama != null) {
@@ -326,25 +326,31 @@ class AccessCardController extends Controller
                 $akses_data = $akses_data->where('akses_data.status_akses',$request->search_filter);            
             } 
 
+            if($request->search_pic != null) {
+                $akses_data = $akses_data->where('akses_data.pic_list_id',$request->search_pic);
+            }   
+
             if($request->search_uuid != null) {
                 $akses_data = $akses_data->where('akses_data.uuid',$request->search_uuid);
             }
-        } else {
-
-            if(in_array($this->admin,$user_divisi)) {
-                $akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6,7,8]);    
-            } else if(in_array($restrict_divisi_access, $user_divisi) 
-                && count($user_divisi) == 1) {
-                $akses_data = $akses_data->whereIn('akses_data.status_akses',[2,3,4,5,6,7,8]);
-            } else if(in_array($restrict_divisi_pic,$user_divisi) 
-                    && count($user_divisi) == 1) {
-                $akses_data = $akses_data->whereIn('akses_data.status_akses',[1]);
-            } 
-            
         }
+
+
+        // if(in_array($this->admin,$user_divisi)) {
+        //     //$akses_data = $akses_data->whereIn('akses_data.status_akses',[1,2,3,4,5,6,7,8]);    
+        // } else if(in_array($restrict_divisi_access, $user_divisi) 
+        //     && count($user_divisi) == 1) {
+        //     $akses_data = $akses_data->whereIn('akses_data.status_akses',[2,3,4,5,6,7,8]);
+        // } else if(in_array($restrict_divisi_pic,$user_divisi) 
+        //         && count($user_divisi) == 1) {
+        //     $akses_data = $akses_data->whereIn('akses_data.status_akses',[1]);
+        // } 
+            
+        
         //dd($akses_data->count());
 
-        $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name','users.name AS created_by_name','access_card_register_status.register_name AS register_name','access_card_request.request_name AS request_name');
+        $akses_data->select('akses_data.*','status_akses.name AS status_name','status_akses.color AS status_color','pic_list.vendor_name','pic_list.vendor_detail_name','users.name AS created_by_name','access_card_register_status.register_name AS register_name','access_card_request.request_name AS request_name')
+            ->orderBy('akses_data.id', 'DESC');
 
         // if($request->search_order != null) {
         //     $akses_data =    $akses_data->orderBy($request->search_order,'asc');

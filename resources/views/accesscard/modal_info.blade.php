@@ -214,8 +214,14 @@
 						$('#modal_info_pic_list').html(pic_list_detail);
 						$('#modal_info_floor').html(response.data['floor']);
 					} else if(response.data['register_type'] == "1") {
+						$('#head_modal_info_pic_list').show();
 						$('#head_modal_info_divisi').show();
 						$('#head_modal_info_jabatan').show();
+						pic_list_detail = response.data['pic_list_vendor_name'] +
+										   " ( " +
+										   response.data['pic_list_vendor_detail_name'] +
+										   " ) ";
+						$('#modal_info_pic_list').html(pic_list_detail);
 						$('#modal_info_divisi').html(response.data['divisi']);
 						$('#modal_info_jabatan').html(response.data['jabatan']);
 					}
