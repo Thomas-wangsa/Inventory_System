@@ -74,6 +74,8 @@
 		[
 		'search' => Request::get('search'),
 		'search_nama' => Request::get('search_nama'),
+		'request_type_filter' => Request::get('request_type_filter'),
+		'search_pic' => Request::get('search_pic'),
 		'search_filter' => Request::get('search_filter'),
 		'search_order' => Request::get('search_order')
 		])->links() }}
