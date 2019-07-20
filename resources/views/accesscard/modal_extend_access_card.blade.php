@@ -98,6 +98,26 @@
             </div>
 
             <div class="form-group">
+              <label for="staff_nama"> 
+                ktp number :
+              </label>
+              <input type="text" 
+              name="extend_create_ktp_detail" id="extend_create_ktp_detail" 
+              class="form-control"  
+              required="" placeholder="optional parameter">
+            </div>
+
+            <div class="form-group" id="parent_new_extend_po_detail">
+              <label for="staff_nama"> 
+                po number :
+              </label>
+              <input type="text" 
+              name="extend_create_po_detail" id="extend_create_po_detail" 
+              class="form-control"  
+              required="" placeholder="optional parameter">
+            </div>
+
+            <div class="form-group">
               <label for="staff_nama"> Start Active Work :</label>
               <input type="text" 
               name="new_extend_date_start" 
@@ -158,6 +178,7 @@
 
   $('#parent_extend_create_access_card').hide();
   $('#parent_new_extend_po').hide();
+  $('#parent_new_extend_po_detail').hide();
 
 
   function conditional_extend_access_card_status() {
@@ -165,9 +186,11 @@
 
     if(register_status == 1) {
       $('#parent_new_extend_po').hide();
+      $('#parent_new_extend_po_detail').hide();
       $("new_extend_po").prop('required',false);
     } else if(register_status == 2) {
       $('#parent_new_extend_po').show();
+      $('#parent_new_extend_po_detail').show();
       $("#new_extend_po").prop('required',true);
     } else {
       alert("ERROR,PLEASE CONTACT YOUR ADMIN")
@@ -206,10 +229,12 @@
           if(response.data.register_type == 1) {
             register_name = "Permanent";
             $('#parent_new_extend_po').hide();
+            $('#parent_new_extend_po_detail').hide();
             $("new_extend_po").prop('required',false);
           } else if (response.data.register_type ==  2){
             register_name = "Non Permanent";
             $('#parent_new_extend_po').show();
+            $('#parent_new_extend_po_detail').show();
             $("#new_extend_po").prop('required',true);
           }
 
@@ -218,7 +243,8 @@
           $('#extend_create_accesscard').val(response.data.no_access_card);
           $('#extend_create_register_status').val(response.data.register_type);
           $('#show_register_status').val(register_name);
-
+          $('#extend_create_ktp_detail').val(response.data.ktp_detail);
+          $('#extend_create_po_detail').val(response.data.po_detail);
           $('#extend_create_full_name').prop("readonly", true);
           $('#extend_create_accesscard').prop("readonly", true);
           $('#show_register_status').prop("readonly",true);

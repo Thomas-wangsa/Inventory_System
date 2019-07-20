@@ -774,39 +774,24 @@ class AccessCardController extends Controller
         $bool = false;
         // status in akses data
         $conditional_status_akses  = 1;
-        $uuid = time().$this->faker->uuid;
+        $uuid = $old_data->uuid;
         // status request type
         $request_type = 2;
 
         if($request->extend_create_register_status == 1) {
 
-            $access_data->foto              = $old_data->foto;
 
-            $access_data->register_type     = $request->extend_create_register_status;
-            $access_data->name              = $old_data->name;
-            $access_data->no_access_card    = $request->extend_create_accesscard;
-            $access_data->date_start        = $request->new_extend_date_start;
-            $access_data->date_end          = $request->new_extend_date_end;
-            $access_data->additional_note   = $request->new_extend_additional_note;
+            $old_data->date_start        = $request->new_extend_date_start;
+            $old_data->date_end          = $request->new_extend_date_end;
+            $old_data->additional_note   = $request->new_extend_additional_note;
 
-            $access_data->request_type      = $request_type;
-            
-            
-            $access_data->email         = $old_data->email;
-            $access_data->nik           = $old_data->nik;
-            $access_data->pic_list_id   = $old_data->pic_list_id;
-            
+            $old_data->ktp_detail   = $request->extend_create_ktp_detail;
 
-            $access_data->divisi        = $old_data->divisi;
-            $access_data->jabatan       = $old_data->jabatan;
-            $access_data->floor         = $old_data->floor;
-
-            $access_data->status_akses      = $conditional_status_akses;
-            $access_data->uuid              = $uuid;
-            $access_data->created_by        = Auth::user()->id;
-            $access_data->updated_by        = Auth::user()->id;
+            $old_data->request_type      = $request_type;
+            $old_data->status_akses      = $conditional_status_akses;
+            $old_data->updated_by        = Auth::user()->id;
             
-            $bool = $access_data->save();
+            $bool = $old_data->save();
 
         } elseif(($request->extend_create_register_status == 2)) {
             //echo "NON PERMANENT"; die;
@@ -821,42 +806,37 @@ class AccessCardController extends Controller
                 $path = "/images/akses/";
                 $destinationPath = public_path($path);
                 $image->move($destinationPath, $file_name);
-                $access_data->po      = $path.$file_name;
+                $old_data->po      = $path.$file_name;
             }
 
-            $access_data->foto              = $old_data->foto;
+            $old_data->foto              = $old_data->foto;
 
-            $access_data->register_type     = $request->extend_create_register_status;
-            $access_data->name              = $old_data->name;
-            $access_data->no_access_card    = $request->extend_create_accesscard;
-            $access_data->date_start        = $request->new_extend_date_start;
-            $access_data->date_end          = $request->new_extend_date_end;
-            $access_data->additional_note   = $request->new_extend_additional_note;
+            $old_data->register_type     = $request->extend_create_register_status;
+            $old_data->name              = $old_data->name;
+            $old_data->no_access_card    = $request->extend_create_accesscard;
+            $old_data->date_start        = $request->new_extend_date_start;
+            $old_data->date_end          = $request->new_extend_date_end;
+            $old_data->additional_note   = $request->new_extend_additional_note;
 
-            $access_data->request_type      = $request_type;
-            
-            
-            $access_data->email         = $old_data->email;
-            $access_data->nik           = $old_data->nik;
-            $access_data->pic_list_id   = $old_data->pic_list_id;
-            
-            $access_data->divisi        = $old_data->divisi;
-            $access_data->jabatan       = $old_data->jabatan;
-            $access_data->floor         = $old_data->floor;
+            $old_data->request_type      = $request_type;
 
-            $access_data->status_akses      = $conditional_status_akses;
-            $access_data->uuid              = $uuid;
-            $access_data->created_by        = Auth::user()->id;
-            $access_data->updated_by        = Auth::user()->id;
+
+            $old_data->ktp_detail   = $request->extend_create_ktp_detail;
+            $old_data->po_detail   = $request->extend_create_po_detail;
             
-            $bool = $access_data->save();            
+            
+
+            $old_data->status_akses      = $conditional_status_akses;
+            $old_data->updated_by        = Auth::user()->id;
+            
+            $bool = $old_data->save();            
 
         }
 
 
         if($bool) {
             $notify = new custom_notification;
-            $notify_status = $notify->set_notify(1,$access_data);
+            $notify_status = $notify->set_notify(1,$old_data);
                 if($notify_status['error'] == true) {
                     $request->session()->flash('alert-danger','Failed to create notification = ' . $notify_status['message']);
                 }

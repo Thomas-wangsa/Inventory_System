@@ -48,6 +48,7 @@
 						        <th> no access card </th>
 						        <td id="modal_info_no_access_card">  </td>
 						      </tr>
+						      
 						      <tr>
 						        <th> start access card active </th>
 						        <td id="modal_info_date_start">  </td>
@@ -71,6 +72,14 @@
 						      <tr id="head_modal_info_floor">
 						        <th> floor </th>
 						        <td id="modal_info_floor">  </td>
+						      </tr>
+						      <tr class="">
+						        <th> ktp number  </th>
+						        <td id="modal_info_ktp_detail">  </td>
+						      </tr>
+						      <tr id="head_modal_info_po_detail">
+						        <th> po number  </th>
+						        <td id="modal_info_po_detail">  </td>
 						      </tr>
 						      <tr id="head_modal_info_divisi">
 						        <th> division </th>
@@ -172,7 +181,7 @@
 		$('#head_modal_info_comment').hide();
 		$('#head_modal_info_po').hide();
 		$('#head_modal_document').hide();
-
+		$('#head_modal_info_po_detail').hide();
 		var data = {
 			"status":status,
 	        "uuid":uuid
@@ -203,10 +212,14 @@
 					$('#modal_info_type_daftar').html(response.data['type_daftar']);
 					$('#modal_info_admin_room_list').html(response.data['admin_room_name']);
 
+					$('#modal_info_ktp_detail').html(response.data['ktp_detail']);
+					$('#modal_info_po_detail').html(response.data['po_detail']);
+
 					if(response.data['register_type'] == "2") {
 						$('#head_modal_info_pic_list').show();
 						$('#head_modal_info_floor').show();
 						$('#head_modal_info_po').show();
+						$('#head_modal_info_po_detail').show();
 						pic_list_detail = response.data['pic_list_vendor_name'] +
 										   " ( " +
 										   response.data['pic_list_vendor_detail_name'] +
