@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::get('/notify', 'HomeController@notify')->name('route_notify');
 		
 
+		Route::post('/accesscard/upload_access_card', 'AccessCardController@upload_access_card')->name('upload_access_card');
 
 		// Akses
 		//Route::get('/access', 'AksesController@index')->name('akses');

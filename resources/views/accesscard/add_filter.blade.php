@@ -1,3 +1,15 @@
+@if(in_array(1,$user_divisi) )
+	<div class="pull-left" style="margin-bottom: 10px">
+		<div class="btn btn-primary"
+		data-toggle="modal" data-target="#modal_upload_new">
+			Upload Excel
+		</div>
+	</div>
+	<div class="clearfix"> </div>
+	@include('accesscard.modal_upload_accesscard')
+@endif
+
+
 <div class="pull-left">
 	<form class="form-inline" action="{{route('accesscard')}}">
 		<input type="hidden" name="search" value="on">

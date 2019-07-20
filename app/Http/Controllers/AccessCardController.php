@@ -39,6 +39,9 @@ use App\Notifications\PickupAccessCard_Notification;
 //use App\Notifications\Access_Notification;
 use Illuminate\Support\Facades\Notification;
 
+use Illuminate\Support\Facades\Input;
+use Excel;
+
 use Faker\Factory as Faker;
 
 class AccessCardController extends Controller
@@ -1225,6 +1228,157 @@ class AccessCardController extends Controller
             }
         }
         return redirect($this->redirectTo);
+    }
+
+
+    public function upload_access_card(Request $request) {
+        $register_type = $request->register_type;
+        $allow = false;
+        $request->validate([
+            'excel_file' => 'required'
+        ]);
+
+        if(
+            $request->excel_file->getClientOriginalExtension() == 'xls' 
+            ||
+            $request->excel_file->getClientOriginalExtension() == 'xlsx'
+          ) 
+        {
+            $allow = true;
+        } 
+
+
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Extension file must in xls or xlsx');
+            return redirect($this->redirectTo);
+        }
+
+        if($request->excel_file){
+            $path = Input::file('excel_file')->getRealPath();
+            $data = Excel::load($path, function($reader) {
+                $reader->noHeading = true;
+            })->get();
+
+            if(count($data) > 2000) {
+                $request->session()->flash('alert-danger', 'Limit upload rows maximum (2000 rows) issue!');
+                return redirect($this->redirectTo);
+            }
+
+
+            try {
+                $file_name = $request->excel_file->getClientOriginalName();
+                $full_access_card_data = array();
+
+                foreach ($data as $key => $value) {
+
+                    if ($key <= 1) {continue;}
+
+                    if (!isset($value[1]) || $value[1] == null) {
+                        $request->session()->flash('alert-danger', "full name is required to upload data");
+                        return redirect($this->redirectTo);
+                    }
+                    $name = $value[1]; // name
+
+                    if (!isset($value[2]) || $value[2] == null) {
+                        $request->session()->flash('alert-danger', "email is required to upload data");
+                        return redirect($this->redirectTo);
+                    }
+                    $email = $value[2]; 
+
+                    $nik = $value[3];
+                    $ktp_detail = $value[4];
+                    $po_detail = $value[5];
+
+                    if (!isset($value[6]) || $value[6] == null) {
+                        $request->session()->flash('alert-danger', "start active work is required to upload data");
+                        return redirect($this->redirectTo);
+                    }
+                    $date_start = $this->convertDate($value[6]);
+
+                    if (!isset($value[7]) || $value[7] == null) {
+                        $request->session()->flash('alert-danger', "end active work is required to upload data");
+                        return redirect($this->redirectTo);
+                    }
+                    $date_end = $this->convertDate($value[7]);
+
+                    if (!isset($value[8]) || $value[8] == null) {
+                        $request->session()->flash('alert-danger', "pic-sponsor is required to upload data");
+                        return redirect($this->redirectTo);
+                    }
+                    $pic_id = $this->get_pic_id_from_name($value[8]);
+                    if($pic_id == null) {
+                        $request->session()->flash('alert-danger', "pic-sponsor : ". $value[8] ." is not found in database");
+                        return redirect($this->redirectTo);
+                    }
+
+
+                    if (!isset($value[9]) || $value[9] == null) {
+                        $request->session()->flash('alert-danger', "access card number is required to upload data");
+                        return redirect($this->redirectTo);
+                    }
+                    $no_access_card = $value[9];
+                    $location = $value[10];
+
+
+                    $each = array(
+                        'request_type'      => 1,
+                        'register_type'     => $register_type,
+                        'name'              => $name,
+                        'email'             => $email,
+                        'nik'               => $nik,
+                        'pic_list_id'       => $pic_id,
+                        'status_akses'      => 9,
+                        'created_by'        =>Auth::user()->id,
+                        'updated_by'        =>Auth::user()->id,
+                        'no_access_card'    => $no_access_card,
+                        'floor'             => $location,
+                        'date_start'        => $date_start,
+                        'date_end'          => $date_end,
+                        'uuid'              => time().$this->faker->uuid,     
+                        'created_at'        => date('Y-m-d H:i:s'),
+                        'updated_at'        => date('Y-m-d H:i:s'),
+                        'ktp_detail'        => $ktp_detail,
+                        'po_detail'         => $po_detail,
+                        'upload_detail'     => $file_name
+                    );
+
+                    array_push($full_access_card_data,$each);
+                    // echo $date_start. "<br>";
+                    // echo $value[8]." id : ". $pic_id."<br>";
+                    // echo $value;die;
+
+                }
+
+
+                if(Akses_Data::insert($full_access_card_data)) {
+                    $request->session()->flash('alert-success', 'upload success!');
+                    return redirect($this->redirectTo);
+                } else {
+                    $request->session()->flash('alert-danger', 'upload failed!');
+                    return redirect($this->redirectTo);
+                }
+
+
+                // dd($full_access_card_data);
+            } catch(Exception $e) {
+                $request->session()->flash('alert-danger', $e);
+                return redirect($this->redirectTo);
+            }
+            
+        } else {
+            $request->session()->flash('alert-danger', 'Out of scope!');
+            return redirect($this->redirectTo);
+        }
+    }
+
+    private function convertDate($dateStr) {
+        $time = strtotime($dateStr);
+        $newformat = date('Y-m-d',$time);
+        return $newformat;
+    }
+
+    private function get_pic_id_from_name($pic_name) {
+        return Pic_List::where('vendor_name',$pic_name)->first()->id;
     }
 }
 
