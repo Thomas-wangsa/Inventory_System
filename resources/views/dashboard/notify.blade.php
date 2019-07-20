@@ -10,11 +10,13 @@
             <thead>
               <tr>
                 <th> No </th>
+                <th> name </th>
                 <th> created by </th>
                 <th> category </th>
                 <th> notify type  </th>
                 <th> notify status  </th>
                 <th> created at </th>
+                <th> note </th>
                 <th> check data </th>
               </tr>
             </thead>
@@ -31,6 +33,9 @@
                             * $data['notify']->perpage() + $key + 1 }}
                         </td>
                         <td>
+                           {{ $val['name'] }}
+                        </td>
+                        <td>
                             {{ $val['created_by'] }}
                         </td>
                         <td>
@@ -39,11 +44,14 @@
                         <td>
                             {{ $val['notify_type'] }}
                         </td>
-                        <td style="color:{{$val['notify_status']->color}}">
-                            {{ $val['notify_status']->name }}
+                        <td style="color:{{$val['notify_status_color']}}">
+                            {{ $val['notify_status_name'] }}
                         </td>
                         <td>
                             {{ $val['created_at'] }}
+                        </td>
+                        <td>
+                            {{ $val['note'] }}
                         </td>
                         <td>
                             @if($val['category'] == 1)

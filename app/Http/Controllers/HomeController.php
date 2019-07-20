@@ -62,13 +62,12 @@ class HomeController extends Controller
         $count_cron_today = Akses_Expiry::where('date_execution',$current_date)
                             ->count();
         if($count_cron_today < 1) {
-            $date = strtotime("+40 day");
+            $date = strtotime("+30 day");
             $to_date =  date('Y-m-d', $date);
 
 
             Akses_Data::whereDate('date_end','<',$current_date)
                     ->where('status_akses',9)
-                    ->where('status_data',3)
                     ->update(
                         [
                             'status_akses'=>19,
@@ -77,38 +76,33 @@ class HomeController extends Controller
                         ]);
 
 
-            // $akses_data_expiry = Akses_Data::whereDate('date_end','>=',$current_date)
-            //         ->whereDate('date_end','<=',$to_date)
-            //         ->where('status_akses',9)
-            //         ->where('status_data',3)
-            //         ->get();
-
+            $akses_data_expiry = Akses_Data::whereDate('date_end','>=',$current_date)
+                    ->whereDate('date_end','<=',$to_date)
+                    ->where('status_akses',9)
+                    ->get();
+                                                                
             //dd($akses_data_expiry);
-            // if(count($akses_data_expiry) > 0) {
-            //     $full_notification = array();
-            //     foreach($akses_data_expiry as $key=>$val) {
-            //             $list_user_id = Users_Role::where('divisi',3)
-            //             ->where('jabatan',1)
-            //             ->pluck('user_id');
-
-            //             if(count($list_user_id) > 0) {
-            //                 foreach($list_user_id as $key_user=>$val_user) {
-            //                     $data_notify = array(
-            //                     'user_id'           => $val_user,
-            //                     'category'          => 3,
-            //                     'data_id'     => $val->id,
-            //                     'status_data_id'   => $val->status_akses,
-            //                     'sub_notify_id'     => 3,
-            //                     'created_at'        => date('Y-m-d H:i:s')
-
-            //                     );
-
-            //                     array_push($full_notification,$data_notify);
-            //                 }
-            //             }
-            //     } // Foreach
-            //     notify::insert($full_notification);
-            // }
+            if(count($akses_data_expiry) > 0) {
+                $full_notification = array();
+                foreach($akses_data_expiry as $key=>$val) {
+                        $requester = $val['created_by'];
+                        $data_notify = array(
+                        'user_id'           => $requester,
+                        'category'          => 1,
+                        'notify_type'       => $val->request_type,
+                        'notify_status'     => 20,
+                        'data_id'           => $val["id"],
+                        'data_uuid'         => $val["uuid"],
+                        'name'              => $val["name"],
+                        'note'              => "Expired on ". $val['date_end'],
+                        'created_at'        => date('Y-m-d H:i:s')
+                        );
+                        array_push($full_notification,$data_notify);
+                        
+                        //dd($full_notification);
+                } // Foreach
+                notify::insert($full_notification);
+            }
 
 
             //dd($full_notification);
@@ -137,10 +131,12 @@ class HomeController extends Controller
                             'notification.notify_type',
                             'notification.notify_status',
                             'notification.created_at',
-                            'notification.data_uuid'
+                            'notification.data_uuid',
+                            'notification.name',
+                            'notification.note'
                         )
                         ->paginate(20);
-
+        //dd($data);
         foreach($data['notify'] as $key=>$val) {
 
             $created_by     = "-";
@@ -177,23 +173,22 @@ class HomeController extends Controller
                 $notify_type    = $notify_name;
                 $notify_status  = Status_Inventory::find($val['notify_status']);
             }
-
-            $data['notify'][$key]['created_by']     = $created_by;
-            $data['notify'][$key]['category_name']  = $category_name;
-            $data['notify'][$key]['notify_type']    = $notify_type;
-            $data['notify'][$key]['notify_status']  = $notify_status;
-            $data['notify'][$key]['created_at'] = $val['created_at'];
-            $data['notify'][$key]['data_uuid'] = $val['data_uuid'];
+            //dd($notify_status);
+            $data['notify'][$key]['created_by']     = isset($created_by) ? $created_by : "-";
+            $data['notify'][$key]['category_name']  = isset($category_name) ? $category_name : "-";
+            $data['notify'][$key]['notify_type']    = isset($notify_type) ? $notify_type : "-";
+            $data['notify'][$key]['notify_status_name']  = isset($notify_status['name']) ? $notify_status['name'] : "-";
+            $data['notify'][$key]['notify_status_color']  = isset($notify_status['color']) ? $notify_status['color'] : "#FF0000";
+            $data['notify'][$key]['created_at'] = isset($val['created_at']) ? $val['created_at'] : "-";
+            $data['notify'][$key]['data_uuid'] = isset($val['data_uuid']) ? $val['data_uuid'] : "-";
             
         }
 
-        //dd($data);
         // Update 
         notify::where('user_id',Auth::user()->id)
         ->where('is_read',0)
         ->update(['is_read'=>1]);
 
-        ///dd($data);
 
         return view('dashboard/notify',compact('data'));
     }
