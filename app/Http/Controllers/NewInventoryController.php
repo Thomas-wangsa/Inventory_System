@@ -906,17 +906,21 @@ class NewInventoryController extends Controller
 
         if($request->excel_file){
             $path = Input::file('excel_file')->getRealPath();
-            $data = Excel::load($path, function($reader) {
+            $data = Excel::selectSheets($request->sheet_name)->load($path, function($reader) {
                 $reader->noHeading = true;
-            })->get();
+                })->get();
+            //dd($data);
+            // $data = Excel::load($path, function($reader) {
+            //     $reader->noHeading = true;
+            // })->get();
             //dd($data);
             if(count($data) <= 3) {
                 $request->session()->flash('alert-danger', 'Limit rows minimum issue!');
                 return redirect($this->redirectTo);
             }
 
-            if(count($data) > 304) {
-                $request->session()->flash('alert-danger', 'Limit rows maximum (300 rows) issue!');
+            if(count($data) > 504) {
+                $request->session()->flash('alert-danger', 'Limit rows maximum (500 rows) issue!');
                 return redirect($this->redirectTo);
             }
 
@@ -1103,7 +1107,8 @@ class NewInventoryController extends Controller
 
                         'uuid'  => time().$this->faker->uuid,
                         'created_at'=> date('Y-m-d H:i:s'),
-                        'updated_at'=> date('Y-m-d H:i:s')
+                        'updated_at'=> date('Y-m-d H:i:s'),
+                        'sheet_detail'=> $request->sheet_name
                     );
 
 
@@ -1133,6 +1138,64 @@ class NewInventoryController extends Controller
             $request->session()->flash('alert-danger', 'Out of scope!');
             return redirect($this->redirectTo);
         }
+
+    }
+
+
+    function checking_upload(Request $request) {
+        $response = array(
+            "error" => True,
+            "messages" => "no-messages",
+            "data"  => array()
+        );
+        
+        
+        $allow = false;
+        $request->validate([
+            'excel_file_event' => 'required'
+        ]);
+
+        if(
+            $request->excel_file_event->getClientOriginalExtension() == 'xls' 
+            ||
+            $request->excel_file_event->getClientOriginalExtension() == 'xlsx'
+          ) 
+        {
+            $allow = true;
+        } 
+
+
+        if(!$allow) {
+            $response['messages'] = 'Extension file must in xls or xlsx';
+            return json_encode($response);
+        }
+
+
+        if($request->excel_file_event){
+            try { 
+                $path = Input::file('excel_file_event')->getRealPath();
+                $sheetNames = Excel::load($path)->getSheetNames();
+
+                if (count($sheetNames) > 0) {
+                    $response['data'] = $sheetNames;
+                    $response['error'] = false;
+                    return $response;
+                } else {
+                    $response['messages'] = "sheet not found!";
+                    return json_encode($response);
+                }
+                
+            } catch(Exception $e) {
+                $response['messages'] = $e;
+                return json_encode($response);
+            }
+        } else {
+            $response['messages'] = 'out of scope, file must in xls or xlsx';
+            return json_encode($response);
+        }
+
+
+
 
     }
 }
