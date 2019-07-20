@@ -887,6 +887,7 @@ class Notification extends Controller {
 				'notify_status' => $this->data->status_akses,
 				'data_id'		=> $this->data->id,
 				'data_uuid'		=> $this->data->uuid,
+				'name'			=> $this->data->name,
 				'created_at'	=> date('Y-m-d H:i:s'),
 				'updated_at'	=> date('Y-m-d H:i:s')
 				);
@@ -898,6 +899,7 @@ class Notification extends Controller {
 				'notify_status' => $this->data->status,
 				'data_id'		=> $this->data->id,
 				'data_uuid'		=> $this->data->uuid,
+				'name'			=> $this->data->inventory_name,
 				'created_at'	=> date('Y-m-d H:i:s'),
 				'updated_at'	=> date('Y-m-d H:i:s')
 				);

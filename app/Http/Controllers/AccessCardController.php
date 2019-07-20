@@ -809,11 +809,7 @@ class AccessCardController extends Controller
                 $old_data->po      = $path.$file_name;
             }
 
-            $old_data->foto              = $old_data->foto;
 
-            $old_data->register_type     = $request->extend_create_register_status;
-            $old_data->name              = $old_data->name;
-            $old_data->no_access_card    = $request->extend_create_accesscard;
             $old_data->date_start        = $request->new_extend_date_start;
             $old_data->date_end          = $request->new_extend_date_end;
             $old_data->additional_note   = $request->new_extend_additional_note;
