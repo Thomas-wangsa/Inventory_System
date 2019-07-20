@@ -1130,6 +1130,7 @@ class AccessCardController extends Controller
             $access_data->divisi        = $request->new_division;
             $access_data->jabatan       = $request->new_position;
 
+            $access_data->ktp_detail        = $request->ktp_detail;
             $access_data->status_akses      = $conditional_status_akses;
             $access_data->uuid              = $uuid;
             $access_data->created_by        = Auth::user()->id;
@@ -1173,6 +1174,9 @@ class AccessCardController extends Controller
             $access_data->additional_note   = $request->new_additional_note;
 
             $access_data->floor             = $request->new_location_activities;
+
+            $access_data->ktp_detail        = $request->ktp_detail;
+            $access_data->po_detail        = $request->po_detail;
 
             $access_data->status_akses      = $conditional_status_akses;
             $access_data->uuid              = $uuid;

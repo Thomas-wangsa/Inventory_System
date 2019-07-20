@@ -60,6 +60,13 @@
       </div>
 
       <div class="form-group">
+        <label for="staff_nama"> KTP Number : </label>
+        <input type="text" 
+        name="ktp_detail" class="form-control" id="ktp_detail"  
+        placeholder="optional for add any information">
+      </div>
+
+      <div class="form-group">
         <label for="staff_nama"> KTP : </label>
         <input type="file" 
         name="new_ktp" class="form-control" id="nama"  
@@ -80,6 +87,13 @@
         name="new_location_activities" class="form-control" id="nama"  
         value="@if(env('ENV_STATUS', 'development') == 'development'){{$data['faker']->address}} @endif"
         placeholder="Location Activities is required" required="">
+      </div>
+
+      <div class="form-group">
+        <label for="staff_nama"> PO Number : </label>
+        <input type="text" 
+        name="po_detail" class="form-control" id="po_detail"  
+        placeholder="optional for add any information">
       </div>
 
       <div class="form-group">

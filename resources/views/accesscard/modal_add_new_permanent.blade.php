@@ -60,6 +60,13 @@
       </div>
 
       <div class="form-group">
+        <label for="staff_nama"> KTP Number : </label>
+        <input type="text" 
+        name="ktp_detail" class="form-control" id="ktp_detail"  
+        placeholder="optional for add any information">
+      </div>
+
+      <div class="form-group">
         <label for="staff_nama"> KTP : </label>
         <input type="file" 
         name="new_ktp" class="form-control" id="nama"  
