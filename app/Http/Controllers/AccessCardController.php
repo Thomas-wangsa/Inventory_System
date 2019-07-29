@@ -1326,7 +1326,7 @@ class AccessCardController extends Controller
                         'name'              => $name,
                         'email'             => $email,
                         'nik'               => $nik,
-                        'pic_list_id'       => $pic_id,
+                        'pic_list_id'       => $pic_id->id,
                         'status_akses'      => 9,
                         'created_by'        =>Auth::user()->id,
                         'updated_by'        =>Auth::user()->id,
@@ -1378,7 +1378,7 @@ class AccessCardController extends Controller
     }
 
     private function get_pic_id_from_name($pic_name) {
-        return Pic_List::where('vendor_name',$pic_name)->first()->id;
+        return Pic_List::where('vendor_name',$pic_name)->first();
     }
 }
 
