@@ -94,7 +94,7 @@
 				  </div>
 
 				  <div class="form-group" id="id_group1_head">
-				    <label for="staff_divisi"> Group 1 :</label>
+				    <label for="staff_divisi"> Kota :</label>
 				    <select class="form-control" id="id_group1_list" 
 				    name="name_group1_list">
 				    	@foreach($data['group_1'] as $key=>$val)
@@ -104,7 +104,7 @@
 				  </div>
 
 				  <div class="form-group" id="id_group2_head">
-				    <label for="staff_divisi"> Group 2 :</label>
+				    <label for="staff_divisi"> Gedung :</label>
 				    <select class="form-control" id="id_group2_list" 
 				    name="name_group2_list">
 				    	@foreach($data['group_2'] as $key=>$val)
@@ -114,7 +114,7 @@
 				  </div>
 
 				  <div class="form-group" id="id_group3_head">
-				    <label for="staff_divisi"> Group 3 :</label>
+				    <label for="staff_divisi"> Divisi Indosat :</label>
 				    <select class="form-control" id="id_group3_list" 
 				    name="name_group3_list">
 				    	@foreach($data['group_3'] as $key=>$val)
@@ -124,7 +124,7 @@
 				  </div>
 
 				  <div class="form-group" id="id_group4_head">
-				    <label for="staff_divisi"> Group 4 :</label>
+				    <label for="staff_divisi"> Sub Divisi Indosat :</label>
 				    <select class="form-control" id="id_group4_list" 
 				    name="name_group4_list">
 				    	<option value=""> </option>
