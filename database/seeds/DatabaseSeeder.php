@@ -303,6 +303,12 @@ class DatabaseSeeder extends Seeder
             "updated_by"=>1
         );
 
+        $inventory_list_array_3 = array(
+            "inventory_name"=>"ac",
+            "inventory_detail_name"=>"AIR CONDITIONER",
+            "updated_by"=>1
+        );
+
         
 
         foreach ($users_array as $key => $value) {
@@ -314,6 +320,7 @@ class DatabaseSeeder extends Seeder
                 PIC_List::firstOrCreate($pic_list_array_4);
                 Inventory_List::firstOrCreate($inventory_list_array);
                 Inventory_List::firstOrCreate($inventory_list_array_2);
+                Inventory_List::firstOrCreate($inventory_list_array_3);
                 Admin_Room_List::firstOrCreate($admin_room_list_array);
                 Admin_Room_List::firstOrCreate($admin_room_list_array_2);
                 Admin_Room_List::firstOrCreate($admin_room_list_array_3);
@@ -646,7 +653,7 @@ class DatabaseSeeder extends Seeder
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 22) 
             ),
             array(
-                "group1_name"       => "aceh",
+                "group1_name"       => "bandung",
                 "group1_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 22),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 22) 
@@ -665,19 +672,19 @@ class DatabaseSeeder extends Seeder
 
         $group2_array = array(
             array(
-                "group2_name"       => "banda aceh",
+                "group2_name"       => "Gedung KPPI",
                 "group2_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 23),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
             ),
             array(
-                "group2_name"       => "denpasar",
+                "group2_name"       => "Gedung Indosat",
                 "group2_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 23),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
             ),
             array(
-                "group2_name"       => "serang",
+                "group2_name"       => "Gedung III",
                 "group2_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 23),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
@@ -691,19 +698,13 @@ class DatabaseSeeder extends Seeder
 
         $group3_array = array(
             array(
-                "group3_name"       => "Gedung KPPI",
+                "group3_name"       => "fso",
                 "group3_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 23),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
             ),
             array(
-                "group3_name"       => "Gedung Indosat",
-                "group3_detail"     => $faker->text,
-                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
-                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
-            ),
-            array(
-                "group3_name"       => "Gedung III",
+                "group3_name"       => "Logistic",
                 "group3_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 23),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
@@ -716,19 +717,13 @@ class DatabaseSeeder extends Seeder
 
         $group4_array = array(
             array(
-                "group4_name"       => "sebrang warung",
+                "group4_name"       => "tata ruang",
                 "group4_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 23),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
             ),
             array(
-                "group4_name"       => "belakang indomaret",
-                "group4_detail"     => $faker->text,
-                "created_by"        => $faker->numberBetween($min = 1, $max = 23),
-                "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 
-            ),
-            array(
-                "group4_name"       => "sebelah tukang sate",
+                "group4_name"       => "lingkungan",
                 "group4_detail"     => $faker->text,
                 "created_by"        => $faker->numberBetween($min = 1, $max = 23),
                 "updated_by"        => $faker->numberBetween($min = 1, $max = 23) 

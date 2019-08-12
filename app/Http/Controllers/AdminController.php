@@ -169,7 +169,7 @@ class AdminController extends Controller
         try {
             $generated_password = substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil(10/strlen($x)) )),1,10);
 
-            $this->env == "development" ? $define_password = bcrypt(123456) : $define_password = $generated_password; 
+            $this->env == "development" ? $define_password = 123456 : $define_password = $generated_password; 
             
 
             $array_users = array(
