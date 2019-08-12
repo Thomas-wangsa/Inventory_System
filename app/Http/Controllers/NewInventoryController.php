@@ -639,13 +639,43 @@ class NewInventoryController extends Controller
         } 
         
         if($new_inventory_data->status == 1) {
-            if($new_inventory_data->inventory_level_id == 1) {
-                $new_inventory_data->status = 2;
-            } else if($new_inventory_data->inventory_level_id == 2) {
+
+            $user_divisi = \Request::get('user_divisi');
+            if(in_array($this->admin,$user_divisi)) {
                 $new_inventory_data->status = 3;
             } else {
-                $response['message'] = "out of level scope!";
-                return json_encode($response);
+                $inventory_role = New_Inventory_Role::where('user_id',Auth::user()->id)
+                            ->where('group1',$new_inventory_data->group1)
+                            ->where('group2',$new_inventory_data->group2)
+                            ->where('group3',$new_inventory_data->group3)
+                            ->where('group4',$new_inventory_data->group4)
+                            ->where('inventory_list_id',$new_inventory_data->inventory_list_id)
+                            ->pluck('inventory_level_id')->toArray();
+                //dd($inventory_role);
+
+                if (count($inventory_role) < 1) {
+                    $response['message'] = "inventory role is not found!";
+                    return json_encode($response);
+                }
+
+
+                if (in_array(2,$inventory_role)) {
+                    $new_inventory_data->status = 3;
+                } else if (in_array(1,$inventory_role)) {
+                    $new_inventory_data->status = 2;
+                } else {
+                    $response['message'] = "out of level scope!";
+                    return json_encode($response);
+                }
+
+                // if($new_inventory_data->inventory_level_id == 1) {
+                //     $new_inventory_data->status = 2;
+                // } else if($new_inventory_data->inventory_level_id == 2) {
+                //     $new_inventory_data->status = 3;
+                // } else {
+                //     $response['message'] = "out of level scope!";
+                //     return json_encode($response);
+                // }
             }
         } else if ($new_inventory_data->status == 2) {
             $new_inventory_data->status = 3;
