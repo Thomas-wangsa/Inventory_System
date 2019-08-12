@@ -644,14 +644,19 @@ class NewInventoryController extends Controller
             if(in_array($this->admin,$user_divisi)) {
                 $new_inventory_data->status = 3;
             } else {
-                $inventory_role = New_Inventory_Role::where('user_id',Auth::user()->id)
-                            ->where('group1',$new_inventory_data->group1)
-                            ->where('group2',$new_inventory_data->group2)
-                            ->where('group3',$new_inventory_data->group3)
-                            ->where('group4',$new_inventory_data->group4)
-                            ->where('inventory_list_id',$new_inventory_data->inventory_list_id)
-                            ->pluck('inventory_level_id')->toArray();
-                //dd($inventory_role);
+
+
+                $inventory_role = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+                                ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('new_inventory_role.user_id','=',Auth::user()->id)
+                                ->where('new_inventory_role.group1',$new_inventory_data->group1)
+                                ->where('new_inventory_role.group2',$new_inventory_data->group2)
+                                ->where('new_inventory_role.group3',$new_inventory_data->group3)
+                                ->where('new_inventory_role.group4',$new_inventory_data->group4)
+                                ->where('new_inventory_role.inventory_list_id',$new_inventory_data->inventory_list_id)
+                                ->pluck('new_inventory_role.inventory_level_id')->toArray();
+
 
                 if (count($inventory_role) < 1) {
                     $response['message'] = "inventory role is not found!";
