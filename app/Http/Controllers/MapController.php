@@ -363,11 +363,13 @@ class MapController extends Controller
 
 
 
-        $group_map = New_Inventory_Sub_Data::where('new_inventory_data_id','=',$inventory_sub_data->new_inventory_data_id)
-                    ->where('map_id','=',$inventory_sub_data->map_id)
-                    ->where('map_images_id','=',$inventory_sub_data->map_images_id)
-                    ->whereNotNull('x_point')
-                    ->whereNotNull('y_point')
+        $group_map = New_Inventory_Sub_Data::join('new_map_images','new_map_images.id','=','new_inventory_sub_data.map_images_id')
+                    ->where('new_inventory_sub_data.new_inventory_data_id','=',$inventory_sub_data->new_inventory_data_id)
+                    ->where('new_inventory_sub_data.map_id','=',$inventory_sub_data->map_id)
+                    //->where('map_images_id','=',$inventory_sub_data->map_images_id)
+                    ->whereNotNull('new_inventory_sub_data.x_point')
+                    ->whereNotNull('new_inventory_sub_data.y_point')
+                    ->select('new_inventory_sub_data.*','new_map_images.images as images')
                     ->get();
 
         $data = [
@@ -378,7 +380,7 @@ class MapController extends Controller
         ];
         
 
-        // dd($data);
+        //dd($data);
         return view('map/new_show_map',compact('data'));
     }
 }

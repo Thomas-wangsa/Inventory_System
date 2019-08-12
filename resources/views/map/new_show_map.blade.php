@@ -86,7 +86,7 @@
 				'src='+
 					'"'+
 						'{{URL::to("/")}}'+
-						'{{$data["map_images_data"]->images}}'+
+						'{{$val->images}}'+
 					'"'+
 				' width="30px" '+
 				' data-toggle="tooltip" title="<?php echo substr($val->sub_data_uuid, 0,10); ?>" '+
