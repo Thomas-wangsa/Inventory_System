@@ -9,6 +9,7 @@ use App\Http\Models\Inventory_List;
 
 use App\Http\Models\New_Inventory_Role;
 use App\Http\Models\New_Inventory_Data;
+use App\Http\Models\New_Inventory_Data_History;
 use App\Http\Models\New_Inventory_Sub_Data;
 use App\Http\Models\New_Map;
 use App\Http\Models\New_Map_Images;
@@ -1232,6 +1233,21 @@ class NewInventoryController extends Controller
 
 
     function checking_history(Request $request) {
-        echo "a";die;
+        $new_inventory_data = New_Inventory_Data::where('uuid',$request->log)->first();
+
+        if($new_inventory_data == null) {
+            echo "Inventory Data is not found";die;
+        }
+
+
+        $new_inventory_data_history = New_Inventory_Data_History::where('uuid',$request->log)->get();
+
+        if(count($new_inventory_data_history) < 1) {
+            echo "Inventory Data History is not found";die;
+        }
+
+        $data['history'] = $new_inventory_data_history;
+
+        return view('new_inventory/history',compact('data'));
     }
 }
