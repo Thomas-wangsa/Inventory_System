@@ -142,6 +142,23 @@ class NewInventoryController extends Controller
 
             }
 
+            if($request->search_kota != null) {
+                $base_inventory_data->where('new_inventory_data.group1','=',$request->search_kota);            
+            }
+
+            if($request->search_gedung != null) {
+                $base_inventory_data->where('new_inventory_data.group2','=',$request->search_gedung);            
+            }
+
+            if($request->search_divisi != null) {
+                $base_inventory_data->where('new_inventory_data.group3','=',$request->search_divisi);            
+            }
+
+            if($request->search_sub_divisi != null) {
+                $base_inventory_data->where('new_inventory_data.group4','=',$request->search_sub_divisi);            
+            }
+
+
             if($request->search_category != null) {
                 $base_inventory_data->where('new_inventory_data.inventory_list_id','=',$request->search_category);            
             }
@@ -203,7 +220,11 @@ class NewInventoryController extends Controller
             'status_inventory'          => Status_Inventory::all(),
             'new_inventory_data'        => $new_inventory_data,
             'conditional_head'          => $conditional_head,
-            'category'                  => Inventory_List::all()
+            'category'                  => Inventory_List::all(),
+            'group1'                    => Group1::all(),
+            'group2'                    => Group2::all(),
+            'group3'                    => Group3::all(),
+            'group4'                    => Group4::all()
         ];
         //dd($data);
         return view('new_inventory/index',compact('data'));

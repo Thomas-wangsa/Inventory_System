@@ -100,6 +100,72 @@
 			      	</select>
 			  	</div>
 
+			  	<br/> <br/>
+
+
+			  	<div class="form-group">
+			      	<select class="form-control" name="search_kota">
+			      		<option value=""> Select Kota  </option>
+			 			@foreach($data['group1'] as $val)
+			 			<option value="{{$val->id}}"
+			 				@if($val->id == Request::get('search_kota')) 
+			    				selected
+			    			@endif
+			    			> 
+			 				{{$val->group1_name}}
+			 			</option>
+			 			@endforeach
+			      	</select>
+			  	</div>
+
+
+			  	<div class="form-group">
+			      	<select class="form-control" name="search_gedung">
+			      		<option value=""> Select Gedung  </option>
+			 			@foreach($data['group2'] as $val)
+			 			<option value="{{$val->id}}"
+			 				@if($val->id == Request::get('search_gedung')) 
+			    				selected
+			    			@endif
+			    			> 
+			 				{{$val->group2_name}}
+			 			</option>
+			 			@endforeach
+			      	</select>
+			  	</div>
+
+
+			  	<div class="form-group">
+			      	<select class="form-control" name="search_divisi">
+			      		<option value=""> Select Divisi  </option>
+			 			@foreach($data['group3'] as $val)
+			 			<option value="{{$val->id}}"
+			 				@if($val->id == Request::get('search_divisi')) 
+			    				selected
+			    			@endif
+			    			> 
+			 				{{$val->group3_name}}
+			 			</option>
+			 			@endforeach
+			      	</select>
+			  	</div>
+
+
+			  	<div class="form-group">
+			      	<select class="form-control" name="search_sub_divisi">
+			      		<option value=""> Select Sub Divisi  </option>
+			 			@foreach($data['group4'] as $val)
+			 			<option value="{{$val->id}}"
+			 				@if($val->id == Request::get('search_sub_divisi')) 
+			    				selected
+			    			@endif
+			    			> 
+			 				{{$val->group4_name}}
+			 			</option>
+			 			@endforeach
+			      	</select>
+			  	</div>
+
 			  	<button type="submit" class="btn btn-info"> Filter </button>
 			  	<button type="reset" 
 			  	class="btn"
@@ -110,6 +176,8 @@
 		</div>
 
 		<div class="pull-right">
+			<br/> <br/> <br/>
+
 			<button type="button" class="btn btn-md btn-primary" data-toggle="modal" data-target="#modal_new">
 				Add New Inventory
 			</button>
