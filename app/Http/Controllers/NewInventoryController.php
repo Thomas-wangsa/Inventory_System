@@ -503,6 +503,49 @@ class NewInventoryController extends Controller
         return json_encode($response);
     }
 
+
+    public function get_inventory_history_detail_ajax(Request $request) {
+        $response['status'] = false;
+
+        $data = New_Inventory_Data_History::join('status_inventory',
+                'status_inventory.id','=','new_inventory_data_history.status')
+                ->leftjoin('users AS c_users','c_users.id','=','new_inventory_data_history.created_by')
+                ->leftjoin('users AS u_users','u_users.id','=','new_inventory_data_history.updated_by')
+                ->leftjoin('group1','group1.id','=','new_inventory_data_history.group1')
+                ->leftjoin('group2','group2.id','=','new_inventory_data_history.group2')
+                ->leftjoin('group3','group3.id','=','new_inventory_data_history.group3')
+                ->leftjoin('group4','group4.id','=','new_inventory_data_history.group4')
+                ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data_history.inventory_list_id')
+                ->leftjoin('inventory_level','inventory_level.id','=','new_inventory_data_history.inventory_level_id')
+                ->leftjoin('map_location','map_location.inventory_data_id','=','new_inventory_data_history.id')
+                ->leftjoin('map','map.id','=','map_location.map_id')
+                ->where('new_inventory_data_history.id',$request->uuid)
+                ->select(
+                    'new_inventory_data_history.*',
+                    'group1.group1_name',
+                    'group2.group2_name',
+                    'group3.group3_name',
+                    'group4.group4_name',
+                    'inventory_list.inventory_name AS inventory_list_name',
+                    'inventory_level.inventory_level_name AS inventory_level_name',
+                    'status_inventory.name AS status_name',
+                    'status_inventory.color AS status_color',
+                    'c_users.name AS c_username',
+                    'u_users.name AS u_username',
+                    'map_location.id AS map_location_id',
+                    'map_location.image_location',
+                    'map.map_images'
+                )
+                ->first();
+        if(count($data) < 1 ) {
+            $response['message'] = "Inventory Data History is not found!";
+            return json_encode($response);
+        }
+        $response['status'] = true;
+        $response['data']   = $data;
+        return json_encode($response);
+    }
+
     public function get_inventory_detail_ajax_by_uuid(Request $request) {
         $response = array();
         $response['status'] = false;
@@ -1240,7 +1283,9 @@ class NewInventoryController extends Controller
         }
 
 
-        $new_inventory_data_history = New_Inventory_Data_History::where('uuid',$request->log)->get();
+        $new_inventory_data_history = New_Inventory_Data_History::where('uuid',$request->log)
+                                    ->orderBy('trigger_at','DESC')
+                                    ->get();
 
         if(count($new_inventory_data_history) < 1) {
             echo "Inventory Data History is not found";die;
