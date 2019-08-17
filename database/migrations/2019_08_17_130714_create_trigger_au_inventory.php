@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTriggerAiInventory extends Migration
+class CreateTriggerAuInventory extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreateTriggerAiInventory extends Migration
      */
     public function up()
     {
-        DB::unprepared('
-        CREATE TRIGGER tr_New_Inventory_Data_Insert AFTER INSERT ON `new_inventory_data` FOR EACH ROW
+         DB::unprepared('
+        CREATE TRIGGER tr_New_Inventory_Data_Update AFTER UPDATE ON `new_inventory_data` FOR EACH ROW
             BEGIN
                 INSERT INTO new_inventory_data_history (
                 new_inventory_data_id,inventory_name,group1,group2,group3,group4,inventory_list_id,inventory_level_id,
@@ -37,6 +37,6 @@ class CreateTriggerAiInventory extends Migration
      */
     public function down()
     {
-        DB::unprepared('DROP TRIGGER `tr_New_Inventory_Data_Insert`');
+        DB::unprepared('DROP TRIGGER `tr_New_Inventory_Data_Update`');
     }
 }
