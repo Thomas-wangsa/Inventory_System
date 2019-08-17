@@ -17,7 +17,7 @@
         <div class="modal-body">
   			<div class="panel panel-primary">
 		      <div class="panel-heading text-center">
-		      	Basic Information
+		      	Basic Information 
 		      </div>
 		      	<div class="panel-body">
 			      	<div class="table-responsive">          
@@ -175,7 +175,7 @@
 						        <td id="inventory_comment" style="color:red">  </td>
 						      </tr>
 
-
+						        	
 						    </tbody>
 					  	</table>
 					</div>
@@ -211,6 +211,11 @@
 		    </div> <!--panel-->
 
 
+		    <div class="btn btn-block btn-info" onclick="get_history()">
+				view history
+			</div>
+
+
   		</div> <!--modal body-->
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -225,6 +230,14 @@
 
 
 <script type="text/javascript">
+	current_uuid = null;
+
+	function get_history() {
+		var url = "{{route('checking_history')}}"+"?log=";
+		window.location = url+current_uuid;
+
+	}
+
 	function info(uuid) {
 		$('#head_modal_info_map_location').hide();
 		$('#head_modal_info_images_location').hide();
@@ -317,6 +330,7 @@
 					}
 
 					$('#modal_inventory_info').modal('show');
+					current_uuid = uuid;
 				}else {
 					alert(response.message);
 				}

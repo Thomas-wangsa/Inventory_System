@@ -1228,9 +1228,10 @@ class NewInventoryController extends Controller
             $response['messages'] = 'out of scope, file must in xls or xlsx';
             return json_encode($response);
         }
+    }
 
 
-
-
+    function checking_history(Request $request) {
+        echo "a";die;
     }
 }

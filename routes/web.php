@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 		Route::post('/new_inventory/new_upload_excel', 'NewInventoryController@new_upload_excel')->name('new_upload_excel');
 		Route::post('/new_inventory/checking_upload', 'NewInventoryController@checking_upload')->name('checking_upload');
+		Route::get('/inventory_log/checking_history', 'NewInventoryController@checking_history')->name('checking_history');
 
 
 		Route::post('/ajax/get_group_detail','AjaxController@get_group_detail')->name('get_group_detail');
