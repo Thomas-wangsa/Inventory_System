@@ -46,7 +46,7 @@
 		</div> <!-- end .flash-message -->
 		
 
-		@if(in_array(1,$user_divisi) || in_array(2,$user_setting))
+		@if(in_array(1,$user_divisi) || in_array(2,$user_setting) || count($data['conditional_head']) > 0 )
 		<div class="pull-left" style="margin-bottom: 10px">
 			<div class="btn btn-primary"
 			data-toggle="modal" data-target="#modal_upload_new">
