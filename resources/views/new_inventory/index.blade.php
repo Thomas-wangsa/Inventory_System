@@ -309,7 +309,11 @@
 				'search' => Request::get('search'),
 				'search_nama' => Request::get('search_nama'),
 				'search_filter' => Request::get('search_filter'),
-				'search_category' => Request::get('search_category')
+				'search_category' => Request::get('search_category'),
+				'search_kota' => Request::get('search_kota'),
+				'search_gedung' => Request::get('search_gedung'),
+				'search_divisi' => Request::get('search_divisi'),
+				'search_sub_divisi' => Request::get('search_sub_divisi')
 				])->links() }}
 	
 		</div>
