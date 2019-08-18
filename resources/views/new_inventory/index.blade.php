@@ -54,12 +54,14 @@
 			</div>
 
 			@if(
+			(
 			Request::get('search_category') ||
 			Request::get('search_kota') ||
 			Request::get('search_gedung') ||
 			Request::get('search_divisi') ||
 			Request::get('search_sub_divisi')
-
+			) 
+			&& count($data['new_inventory_data']) > 0
 			) 
 			<div class="btn btn-success" onclick="download_selected_report()">
 				Download Data

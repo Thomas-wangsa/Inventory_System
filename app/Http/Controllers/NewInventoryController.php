@@ -1319,8 +1319,220 @@ class NewInventoryController extends Controller
 
 
     function download_data_inventory(Request $request) {
+        $setting_list = 6;
+        $user_divisi = \Request::get('user_divisi');
+        $user_setting = \Request::get('user_setting');
+        $allow = false;
+        if(
+            in_array($this->admin,$user_divisi)
+            ||
+            in_array($this->new_inventory_divisi_id,$user_divisi)
+            || 
+            in_array($setting_list,$user_setting)
+            ) 
+        {
+            $allow = true;
+            if(in_array($this->admin,$user_divisi)) {
+                $this->is_super_admin = true;
+            }
+        }
 
-        dd($request);
+        if(!$allow) {
+            $request->session()->flash('alert-danger', 'Sorry you dont have authority to report features');
+            return redirect($this->redirectTo);
+        }
+
+
+        $data = array(
+            "group1"     => null,
+            "group2"     => null,
+            "group3"     => null,
+            "group4"     => null,
+            "inventory_list_id"     => null,
+
+        );
+        
+
+        if($request->search_kota != null) {
+            $data['group1'] = $request->search_kota;
+        }
+
+        if($request->search_gedung != null) {
+            $data['group2'] = $request->search_gedung;
+        }
+
+        if($request->search_divisi != null) {
+            $data['group3'] = $request->search_divisi;
+        }
+
+        if($request->search_sub_divisi != null) {
+            $data['group4'] = $request->search_sub_divisi;
+        }
+
+        if($request->category != null) {
+            $data['inventory_list_id'] = $request->category;
+        }
+
+        $new_inventory_data = $this->get_inventory_base_data($data);
+
+
+        if( count($new_inventory_data->get()) < 1 ) {
+            $request->session()->flash('alert-danger', 'Sorry you dont have any report to download');
+            return redirect($this->redirectTo);
+        }
+
+        $main_data = $this->set_main_sheet($new_inventory_data);
+        $sub_data = $this->set_sub_sheet($new_inventory_data);
+        //dd($data);
+        $type = "xls";
+        //$data = Akses_Data::get()->toArray();
+        Excel::create('inventory_reportv1', function($excel) use ($main_data,$sub_data) {
+            $excel->sheet('main_data', function($sheet) use ($main_data)
+            {
+                $sheet->fromArray($main_data);
+            });
+            $excel->sheet('sub_data', function($sheet) use ($sub_data)
+            {
+                $sheet->fromArray($sub_data);
+            });
+        })->download($type);
+
+
+        dd($new_inventory_data);
+
+    }
+
+
+    private function set_main_sheet($data) {
+        return $data  = $data->select(
+            'new_inventory_data.inventory_name AS inventory_name',
+            'group1.group1_name as kota',
+            'group2.group2_name as gedung',
+            'group3.group3_name as divisi',
+            'group4.group4_name as sub_divisi',
+            'inventory_list.inventory_name AS inventory_category',
+            'new_inventory_data.qty',
+            'uc.name as created_by',
+            'uu.name as updated_by',
+            // 'inventory_list.inventory_detail_name AS inventory_detail_category',
+            'new_inventory_data.tanggal_update_data',
+            'new_inventory_data.kategori as ket1',
+            'new_inventory_data.kode_gambar as ket2',
+            'new_inventory_data.dvr as ket3',
+            'new_inventory_data.lokasi_site as ket4',
+
+            'new_inventory_data.kode_lokasi as ket5',
+            'new_inventory_data.jenis_barang as ket6',
+            'new_inventory_data.merk as ket7',
+            'new_inventory_data.tipe as ket8',
+            'new_inventory_data.model as ket9',
+
+            'new_inventory_data.serial_number as ket10',
+            'new_inventory_data.psu_adaptor as ket11',
+            'new_inventory_data.tahun_pembuatan as ket12',
+            'new_inventory_data.tahun_pengadaan as ket13',
+            'new_inventory_data.kondisi as ket14',
+
+            'new_inventory_data.deskripsi as ket15',
+            'new_inventory_data.asuransi as ket16',
+            'new_inventory_data.lampiran as ket17',
+            'new_inventory_data.tanggal_retired as ket18',
+            'new_inventory_data.po as ket19',
+
+            'new_inventory_data.keterangan as ket20'
+            // 'status_inventory.name'
+            )
+            ->orderBy('new_inventory_data.updated_at','desc')
+            ->get()
+            ->toArray();
+    }
+
+
+    private function set_sub_sheet($data) {
+        $inventory_data_id_array = $data->select('new_inventory_data.id')->pluck('id');
+
+        $data = New_Inventory_Sub_Data::join('new_inventory_data',
+                        'new_inventory_data.id','=','new_inventory_sub_data.new_inventory_data_id')
+                        ->join('users as c_user','c_user.id','=','new_inventory_sub_data.created_by')
+                        ->join('users as u_user','u_user.id','=','new_inventory_sub_data.updated_by')
+                        ->whereIn('new_inventory_data_id',$inventory_data_id_array)
+                        ->select(
+                        'new_inventory_data.inventory_name  AS inventory_name',
+                        'new_inventory_sub_data.sub_data_status',
+                        'new_inventory_sub_data.comment AS additional_note',
+                        DB::raw('CONCAT(c_user.name, " =", new_inventory_sub_data.created_at) AS created_by'),
+                        DB::raw('CONCAT(u_user.name, " =", new_inventory_sub_data.updated_at) AS updated_by'),
+                        'new_inventory_sub_data.sub_data_uuid AS system id'
+                        )
+                        ->get()
+                        ->toArray();
+
+        return $data;
+    }
+
+
+
+
+    public function get_inventory_base_data($data) {
+        $base_inventory_data = New_Inventory_Data::leftjoin('group1','group1.id','=','new_inventory_data.group1')
+                ->leftjoin('group2','group2.id','=','new_inventory_data.group2')
+                ->leftjoin('group3','group3.id','=','new_inventory_data.group3')
+                ->leftjoin('group4','group4.id','=','new_inventory_data.group4')
+                ->leftjoin('inventory_list','inventory_list.id','=','new_inventory_data.inventory_list_id')
+                ->leftjoin('users as uc','uc.id','=','new_inventory_data.created_by')
+                ->leftjoin('users as uu','uu.id','=','new_inventory_data.updated_by');
+
+
+        if($data['group1'] != null ) {
+            $base_inventory_data = $base_inventory_data->where('group1',$data['group1']);
+        }
+
+        if($data['group2'] != null ) {
+            $base_inventory_data = $base_inventory_data->where('group2',$data['group2']);
+        }
+
+        if($data['group3'] != null ) {
+            $base_inventory_data = $base_inventory_data->where('group3',$data['group3']);
+        }
+
+        if($data['group4'] != null ) {
+            $base_inventory_data = $base_inventory_data->where('group4',$data['group4']);
+        }
+
+        if($data['inventory_list_id'] != null ) {
+            $base_inventory_data = $base_inventory_data->where('inventory_list_id',$data['inventory_list_id']);
+        }
+
+
+        if(!$this->is_super_admin) {
+            $role_specific_users = Users_Role::join('new_inventory_role','new_inventory_role.id','=','users_role.jabatan')
+                                ->where('users_role.divisi','=',$this->new_inventory_divisi_id)
+                                ->where('users_role.user_id','=',Auth::user()->id)
+                                ->where('new_inventory_role.user_id','=',Auth::user()->id)
+                                ->get();
+
+
+            if(count($role_specific_users) > 0) {
+
+
+                $base_inventory_data->where(function ($query) use ($role_specific_users)  {
+                    foreach($role_specific_users as $key_role=>$val_role) {
+                        $query->Orwhere(function ($sub_query) use ($val_role) {
+                        $sub_query->where('group1', '=', $val_role->group1)
+                        ->where('group2', '=', $val_role->group2)
+                        ->where('group3', '=', $val_role->group3)
+                        ->where('group4', '=', $val_role->group4)
+                        ->where('inventory_list_id', '=', $val_role->inventory_list_id);
+                        });
+                    }
+                });
+
+            } else {
+                echo "ERROR in logic";die;
+            }
+        }
+
+        return $base_inventory_data;
     }
 
 
