@@ -52,6 +52,19 @@
 			data-toggle="modal" data-target="#modal_upload_new">
 				Upload Excel
 			</div>
+
+			@if(
+			Request::get('search_category') ||
+			Request::get('search_kota') ||
+			Request::get('search_gedung') ||
+			Request::get('search_divisi') ||
+			Request::get('search_sub_divisi')
+
+			) 
+			<div class="btn btn-success" onclick="download_selected_report()">
+				Download Data
+			</div>
+			@endif 
 		</div>
 		<div class="clearfix"> </div>
 		@endif
@@ -71,7 +84,7 @@
 			  	</div>
 				
 				<div class="form-group">
-			      	<select class="form-control" name="search_category">
+			      	<select class="form-control" name="search_category" id="search_category">
 			      		<option value=""> Category  </option>
 			 			@foreach($data['category'] as $val)
 			 			<option value="{{$val->id}}"
@@ -329,6 +342,43 @@
 	@include('new_inventory.modal_upload_new')
 
 	<script type="text/javascript">
+
+
+		function download_selected_report() {
+			url = "{{route('download_data_inventory')}}"+"?category=";
+
+			@if(Request::get('search_category'))
+			url = url+"{{Request::get('search_category')}}";
+			@endif
+
+			url = url+"&search_kota=";
+
+			@if(Request::get('search_kota'))
+			url = url+"{{Request::get('search_kota')}}";
+			@endif
+
+			url = url+"&search_gedung=";
+
+			@if(Request::get('search_gedung'))
+			url = url+"{{Request::get('search_gedung')}}";
+			@endif
+
+			url = url+"&search_divisi=";
+
+			@if(Request::get('search_divisi'))
+			url = url+"{{Request::get('search_divisi')}}";
+			@endif
+
+			url = url+"&search_sub_divisi=";
+
+			@if(Request::get('search_sub_divisi'))
+			url = url+"{{Request::get('search_sub_divisi')}}";
+			@endif
+
+
+			window.location = url;
+		}
+
 		function reset_filter() {
     		window.location = "{{route('new_inventory.index')}}";
     	}

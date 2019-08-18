@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth']], function() {
 		Route::post('/new_inventory/checking_upload', 'NewInventoryController@checking_upload')->name('checking_upload');
 		Route::get('/inventory_log/checking_history', 'NewInventoryController@checking_history')->name('checking_history');
 
+		Route::get('/inventory_log/download_data', 'NewInventoryController@download_data_inventory')->name('download_data_inventory');
 
 		Route::post('/ajax/get_group_detail','AjaxController@get_group_detail')->name('get_group_detail');
 

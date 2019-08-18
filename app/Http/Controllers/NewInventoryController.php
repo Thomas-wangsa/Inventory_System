@@ -1316,4 +1316,13 @@ class NewInventoryController extends Controller
 
         return view('new_inventory/history',compact('data'));
     }
+
+
+    function download_data_inventory(Request $request) {
+
+        dd($request);
+    }
+
+
+
 }
