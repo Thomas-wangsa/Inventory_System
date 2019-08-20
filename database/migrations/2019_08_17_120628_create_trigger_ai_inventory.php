@@ -25,7 +25,7 @@ class CreateTriggerAiInventory extends Migration
                 asuransi,lampiran,tanggal_retired,po,qty,
                 keterangan,uuid,comment,created_at,updated_at,deleted_at,sheet_detail
                 ) 
-                SELECT * FROM new_inventory_data;
+                SELECT * FROM new_inventory_data WHERE id = NEW.id;
             END
         ');
     }
