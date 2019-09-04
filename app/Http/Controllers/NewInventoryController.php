@@ -224,7 +224,8 @@ class NewInventoryController extends Controller
             'group1'                    => Group1::all(),
             'group2'                    => Group2::all(),
             'group3'                    => Group3::all(),
-            'group4'                    => Group4::all()
+            'group4'                    => Group4::all(),
+            'role_specific_head'                 => $role_specific_head
         ];
         //dd($data);
         return view('new_inventory/index',compact('data'));
