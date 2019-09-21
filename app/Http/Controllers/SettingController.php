@@ -353,7 +353,7 @@ class SettingController extends Controller {
         })->download($type);
     }
 
-    public function report_download() {
+    public function report_download(Request $request) {
         $pic_division = 2;
         $setting_list = 5;
         $user_divisi = \Request::get('user_divisi');
@@ -380,9 +380,11 @@ class SettingController extends Controller {
 
         // // get the current time
         $data['current_date'] = date('Y-m-d');
+        if($request->to_date) {$data['current_date'] = $request->to_date;}
 
         $date = strtotime("-7 day");
         $data['from_date'] =  date('Y-m-d', $date);
+        if($request->from_date) {$data['from_date'] = $request->from_date;}
 
         
         $akses_data = Akses_Data::leftjoin('pic_list',

@@ -18,26 +18,12 @@
       <div class="form-group">
         <label for="from_date">From Date:</label>
         <input type="text" class="form-control datepicker_class" name="from_date" id="from_date"
-        value="<?php 
-          if(Request::get('from_date')) {
-              echo Request::get('from_date');
-            } else {
-              echo $data["from_date"];
-            }
-        ?>
-        ">
+        value="<?php if(Request::get('from_date')) {echo Request::get('from_date');} else {echo $data["from_date"];}?>">
       </div>
       <div class="form-group">
         <label for="to_date">To Date:</label>
         <input type="text" class="form-control datepicker_class" name="to_date" id="to_date"
-        value="<?php 
-          if(Request::get('to_date')) {
-              echo Request::get('to_date');
-            } else {
-              echo $data["current_date"];
-            }
-        ?>
-        ">
+        value="<?php if(Request::get('to_date')) {echo Request::get('to_date');} else {echo $data["current_date"];}?>">
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
@@ -45,7 +31,7 @@
 	<div class="pull-right">
     <a 
     @if($data['report_for'] == "access")
-    href="{{route('report_download')}}"
+    href="{{route('report_download')}}?from_date={{$data['from_date']}}&to_date={{$data['current_date']}}"
     @elseif($data['report_for'] == "inventory")
     href="{{route('inventory_report_download')}}"
     @endif
