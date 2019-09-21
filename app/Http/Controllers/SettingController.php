@@ -201,9 +201,15 @@ class SettingController extends Controller {
         $data['report_for'] = "access";
         // // get the current time
         $data['current_date'] = date('Y-m-d');
+        if($request->to_date != null) {
+            $data['current_date'] = $request->to_date;
+        }
 
         $date = strtotime("-7 day");
         $data['from_date'] =  date('Y-m-d', $date);
+        if($request->from_date != null) {
+            $data['from_date'] = $request->from_date;
+        }
         //dd($data);
         // // add 30 days to the current time
         // $last_date = Carbon::now()->addDays(-7);
