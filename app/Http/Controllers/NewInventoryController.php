@@ -1016,7 +1016,7 @@ class NewInventoryController extends Controller
             // })->get();
             //dd($data);
             if(count($data) <= 3) {
-                $request->session()->flash('alert-danger', 'Limit rows minimum issue!');
+                $request->session()->flash('alert-danger', 'rows not found! for : '.$request->sheet_name." : ".count($data). " rows");
                 return redirect($this->redirectTo);
             }
 
