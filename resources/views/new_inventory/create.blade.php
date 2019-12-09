@@ -42,7 +42,7 @@
 			<br/>
 			<strong> Inventory Name : </strong> {{$data['new_inventory_data']->inventory_name}} 
 			<br/>
-			<strong> Quantity : </strong> {{$data['new_inventory_data']->qty}} 
+			<strong> Main Quantity : </strong> {{$data['new_inventory_data']->qty}} 
 			<br/>
 		</div>
 
