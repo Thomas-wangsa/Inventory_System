@@ -116,7 +116,7 @@ class NewInventoryController extends Controller
                 //$base_inventory_data->where('new_inventory_data.inventory_name','=',$request->search_nama);
                 $searchName = $request->search_nama;
                 $base_inventory_data->where(function ($newquery) use ($searchName)  {
-                    $newquery->Orwhere('new_inventory_data.inventory_name','=',$searchName)
+                    $newquery->Orwhere('new_inventory_data.inventory_name','LIKE',"%".$searchName."%")
                     ->Orwhere('new_inventory_data.kategori','=',$searchName)
                     ->Orwhere('new_inventory_data.kode_gambar','=',$searchName)
                     ->Orwhere('new_inventory_data.dvr','=',$searchName)
