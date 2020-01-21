@@ -529,7 +529,7 @@ class AccessCardController extends Controller
 
         // First Validation 
         $old_data = Akses_Data::where('no_access_card',$request->lost_create_accesscard)
-                        ->where('status_akses',9)
+                        ->whereIn('status_akses',array(9,19))
                         ->where('uuid',$request->lost_create_uuid)
                         ->first();
         if(count($old_data) < 1) {
@@ -644,7 +644,7 @@ class AccessCardController extends Controller
 
         // First Validation 
         $old_data = Akses_Data::where('no_access_card',$request->broken_create_accesscard)
-                        ->where('status_akses',9)
+                        ->whereIn('status_akses',array(9,19))
                         ->where('uuid',$request->broken_create_uuid)
                         ->first();
         if(count($old_data) < 1) {
@@ -764,7 +764,7 @@ class AccessCardController extends Controller
 
         // First Validation 
         $old_data = Akses_Data::where('no_access_card',$request->extend_create_accesscard)
-                        ->where('status_akses',9)
+                        ->whereIn('status_akses',array(9,19))
                         ->where('uuid',$request->extend_create_uuid)
                         ->first();
         if(count($old_data) < 1) {
