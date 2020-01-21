@@ -1036,6 +1036,7 @@ class AccessCardController extends Controller
 
         $akses_data = Akses_Data::where('no_access_card',$request->access_card_no)
                         ->where('status_akses',9)
+                        ->orWhere('status_akses',19)
                         ->first();
 
         if(count($akses_data) < 1) {
