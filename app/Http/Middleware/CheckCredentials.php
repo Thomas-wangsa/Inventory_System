@@ -24,6 +24,7 @@ class CheckCredentials
      */
     public function handle($request, Closure $next)
     {   
+        sleep(5); 
         $id = Auth::user()->id;
         $this->user_detail    = Users::GetDetailById($id)->first();
         $this->user_divisi    = Users_Role::GetDivisiById($id)->pluck('divisi')->toArray();
